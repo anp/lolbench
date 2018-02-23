@@ -1,0 +1,8 @@
+[package]
+name = "snap_0_2_4"
+version = "0.1.0"
+authors = ["Adam Perry <adam.n.perry@gmail.com>"]
+
+[dependencies]
+criterion = "*"
+snap = { version = "0.2.4", features = ["cpp"] }
