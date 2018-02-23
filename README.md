@@ -23,7 +23,7 @@ inflate = "0.3.4"
 inflate_0_3_4 = { path = "./inflate_0_3_4" }
 ```
 
-4. Create benchmark functions in `subcrate/lib.rs`:
+4. Create benchmark functions in `subcrate/lib.rs`. If you're porting from the libtest bench harness to criterion, the [criterion user guide](https://japaric.github.io/criterion.rs/book/criterion_rs.html) is a good place to start. Example from inflate:
 
 ```rs
 extern crate criterion;
