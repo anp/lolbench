@@ -1,0 +1,9 @@
+[package]
+name = "inflate_0_3_4"
+version = "0.1.0"
+authors = ["Adam Perry <adam.n.perry@gmail.com>"]
+
+[dependencies]
+# important to allow "any" criterion version because this will be compiled into the parent binary
+criterion = "*"
+inflate = "0.3.4"

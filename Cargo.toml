@@ -4,12 +4,10 @@ version = "0.1.0"
 authors = ["Adam Perry <adam.n.perry@gmail.com>"]
 
 [dependencies]
-
-[dev-dependencies]
 criterion = "0.2.0"
+inflate_0_3_4 = { path = "./inflate_0_3_4" }
 
 [[bench]]
 name = "lolbench"
 harness = false
 path = "src/main.rs"
-
