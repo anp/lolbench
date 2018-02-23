@@ -1,4 +1,4 @@
-use rand::random;
+use rand::{Rng, XorShiftRng};
 use lodepng::RGB;
 
 use vec::{Vec3, Ray};
@@ -7,14 +7,14 @@ use camera::Camera;
 use model::Model;
 
 
-fn color(mut r: Ray, model: &Model) -> Vec3 {
+fn color(mut r: Ray, model: &Model, rng: &mut XorShiftRng) -> Vec3 {
     const WHITE: Vec3 = Vec3(1.0, 1.0, 1.0);
     let sky_blue = 0.3 * Vec3(0.5, 0.7, 1.0) + 0.7 * WHITE;
 
     let mut attenuation = WHITE;
     let mut depth = 0;
     while let Some(hit) = model.hit(&r) {
-        let scattered = hit.material.scatter(&r, &hit);
+        let scattered = hit.material.scatter(&r, &hit, rng);
         attenuation = attenuation * scattered.color;
         if let Some(bounce) = scattered.ray {
             r = bounce;
@@ -38,7 +38,7 @@ fn color(mut r: Ray, model: &Model) -> Vec3 {
     }
 }
 
-pub fn render(scene: &Model, camera: &Camera, width: usize, height: usize, samples: usize)
+pub fn render(rng: &mut XorShiftRng, scene: &Model, camera: &Camera, width: usize, height: usize, samples: usize)
           -> Vec<RGB<u8>>
 {
     let mut pixels: Vec<RGB<u8>> = Vec::with_capacity(width * height);
@@ -47,11 +47,11 @@ pub fn render(scene: &Model, camera: &Camera, width: usize, height: usize, sampl
         for i in 0 .. width {
             let mut col = Vec3(0.0, 0.0, 0.0);
             for _ in 0 .. samples {
-                let u = (i as f32 + random::<f32>()) / width as f32;
-                let v = (j as f32 + random::<f32>()) / height as f32;
+                let u = (i as f32 + rng.gen::<f32>()) / width as f32;
+                let v = (j as f32 + rng.gen::<f32>()) / height as f32;
 
-                let r = camera.get_ray(u, v);
-                col = col + color(r, scene);
+                let r = camera.get_ray(u, v, rng);
+                col = col + color(r, scene, rng);
             }
             col = col / samples as f32;
             col = Vec3(col.x().sqrt(), col.y().sqrt(), col.z().sqrt());

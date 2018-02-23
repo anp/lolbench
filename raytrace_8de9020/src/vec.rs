@@ -1,5 +1,5 @@
 use std::ops::*;
-use rand::{Rand, Rng, random};
+use rand::{Rand, Rng, XorShiftRng};
 
 #[derive(Clone, Copy, Debug)]
 pub struct Vec3(pub f32, pub f32, pub f32);
@@ -89,18 +89,18 @@ impl Rand for Vec3 {
     }
 }
 
-pub fn random_in_unit_sphere() -> Vec3 {
+pub fn random_in_unit_sphere(rng: &mut XorShiftRng) -> Vec3 {
     loop {
-        let p = 2.0 * random::<Vec3>() - Vec3(1.0, 1.0, 1.0);
+        let p = 2.0 * rng.gen::<Vec3>() - Vec3(1.0, 1.0, 1.0);
         if p.dot(p) < 1.0 {
             return p;
         }
     }
 }
 
-pub fn random_in_unit_disc() -> Vec3 {
+pub fn random_in_unit_disc(rng: &mut XorShiftRng) -> Vec3 {
     loop {
-        let p = Vec3(2.0 * random::<f32>() - 1.0, 2.0 * random::<f32>() - 1.0, 0.0);
+        let p = Vec3(2.0 * rng.gen::<f32>() - 1.0, 2.0 * rng.gen::<f32>() - 1.0, 0.0);
         if p.dot(p) < 1.0 {
             return p;
         }

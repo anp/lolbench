@@ -1,3 +1,4 @@
+use rand::XorShiftRng;
 use vec::{Vec3, Ray, random_in_unit_disc};
 
 use std::f32::consts::PI;
@@ -35,8 +36,8 @@ impl Camera {
        }
     }
 
-    pub fn get_ray(&self, u: f32, v: f32) -> Ray {
-        let Vec3(du, dv, _) = self.lens_radius * random_in_unit_disc();
+    pub fn get_ray(&self, u: f32, v: f32, rng: &mut XorShiftRng) -> Ray {
+        let Vec3(du, dv, _) = self.lens_radius * random_in_unit_disc(rng);
         let origin = self.origin + du * self.u + dv * self.v;
         Ray::new(origin,
                  self.lower_left_corner + u * self.horizontal + v * self.vertical - origin)

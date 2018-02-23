@@ -1,4 +1,5 @@
 // Dependencies
+extern crate criterion;
 extern crate lodepng;
 extern crate rand; // generate random numbers // output PNG image files
 
@@ -12,14 +13,14 @@ mod render; // the core ray-tracing algorithm
 // The rest of the code in this file brings the pieces together
 // to render a scene made of a bunch of spheres.
 
-use rand::random;
+use rand::{Rng, SeedableRng, XorShiftRng};
 use vec::{random_in_unit_disc, Vec3};
 use model::{Model, Sphere};
 use materials::{Dielectric, Lambertian, Material, Metal};
 use camera::Camera;
 
 /// Generate a Model containing a bunch of randomly placed spheres.
-fn random_scene() -> Box<Model> {
+fn random_scene(rng: &mut XorShiftRng) -> Box<Model> {
     let mut spheres: Vec<Sphere> = vec![
         Sphere {
             center: Vec3(0.0, 0.0, -1000.0),
@@ -50,12 +51,12 @@ fn random_scene() -> Box<Model> {
         },
     ];
 
-    fn random_material() -> Box<Material> {
-        match random() {
-            0.0...0.7 => Box::new(Lambertian { albedo: random() }),
-            0.7...0.9 => Box::new(Metal {
-                albedo: Vec3(0.5, 0.5, 0.5) + 0.5 * random::<Vec3>(),
-                fuzz: 0.5 * random::<f32>(),
+    fn random_material(rng: &mut XorShiftRng) -> Box<Material> {
+        match (rng.gen::<f32>() * 10.0) as u8 {
+            0...7 => Box::new(Lambertian { albedo: rng.gen() }),
+            7...9 => Box::new(Metal {
+                albedo: Vec3(0.5, 0.5, 0.5) + 0.5 * rng.gen::<Vec3>(),
+                fuzz: 0.5 * rng.gen::<f32>(),
             }),
             _ => Box::new(Dielectric { index: 1.5 }),
         }
@@ -63,7 +64,7 @@ fn random_scene() -> Box<Model> {
 
     for _ in 0..500 {
         let r = 0.4;
-        let Vec3(x, y, _) = random_in_unit_disc();
+        let Vec3(x, y, _) = random_in_unit_disc(rng);
         let pos = 20.0 * Vec3(x, y, 0.0) + Vec3(0.0, 0.0, r);
         if spheres
             .iter()
@@ -72,7 +73,7 @@ fn random_scene() -> Box<Model> {
             spheres.push(Sphere {
                 center: pos,
                 radius: r,
-                material: random_material(),
+                material: random_material(rng),
             });
         }
     }
@@ -84,34 +85,37 @@ fn random_scene() -> Box<Model> {
     Box::new(world)
 }
 
-fn main() {
-    const WIDTH: usize = 800;
-    const HEIGHT: usize = 400;
+pub fn raytrace_random_scenes(c: &mut criterion::Criterion) {
+    c.bench_function(
+        concat!(env!("CARGO_PKG_NAME"), "_raytrace_random_scenes"),
+        |b| {
+            b.iter(|| {
+                const WIDTH: usize = 50;
+                const HEIGHT: usize = 25;
 
-    const NSAMPLES: usize = 100;
+                const NSAMPLES: usize = 5;
 
-    let scene = random_scene();
+                let mut rng = XorShiftRng::from_seed([22, 0, 22, 0]);
 
-    let lookfrom = Vec3(20.0 * 0.47f32.cos(), 20.0 * 0.47f32.sin(), 3.0);
-    let lookat = Vec3(0.0, 0.0, 1.0);
-    let vup = Vec3(0.0, 0.0, 1.0);
-    let focus_distance = (lookfrom - lookat).length();
-    let aperture = 0.3;
-    let camera = Camera::new(
-        lookfrom,
-        lookat,
-        vup,
-        20.0,
-        WIDTH as f32 / HEIGHT as f32,
-        aperture,
-        focus_distance,
+                let scene = random_scene(&mut rng);
+
+                let lookfrom = Vec3(20.0 * 0.47f32.cos(), 20.0 * 0.47f32.sin(), 3.0);
+                let lookat = Vec3(0.0, 0.0, 1.0);
+                let vup = Vec3(0.0, 0.0, 1.0);
+                let focus_distance = (lookfrom - lookat).length();
+                let aperture = 0.3;
+                let camera = Camera::new(
+                    lookfrom,
+                    lookat,
+                    vup,
+                    20.0,
+                    WIDTH as f32 / HEIGHT as f32,
+                    aperture,
+                    focus_distance,
+                );
+
+                render::render(&mut rng, &*scene, &camera, WIDTH, HEIGHT, NSAMPLES);
+            });
+        },
     );
-
-    let pixels = render::render(&*scene, &camera, WIDTH, HEIGHT, NSAMPLES);
-
-    let filename = "out.png";
-    match lodepng::encode24_file(filename, &pixels, WIDTH, HEIGHT) {
-        Ok(()) => {}
-        Err(err) => println!("Error writing file \"{}\": {}", filename, err),
-    }
 }

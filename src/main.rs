@@ -3,10 +3,11 @@ extern crate criterion;
 use criterion::Criterion;
 
 extern crate inflate_0_3_4;
+extern crate raytrace_8de9020;
 extern crate snap_0_2_4;
 
-
 criterion_group!(inflate_0_3_4, inflate_0_3_4::decode);
+criterion_group!(raytrace_8de9020, raytrace_8de9020::raytrace_random_scenes);
 criterion_group!(snap_0_2_4_rust,
     snap_0_2_4::rust::zflat00_html,
     snap_0_2_4::rust::zflat01_urls,
@@ -34,4 +35,4 @@ criterion_group!(snap_0_2_4_rust,
     snap_0_2_4::rust::uflat10_pb,
     snap_0_2_4::rust::uflat11_gaviota);
 
-criterion_main!(inflate_0_3_4, snap_0_2_4_rust);
+criterion_main!(inflate_0_3_4, raytrace_8de9020, snap_0_2_4_rust);

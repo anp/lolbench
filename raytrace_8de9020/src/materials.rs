@@ -1,4 +1,4 @@
-use rand::random;
+use rand::{Rng, XorShiftRng};
 use vec::{Vec3, Ray, random_in_unit_sphere};
 use model::Hit;
 
@@ -9,7 +9,7 @@ pub struct Scatter {
 }
 
 pub trait Material {
-    fn scatter(&self, r_in: &Ray, rec: &Hit) -> Scatter;
+    fn scatter(&self, r_in: &Ray, rec: &Hit, rng: &mut XorShiftRng) -> Scatter;
 }
 
 pub struct Lambertian {
@@ -17,8 +17,8 @@ pub struct Lambertian {
 }
 
 impl Material for Lambertian {
-    fn scatter(&self, _r_in: &Ray, hit: &Hit) -> Scatter {
-        let target = hit.p + hit.normal + random_in_unit_sphere();
+    fn scatter(&self, _r_in: &Ray, hit: &Hit, rng: &mut XorShiftRng) -> Scatter {
+        let target = hit.p + hit.normal + random_in_unit_sphere(rng);
         Scatter {
             color: self.albedo,
             ray: Some(Ray::new(hit.p, target - hit.p))
@@ -36,9 +36,9 @@ pub struct Metal {
 }
 
 impl Material for Metal {
-    fn scatter(&self, r_in: &Ray, hit: &Hit) -> Scatter {
+    fn scatter(&self, r_in: &Ray, hit: &Hit, rng: &mut XorShiftRng) -> Scatter {
         let reflected = reflect(r_in.direction, hit.normal);
-        let scattered = Ray::new(hit.p, reflected + self.fuzz * random_in_unit_sphere());
+        let scattered = Ray::new(hit.p, reflected + self.fuzz * random_in_unit_sphere(rng));
 
         Scatter {
             color: self.albedo,
@@ -82,7 +82,7 @@ fn schlick(cosine: f32, index: f32) -> f32 {
 const WHITE: Vec3 = Vec3(1.0, 1.0, 1.0);
 
 impl Material for Dielectric {
-    fn scatter(&self, r_in: &Ray, hit: &Hit) -> Scatter {
+    fn scatter(&self, r_in: &Ray, hit: &Hit, rng: &mut XorShiftRng) -> Scatter {
         let outward_normal: Vec3;
         let ni_over_nt: f32;
         let cosine: f32;
@@ -99,7 +99,7 @@ impl Material for Dielectric {
 
         match refract(r_in.direction, outward_normal, ni_over_nt) {
             Some(refracted) => {
-                if random::<f32>() > schlick(cosine, self.index) {
+                if rng.gen::<f32>() > schlick(cosine, self.index) {
                     return Scatter {
                         color: WHITE,
                         ray: Some(Ray::new(hit.p, refracted))

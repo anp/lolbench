@@ -1,8 +1,9 @@
 [package]
-name = "raytrace"
+name = "raytrace_8de9020"
 version = "0.1.0"
 authors = ["Jason Orendorff <jason.orendorff@gmail.com>"]
 
 [dependencies]
-rand = "0.3.14"
+criterion = "*"
+rand = "0.4.2"
 lodepng = "0.5.1"
