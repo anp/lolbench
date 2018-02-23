@@ -1,0 +1,8 @@
+[package]
+name = "raytrace"
+version = "0.1.0"
+authors = ["Jason Orendorff <jason.orendorff@gmail.com>"]
+
+[dependencies]
+rand = "0.3.14"
+lodepng = "0.5.1"
