@@ -1,0 +1,31 @@
+[package]
+name = "json_benchmark_c7d3d9b"
+version = "0.0.1"
+authors = ["dtolnay@gmail.com"]
+publish = false
+
+[dependencies]
+criterion = "*"
+rustc-serialize = "0.3.24"
+serde = "1.0.27"
+serde_derive = "1.0.27"
+serde_json = "1.0.9"
+time = "0.1.39"
+wrap_libtest = { path = "../wrap_libtest" }
+
+[features]
+default = ["performance", "all-libs", "all-files"]
+all-libs = ["lib-serde", "lib-json-rust", "lib-rustc-serialize"]
+all-files = ["file-canada", "file-citm-catalog", "file-twitter"]
+performance = ["parse-dom", "stringify-dom", "parse-struct", "stringify-struct"]
+lib-serde = []
+lib-json-rust = []
+lib-rustc-serialize = []
+file-canada = []
+file-citm-catalog = []
+file-twitter = []
+parse-dom = []
+stringify-dom = []
+parse-struct = []
+stringify-struct = []
+zero-copy = []

@@ -4,6 +4,7 @@ use criterion::Criterion;
 
 extern crate doom_9e197d7;
 extern crate inflate_0_3_4;
+extern crate json_benchmark_c7d3d9b;
 extern crate rayon_1_0_0;
 extern crate raytrace_8de9020;
 extern crate snap_0_2_4;
@@ -15,6 +16,22 @@ criterion_group!(
 );
 
 criterion_group!(inflate_0_3_4, inflate_0_3_4::decode);
+
+criterion_group!(
+    json_benchmark_c7d3d9b,
+    json_benchmark_c7d3d9b::serde_canada_dom,
+    json_benchmark_c7d3d9b::serde_canada_struct,
+    json_benchmark_c7d3d9b::serde_citm_dom,
+    json_benchmark_c7d3d9b::serde_citm_struct,
+    json_benchmark_c7d3d9b::serde_twitter_dom,
+    json_benchmark_c7d3d9b::serde_twitter_struct,
+    json_benchmark_c7d3d9b::serialize_canada_dom,
+    json_benchmark_c7d3d9b::serialize_canada_struct,
+    json_benchmark_c7d3d9b::serialize_citm_dom,
+    json_benchmark_c7d3d9b::serialize_citm_struct,
+    json_benchmark_c7d3d9b::serialize_twitter_dom,
+    json_benchmark_c7d3d9b::serialize_twitter_struct
+);
 
 criterion_group!(
     rayon_1_0_0,
@@ -164,6 +181,7 @@ criterion_group!(
 );
 
 criterion_main!(
+    json_benchmark_c7d3d9b,
     rayon_1_0_0
     // doom_9e197d7,
     // inflate_0_3_4,
