@@ -102,63 +102,70 @@ mod util {
 
 macro_rules! make_bench {
     ($generate:ident, $check:ident) => {
-        #[bench]
-        fn with_collect(b: &mut ::test::Bencher) {
-            use vec_collect::util;
-            let mut vec = None;
-            b.iter(|| vec = Some(util::collect($generate())));
-            $check(&vec.unwrap());
+        wrap_libtest! {
+            fn with_collect(b: &mut Bencher) {
+                use vec_collect::util;
+                let mut vec = None;
+                b.iter(|| vec = Some(util::collect($generate())));
+                $check(&vec.unwrap());
+            }
         }
 
-        #[bench]
-        fn with_linked_list_collect_vec(b: &mut ::test::Bencher) {
-            use vec_collect::util;
-            let mut vec = None;
-            b.iter(|| vec = Some(util::linked_list_collect_vec($generate())));
-            $check(&vec.unwrap());
+        wrap_libtest! {
+            fn with_linked_list_collect_vec(b: &mut Bencher) {
+                use vec_collect::util;
+                let mut vec = None;
+                b.iter(|| vec = Some(util::linked_list_collect_vec($generate())));
+                $check(&vec.unwrap());
+            }
         }
 
-        #[bench]
-        fn with_linked_list_collect_vec_sized(b: &mut ::test::Bencher) {
-            use vec_collect::util;
-            let mut vec = None;
-            b.iter(|| vec = Some(util::linked_list_collect_vec_sized($generate())));
-            $check(&vec.unwrap());
+        wrap_libtest! {
+            fn with_linked_list_collect_vec_sized(b: &mut Bencher) {
+                use vec_collect::util;
+                let mut vec = None;
+                b.iter(|| vec = Some(util::linked_list_collect_vec_sized($generate())));
+                $check(&vec.unwrap());
+            }
         }
 
-        #[bench]
-        fn with_linked_list_map_reduce_vec_sized(b: &mut ::test::Bencher) {
-            use vec_collect::util;
-            let mut vec = None;
-            b.iter(|| vec = Some(util::linked_list_map_reduce_vec_sized($generate())));
-            $check(&vec.unwrap());
+        wrap_libtest! {
+            fn with_linked_list_map_reduce_vec_sized(b: &mut Bencher) {
+                use vec_collect::util;
+                let mut vec = None;
+                b.iter(|| vec = Some(util::linked_list_map_reduce_vec_sized($generate())));
+                $check(&vec.unwrap());
+            }
         }
 
-        #[bench]
-        fn with_vec_vec_sized(b: &mut ::test::Bencher) {
-            use vec_collect::util;
-            let mut vec = None;
-            b.iter(|| vec = Some(util::vec_vec_sized($generate())));
-            $check(&vec.unwrap());
+        wrap_libtest! {
+            fn with_vec_vec_sized(b: &mut Bencher) {
+                use vec_collect::util;
+                let mut vec = None;
+                b.iter(|| vec = Some(util::vec_vec_sized($generate())));
+                $check(&vec.unwrap());
+            }
         }
 
-        #[bench]
-        fn with_fold(b: &mut ::test::Bencher) {
-            use vec_collect::util;
-            let mut vec = None;
-            b.iter(|| vec = Some(util::fold($generate())));
-            $check(&vec.unwrap());
+        wrap_libtest! {
+            fn with_fold(b: &mut Bencher) {
+                use vec_collect::util;
+                let mut vec = None;
+                b.iter(|| vec = Some(util::fold($generate())));
+                $check(&vec.unwrap());
+            }
         }
     }
 }
 
 /// Tests a big vector of i forall i in 0 to N.
-mod vec_i {
+pub mod vec_i {
+    use rayon;
     use rayon::prelude::*;
 
     const N: u32 = 4 * 1024 * 1024;
 
-    fn generate() -> impl IndexedParallelIterator<Item=u32> {
+    fn generate() -> rayon::range::Iter<u32> {
         (0_u32..N)
             .into_par_iter()
     }
@@ -167,22 +174,24 @@ mod vec_i {
         assert!(v.iter().cloned().eq(0..N));
     }
 
-    #[bench]
-    fn with_collect_into_vec(b: &mut ::test::Bencher) {
-        let mut vec = None;
-        b.iter(|| {
-            let mut v = vec![];
-            generate().collect_into_vec(&mut v);
-            vec = Some(v);
-        });
-        check(&vec.unwrap());
+    wrap_libtest! {
+        fn with_collect_into_vec(b: &mut Bencher) {
+            let mut vec = None;
+            b.iter(|| {
+                let mut v = vec![];
+                generate().collect_into_vec(&mut v);
+                vec = Some(v);
+            });
+            check(&vec.unwrap());
+        }
     }
 
-    #[bench]
-    fn with_collect_into_vec_reused(b: &mut ::test::Bencher) {
-        let mut vec = vec![];
-        b.iter(|| generate().collect_into_vec(&mut vec));
-        check(&vec);
+    wrap_libtest! {
+        fn with_collect_into_vec_reused(b: &mut Bencher) {
+            let mut vec = vec![];
+            b.iter(|| generate().collect_into_vec(&mut vec));
+            check(&vec);
+        }
     }
 
     make_bench!(generate, check);
@@ -190,12 +199,15 @@ mod vec_i {
 
 /// Tests a big vector of i forall i in 0 to N, with a no-op
 /// filter just to make sure it's not an exact iterator.
-mod vec_i_filtered {
+pub mod vec_i_filtered {
+    use rayon;
     use rayon::prelude::*;
 
     const N: u32 = 4 * 1024 * 1024;
 
-    fn generate() -> impl ParallelIterator<Item=u32> {
+    fn generate() -> rayon::iter::Filter<
+        rayon::range::Iter<u32>, fn(&u32) -> bool
+    > {
         (0_u32..N)
             .into_par_iter()
             .filter(|_| true)

@@ -2,7 +2,6 @@
 
 use rayon::prelude::*;
 use rand::{Rng, SeedableRng, XorShiftRng};
-use test::Bencher;
 
 lazy_static! {
     static ref HAYSTACK: String = {
@@ -13,7 +12,7 @@ lazy_static! {
     };
 
     static ref COUNT: usize = {
-        HAYSTACK.split(' ').count() 
+        HAYSTACK.split(' ').count()
     };
 }
 
@@ -21,32 +20,37 @@ fn get_string_count() -> (&'static str, usize) {
     (&HAYSTACK, *COUNT)
 }
 
-#[bench]
-fn parallel_space_char(b: &mut Bencher) {
-    let (string, count) = get_string_count();
-    b.iter(|| assert_eq!(string.par_split(' ').count(), count))
+wrap_libtest! {
+    fn parallel_space_char(b: &mut Bencher) {
+        let (string, count) = get_string_count();
+        b.iter(|| assert_eq!(string.par_split(' ').count(), count))
+    }
 }
 
-#[bench]
-fn parallel_space_fn(b: &mut Bencher) {
-    let (string, count) = get_string_count();
-    b.iter(|| assert_eq!(string.par_split(|c| c == ' ').count(), count))
+wrap_libtest! {
+    fn parallel_space_fn(b: &mut Bencher) {
+        let (string, count) = get_string_count();
+        b.iter(|| assert_eq!(string.par_split(|c| c == ' ').count(), count))
+    }
 }
 
-#[bench]
-fn serial_space_char(b: &mut Bencher) {
-    let (string, count) = get_string_count();
-    b.iter(|| assert_eq!(string.split(' ').count(), count))
+wrap_libtest! {
+    fn serial_space_char(b: &mut Bencher) {
+        let (string, count) = get_string_count();
+        b.iter(|| assert_eq!(string.split(' ').count(), count))
+    }
 }
 
-#[bench]
-fn serial_space_fn(b: &mut Bencher) {
-    let (string, count) = get_string_count();
-    b.iter(|| assert_eq!(string.split(|c| c == ' ').count(), count))
+wrap_libtest! {
+    fn serial_space_fn(b: &mut Bencher) {
+        let (string, count) = get_string_count();
+        b.iter(|| assert_eq!(string.split(|c| c == ' ').count(), count))
+    }
 }
 
-#[bench]
-fn serial_space_str(b: &mut Bencher) {
-    let (string, count) = get_string_count();
-    b.iter(|| assert_eq!(string.split(" ").count(), count))
+wrap_libtest! {
+    fn serial_space_str(b: &mut Bencher) {
+        let (string, count) = get_string_count();
+        b.iter(|| assert_eq!(string.split(" ").count(), count))
+    }
 }

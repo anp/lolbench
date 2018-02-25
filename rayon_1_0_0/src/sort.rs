@@ -1,9 +1,7 @@
 use rand::{Rng, SeedableRng, XorShiftRng};
 use rayon::prelude::*;
-use std::mem;
 use std::sync::atomic::AtomicUsize;
 use std::sync::atomic::Ordering::SeqCst;
-use test::{Bencher, black_box};
 
 fn gen_ascending(len: usize) -> Vec<u64> {
     (0..len as u64).collect()
@@ -57,50 +55,50 @@ fn gen_big_random(len: usize) -> Vec<[u64; 16]> {
 
 macro_rules! sort {
     ($f:ident, $name:ident, $gen:expr, $len:expr) => {
-        #[bench]
-        fn $name(b: &mut Bencher) {
-            let v = $gen($len);
-            b.iter(|| v.clone().$f());
-            b.bytes = $len * mem::size_of_val(&$gen(1)[0]) as u64;
+        wrap_libtest! {
+            fn $name(b: &mut Bencher) {
+                let v = $gen($len);
+                b.iter(|| v.clone().$f());
+            }
         }
     }
 }
 
 macro_rules! sort_strings {
     ($f:ident, $name:ident, $gen:expr, $len:expr) => {
-        #[bench]
-        fn $name(b: &mut Bencher) {
-            let v = $gen($len);
-            let v = v.iter().map(|s| &**s).collect::<Vec<&str>>();
-            b.iter(|| v.clone().$f());
-            b.bytes = $len * mem::size_of::<&str>() as u64;
+        wrap_libtest! {
+            fn $name(b: &mut Bencher) {
+                let v = $gen($len);
+                let v = v.iter().map(|s| &**s).collect::<Vec<&str>>();
+                b.iter(|| v.clone().$f());
+            }
         }
     }
 }
 
 macro_rules! sort_expensive {
     ($f:ident, $name:ident, $gen:expr, $len:expr) => {
-        #[bench]
-        fn $name(b: &mut Bencher) {
-            let v = $gen($len);
-            b.iter(|| {
-                let count = AtomicUsize::new(0);
-                let mut v = v.clone();
+        wrap_libtest! {
+            fn $name(b: &mut Bencher) {
+                let v = $gen($len);
+                b.iter(|| {
+                    let count = AtomicUsize::new(0);
+                    let mut v = v.clone();
 
-                v.$f(|a: &u64, b: &u64| {
-                    // This is an intentionally expensive comparison function: we have atomic
-                    // operations, landing pads due to a potential panic, a modulo operation, and
-                    // trigonometric functions.
-                    count.fetch_add(1, SeqCst);
-                    if count.load(SeqCst) % 1_000_000_000 == 0 {
-                        panic!("should not happen");
-                    }
-                    (*a as f64).cos().partial_cmp(&(*b as f64).cos()).unwrap()
+                    v.$f(|a: &u64, b: &u64| {
+                        // This is an intentionally expensive comparison function: we have atomic
+                        // operations, landing pads due to a potential panic, a modulo operation, and
+                        // trigonometric functions.
+                        count.fetch_add(1, SeqCst);
+                        if count.load(SeqCst) % 1_000_000_000 == 0 {
+                            panic!("should not happen");
+                        }
+                        (*a as f64).cos().partial_cmp(&(*b as f64).cos()).unwrap()
+                    });
+
+                    black_box(count);
                 });
-
-                black_box(count);
-            });
-            b.bytes = $len * mem::size_of_val(&$gen(1)[0]) as u64;
+            }
         }
     }
 }

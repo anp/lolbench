@@ -1,11 +1,12 @@
 use std::path::Path;
-use test;
+
+use criterion::Bencher;
 
 use super::parse_solver;
 use super::graph::Node;
 use super::solver::SolverCx;
 
-fn run_dir(b: &mut test::Bencher,
+fn run_dir(b: &mut Bencher,
            name: &str,
            seq_threshold: usize,
            exp_weight: usize,
@@ -30,10 +31,11 @@ fn run_dir(b: &mut test::Bencher,
                "best path ({:?}) did not match expectation ({:?})", path, exp_path);
 }
 
-#[bench]
-fn dj10(b: &mut test::Bencher) {
-    // these numbers are tuned to "not take THAT long" in cargo bench,
-    // basically, but still exercise the spawning stuff -- each run
-    // should spawn 6! (720) tasks or so this way.
-    run_dir(b, "dj10.tsp", 4, 2577, vec![0, 1, 3, 2, 4, 6, 8, 7, 5, 9, 0]);
+// these numbers are tuned to "not take THAT long" in cargo bench,
+// basically, but still exercise the spawning stuff -- each run
+// should spawn 6! (720) tasks or so this way.
+wrap_libtest! {
+    fn dj10(b: &mut Bencher) {
+        run_dir(b, "dj10.tsp", 4, 2577, vec![0, 1, 3, 2, 4, 6, 8, 7, 5, 9, 0]);
+    }
 }

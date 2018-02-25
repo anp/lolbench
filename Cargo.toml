@@ -7,6 +7,7 @@ authors = ["Adam Perry <adam.n.perry@gmail.com>"]
 criterion = "0.2.0"
 doom_9e197d7 = { path = "doom_9e197d7" }
 inflate_0_3_4 = { path = "inflate_0_3_4" }
+rayon_1_0_0 = { path = "rayon_1_0_0" }
 raytrace_8de9020 = { path = "raytrace_8de9020" }
 snap_0_2_4 = { path = "snap_0_2_4" }
 

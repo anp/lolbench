@@ -1,45 +1,10 @@
-const USAGE: &'static str = "
-Usage: sieve bench
-       sieve --help
-
-Sieve of Eratosthenes
-
-A sieve finds prime numbers by first assuming all candidates are prime,
-then progressively using small primes to mark their multiples composite.
-
-Note that a given prime p only needs to start marking its multiples >=p²,
-as anything less will already have been marked by an even smaller prime
-factor.  This also means that sieving up to N only requires primes up to
-sqrt(N) - a useful fact to prepare for parallel sieving.
-
-Here we have three forms of the sieve:
-
-- `sieve_serial`: direct iteration in serial
-- `sieve_chunks`: chunked iteration, still serial
-- `sieve_parallel`: chunked iteration in parallel
-
-The performance improvement of `sieve_chunks` is largely due to cache
-locality.  Since the sieve has to sweep repeatedly over the same memory,
-it's helpful that the chunk size can fit entirely in the CPU cache.  Then
-`sieve_parallel` also benefits from this as long as there's cache room for
-multiple chunks, for the separate jobs in each thread.
-
-Commands:
-    bench              Run the benchmark in different modes and print the timings.
-
-Options:
-    -h, --help         Show this message.
-";
-
 #[derive(Deserialize)]
 pub struct Args {
     cmd_bench: bool,
 }
 
-#[cfg(test)]
-mod bench;
+pub mod bench;
 
-use docopt::Docopt;
 use odds::stride::StrideMut;
 use rayon::prelude::*;
 use time;
@@ -174,24 +139,4 @@ fn measure(f: fn(usize) -> Vec<bool>) -> u64 {
     assert_eq!(num_primes, NUM_PRIMES[MAGNITUDE]);
 
     duration
-}
-
-pub fn main(args: &[String]) {
-    let args: Args =
-        Docopt::new(USAGE)
-            .and_then(|d| d.argv(args).deserialize())
-            .unwrap_or_else(|e| e.exit());
-
-    if args.cmd_bench {
-        let serial = measure(sieve_serial);
-        println!("  serial: {:10} ns", serial);
-
-        let chunks = measure(sieve_chunks);
-        println!("  chunks: {:10} ns -> {:.2}x speedup", chunks,
-                 serial as f64 / chunks as f64);
-
-        let parallel = measure(sieve_parallel);
-        println!("parallel: {:10} ns -> {:.2}x speedup", parallel,
-                 chunks as f64 / parallel as f64);
-    }
 }

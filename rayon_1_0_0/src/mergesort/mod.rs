@@ -1,29 +1,12 @@
 use rand::{Rng, SeedableRng, XorShiftRng};
 
-const USAGE: &'static str = "
-Usage: mergesort bench [--size N]
-       mergesort --help
-
-Parallel mergesort: regular sorting with a parallel merge step.
-O(n log n) time; O(n) extra space; critical path is O(log^3 n)
-
-Algorithm described in: https://software.intel.com/en-us/articles/a-parallel-stable-sort-using-c11-for-tbb-cilk-plus-and-openmp
-
-Commands:
-    bench              Run the benchmark in different modes and print the timings.
-
-Options:
-    --size N           Number of 32-bit words to sort [default: 250000000] (1GB)
-    -h, --help         Show this message.
-";
-
 #[derive(Deserialize)]
 pub struct Args {
     cmd_bench: bool,
     flag_size: usize,
 }
 
-use docopt::Docopt;
+
 use rayon;
 
 use std::cmp::max;
@@ -239,19 +222,5 @@ fn timed_sort<F: FnOnce(&mut [u32])>(n: usize, f: F, name: &str) -> u64 {
     return nanos
 }
 
-pub fn main(args: &[String]) {
-    let args: Args =
-        Docopt::new(USAGE)
-            .and_then(|d| d.argv(args).deserialize())
-            .unwrap_or_else(|e| e.exit());
-
-    if args.cmd_bench {
-        let seq = timed_sort(args.flag_size, seq_merge_sort, "seq");
-        let par = timed_sort(args.flag_size, merge_sort, "par");
-        let speedup = seq as f64 / par as f64;
-        println!("speedup: {:.2}x", speedup);
-    }
-}
-
-#[cfg(test)]
 mod bench;
+pub use self::bench::*;

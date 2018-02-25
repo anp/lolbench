@@ -176,84 +176,94 @@ mod util {
 
 macro_rules! make_bench {
     ($generate:ident, $check:ident) => {
-        #[bench]
-        fn with_collect(b: &mut ::test::Bencher) {
-            use map_collect::util;
-            let mut map = None;
-            b.iter(|| map = Some(util::collect($generate())));
-            $check(&map.unwrap());
+        wrap_libtest! {
+            fn with_collect(b: &mut Bencher) {
+                use map_collect::util;
+                let mut map = None;
+                b.iter(|| map = Some(util::collect($generate())));
+                $check(&map.unwrap());
+            }
         }
 
-        #[bench]
-        fn with_mutex(b: &mut ::test::Bencher) {
-            use map_collect::util;
-            let mut map = None;
-            b.iter(|| map = Some(util::mutex($generate())));
-            $check(&map.unwrap());
+        wrap_libtest! {
+            fn with_mutex(b: &mut Bencher) {
+                use map_collect::util;
+                let mut map = None;
+                b.iter(|| map = Some(util::mutex($generate())));
+                $check(&map.unwrap());
+            }
         }
 
-        #[bench]
-        fn with_mutex_vec(b: &mut ::test::Bencher) {
-            use map_collect::util;
-            let mut map = None;
-            b.iter(|| map = Some(util::mutex_vec($generate())));
-            $check(&map.unwrap());
+        wrap_libtest! {
+            fn with_mutex_vec(b: &mut Bencher) {
+                use map_collect::util;
+                let mut map = None;
+                b.iter(|| map = Some(util::mutex_vec($generate())));
+                $check(&map.unwrap());
+            }
         }
 
-        #[bench]
-        fn with_linked_list_collect(b: &mut ::test::Bencher) {
-            use map_collect::util;
-            let mut map = None;
-            b.iter(|| map = Some(util::linked_list_collect($generate())));
-            $check(&map.unwrap());
+        wrap_libtest! {
+            fn with_linked_list_collect(b: &mut Bencher) {
+                use map_collect::util;
+                let mut map = None;
+                b.iter(|| map = Some(util::linked_list_collect($generate())));
+                $check(&map.unwrap());
+            }
         }
 
-        #[bench]
-        fn with_linked_list_collect_vec(b: &mut ::test::Bencher) {
-            use map_collect::util;
-            let mut map = None;
-            b.iter(|| map = Some(util::linked_list_collect_vec($generate())));
-            $check(&map.unwrap());
+        wrap_libtest! {
+            fn with_linked_list_collect_vec(b: &mut Bencher) {
+                use map_collect::util;
+                let mut map = None;
+                b.iter(|| map = Some(util::linked_list_collect_vec($generate())));
+                $check(&map.unwrap());
+            }
         }
 
-        #[bench]
-        fn with_linked_list_collect_vec_sized(b: &mut ::test::Bencher) {
-            use map_collect::util;
-            let mut map = None;
-            b.iter(|| map = Some(util::linked_list_collect_vec_sized($generate())));
-            $check(&map.unwrap());
+        wrap_libtest! {
+            fn with_linked_list_collect_vec_sized(b: &mut Bencher) {
+                use map_collect::util;
+                let mut map = None;
+                b.iter(|| map = Some(util::linked_list_collect_vec_sized($generate())));
+                $check(&map.unwrap());
+            }
         }
 
-        #[bench]
-        fn with_linked_list_map_reduce_vec_sized(b: &mut ::test::Bencher) {
-            use map_collect::util;
-            let mut map = None;
-            b.iter(|| map = Some(util::linked_list_map_reduce_vec_sized($generate())));
-            $check(&map.unwrap());
+        wrap_libtest! {
+            fn with_linked_list_map_reduce_vec_sized(b: &mut Bencher) {
+                use map_collect::util;
+                let mut map = None;
+                b.iter(|| map = Some(util::linked_list_map_reduce_vec_sized($generate())));
+                $check(&map.unwrap());
+            }
         }
 
-        #[bench]
-        fn with_vec_vec_sized(b: &mut ::test::Bencher) {
-            use map_collect::util;
-            let mut map = None;
-            b.iter(|| map = Some(util::vec_vec_sized($generate())));
-            $check(&map.unwrap());
+        wrap_libtest! {
+            fn with_vec_vec_sized(b: &mut Bencher) {
+                use map_collect::util;
+                let mut map = None;
+                b.iter(|| map = Some(util::vec_vec_sized($generate())));
+                $check(&map.unwrap());
+            }
         }
 
-        #[bench]
-        fn with_fold(b: &mut ::test::Bencher) {
-            use map_collect::util;
-            let mut map = None;
-            b.iter(|| map = Some(util::fold($generate())));
-            $check(&map.unwrap());
+        wrap_libtest! {
+            fn with_fold(b: &mut Bencher) {
+                use map_collect::util;
+                let mut map = None;
+                b.iter(|| map = Some(util::fold($generate())));
+                $check(&map.unwrap());
+            }
         }
 
-        #[bench]
-        fn with_fold_vec(b: &mut ::test::Bencher) {
-            use map_collect::util;
-            let mut map = None;
-            b.iter(|| map = Some(util::fold_vec($generate())));
-            $check(&map.unwrap());
+        wrap_libtest! {
+            fn with_fold_vec(b: &mut Bencher) {
+                use map_collect::util;
+                let mut map = None;
+                b.iter(|| map = Some(util::fold_vec($generate())));
+                $check(&map.unwrap());
+            }
         }
     }
 }
@@ -261,13 +271,18 @@ macro_rules! make_bench {
 /// Tests a big map mapping `i -> i` forall i in 0 to N. This map is
 /// interesting because it has no conflicts, so each parallel
 /// iteration adds a distinct entry into the map.
-mod i_to_i {
+pub mod i_to_i {
+    use rayon;
     use rayon::prelude::*;
     use std::collections::HashMap;
 
     const N: u32 = 256 * 1024;
 
-    fn generate() -> impl ParallelIterator<Item=(u32, u32)> {
+    //fn generate() -> impl ParallelIterator<Item=(u32, u32)> {
+    fn generate() -> rayon::iter::Map<
+        rayon::range::Iter<u32>,
+        fn(u32) -> (u32, u32)
+    > {
         (0_u32..N)
             .into_par_iter()
             .map(|i| (i, i))
@@ -286,13 +301,17 @@ mod i_to_i {
 /// Tests a big map mapping `i % 10 -> i` forall i in 0 to N. This map
 /// is interesting because it has lots of conflicts, so parallel
 /// iterations sometimes overwrite entries.
-mod i_mod_10_to_i {
+pub mod i_mod_10_to_i {
+    use rayon;
     use rayon::prelude::*;
     use std::collections::HashMap;
 
     const N: u32 = 256 * 1024;
 
-    fn generate() -> impl ParallelIterator<Item=(u32, u32)> {
+    fn generate() -> rayon::iter::Map<
+        rayon::range::Iter<u32>,
+        fn(u32) -> (u32, u32)
+    > {
         (0_u32..N)
             .into_par_iter()
             .map(|i| (i % 10, i))

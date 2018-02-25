@@ -1,28 +1,12 @@
-const USAGE: &'static str = "
-Usage: life bench [--size N] [--gens N]
-       life --help
-Conway's Game of Life.
-
-Commands:
-    bench           Run the benchmark in different modes and print the timings.
-Options:
-    --size N        Size of the game board (N x N) [default: 200]
-    --gens N        Simulate N generations [default: 100]
-    -h, --help      Show this message.
-";
-
-
 use rand::{thread_rng, Rng};
 use std::iter::repeat;
 use std::num::Wrapping;
 use std::sync::Arc;
 use time;
 
-use docopt::Docopt;
 use rayon::prelude::*;
 
-#[cfg(test)]
-mod bench;
+pub mod bench;
 
 #[derive(Deserialize)]
 pub struct Args {
@@ -153,20 +137,4 @@ fn measure(f: fn(Board, usize) -> (), args: &Args) -> u64 {
     f(brd, gens);
 
     time::precise_time_ns() - start
-}
-
-pub fn main(args: &[String]) {
-    let args: Args =
-        Docopt::new(USAGE)
-            .and_then(|d| d.argv(args).deserialize())
-            .unwrap_or_else(|e| e.exit());
-
-    if args.cmd_bench {
-        let serial = measure(generations, &args);
-        println!("  serial: {:10} ns", serial);
-
-        let parallel = measure(parallel_generations, &args);
-        println!("parallel: {:10} ns -> {:.2}x speedup", parallel,
-                 serial as f64 / parallel as f64);
-    }
 }

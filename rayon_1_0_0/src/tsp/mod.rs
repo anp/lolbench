@@ -3,14 +3,15 @@
 //! Based on code developed at ETH by Christoph von Praun, Florian
 //! Schneider, Nicholas Matsakis, and Thomas Gross.
 
-use docopt::Docopt;
+
 use std::error::Error;
 use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
 use std::time::Instant;
 
-#[cfg(test)] mod bench;
+mod bench;
+pub use self::bench::*;
 mod graph;
 mod tour;
 mod step;
@@ -20,45 +21,6 @@ mod weight;
 
 use self::graph::{Graph, Node};
 use self::solver::SolverCx;
-
-const USAGE: &'static str = "
-Usage: tsp bench [--seq-threshold N] [--from N] <datafile>
-
-Parallel traveling salesman problem solver. Data input is expected to
-be in TSPLIB format.
-
-Suggested command:
-    cargo run --release -- tsp bench data/tsp/dj15.tsp --seq-threshold 8
-
-Commands:
-    bench              Run the benchmark and print the timings.
-
-Options:
-    -h, --help         Show this message.
-    --seq-threshold N  Adjust sequential fallback threshold [default: 10].
-                       Fall back to seq search when there are N or fewer nodes remaining.
-                       Lower values of N mean more parallelism.
-    --from N           Node index from which to start the search [default: 0].
-";
-
-#[derive(Deserialize)]
-pub struct Args {
-    cmd_bench: bool,
-    arg_datafile: String,
-    flag_seq_threshold: usize,
-    flag_from: usize,
-}
-
-pub fn main(args: &[String]) {
-    let args: Args =
-        Docopt::new(USAGE)
-            .and_then(|d| d.argv(args).deserialize())
-            .unwrap_or_else(|e| e.exit());
-
-    if args.cmd_bench {
-        let _ = run_solver(Path::new(&args.arg_datafile), args.flag_seq_threshold, args.flag_from);
-    }
-}
 
 fn run_solver(datafile: &Path, seq_threshold: usize, from: usize) -> Result<(), ()> {
     let graph = match parse_solver(datafile) {

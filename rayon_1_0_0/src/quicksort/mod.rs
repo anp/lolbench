@@ -1,20 +1,5 @@
 #![allow(non_camel_case_types)]
 
-const USAGE: &'static str = "
-Usage: quicksort bench [options]
-       quicksort --help
-
-Parallel quicksort. Only the main recursive step is parallelized.
-
-Commands:
-    bench              Run the benchmark in different modes and print the timings.
-
-Options:
-    --size N           Number of 32-bit words to sort [default: 250000000] (1GB)
-    --par-only         Skip the sequential sort.
-    -h, --help         Show this message.
-";
-
 #[derive(Deserialize)]
 pub struct Args {
     cmd_bench: bool,
@@ -22,7 +7,7 @@ pub struct Args {
     flag_par_only: bool,
 }
 
-use docopt::Docopt;
+
 use rand::{Rng, SeedableRng, XorShiftRng};
 use rayon;
 use std::time::Instant;
@@ -118,23 +103,5 @@ fn timed_sort<F: FnOnce(&mut [u32])>(n: usize, f: F, name: &str) -> u64 {
     return nanos
 }
 
-pub fn main(args: &[String]) {
-    let args: Args =
-        Docopt::new(USAGE)
-            .and_then(|d| d.argv(args).deserialize())
-            .unwrap_or_else(|e| e.exit());
-
-    if args.cmd_bench {
-        if args.flag_par_only {
-            timed_sort(args.flag_size, quick_sort::<Parallel, u32>, "par");
-        } else {
-            let seq = timed_sort(args.flag_size, quick_sort::<Sequential, u32>, "seq");
-            let par = timed_sort(args.flag_size, quick_sort::<Parallel, u32>, "par");
-            let speedup = seq as f64 / par as f64;
-            println!("speedup: {:.2}x", speedup);
-        }
-    }
-}
-
-#[cfg(test)]
 mod bench;
+pub use self::bench::*;

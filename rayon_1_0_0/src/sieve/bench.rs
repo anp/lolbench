@@ -1,10 +1,10 @@
-use test;
+use criterion::Bencher;
 
 use super::NUM_PRIMES;
 
 const MAGNITUDE: usize = 7;
 
-fn sieve_bench<TICK>(b: &mut test::Bencher, mut tick: TICK)
+fn sieve_bench<TICK>(b: &mut Bencher, mut tick: TICK)
     where TICK: FnMut(usize) -> Vec<bool>
 {
     let mut result = vec![];
@@ -13,17 +13,20 @@ fn sieve_bench<TICK>(b: &mut test::Bencher, mut tick: TICK)
     assert_eq!(num_primes, NUM_PRIMES[MAGNITUDE]);
 }
 
-#[bench]
-fn sieve_serial(b: &mut ::test::Bencher) {
-    sieve_bench(b, super::sieve_serial);
+wrap_libtest! {
+    fn sieve_serial(b: &mut Bencher) {
+        sieve_bench(b, super::sieve_serial);
+    }
 }
 
-#[bench]
-fn sieve_chunks(b: &mut ::test::Bencher) {
-    sieve_bench(b, super::sieve_chunks);
+wrap_libtest! {
+    fn sieve_chunks(b: &mut Bencher) {
+        sieve_bench(b, super::sieve_chunks);
+    }
 }
 
-#[bench]
-fn sieve_parallel(b: &mut ::test::Bencher) {
-    sieve_bench(b, super::sieve_parallel);
+wrap_libtest! {
+    fn sieve_parallel(b: &mut Bencher) {
+        sieve_bench(b, super::sieve_parallel);
+    }
 }
