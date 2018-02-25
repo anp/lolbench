@@ -1,5 +1,6 @@
 use fixedbitset::FixedBitSet;
 use std::iter;
+use std::ops::Range;
 
 use super::weight::Weight;
 
@@ -24,7 +25,7 @@ impl Graph {
         self.num_nodes
     }
 
-    pub fn all_nodes(&self) -> impl Iterator<Item=Node> {
+    pub fn all_nodes(&self) -> iter::Map<Range<usize>, fn(usize) -> Node> {
         (0..self.num_nodes).map(Node::new)
     }
 
@@ -47,13 +48,26 @@ impl Graph {
         if w.is_max() { None } else { Some(w) }
     }
 
-    pub fn edges<'a>(&'a self, source: Node) -> impl Iterator<Item=Edge> + 'a {
-        self.all_nodes()
-            .filter_map(move |target| {
-                self.edge_weight(source, target)
+    pub fn edges<'a>(&'a self, source: Node) -> Edges<'a> {
+        Edges { graph: self, source: source, nodes_iter: self.all_nodes() }
+    }
+}
+
+pub struct Edges<'graph> {
+    graph: &'graph Graph,
+    source: Node,
+    nodes_iter: iter::Map<Range<usize>, fn(usize) -> Node>,
+}
+
+impl<'graph> Iterator for Edges<'graph> {
+    type Item = Edge;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.nodes_iter.next().and_then(move |target| {
+                self.graph.edge_weight(self.source, target)
                     .map(|weight| {
                         Edge {
-                            source: source,
+                            source: self.source,
                             target: target,
                             weight: weight,
                         }
