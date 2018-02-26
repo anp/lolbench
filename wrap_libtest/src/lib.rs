@@ -12,4 +12,18 @@ macro_rules! wrap_libtest {
             );
         }
     };
+    (fn $name:ident($bencher:ident: &mut test::Bencher) $body:block ) => {
+        wrap_libtest! {
+            fn $name($bencher: &mut Bencher) {
+                $body
+            }
+        }
+    };
+    (fn $name:ident($bencher:ident: &mut ::test::Bencher) $body:block ) => {
+        wrap_libtest! {
+            fn $name($bencher: &mut Bencher) {
+                $body
+            }
+        }
+    };
 }

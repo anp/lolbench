@@ -6,6 +6,7 @@ extern crate diesel_1_1_1;
 extern crate doom_9e197d7;
 extern crate inflate_0_3_4;
 extern crate json_benchmark_c7d3d9b;
+extern crate nom_4_0_0_beta1;
 extern crate rayon_1_0_0;
 extern crate raytrace_8de9020;
 extern crate snap_0_2_4;
@@ -57,6 +58,16 @@ criterion_group!(
     json_benchmark_c7d3d9b::serialize_citm_struct,
     json_benchmark_c7d3d9b::serialize_twitter_dom,
     json_benchmark_c7d3d9b::serialize_twitter_struct
+);
+
+criterion_group!(
+    nom_4_0_0_beta1,
+    nom_4_0_0_beta1::arithmetic::arithmetic,
+    nom_4_0_0_beta1::http::one_test,
+    nom_4_0_0_beta1::ini_str::bench_ini_str,
+    //nom_4_0_0_beta1::ini::bench_ini,
+    nom_4_0_0_beta1::ini::bench_ini_keys_and_values,
+    nom_4_0_0_beta1::ini::bench_ini_key_value
 );
 
 criterion_group!(
@@ -207,6 +218,7 @@ criterion_group!(
 );
 
 criterion_main!(
+    nom_4_0_0_beta1,
     diesel_1_1_1,
     json_benchmark_c7d3d9b,
     rayon_1_0_0
