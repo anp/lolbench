@@ -16,4 +16,4 @@ regex = "0.2.6"
 regex-syntax = "0.4.0"
 serde = "1"
 serde_derive = "1"
-wrap_libtest = { path = "../wrap_libtest" }
+wrap_libtest = { path = "../../wrap_libtest" }

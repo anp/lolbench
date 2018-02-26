@@ -5,18 +5,21 @@ authors = ["Adam Perry <adam.n.perry@gmail.com>"]
 
 [dependencies]
 criterion = "0.2.0"
-crossbeam_epoch_0_4_0 = { path = "crossbeam_epoch_0_4_0" }
-diesel_1_1_1 = { path = "diesel_1_1_1" }
-doom_9e197d7 = { path = "doom_9e197d7" }
-inflate_0_3_4 = { path = "inflate_0_3_4" }
-json_benchmark_c7d3d9b = { path = "json_benchmark_c7d3d9b" }
-nom_4_0_0_beta1 = { path = "nom_4_0_0_beta1" }
-rayon_1_0_0 = { path = "rayon_1_0_0" }
-raytrace_8de9020 = { path = "raytrace_8de9020" }
-regex_0_2_6 = { path = "regex_0_2_6" }
-snap_0_2_4 = { path = "snap_0_2_4" }
+
+crossbeam_epoch_0_4_0 = { path = "benches/crossbeam_epoch_0_4_0" }
+diesel_1_1_1 = { path = "benches/diesel_1_1_1" }
+doom_9e197d7 = { path = "benches/doom_9e197d7" }
+inflate_0_3_4 = { path = "benches/inflate_0_3_4" }
+json_benchmark_c7d3d9b = { path = "benches/json_benchmark_c7d3d9b" }
+nom_4_0_0_beta1 = { path = "benches/nom_4_0_0_beta1" }
+rayon_1_0_0 = { path = "benches/rayon_1_0_0" }
+raytrace_8de9020 = { path = "benches/raytrace_8de9020" }
+regex_0_2_6 = { path = "benches/regex_0_2_6" }
+snap_0_2_4 = { path = "benches/snap_0_2_4" }
 
 [[bench]]
 name = "lolbench"
 harness = false
 path = "src/main.rs"
+
+[workspace]

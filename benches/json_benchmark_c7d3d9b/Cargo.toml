@@ -11,7 +11,7 @@ serde = "1.0.27"
 serde_derive = "1.0.27"
 serde_json = "1.0.9"
 time = "0.1.39"
-wrap_libtest = { path = "../wrap_libtest" }
+wrap_libtest = { path = "../../wrap_libtest" }
 
 [features]
 default = ["performance", "all-libs", "all-files"]

@@ -7,4 +7,4 @@ authors = ["Adam Perry <adam.n.perry@gmail.com>"]
 criterion = "*"
 diesel = { version = "1.1.1", features = ["sqlite"] }
 diesel_migrations = "1.1.0"
-wrap_libtest = { path = "../wrap_libtest" }
+wrap_libtest = { path = "../../wrap_libtest" }

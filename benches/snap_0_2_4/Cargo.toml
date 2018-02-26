@@ -7,4 +7,4 @@ authors = ["Adam Perry <adam.n.perry@gmail.com>"]
 criterion = "*"
 lazy_static = "0.1"
 snap = "0.2.4"
-wrap_libtest = { path = "../wrap_libtest" }
+wrap_libtest = { path = "../../wrap_libtest" }

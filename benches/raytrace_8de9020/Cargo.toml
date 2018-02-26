@@ -7,4 +7,4 @@ authors = ["Jason Orendorff <jason.orendorff@gmail.com>"]
 criterion = "*"
 rand = "0.4.2"
 lodepng = "0.5.1"
-wrap_libtest = { path = "../wrap_libtest" }
+wrap_libtest = { path = "../../wrap_libtest" }

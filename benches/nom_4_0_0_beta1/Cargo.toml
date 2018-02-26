@@ -6,4 +6,4 @@ authors = ["Adam Perry <adam.n.perry@gmail.com>"]
 [dependencies]
 criterion = "*"
 nom = "4.0.0-beta1"
-wrap_libtest = { path = "../wrap_libtest" }
+wrap_libtest = { path = "../../wrap_libtest" }
