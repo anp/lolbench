@@ -8,6 +8,7 @@ extern crate doom_9e197d7;
 extern crate inflate_0_3_4;
 extern crate json_benchmark_c7d3d9b;
 extern crate nom_4_0_0_beta1;
+extern crate quickcheck_0_6_1;
 extern crate rayon_1_0_0;
 extern crate raytrace_8de9020;
 extern crate regex_0_2_6;
@@ -83,6 +84,58 @@ criterion_group!(
     //nom_4_0_0_beta1::ini::bench_ini,
     nom_4_0_0_beta1::ini::bench_ini_keys_and_values,
     nom_4_0_0_beta1::ini::bench_ini_key_value
+);
+
+criterion_group!(
+    quickcheck_0_6_1,
+    quickcheck_0_6_1::shrink_string_1_tuple,
+    quickcheck_0_6_1::shrink_string_2_tuple,
+    quickcheck_0_6_1::shrink_string_3_tuple,
+    quickcheck_0_6_1::shrink_string_4_tuple,
+    quickcheck_0_6_1::shrink_string_5_tuple,
+    quickcheck_0_6_1::shrink_string_6_tuple,
+    quickcheck_0_6_1::shrink_string_7_tuple,
+    quickcheck_0_6_1::shrink_string_8_tuple,
+    quickcheck_0_6_1::shrink_vec_u8_1_tuple,
+    quickcheck_0_6_1::shrink_vec_u8_2_tuple,
+    quickcheck_0_6_1::shrink_vec_u8_3_tuple,
+    quickcheck_0_6_1::shrink_vec_u8_4_tuple,
+    quickcheck_0_6_1::shrink_vec_u8_5_tuple,
+    quickcheck_0_6_1::shrink_vec_u8_6_tuple,
+    quickcheck_0_6_1::shrink_vec_u8_7_tuple,
+    quickcheck_0_6_1::shrink_vec_u8_8_tuple,
+    quickcheck_0_6_1::shrink_u64_1_tuple,
+    quickcheck_0_6_1::shrink_u64_2_tuple,
+    quickcheck_0_6_1::shrink_u64_3_tuple,
+    quickcheck_0_6_1::shrink_u64_4_tuple,
+    quickcheck_0_6_1::shrink_u64_5_tuple,
+    quickcheck_0_6_1::shrink_u64_6_tuple,
+    quickcheck_0_6_1::shrink_u64_7_tuple,
+    quickcheck_0_6_1::shrink_u64_8_tuple,
+    quickcheck_0_6_1::shrink_i64_1_tuple,
+    quickcheck_0_6_1::shrink_i64_2_tuple,
+    quickcheck_0_6_1::shrink_i64_3_tuple,
+    quickcheck_0_6_1::shrink_i64_4_tuple,
+    quickcheck_0_6_1::shrink_i64_5_tuple,
+    quickcheck_0_6_1::shrink_i64_6_tuple,
+    quickcheck_0_6_1::shrink_i64_7_tuple,
+    quickcheck_0_6_1::shrink_i64_8_tuple,
+    quickcheck_0_6_1::shrink_f64_1_tuple,
+    quickcheck_0_6_1::shrink_f64_2_tuple,
+    quickcheck_0_6_1::shrink_f64_3_tuple,
+    quickcheck_0_6_1::shrink_f64_4_tuple,
+    quickcheck_0_6_1::shrink_f64_5_tuple,
+    quickcheck_0_6_1::shrink_f64_6_tuple,
+    quickcheck_0_6_1::shrink_f64_7_tuple,
+    quickcheck_0_6_1::shrink_f64_8_tuple,
+    quickcheck_0_6_1::shrink_unit_1_tuple,
+    quickcheck_0_6_1::shrink_unit_2_tuple,
+    quickcheck_0_6_1::shrink_unit_3_tuple,
+    quickcheck_0_6_1::shrink_unit_4_tuple,
+    quickcheck_0_6_1::shrink_unit_5_tuple,
+    quickcheck_0_6_1::shrink_unit_6_tuple,
+    quickcheck_0_6_1::shrink_unit_7_tuple,
+    quickcheck_0_6_1::shrink_unit_8_tuple
 );
 
 criterion_group!(
@@ -356,6 +409,7 @@ criterion_group!(
 );
 
 criterion_main!(
+    quickcheck_0_6_1,
     regex_0_2_6,
     crossbeam_epoch_0_4_0,
     nom_4_0_0_beta1,

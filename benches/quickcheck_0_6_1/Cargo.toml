@@ -1,0 +1,10 @@
+[package]
+name = "quickcheck_0_6_1"
+version = "0.1.0"
+authors = ["Adam Perry <adam.n.perry@gmail.com>"]
+
+[dependencies]
+criterion = "*"
+quickcheck = "0.6.1"
+rand = "0.4.2"
+wrap_libtest = { path = "../../wrap_libtest" }

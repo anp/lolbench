@@ -12,6 +12,7 @@ doom_9e197d7 = { path = "benches/doom_9e197d7" }
 inflate_0_3_4 = { path = "benches/inflate_0_3_4" }
 json_benchmark_c7d3d9b = { path = "benches/json_benchmark_c7d3d9b" }
 nom_4_0_0_beta1 = { path = "benches/nom_4_0_0_beta1" }
+quickcheck_0_6_1 = { path = "benches/quickcheck_0_6_1" }
 rayon_1_0_0 = { path = "benches/rayon_1_0_0" }
 raytrace_8de9020 = { path = "benches/raytrace_8de9020" }
 regex_0_2_6 = { path = "benches/regex_0_2_6" }
