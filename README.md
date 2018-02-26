@@ -32,7 +32,7 @@ wrap_libtest = { path = "../../wrap_libtest" }
 inflate_0_3_4 = { path = "./inflate_0_3_4" }
 ```
 
-4. Create benchmark functions in `subcrate/lib.rs`. If you're porting from the libtest bench harness to criterion, the [criterion user guide](https://japaric.github.io/criterion.rs/book/criterion_rs.html) is a good place to start. Example from inflate:
+4. Create benchmark functions in `subcrate/lib.rs`. If you're porting from the libtest bench harness to criterion, the [criterion user guide](https://japaric.github.io/criterion.rs/book/criterion_rs.html) is a good place to start. A convenience macro is provided that will wrap an existing cargo benchmark in a criterion bench runner: `wrap_libtest!`. See the below example from inflate for usage:
 
 ```rs
 extern crate criterion;
@@ -49,6 +49,11 @@ wrap_libtest!
     }
 }
 ```
+
+There are two important modifications you'll have to make to a cargo benchmark:
+
+* remove the `#[bench]` directive
+* ensure that any calls to `test::black_box` are called as just `black_box` (no module path). The wrapper macro will handle importing the equivalent criterion API that will work on any stable/beta/nightly compiler.
 
 5. In `src/main.rs`, import the subcrate:
 
