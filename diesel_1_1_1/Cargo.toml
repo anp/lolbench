@@ -1,0 +1,10 @@
+[package]
+name = "diesel_1_1_1"
+version = "0.1.0"
+authors = ["Adam Perry <adam.n.perry@gmail.com>"]
+
+[dependencies]
+criterion = "*"
+diesel = { version = "1.1.1", features = ["sqlite"] }
+diesel_migrations = "1.1.0"
+wrap_libtest = { path = "../wrap_libtest" }

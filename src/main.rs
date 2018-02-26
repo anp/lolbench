@@ -2,12 +2,38 @@
 extern crate criterion;
 use criterion::Criterion;
 
+extern crate diesel_1_1_1;
 extern crate doom_9e197d7;
 extern crate inflate_0_3_4;
 extern crate json_benchmark_c7d3d9b;
 extern crate rayon_1_0_0;
 extern crate raytrace_8de9020;
 extern crate snap_0_2_4;
+
+criterion_group!(
+    diesel_1_1_1,
+    diesel_1_1_1::bench_trivial_query_selecting______1_row,
+    diesel_1_1_1::bench_trivial_query_selecting______1_row_boxed,
+    diesel_1_1_1::bench_trivial_query_selecting_____10_rows,
+    diesel_1_1_1::bench_trivial_query_selecting_____10_rows_boxed,
+    diesel_1_1_1::bench_trivial_query_selecting____100_rows,
+    diesel_1_1_1::bench_trivial_query_selecting____100_rows_boxed,
+    diesel_1_1_1::bench_trivial_query_selecting__1_000_rows,
+    diesel_1_1_1::bench_trivial_query_selecting__1_000_rows_boxed,
+    diesel_1_1_1::bench_trivial_query_selecting_10_000_rows,
+    diesel_1_1_1::bench_trivial_query_selecting_10_000_rows_boxed,
+    diesel_1_1_1::bench_medium_complex_query_selecting______1_row,
+    diesel_1_1_1::bench_medium_complex_query_selecting______1_row_boxed,
+    diesel_1_1_1::bench_medium_complex_query_selecting_____10_rows,
+    diesel_1_1_1::bench_medium_complex_query_selecting_____10_rows_boxed,
+    diesel_1_1_1::bench_medium_complex_query_selecting____100_rows,
+    diesel_1_1_1::bench_medium_complex_query_selecting____100_rows_boxed,
+    diesel_1_1_1::bench_medium_complex_query_selecting__1_000_rows,
+    diesel_1_1_1::bench_medium_complex_query_selecting__1_000_rows_boxed,
+    diesel_1_1_1::bench_medium_complex_query_selecting_10_000_rows,
+    diesel_1_1_1::bench_medium_complex_query_selecting_10_000_rows_boxed,
+    diesel_1_1_1::loading_associations_sequentially
+);
 
 criterion_group!(
     doom_9e197d7,
@@ -181,6 +207,7 @@ criterion_group!(
 );
 
 criterion_main!(
+    diesel_1_1_1,
     json_benchmark_c7d3d9b,
     rayon_1_0_0
     // doom_9e197d7,

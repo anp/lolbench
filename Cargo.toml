@@ -5,6 +5,7 @@ authors = ["Adam Perry <adam.n.perry@gmail.com>"]
 
 [dependencies]
 criterion = "0.2.0"
+diesel_1_1_1 = { path = "diesel_1_1_1" }
 doom_9e197d7 = { path = "doom_9e197d7" }
 inflate_0_3_4 = { path = "inflate_0_3_4" }
 json_benchmark_c7d3d9b = { path = "json_benchmark_c7d3d9b" }
