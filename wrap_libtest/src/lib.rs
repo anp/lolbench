@@ -5,7 +5,7 @@ macro_rules! wrap_libtest {
             #[allow(unused_imports)]
             use ::criterion::black_box;
             c.bench_function(
-                concat!(env!("CARGO_PKG_NAME"), "_", stringify!($name)),
+                concat!(module_path!(), "::", stringify!($name)),
                 |$bencher| {
                     $body
                 }
