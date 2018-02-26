@@ -1,0 +1,10 @@
+[package]
+name = "crossbeam_epoch_0_4_0"
+version = "0.1.0"
+authors = ["Adam Perry <adam.n.perry@gmail.com>"]
+
+[dependencies]
+criterion = "*"
+crossbeam-epoch = "0.4.0"
+crossbeam-utils = "0.2.2"
+wrap_libtest = { path = "../wrap_libtest" }

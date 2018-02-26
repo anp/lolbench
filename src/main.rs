@@ -2,6 +2,7 @@
 extern crate criterion;
 use criterion::Criterion;
 
+extern crate crossbeam_epoch_0_4_0;
 extern crate diesel_1_1_1;
 extern crate doom_9e197d7;
 extern crate inflate_0_3_4;
@@ -10,6 +11,19 @@ extern crate nom_4_0_0_beta1;
 extern crate rayon_1_0_0;
 extern crate raytrace_8de9020;
 extern crate snap_0_2_4;
+
+criterion_group!(
+    crossbeam_epoch_0_4_0,
+    crossbeam_epoch_0_4_0::defer::single_alloc_defer_free,
+    crossbeam_epoch_0_4_0::defer::single_defer,
+    crossbeam_epoch_0_4_0::defer::multi_alloc_defer_free,
+    crossbeam_epoch_0_4_0::defer::multi_defer,
+    crossbeam_epoch_0_4_0::flush::single_flush,
+    crossbeam_epoch_0_4_0::flush::multi_flush,
+    crossbeam_epoch_0_4_0::pin::single_pin,
+    crossbeam_epoch_0_4_0::pin::single_default_handle_pin,
+    crossbeam_epoch_0_4_0::pin::multi_pin
+);
 
 criterion_group!(
     diesel_1_1_1,
@@ -218,6 +232,7 @@ criterion_group!(
 );
 
 criterion_main!(
+    crossbeam_epoch_0_4_0,
     nom_4_0_0_beta1,
     diesel_1_1_1,
     json_benchmark_c7d3d9b,
