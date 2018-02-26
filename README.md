@@ -23,6 +23,7 @@ authors = ["Adam Perry <adam.n.perry@gmail.com>"]
 # important to allow "any" criterion version because this will be compiled into the parent binary
 criterion = "*"
 inflate = "0.3.4"
+wrap_libtest = { path = "../../wrap_libtest" }
 ```
 
 3. in root Cargo.toml, add path dependency on newly created crate:
@@ -36,14 +37,16 @@ inflate_0_3_4 = { path = "./inflate_0_3_4" }
 ```rs
 extern crate criterion;
 extern crate inflate;
+#[macro_use]
+extern crate wrap_libtest;
 
 use inflate::inflate_bytes;
 
-pub fn decode(c: &mut criterion::Criterion) {
-    c.bench_function(concat!(env!("CARGO_PKG_NAME"), "_decode"), |b| {
+wrap_libtest!
+    fn decode(b: &mut Bencher) {
         let compressed = include_bytes!("./1m_random_deflated");
-        b.iter(|| inflate_bytes(compressed).unwrap())
-    });
+        b.iter(|| inflate_bytes(compressed).unwrap());
+    }
 }
 ```
 
@@ -58,6 +61,8 @@ extern crate inflate_0_3_4;
 ```rs
 criterion_group!(inflate_0_3_4, inflate_0_3_4::decode);
 ```
+
+You can append more benchmark functions after the first.
 
 7. In `src/main.rs`, add your benchmark group to the `criterion_main!` macro:
 
