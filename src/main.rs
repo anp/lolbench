@@ -10,6 +10,7 @@ extern crate json_benchmark_c7d3d9b;
 extern crate nom_4_0_0_beta1;
 extern crate rayon_1_0_0;
 extern crate raytrace_8de9020;
+extern crate regex_0_2_6;
 extern crate snap_0_2_4;
 
 criterion_group!(
