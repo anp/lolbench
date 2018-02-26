@@ -2,6 +2,7 @@
 extern crate criterion;
 use criterion::Criterion;
 
+extern crate brotli_1_1_3;
 extern crate crossbeam_epoch_0_4_0;
 extern crate diesel_1_1_1;
 extern crate doom_9e197d7;
@@ -13,6 +14,15 @@ extern crate rayon_1_0_0;
 extern crate raytrace_8de9020;
 extern crate regex_0_2_6;
 extern crate snap_0_2_4;
+
+criterion_group!(
+    brotli_1_1_3,
+    brotli_1_1_3::bench_e2e_decode_q9_5_1024k,
+    brotli_1_1_3::bench_e2e_decode_q5_1024k,
+    brotli_1_1_3::bench_e2e_rt_q9_5_1024k,
+    brotli_1_1_3::bench_e2e_rt_q9_1024k,
+    brotli_1_1_3::bench_e2e_rt_q5_1024k
+);
 
 criterion_group!(
     crossbeam_epoch_0_4_0,
@@ -409,6 +419,7 @@ criterion_group!(
 );
 
 criterion_main!(
+    brotli_1_1_3,
     quickcheck_0_6_1,
     regex_0_2_6,
     crossbeam_epoch_0_4_0,

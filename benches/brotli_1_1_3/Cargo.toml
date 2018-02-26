@@ -1,0 +1,11 @@
+[package]
+name = "brotli_1_1_3"
+version = "0.1.0"
+authors = ["Adam Perry <adam.n.perry@gmail.com>"]
+
+[dependencies]
+alloc-no-stdlib = "1.2"
+criterion = "*"
+brotli = "1.1.3"
+brotli-decompressor = "1.2.1"
+wrap_libtest = { path = "../../wrap_libtest" }

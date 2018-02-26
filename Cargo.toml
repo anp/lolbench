@@ -6,6 +6,7 @@ authors = ["Adam Perry <adam.n.perry@gmail.com>"]
 [dependencies]
 criterion = "0.2.0"
 
+brotli_1_1_3 = { path = "benches/brotli_1_1_3" }
 crossbeam_epoch_0_4_0 = { path = "benches/crossbeam_epoch_0_4_0" }
 diesel_1_1_1 = { path = "benches/diesel_1_1_1" }
 doom_9e197d7 = { path = "benches/doom_9e197d7" }
