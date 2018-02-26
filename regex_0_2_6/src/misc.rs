@@ -12,21 +12,7 @@
 
 use std::iter::repeat;
 
-use test::Bencher;
-
-use {Regex, Text};
-
-#[cfg(not(feature = "re-onig"))]
-#[cfg(not(feature = "re-pcre1"))]
-#[cfg(not(feature = "re-pcre2"))]
-#[cfg(not(feature = "re-dphobos-dmd-ct"))]
-#[cfg(not(feature = "re-dphobos-ldc-ct"))]
-bench_match!(no_exponential, {
-    format!(
-        "{}{}",
-        repeat("a?").take(100).collect::<String>(),
-        repeat("a").take(100).collect::<String>())
-}, repeat("a").take(100).collect());
+use regex::Regex;
 
 bench_match!(literal, r"y", {
    format!("{}y", repeat("x").take(50).collect::<String>())
@@ -42,12 +28,6 @@ bench_match!(match_class, "[abcdw]", {
 
 bench_match!(match_class_in_range, "[ac]", {
     format!("{}c", repeat("bbbb").take(20).collect::<String>())
-});
-
-#[cfg(not(feature = "re-rust-bytes"))]
-#[cfg(not(feature = "re-tcl"))]
-bench_match!(match_class_unicode, r"\p{L}", {
-    format!("{}a", repeat("☃5☃5").take(20).collect::<String>())
 });
 
 bench_not_match!(anchored_literal_short_non_match, r"^zbc(d|e)", {
@@ -98,12 +78,12 @@ bench_not_match!(reverse_suffix_no_quadratic, r"[r-z].*bcdefghijklmnopq", {
     repeat("bcdefghijklmnopq").take(500).collect::<String>()
 });
 
-#[cfg(feature = "re-rust")]
-#[bench]
-fn replace_all(b: &mut Bencher) {
-    let re = regex!("[cjrw]");
-    let text = "abcdefghijklmnopqrstuvwxyz";
-    b.iter(|| re.replace_all(text, ""));
+wrap_libtest! {
+    fn replace_all(b: &mut Bencher) {
+        let re = regex!("[cjrw]");
+        let text = "abcdefghijklmnopqrstuvwxyz";
+        b.iter(|| re.replace_all(text, ""));
+    }
 }
 
 const TXT_32: &'static str = include_str!("data/32.txt");

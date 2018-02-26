@@ -8,11 +8,6 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use test::Bencher;
-
-use {Regex, Text};
-
-
 // USAGE: sherlock!(name, pattern, count)
 //
 // This is same as bench_find, except it always uses the Sherlock haystack.
@@ -88,34 +83,19 @@ sherlock!(the_whitespace, r"the\s+\w+", 5410);
 
 // How fast can we match everything? This essentially defeats any clever prefix
 // tricks and just executes the DFA across the entire input.
-#[cfg(not(feature = "re-dphobos"))]
-#[cfg(not(feature = "re-pcre1"))]
-#[cfg(not(feature = "re-pcre2"))]
-#[cfg(not(feature = "re-tcl"))]
 sherlock!(everything_greedy, r".*", 13053);
-#[cfg(not(feature = "re-dphobos"))]
-#[cfg(not(feature = "re-onig"))]
-#[cfg(not(feature = "re-pcre1"))]
-#[cfg(not(feature = "re-pcre2"))]
-#[cfg(not(feature = "re-tcl"))]
 sherlock!(everything_greedy_nl, r"(?s).*", 1);
 
 // How fast can we match every letter? This also defeats any clever prefix
 // tricks.
-#[cfg(not(feature = "re-tcl"))]
 sherlock!(letters, r"\p{L}", 447160);
 
-#[cfg(not(feature = "re-tcl"))]
 sherlock!(letters_upper, r"\p{Lu}", 14180);
 
-#[cfg(not(feature = "re-tcl"))]
 sherlock!(letters_lower, r"\p{Ll}", 432980);
 
 // Similarly, for words.
-#[cfg(not(feature = "re-re2"))]
 sherlock!(words, r"\w+", 109214);
-#[cfg(feature = "re-re2")]
-sherlock!(words, r"\w+", 109222); // hmm, why does RE2 diverge here?
 
 // Find complete words before Holmes. The `\w` defeats any prefix
 // optimizations.
@@ -133,10 +113,6 @@ sherlock!(holmes_cochar_watson, r"Holmes.{0,25}Watson|Watson.{0,25}Holmes", 7);
 // Find Holmes co-occuring with Watson in a particular window of words.
 // This uses Aho-Corasick for the Holmes|Watson prefix, but the lazy DFA for
 // the rest.
-#[cfg(not(feature = "re-onig"))]
-#[cfg(not(feature = "re-pcre1"))]
-#[cfg(not(feature = "re-pcre2"))]
-#[cfg(not(feature = "re-tcl"))]
 sherlock!(
     holmes_coword_watson,
     r"Holmes(?:\s*.+\s*){0,10}Watson|Watson(?:\s*.+\s*){0,10}Holmes",
@@ -150,24 +126,16 @@ sherlock!(quotes, r#"["'][^"']{0,30}[?!.]["']"#, 767);
 // Finds all occurrences of Sherlock Holmes at the beginning or end of a line.
 // The empty assertions defeat any detection of prefix literals, so it's the
 // lazy DFA the entire way.
-#[cfg(not(feature = "re-dphobos"))]
 sherlock!(
     line_boundary_sherlock_holmes,
     r"(?m)^Sherlock Holmes|Sherlock Holmes$",
     34);
-// D matches both \r\n and \n as EOL
-#[cfg(feature = "re-dphobos")]
-sherlock!(
-    line_boundary_sherlock_holmes,
-    r"(?m)^Sherlock Holmes|Sherlock Holmes$",
-    37);
 
 // All words ending in `n`. This uses Unicode word boundaries, which the DFA
 // can speculatively handle. Since this benchmark is on mostly ASCII text, it
 // performs well here. A different benchmark with non-Western text would be
 // more revealing since the search would be forced to fall back to an NFA
 // simulation.
-#[cfg(not(feature = "re-tcl"))]
 sherlock!(word_ending_n, r"\b\w+n\b", 8366);
 
 // This is a real bad one for Rust's engine. This particular expression
@@ -180,7 +148,6 @@ sherlock!(word_ending_n, r"\b\w+n\b", 8366);
 //
 // RE2 seems to do a worse job at this than Rust. So much so that it's slow
 // enough to be annoying, so we disable it.
-#[cfg(not(feature = "re-re2"))]
 sherlock!(repeated_class_negation, r"[a-q][^u-z]{13}x", 142);
 
 // This defeats any prefix optimizations but triggers the reverse suffix

@@ -1,5 +1,13 @@
 # lolbench
 
+## SIMD?
+
+Some benchmarks will be more interesting/accurate of real usage with:
+
+```sh
+export RUSTFLAGS="-C target-cpu=native"
+```
+
 ## Adding new benchmarks
 
 1. `cargo new cratename_version`, e.g. `inflate_0_3_4`

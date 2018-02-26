@@ -742,6 +742,7 @@ dependencies = [
  "nom_4_0_0_beta1 0.1.0",
  "rayon_1_0_0 0.0.0",
  "raytrace_8de9020 0.1.0",
+ "regex_0_2_6 0.1.0",
  "snap_0_2_4 0.1.0",
 ]
 
@@ -1102,6 +1103,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 name = "regex-syntax"
 version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "regex_0_2_6"
+version = "0.1.0"
+dependencies = [
+ "criterion 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "lazy_static 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "regex 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "regex-syntax 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde 1.0.27 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde_derive 1.0.27 (registry+https://github.com/rust-lang/crates.io-index)",
+ "wrap_libtest 0.1.0",
+]
 
 [[package]]
 name = "rustc-demangle"

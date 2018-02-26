@@ -8,44 +8,6 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-// Enable the benchmarking harness.
-#![feature(test)]
-
-#[macro_use]
-extern crate lazy_static;
-#[cfg(not(any(feature = "re-rust", feature = "re-rust-bytes")))]
-extern crate libc;
-#[cfg(feature = "re-pcre1")]
-extern crate libpcre_sys;
-#[cfg(feature = "re-onig")]
-extern crate onig;
-#[cfg(any(
-    feature = "re-rust",
-    feature = "re-rust-bytes",
-  ))]
-extern crate regex;
-#[cfg(feature = "re-rust")]
-extern crate regex_syntax;
-extern crate test;
-
-
-#[cfg(feature = "re-onig")]
-pub use ffi::onig::Regex;
-#[cfg(feature = "re-pcre1")]
-pub use ffi::pcre1::Regex;
-#[cfg(feature = "re-pcre2")]
-pub use ffi::pcre2::Regex;
-#[cfg(feature = "re-re2")]
-pub use ffi::re2::Regex;
-#[cfg(feature = "re-dphobos")]
-pub use ffi::d_phobos::Regex;
-#[cfg(feature = "re-rust")]
-pub use regex::Regex;
-#[cfg(feature = "re-rust-bytes")]
-pub use regex::bytes::Regex;
-#[cfg(feature = "re-tcl")]
-pub use ffi::tcl::Regex;
-
 // Usage: regex!(pattern)
 //
 // Builds a ::Regex from a borrowed string.
@@ -54,7 +16,7 @@ pub use ffi::tcl::Regex;
 // defined below. Effectively, it allows us to use the same tests for both
 // native and dynamic regexes.
 macro_rules! regex {
-    ($re:expr) => { ::Regex::new(&$re.to_owned()).unwrap() }
+    ($re:expr) => { ::regex::Regex::new(&$re.to_owned()).unwrap() }
 }
 
 // Usage: text!(haystack)
@@ -70,48 +32,10 @@ macro_rules! regex {
 //
 // The return type should be an owned value that can deref to whatever the
 // regex accepts in its `is_match` and `find_iter` methods.
-#[cfg(feature = "re-tcl")]
-macro_rules! text {
-    ($text:expr) => {{
-        use ffi::tcl::Text;
-        Text::new($text)
-    }}
-}
 
-#[cfg(feature = "re-rust-bytes")]
-macro_rules! text {
-    ($text:expr) => {{
-        let text: String = $text;
-        text.into_bytes()
-    }}
-}
-
-#[cfg(any(
-    feature = "re-onig",
-    feature = "re-pcre1",
-    feature = "re-pcre2",
-    feature = "re-re2",
-    feature = "re-dphobos",
-    feature = "re-rust",
-  ))]
 macro_rules! text {
     ($text:expr) => { $text }
 }
-
-// The type of the value yielded by the `text!` macro defined above.
-#[cfg(feature = "re-tcl")]
-type Text = ffi::tcl::Text;
-#[cfg(feature = "re-rust-bytes")]
-type Text = Vec<u8>;
-#[cfg(any(
-    feature = "re-onig",
-    feature = "re-pcre1",
-    feature = "re-pcre2",
-    feature = "re-re2",
-    feature = "re-dphobos",
-    feature = "re-rust",
-  ))]
-type Text = String;
 
 // Macros for writing benchmarks easily. We provide macros for benchmarking
 // matches, non-matches and for finding all successive non-overlapping matches
@@ -166,33 +90,26 @@ macro_rules! bench_not_match {
 // haystack should be a String.
 macro_rules! bench_is_match {
     ($name:ident, $is_match:expr, $re:expr, $haystack:expr) => {
-        #[bench]
-        fn $name(b: &mut Bencher) {
-            use std::sync::Mutex;
-
-            // Why do we use lazy_static here? It seems sensible to just
-            // compile a regex outside of the b.iter() call and be done with
-            // it. However, it seems like Rust's benchmark harness actually
-            // calls the entire benchmark function multiple times. This doesn't
-            // factor into the timings reported in the benchmarks, but it does
-            // make the benchmarks take substantially longer to run because
-            // they're spending a lot of time recompiling regexes.
-            lazy_static! {
-                static ref RE: Mutex<Regex> = Mutex::new($re);
-                static ref TEXT: Mutex<Text> = Mutex::new(text!($haystack));
-            };
-            let re = RE.lock().unwrap();
-            let text = TEXT.lock().unwrap();
-            b.bytes = text.len() as u64;
-            b.iter(|| {
-                if re.is_match(&text) != $is_match {
-                    if $is_match {
-                        panic!("expected match, got not match");
-                    } else {
-                        panic!("expected no match, got match");
+        wrap_libtest! {
+            fn $name(b: &mut Bencher) {
+                // Why do we use lazy_static here? It seems sensible to just
+                // compile a regex outside of the b.iter() call and be done with
+                // it. However, it seems like Rust's benchmark harness actually
+                // calls the entire benchmark function multiple times. This doesn't
+                // factor into the timings reported in the benchmarks, but it does
+                // make the benchmarks take substantially longer to run because
+                // they're spending a lot of time recompiling regexes.
+                let text = text!($haystack);
+                b.iter(|| {
+                    if $re.is_match(&text) != $is_match {
+                        if $is_match {
+                            panic!("expected match, got not match");
+                        } else {
+                            panic!("expected no match, got match");
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     }
 }
@@ -210,21 +127,15 @@ macro_rules! bench_is_match {
 // haystack should be a String.
 macro_rules! bench_find {
     ($name:ident, $pattern:expr, $count:expr, $haystack:expr) => {
-        #[bench]
-        fn $name(b: &mut Bencher) {
-            use std::sync::Mutex;
-
-            lazy_static! {
-                static ref RE: Mutex<Regex> = Mutex::new(regex!($pattern));
-                static ref TEXT: Mutex<Text> = Mutex::new(text!($haystack));
-            };
-            let re = RE.lock().unwrap();
-            let text = TEXT.lock().unwrap();
-            b.bytes = text.len() as u64;
-            b.iter(|| {
-                let count = re.find_iter(&text).count();
-                assert_eq!($count, count)
-            });
+        wrap_libtest! {
+            fn $name(b: &mut Bencher) {
+                let re = regex!($pattern);
+                let text = text!($haystack);
+                b.iter(|| {
+                    let count = re.find_iter(&text).count();
+                    assert_eq!($count, count)
+                });
+            }
         }
     }
 }
@@ -242,29 +153,17 @@ macro_rules! bench_find {
 macro_rules! bench_captures {
     ($name:ident, $pattern:expr, $count:expr, $haystack:expr) => {
 
-        #[cfg(feature = "re-rust")]
-        #[bench]
-        fn $name(b: &mut Bencher) {
-            use std::sync::Mutex;
-
-            lazy_static! {
-                static ref RE: Mutex<Regex> = Mutex::new($pattern);
-                static ref TEXT: Mutex<Text> = Mutex::new(text!($haystack));
-            };
-            let re = RE.lock().unwrap();
-            let text = TEXT.lock().unwrap();
-            b.bytes = text.len() as u64;
-            b.iter(|| {
-                match re.captures(&text) {
-                    None => assert!(false, "no captures"),
-                    Some(caps) => assert_eq!($count + 1, caps.len()),
-                }
-            });
+        wrap_libtest! {
+            fn $name(b: &mut Bencher) {
+                let re = $pattern;
+                let text = text!($haystack);
+                b.iter(|| {
+                    match re.captures(&text) {
+                        None => assert!(false, "no captures"),
+                        Some(caps) => assert_eq!($count + 1, caps.len()),
+                    }
+                });
+            }
         }
     }
 }
-
-mod ffi;
-mod misc;
-mod regexdna;
-mod sherlock;

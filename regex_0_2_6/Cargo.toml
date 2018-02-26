@@ -1,6 +1,6 @@
 [package]
 publish = false
-name = "regex-benchmark"
+name = "regex_0_2_6"
 version = "0.1.0"
 authors = ["The Rust Project Developers"]
 license = "MIT/Apache-2.0"
@@ -8,56 +8,12 @@ repository = "https://github.com/rust-lang/regex"
 documentation = "https://docs.rs/regex"
 homepage = "https://github.com/rust-lang/regex"
 description = "Regex benchmarks for Rust's and other engines."
-build = "build.rs"
-workspace = ".."
 
 [dependencies]
-docopt = "0.8"
+criterion = "*"
 lazy_static = "1"
-libc = "0.2"
-onig = { version = "3", optional = true }
-libpcre-sys = { version = "0.2", optional = true }
-memmap = "0.6"
-regex = { version = "0.2.0", path = "..", features = ["simd-accel"] }
-regex-syntax = { version = "0.4.0", path = "../regex-syntax" }
+regex = "0.2.6"
+regex-syntax = "0.4.0"
 serde = "1"
 serde_derive = "1"
-
-[build-dependencies]
-cc = "1"
-pkg-config = "0.3.9"
-
-[[bin]]
-name = "regex-run-one"
-path = "src/main.rs"
-bench = false
-
-# Use features to conditionally compile benchmarked regexes, since not every
-# regex works on every engine. Additionally, it is useful to be able to build
-# each benchmark individually, so that not all dependencies are required to
-# run only one benchmark.
-#
-# Note that when running benchmarks, only ONE feature should be set at a time.
-# Doing anything else will probably result in weird "duplicate definition"
-# compiler errors.
-#
-# Tip: use the `bench/run` script (in this directory) to run benchmarks.
-[features]
-re-pcre1 = ["libpcre-sys"]
-re-pcre2 = []
-re-onig = ["onig"]
-re-re2 = []
-re-dphobos = []
-re-dphobos-dmd = ["re-dphobos"]
-re-dphobos-dmd-ct = ["re-dphobos-dmd"]
-re-dphobos-ldc = ["re-dphobos"]
-re-dphobos-ldc-ct = ["re-dphobos-ldc"]
-re-rust = []
-re-rust-bytes = []
-re-tcl = []
-
-[[bench]]
-name = "bench"
-path = "src/bench.rs"
-test = false
-bench = true
+wrap_libtest = { path = "../wrap_libtest" }
