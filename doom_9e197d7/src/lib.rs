@@ -1,4 +1,6 @@
 extern crate criterion;
+#[macro_use]
+extern crate wrap_libtest;
 
 extern crate common;
 extern crate env_logger;
@@ -29,14 +31,14 @@ fn check_wad(wad_file: &str) {
     }
 }
 
-pub fn freedoom1(c: &mut criterion::Criterion) {
-    c.bench_function(concat!(env!("CARGO_PKG_NAME"), "_freedoom1"), |b| {
-        b.iter(|| check_wad(concat!(env!("CARGO_MANIFEST_DIR"), "/freedoom/freedoom1.wad")))
-    });
+wrap_libtest! {
+    fn freedoom1(b: &mut Bencher) {
+        b.iter(|| check_wad(concat!(env!("CARGO_MANIFEST_DIR"), "/freedoom/freedoom1.wad")));
+    }
 }
 
-pub fn freedoom2(c: &mut criterion::Criterion) {
-    c.bench_function(concat!(env!("CARGO_PKG_NAME"), "_freedoom2"), |b| {
+wrap_libtest! {
+    fn freedoom2(b: &mut Bencher) {
         b.iter(|| check_wad(concat!(env!("CARGO_MANIFEST_DIR"), "/freedoom/freedoom2.wad")))
-    });
+    }
 }

@@ -2,6 +2,8 @@
 extern crate criterion;
 extern crate lodepng;
 extern crate rand; // generate random numbers // output PNG image files
+#[macro_use]
+extern crate wrap_libtest;
 
 // Ray-tracer modules
 mod vec; // basic 3D vector math
@@ -85,37 +87,34 @@ fn random_scene(rng: &mut XorShiftRng) -> Box<Model> {
     Box::new(world)
 }
 
-pub fn raytrace_random_scenes(c: &mut criterion::Criterion) {
-    c.bench_function(
-        concat!(env!("CARGO_PKG_NAME"), "_raytrace_random_scenes"),
-        |b| {
-            b.iter(|| {
-                const WIDTH: usize = 50;
-                const HEIGHT: usize = 25;
+wrap_libtest! {
+    fn raytrace_random_scenes(b: &mut Bencher) {
+        b.iter(|| {
+            const WIDTH: usize = 50;
+            const HEIGHT: usize = 25;
 
-                const NSAMPLES: usize = 5;
+            const NSAMPLES: usize = 5;
 
-                let mut rng = XorShiftRng::from_seed([22, 0, 22, 0]);
+            let mut rng = XorShiftRng::from_seed([22, 0, 22, 0]);
 
-                let scene = random_scene(&mut rng);
+            let scene = random_scene(&mut rng);
 
-                let lookfrom = Vec3(20.0 * 0.47f32.cos(), 20.0 * 0.47f32.sin(), 3.0);
-                let lookat = Vec3(0.0, 0.0, 1.0);
-                let vup = Vec3(0.0, 0.0, 1.0);
-                let focus_distance = (lookfrom - lookat).length();
-                let aperture = 0.3;
-                let camera = Camera::new(
-                    lookfrom,
-                    lookat,
-                    vup,
-                    20.0,
-                    WIDTH as f32 / HEIGHT as f32,
-                    aperture,
-                    focus_distance,
-                );
+            let lookfrom = Vec3(20.0 * 0.47f32.cos(), 20.0 * 0.47f32.sin(), 3.0);
+            let lookat = Vec3(0.0, 0.0, 1.0);
+            let vup = Vec3(0.0, 0.0, 1.0);
+            let focus_distance = (lookfrom - lookat).length();
+            let aperture = 0.3;
+            let camera = Camera::new(
+                lookfrom,
+                lookat,
+                vup,
+                20.0,
+                WIDTH as f32 / HEIGHT as f32,
+                aperture,
+                focus_distance,
+            );
 
-                render::render(&mut rng, &*scene, &camera, WIDTH, HEIGHT, NSAMPLES);
-            });
-        },
-    );
+            render::render(&mut rng, &*scene, &camera, WIDTH, HEIGHT, NSAMPLES);
+        });
+    }
 }

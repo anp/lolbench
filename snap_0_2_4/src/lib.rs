@@ -2,14 +2,16 @@ extern crate criterion;
 #[macro_use]
 extern crate lazy_static;
 extern crate snap;
+#[macro_use]
+extern crate wrap_libtest;
 
 macro_rules! compress {
     ($comp:expr, $name:ident, $filename:expr) => {
         compress!($comp, $name, $filename, 0);
     };
     ($comp:expr, $name:ident, $filename:expr, $size:expr) => {
-        pub fn $name(c: &mut ::criterion::Criterion) {
-            c.bench_function(concat!(env!("CARGO_PKG_NAME"), stringify!($name)), |b| {
+        wrap_libtest! {
+            fn $name(b: &mut Bencher) {
                 lazy_static! {
                     static ref SRC: Vec<u8> = {
                         let src =
@@ -25,7 +27,7 @@ macro_rules! compress {
                 b.iter(|| {
                     $comp(SRC.as_slice(), &mut dst).unwrap()
                 });
-            });
+            }
         }
     };
 }
@@ -35,8 +37,8 @@ macro_rules! decompress {
         decompress!($dec, $name, $filename, 0);
     };
     ($dec:expr, $name:ident, $filename:expr, $size:expr) => {
-        pub fn $name(c: &mut ::criterion::Criterion) {
-            c.bench_function(concat!(env!("CARGO_PKG_NAME"), stringify!($name)), |b| {
+        wrap_libtest! {
+            fn $name(b: &mut Bencher) {
                 lazy_static! {
                     static ref SRC: Vec<u8> = {
                         let src =
@@ -56,7 +58,7 @@ macro_rules! decompress {
                 b.iter(|| {
                     $dec(COMPRESSED.as_slice(), &mut dst).unwrap()
                 });
-            });
+            }
         }
     };
 }

@@ -387,6 +387,7 @@ dependencies = [
  "sdl2 0.0.1",
  "time 0.1.39 (registry+https://github.com/rust-lang/crates.io-index)",
  "wad 0.0.1",
+ "wrap_libtest 0.1.0",
 ]
 
 [[package]]
@@ -604,6 +605,7 @@ version = "0.1.0"
 dependencies = [
  "criterion 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "inflate 0.3.4 (registry+https://github.com/rust-lang/crates.io-index)",
+ "wrap_libtest 0.1.0",
 ]
 
 [[package]]
@@ -1055,6 +1057,7 @@ dependencies = [
  "criterion 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "lodepng 0.5.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "rand 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "wrap_libtest 0.1.0",
 ]
 
 [[package]]
@@ -1223,6 +1226,7 @@ dependencies = [
  "criterion 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "lazy_static 0.1.16 (registry+https://github.com/rust-lang/crates.io-index)",
  "snap 0.2.4 (registry+https://github.com/rust-lang/crates.io-index)",
+ "wrap_libtest 0.1.0",
 ]
 
 [[package]]

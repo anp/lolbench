@@ -1,11 +1,13 @@
 extern crate criterion;
 extern crate inflate;
+#[macro_use]
+extern crate wrap_libtest;
 
 use inflate::inflate_bytes;
 
-pub fn decode(c: &mut criterion::Criterion) {
-    c.bench_function(concat!(env!("CARGO_PKG_NAME"), "_decode"), |b| {
+wrap_libtest! {
+    fn decode(b: &mut Bencher) {
         let compressed = include_bytes!("./1m_random_deflated");
-        b.iter(|| inflate_bytes(compressed).unwrap())
-    });
+        b.iter(|| inflate_bytes(compressed).unwrap());
+    }
 }
