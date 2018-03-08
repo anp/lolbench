@@ -427,8 +427,8 @@ criterion_main!(
     diesel_1_1_1,
     json_benchmark_c7d3d9b,
     rayon_1_0_0
-    // doom_9e197d7,
-    // inflate_0_3_4,
-    // raytrace_8de9020,
-    // snap_0_2_4_rust
+    doom_9e197d7,
+    inflate_0_3_4,
+    raytrace_8de9020,
+    snap_0_2_4_rust
 );
