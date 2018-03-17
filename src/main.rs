@@ -426,7 +426,7 @@ criterion_main!(
     nom_4_0_0_beta1,
     diesel_1_1_1,
     json_benchmark_c7d3d9b,
-    rayon_1_0_0
+    rayon_1_0_0,
     doom_9e197d7,
     inflate_0_3_4,
     raytrace_8de9020,
