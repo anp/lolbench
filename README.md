@@ -76,3 +76,12 @@ criterion_main!(inflate_0_3_4);
 ```
 
 8. Run the benchmark suite to ensure everything is being measured correctly
+
+
+## performance on benchmark machine
+
+`pacman -S cpupower`
+`vim /etc/default/cpupower`, set governor='performance'
+
+use any cpu range:
+`taskset -c 4-7 cargo bench`
