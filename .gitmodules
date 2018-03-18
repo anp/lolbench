@@ -1,0 +1,3 @@
+[submodule "criterion"]
+	path = criterion
+	url = https://github.com/anp/criterion.rs
