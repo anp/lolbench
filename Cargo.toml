@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["Adam Perry <adam.n.perry@gmail.com>"]
 
 [dependencies]
+clap = "^2.31.1"
 criterion = { version = "0.2.0", path = "criterion" }
 
 brotli_1_1_3 = { path = "benches/brotli_1_1_3" }
@@ -20,8 +21,8 @@ regex_0_2_6 = { path = "benches/regex_0_2_6" }
 snap_0_2_4 = { path = "benches/snap_0_2_4" }
 
 [[bench]]
-name = "lolbench"
+name = "run_benches"
 harness = false
-path = "src/main.rs"
+path = "src/bin/run_benches.rs"
 
 [workspace]
