@@ -21,5 +21,4 @@ pub mod lights;
 pub mod game;
 pub mod world;
 
-
 pub const SHADER_ROOT: &'static str = concat!(env!("CARGO_MANIFEST_DIR"), "../shaders");

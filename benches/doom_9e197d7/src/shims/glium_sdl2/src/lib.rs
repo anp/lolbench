@@ -1,9 +1,9 @@
 extern crate glium;
 extern crate sdl2;
 
-use sdl2::video::WindowBuilder;
-use sdl2::ErrorMessage;
 use glium::{Frame, GliumCreationError};
+use sdl2::ErrorMessage;
+use sdl2::video::WindowBuilder;
 
 pub struct SDL2Facade;
 

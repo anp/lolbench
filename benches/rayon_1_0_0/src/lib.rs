@@ -18,21 +18,21 @@ pub mod join_microbench;
 pub mod str_split;
 pub mod sort;
 
-extern crate rayon; // all
-extern crate criterion;
-#[macro_use]
-extern crate serde_derive; // all
-extern crate serde; // all
 extern crate cgmath; // nbody
+extern crate criterion;
+extern crate fixedbitset; // tsp
 #[macro_use]
 extern crate glium; // nbody
-extern crate rand; // nbody
-extern crate time; // nbody, sieve
-extern crate odds; // sieve
-extern crate num; // factorial
 #[macro_use]
 extern crate lazy_static; // find
-extern crate fixedbitset; // tsp
-extern crate regex; // tsp
+extern crate num;         // factorial
+extern crate odds;        // sieve
+extern crate rand;        // nbody
+extern crate rayon;       // all
+extern crate regex;       // tsp
+extern crate serde;       // all
+#[macro_use]
+extern crate serde_derive; // all
+extern crate time;        // nbody, sieve
 #[macro_use]
 extern crate wrap_libtest;

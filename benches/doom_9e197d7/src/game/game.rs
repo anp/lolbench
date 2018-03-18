@@ -1,17 +1,17 @@
+use super::SHADER_ROOT;
 use common::GeneralError;
 use ctrl::{GameController, Gesture};
 use gfx::{Scene, SceneBuilder, Window};
+use gfx::TextRenderer;
 use level::Level;
+use math::Vec2f;
 use player::Player;
-use sdl2::keyboard::Scancode;
 use sdl2::{self, Sdl};
+use sdl2::keyboard::Scancode;
 use std::error::Error;
 use std::path::PathBuf;
-use super::SHADER_ROOT;
 use time;
 use wad::{Archive, TextureDirectory};
-use gfx::TextRenderer;
-use math::Vec2f;
 
 pub struct GameConfig {
     pub wad_file: PathBuf,
@@ -21,7 +21,6 @@ pub struct GameConfig {
     pub width: u32,
     pub height: u32,
 }
-
 
 pub struct Game {
     window: Window,
@@ -49,8 +48,8 @@ impl Game {
         let mut player = Player::new(config.fov, window.aspect_ratio() * 1.2, Default::default());
         player.set_position(level.start_pos());
 
-        let control = GameController::new(&sdl,
-                                          try!(sdl.event_pump().map_err(|e| GeneralError(e.0))));
+        let control =
+            GameController::new(&sdl, try!(sdl.event_pump().map_err(|e| GeneralError(e.0))));
 
         let text = try!(TextRenderer::new(&window));
 
@@ -66,13 +65,17 @@ impl Game {
     }
 
     pub fn run(&mut self) -> Result<(), Box<Error>> {
-        let quit_gesture = Gesture::AnyOf(vec![Gesture::QuitTrigger,
-                                               Gesture::KeyTrigger(Scancode::Escape)]);
+        let quit_gesture = Gesture::AnyOf(vec![
+            Gesture::QuitTrigger,
+            Gesture::KeyTrigger(Scancode::Escape),
+        ]);
         let grab_toggle_gesture = Gesture::KeyTrigger(Scancode::Grave);
         let help_gesture = Gesture::KeyTrigger(Scancode::H);
 
-        let short_help = self.text.insert(&self.window, SHORT_HELP, Vec2f::new(0.0, 0.0), 6);
-        let long_help = self.text.insert(&self.window, LONG_HELP, Vec2f::new(0.0, 0.0), 6);
+        let short_help = self.text
+            .insert(&self.window, SHORT_HELP, Vec2f::new(0.0, 0.0), 6);
+        let long_help = self.text
+            .insert(&self.window, LONG_HELP, Vec2f::new(0.0, 0.0), 6);
         self.text[long_help].set_visible(false);
         let mut current_help = 0;
 
@@ -130,17 +133,22 @@ impl Game {
             if cum_time > 2.0 {
                 let fps = num_frames / cum_time;
                 let cpums = 1000.0 * cum_updates_time / num_frames;
-                info!("Frame time: {:.2}ms ({:.2}ms cpu, FPS: {:.2})",
-                      1000.0 / fps,
-                      cpums,
-                      fps);
+                info!(
+                    "Frame time: {:.2}ms ({:.2}ms cpu, FPS: {:.2})",
+                    1000.0 / fps,
+                    cpums,
+                    fps
+                );
                 cum_time = 0.0;
                 cum_updates_time = 0.0;
                 num_frames = 0.0;
             }
 
             // TODO(cristicbz): Re-architect a little bit to support rebuilding the context.
-            frame.finish().ok().expect("Cannot handle context loss currently :(");
+            frame
+                .finish()
+                .ok()
+                .expect("Cannot handle context loss currently :(");
         }
         Ok(())
     }

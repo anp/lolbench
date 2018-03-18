@@ -1,11 +1,11 @@
+use archive::Archive;
+use error::Result;
 use math::Vec2f;
 use std::mem;
 use std::vec::Vec;
-use archive::Archive;
-use types::{WadLinedef, WadSeg, WadSidedef, WadSubsector, WadThing, WadVertex};
 use types::{LightLevel, SectorId, VertexId, WadNode, WadSector};
+use types::{WadLinedef, WadSeg, WadSidedef, WadSubsector, WadThing, WadVertex};
 use util::from_wad_coords;
-use error::Result;
 
 const THINGS_OFFSET: usize = 1;
 const LINEDEFS_OFFSET: usize = 2;
@@ -64,7 +64,9 @@ impl Level {
     }
 
     pub fn vertex(&self, id: VertexId) -> Option<Vec2f> {
-        self.vertices.get(id as usize).map(|v| from_wad_coords(v.x, v.y))
+        self.vertices
+            .get(id as usize)
+            .map(|v| from_wad_coords(v.x, v.y))
     }
 
     pub fn seg_linedef(&self, seg: &WadSeg) -> Option<&WadLinedef> {
@@ -100,11 +102,13 @@ impl Level {
     }
 
     pub fn seg_sector(&self, seg: &WadSeg) -> Option<&WadSector> {
-        self.seg_sidedef(seg).and_then(|side| self.sidedef_sector(side))
+        self.seg_sidedef(seg)
+            .and_then(|side| self.sidedef_sector(side))
     }
 
     pub fn seg_back_sector(&self, seg: &WadSeg) -> Option<&WadSector> {
-        self.seg_back_sidedef(seg).and_then(|side| self.sidedef_sector(side))
+        self.seg_back_sidedef(seg)
+            .and_then(|side| self.sidedef_sector(side))
     }
 
     pub fn left_sidedef(&self, linedef: &WadLinedef) -> Option<&WadSidedef> {
@@ -140,8 +144,8 @@ impl Level {
     }
 
     pub fn sector_id(&self, sector: &WadSector) -> SectorId {
-        let sector_id = (sector as *const _ as usize - self.sectors.as_ptr() as usize) /
-                        mem::size_of::<WadSector>();
+        let sector_id = (sector as *const _ as usize - self.sectors.as_ptr() as usize)
+            / mem::size_of::<WadSector>();
         assert!(sector_id < self.sectors.len());
         sector_id as SectorId
     }

@@ -1,6 +1,6 @@
 use contact::ContactInfo;
 use num::Zero;
-use vector::{Vec3f, Vec2f, Vector};
+use vector::{Vec2f, Vec3f, Vector};
 
 pub struct Sphere {
     pub center: Vec3f,
@@ -15,11 +15,12 @@ impl Sphere {
         }
     }
 
-    pub fn sweep_triangle(&self,
-                          triangle: &[Vec3f; 3],
-                          normal: &Vec3f,
-                          vel: &Vec3f)
-                          -> Option<ContactInfo> {
+    pub fn sweep_triangle(
+        &self,
+        triangle: &[Vec3f; 3],
+        normal: &Vec3f,
+        vel: &Vec3f,
+    ) -> Option<ContactInfo> {
         let Sphere { ref center, radius } = *self;
         let speed = vel.norm();
         if speed == 0.0 {
@@ -84,11 +85,14 @@ impl Sphere {
             let circle_center_to_on_line = (on_line - circle_center).normalized();
             let candidate = circle_center_to_on_line * circle_radius + circle_center;
 
-            let edge_normal_abs = Vec3f::new(edge_normal[0].abs(),
-                                             edge_normal[1].abs(),
-                                             edge_normal[2].abs());
-            let (dim1, dim2) = if edge_normal_abs[0] > edge_normal_abs[1] &&
-                                  edge_normal_abs[0] > edge_normal_abs[2] {
+            let edge_normal_abs = Vec3f::new(
+                edge_normal[0].abs(),
+                edge_normal[1].abs(),
+                edge_normal[2].abs(),
+            );
+            let (dim1, dim2) = if edge_normal_abs[0] > edge_normal_abs[1]
+                && edge_normal_abs[0] > edge_normal_abs[2]
+            {
                 (1, 2)
             } else if edge_normal_abs[1] > edge_normal_abs[2] {
                 (0, 2)
@@ -97,11 +101,12 @@ impl Sphere {
             };
 
             let candidate_plus_nvel = candidate + nvel;
-            let t = match intersect_line_line(&Vec2f::new(candidate[dim1], candidate[dim2]),
-                                              &Vec2f::new(candidate_plus_nvel[dim1],
-                                                          candidate_plus_nvel[dim2]),
-                                              &Vec2f::new(e1[dim1], e1[dim2]),
-                                              &Vec2f::new(e2[dim1], e2[dim2])) {
+            let t = match intersect_line_line(
+                &Vec2f::new(candidate[dim1], candidate[dim2]),
+                &Vec2f::new(candidate_plus_nvel[dim1], candidate_plus_nvel[dim2]),
+                &Vec2f::new(e1[dim1], e1[dim2]),
+                &Vec2f::new(e2[dim1], e2[dim2]),
+            ) {
                 Some(distance) if distance >= 0.0 && distance < min_distance => distance,
                 _ => continue,
             };
@@ -124,7 +129,6 @@ impl Sphere {
         }
     }
 }
-
 
 fn intersect_sphere_line(center: &Vec3f, radius: f32, p1: &Vec3f, p2: &Vec3f) -> Option<f32> {
     let edge = *p2 - *p1;

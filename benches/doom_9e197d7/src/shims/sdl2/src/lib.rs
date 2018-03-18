@@ -156,7 +156,6 @@ pub mod video {
 
 pub fn clear_error() {}
 
-
 pub mod pixels {
     pub enum Color {
         RGBA(u8, u8, u8, u8),
@@ -209,10 +208,11 @@ pub mod surface {
     }
 
     impl<'a> Surface<'a> {
-        pub fn new(width: Size,
-                   height: Size,
-                   _format: super::pixels::PixelFormatEnum)
-                   -> SdlResult<Self> {
+        pub fn new(
+            width: Size,
+            height: Size,
+            _format: super::pixels::PixelFormatEnum,
+        ) -> SdlResult<Self> {
             Ok(Surface {
                 width: width,
                 height: height,
@@ -220,12 +220,13 @@ pub mod surface {
             })
         }
 
-        pub fn from_data(_data: &mut [u8],
-                         width: Size,
-                         height: Size,
-                         _pitch: Size,
-                         _format: super::pixels::PixelFormatEnum)
-                         -> SdlResult<Surface> {
+        pub fn from_data(
+            _data: &mut [u8],
+            width: Size,
+            height: Size,
+            _pitch: Size,
+            _format: super::pixels::PixelFormatEnum,
+        ) -> SdlResult<Surface> {
             Ok(Surface {
                 width: width,
                 height: height,
@@ -237,10 +238,11 @@ pub mod surface {
             Ok(())
         }
 
-        pub fn fill_rect(&mut self,
-                         _rect: Option<super::rect::Rect>,
-                         _color: super::pixels::Color)
-                         -> SdlResult<()> {
+        pub fn fill_rect(
+            &mut self,
+            _rect: Option<super::rect::Rect>,
+            _color: super::pixels::Color,
+        ) -> SdlResult<()> {
             Ok(())
         }
 
@@ -256,11 +258,12 @@ pub mod surface {
             self.height
         }
 
-        pub fn blit(&self,
-                    _src_rect: Option<super::rect::Rect>,
-                    _dest: &mut Surface,
-                    _dest_rect: Option<super::rect::Rect>)
-                    -> SdlResult<()> {
+        pub fn blit(
+            &self,
+            _src_rect: Option<super::rect::Rect>,
+            _dest: &mut Surface,
+            _dest_rect: Option<super::rect::Rect>,
+        ) -> SdlResult<()> {
             Ok(())
         }
 

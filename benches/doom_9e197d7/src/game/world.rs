@@ -1,10 +1,9 @@
-use math::{Line2f, Vec2f, Vec3f, Vector, ContactInfo, Sphere};
+use math::{ContactInfo, Line2f, Sphere, Vec2f, Vec3f, Vector};
 use num::Zero;
-use std::{i32, f32};
-use wad::types::WadName;
-use wad::{LevelVisitor, LightInfo, Branch};
+use std::{f32, i32};
 use std::cell::RefCell;
-
+use wad::{Branch, LevelVisitor, LightInfo};
+use wad::types::WadName;
 
 pub struct World {
     nodes: Vec<Node>,
@@ -46,14 +45,14 @@ impl World {
                 };
                 let tris = &self.triangles[chunk.tri_start as usize..chunk.tri_end as usize];
                 first_contact = tris.iter()
-                                    .filter_map(|tri| self.sweep_sphere_triangle(sphere, vel, tri))
-                                    .fold(first_contact, |first, current| {
-                                        if first.time < current.time {
-                                            first
-                                        } else {
-                                            current
-                                        }
-                                    });
+                    .filter_map(|tri| self.sweep_sphere_triangle(sphere, vel, tri))
+                    .fold(first_contact, |first, current| {
+                        if first.time < current.time {
+                            first
+                        } else {
+                            current
+                        }
+                    });
             }
         }
         if first_contact.time < f32::INFINITY {
@@ -63,23 +62,26 @@ impl World {
         }
     }
 
-    fn sweep_sphere_triangle(&self,
-                             sphere: &Sphere,
-                             vel: &Vec3f,
-                             triangle: &Triangle)
-                             -> Option<ContactInfo> {
+    fn sweep_sphere_triangle(
+        &self,
+        sphere: &Sphere,
+        vel: &Vec3f,
+        triangle: &Triangle,
+    ) -> Option<ContactInfo> {
         let normal = self.verts[triangle.normal as usize];
-        let triangle = [self.verts[triangle.v1 as usize],
-                        self.verts[triangle.v2 as usize],
-                        self.verts[triangle.v3 as usize]];
+        let triangle = [
+            self.verts[triangle.v1 as usize],
+            self.verts[triangle.v2 as usize],
+            self.verts[triangle.v3 as usize],
+        ];
         sphere.sweep_triangle(&triangle, &normal, vel)
     }
 
     fn link_child(&mut self, child: Child, branch: Branch) {
         let parent_index = *self.node_stack
-                                .borrow()
-                                .last()
-                                .expect("called link_child on root node");
+            .borrow()
+            .last()
+            .expect("called link_child on root node");
         let parent = &mut self.nodes[parent_index];
 
         match branch {
@@ -99,14 +101,13 @@ impl World {
         self.verts.extend(verts);
         let vert_end = self.verts.len() as u32;
         self.verts.push(normal);
-        self.triangles.extend(((vert_start + 2)..vert_end).map(|i| {
-            Triangle {
+        self.triangles
+            .extend(((vert_start + 2)..vert_end).map(|i| Triangle {
                 v1: vert_start,
                 v2: i - 1,
                 v3: i,
                 normal: vert_end,
-            }
-        }));
+            }));
     }
 }
 
@@ -139,44 +140,57 @@ impl LevelVisitor for World {
     }
 
     fn visit_bsp_node_end(&mut self) {
-        self.node_stack.borrow_mut().pop().expect("too many calls to visit_bsp_node_end");
+        self.node_stack
+            .borrow_mut()
+            .pop()
+            .expect("too many calls to visit_bsp_node_end");
     }
 
     fn visit_floor_sky_poly(&mut self, points: &[Vec2f], height: f32) {
-        self.add_polygon(points.iter().map(|v| Vec3f::new(v[0], height, v[1])),
-                         Vec3f::new(0.0, 1.0, 0.0));
+        self.add_polygon(
+            points.iter().map(|v| Vec3f::new(v[0], height, v[1])),
+            Vec3f::new(0.0, 1.0, 0.0),
+        );
     }
 
     fn visit_ceil_sky_poly(&mut self, points: &[Vec2f], height: f32) {
-        self.add_polygon(points.iter().rev().map(|v| Vec3f::new(v[0], height, v[1])),
-                         Vec3f::new(0.0, -1.0, 0.0));
+        self.add_polygon(
+            points.iter().rev().map(|v| Vec3f::new(v[0], height, v[1])),
+            Vec3f::new(0.0, -1.0, 0.0),
+        );
     }
 
-    fn visit_floor_poly(&mut self,
-                        points: &[Vec2f],
-                        height: f32,
-                        _light_info: &LightInfo,
-                        _tex_name: &WadName) {
+    fn visit_floor_poly(
+        &mut self,
+        points: &[Vec2f],
+        height: f32,
+        _light_info: &LightInfo,
+        _tex_name: &WadName,
+    ) {
         self.visit_floor_sky_poly(points, height);
     }
 
-    fn visit_ceil_poly(&mut self,
-                       points: &[Vec2f],
-                       height: f32,
-                       _light_info: &LightInfo,
-                       _tex_name: &WadName) {
+    fn visit_ceil_poly(
+        &mut self,
+        points: &[Vec2f],
+        height: f32,
+        _light_info: &LightInfo,
+        _tex_name: &WadName,
+    ) {
         self.visit_ceil_sky_poly(points, height);
     }
 
-    fn visit_wall_quad(&mut self,
-                       verts: &(Vec2f, Vec2f),
-                       _tex_start: (f32, f32),
-                       _tex_end: (f32, f32),
-                       height_range: (f32, f32),
-                       _light_info: &LightInfo,
-                       _scroll: f32,
-                       _tex_name: Option<&WadName>,
-                       blocking: bool) {
+    fn visit_wall_quad(
+        &mut self,
+        verts: &(Vec2f, Vec2f),
+        _tex_start: (f32, f32),
+        _tex_end: (f32, f32),
+        height_range: (f32, f32),
+        _light_info: &LightInfo,
+        _scroll: f32,
+        _tex_name: Option<&WadName>,
+        blocking: bool,
+    ) {
         if blocking {
             self.visit_sky_quad(verts, height_range);
         }
@@ -185,15 +199,16 @@ impl LevelVisitor for World {
     fn visit_sky_quad(&mut self, &(ref v1, ref v2): &(Vec2f, Vec2f), (low, high): (f32, f32)) {
         let edge = (*v2 - *v1).normalized();
         let normal = Vec3f::new(-edge[1], 0.0, edge[0]);
-        self.add_polygon(Some(Vec3f::new(v1[0], low, v1[1]))
-                             .into_iter()
-                             .chain(Some(Vec3f::new(v2[0], low, v2[1])))
-                             .chain(Some(Vec3f::new(v2[0], high, v2[1])))
-                             .chain(Some(Vec3f::new(v1[0], high, v1[1]))),
-                         normal);
+        self.add_polygon(
+            Some(Vec3f::new(v1[0], low, v1[1]))
+                .into_iter()
+                .chain(Some(Vec3f::new(v2[0], low, v2[1])))
+                .chain(Some(Vec3f::new(v2[0], high, v2[1])))
+                .chain(Some(Vec3f::new(v1[0], high, v1[1]))),
+            normal,
+        );
     }
 }
-
 
 struct Chunk {
     tri_start: u32,
@@ -212,7 +227,6 @@ struct Node {
     positive: i32,
     negative: i32,
 }
-
 
 #[derive(Eq, PartialEq, Copy, Clone, Debug)]
 enum Child {
@@ -258,9 +272,10 @@ impl Node {
 
     fn intersect_sphere(&self, sphere: &Sphere, vel: &Vec3f) -> NodeIntersectIter {
         let Sphere { ref center, radius } = *sphere;
-        let dist1 = self.partition.signed_distance(&Vec2f::new(center[0], center[2]));
+        let dist1 = self.partition
+            .signed_distance(&Vec2f::new(center[0], center[2]));
         let dist2 = self.partition
-                        .signed_distance(&Vec2f::new(center[0] + vel[0], center[2] + vel[2]));
+            .signed_distance(&Vec2f::new(center[0] + vel[0], center[2] + vel[2]));
 
         let pos = if dist1 >= -radius || dist2 >= -radius {
             Some(Child::unpack(self.positive))
@@ -278,5 +293,5 @@ impl Node {
     }
 }
 
-type NodeIntersectIter = ::std::iter::Chain<::std::option::IntoIter<Child>,
-                                            ::std::option::IntoIter<Child>>;
+type NodeIntersectIter =
+    ::std::iter::Chain<::std::option::IntoIter<Child>, ::std::option::IntoIter<Child>>;

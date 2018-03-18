@@ -1,10 +1,9 @@
 use byteorder::{ByteOrder, LittleEndian, ReadBytesExt};
 use error::Result;
-use std::io::Read;
 use std::io::Error as IoError;
 use std::io::ErrorKind as IoErrorKind;
+use std::io::Read;
 use std::io::Result as IoResult;
-
 
 pub trait WadReadFrom: Sized {
     fn wad_read_from<R: Read>(&mut R) -> Result<Self>;
@@ -120,7 +119,10 @@ pub trait WadRead: Read + Sized {
             }
         }
         if !buf.is_empty() {
-            Err(IoError::new(IoErrorKind::InvalidData, "failed to fill whole buffer"))
+            Err(IoError::new(
+                IoErrorKind::InvalidData,
+                "failed to fill whole buffer",
+            ))
         } else {
             Ok(())
         }

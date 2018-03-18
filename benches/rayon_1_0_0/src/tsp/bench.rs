@@ -6,11 +6,13 @@ use super::parse_solver;
 use super::graph::Node;
 use super::solver::SolverCx;
 
-fn run_dir(b: &mut Bencher,
-           name: &str,
-           seq_threshold: usize,
-           exp_weight: usize,
-           exp_path: Vec<usize>) {
+fn run_dir(
+    b: &mut Bencher,
+    name: &str,
+    seq_threshold: usize,
+    exp_weight: usize,
+    exp_path: Vec<usize>,
+) {
     let manifest_dir = Path::new(env!("CARGO_MANIFEST_DIR"));
     let tsp_path = manifest_dir.join("data/tsp/").join(name);
     let graph = parse_solver(&tsp_path).unwrap();
@@ -25,10 +27,18 @@ fn run_dir(b: &mut Bencher,
     if path.iter().rev().lt(&path) {
         path.reverse(); // normalize the direction
     }
-    assert_eq!(exp_weight, weight.to_usize(),
-               "actual weight ({:?}) did not match expectation ({:?})", weight, exp_weight);
-    assert_eq!(exp_path, path,
-               "best path ({:?}) did not match expectation ({:?})", path, exp_path);
+    assert_eq!(
+        exp_weight,
+        weight.to_usize(),
+        "actual weight ({:?}) did not match expectation ({:?})",
+        weight,
+        exp_weight
+    );
+    assert_eq!(
+        exp_path, path,
+        "best path ({:?}) did not match expectation ({:?})",
+        path, exp_path
+    );
 }
 
 // these numbers are tuned to "not take THAT long" in cargo bench,

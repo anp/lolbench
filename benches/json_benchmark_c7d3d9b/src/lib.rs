@@ -1,8 +1,8 @@
 extern crate criterion;
 #[macro_use]
-extern crate wrap_libtest;
-#[macro_use]
 extern crate serde_derive;
+#[macro_use]
+extern crate wrap_libtest;
 
 extern crate time;
 
@@ -149,28 +149,36 @@ fn serde_json_parse_dom(bytes: &[u8]) -> serde_json::Result<serde_json::Value> {
 }
 
 fn serde_json_parse_struct<'de, T>(bytes: &'de [u8]) -> serde_json::Result<T>
-    where T: serde::Deserialize<'de>
+where
+    T: serde::Deserialize<'de>,
 {
     use std::str;
     let s = str::from_utf8(bytes).unwrap();
     serde_json::from_str(s)
 }
 
-fn rustc_serialize_parse_dom(mut bytes: &[u8]) -> Result<rustc_serialize::json::Json, rustc_serialize::json::BuilderError> {
+fn rustc_serialize_parse_dom(
+    mut bytes: &[u8],
+) -> Result<rustc_serialize::json::Json, rustc_serialize::json::BuilderError> {
     rustc_serialize::json::Json::from_reader(&mut bytes)
 }
 
 fn rustc_serialize_parse_struct<T>(bytes: &[u8]) -> rustc_serialize::json::DecodeResult<T>
-    where T: rustc_serialize::Decodable
+where
+    T: rustc_serialize::Decodable,
 {
     use std::str;
     let s = str::from_utf8(bytes).unwrap();
     rustc_serialize::json::decode(s)
 }
 
-fn rustc_serialize_stringify<W, T: ?Sized>(writer: W, value: &T) -> rustc_serialize::json::EncodeResult<()>
-    where W: Write,
-          T: rustc_serialize::Encodable
+fn rustc_serialize_stringify<W, T: ?Sized>(
+    writer: W,
+    value: &T,
+) -> rustc_serialize::json::EncodeResult<()>
+where
+    W: Write,
+    T: rustc_serialize::Encodable,
 {
     let mut writer = adapter::IoWriteAsFmtWrite::new(writer);
     let mut encoder = rustc_serialize::json::Encoder::new(&mut writer);

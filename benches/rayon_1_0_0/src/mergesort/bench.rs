@@ -25,4 +25,3 @@ wrap_libtest! {
         bench_harness(super::seq_merge_sort, b);
     }
 }
-

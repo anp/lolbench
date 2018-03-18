@@ -1,19 +1,19 @@
-use error::ErrorKind::{BadWadHeader, MissingRequiredLump};
 use error::{Error, ErrorKind, InFile, Result};
+use error::ErrorKind::{BadWadHeader, MissingRequiredLump};
 use meta::WadMetadata;
 use read::{WadRead, WadReadFrom};
+use std::borrow::Borrow;
 use std::cell::RefCell;
 use std::collections::HashMap;
 use std::fmt::Debug;
 use std::fs::File;
+use std::hash::Hash;
 use std::io::{BufReader, Seek, SeekFrom};
 use std::mem;
 use std::path::Path;
 use std::path::PathBuf;
 use std::result::Result as StdResult;
 use std::vec::Vec;
-use std::borrow::Borrow;
-use std::hash::Hash;
 use types::{WadInfo, WadLump, WadName};
 use util::wad_type_from_info;
 
@@ -28,8 +28,9 @@ pub struct Archive {
 
 impl Archive {
     pub fn open<W, M>(wad_path: &W, meta_path: &M) -> Result<Archive>
-        where W: AsRef<Path> + Debug,
-              M: AsRef<Path> + Debug
+    where
+        W: AsRef<Path> + Debug,
+        M: AsRef<Path> + Debug,
     {
         let wad_path = wad_path.as_ref().to_owned();
         info!("Loading wad file '{:?}'...", wad_path);
@@ -44,7 +45,10 @@ impl Archive {
         let mut levels = Vec::with_capacity(64);
         let mut index_map = HashMap::new();
 
-        try!(file.seek(SeekFrom::Start(header.info_table_offset as u64)).in_file(&wad_path));
+        try!(
+            file.seek(SeekFrom::Start(header.info_table_offset as u64))
+                .in_file(&wad_path)
+        );
         for i_lump in 0..header.num_lumps {
             let fileinfo = try!(file.wad_read::<WadLump>().in_file(&wad_path));
             index_map.insert(fileinfo.name, lumps.len());
@@ -92,15 +96,17 @@ impl Archive {
     }
 
     pub fn named_lump_index<Q>(&self, name: &Q) -> Option<usize>
-        where WadName: Borrow<Q>,
-              Q: Hash + Eq
+    where
+        WadName: Borrow<Q>,
+        Q: Hash + Eq,
     {
         self.index_map.get(name).map(|x| *x)
     }
 
     pub fn required_named_lump_index<Q>(&self, name: &Q) -> Result<usize>
-        where WadName: Borrow<Q>,
-              Q: Hash + Eq + Debug
+    where
+        WadName: Borrow<Q>,
+        Q: Hash + Eq + Debug,
     {
         self.named_lump_index(name)
             .ok_or(MissingRequiredLump(format!("{:?}", name)))
@@ -116,20 +122,23 @@ impl Archive {
     }
 
     pub fn read_required_named_lump<Q, T>(&self, name: &Q) -> Result<Vec<T>>
-        where WadName: Borrow<Q>,
-              T: WadReadFrom,
-              Q: Hash + Eq + Debug
+    where
+        WadName: Borrow<Q>,
+        T: WadReadFrom,
+        Q: Hash + Eq + Debug,
     {
         self.read_named_lump(name)
             .unwrap_or_else(|| Err(MissingRequiredLump(format!("{:?}", name)).in_archive(self)))
     }
 
     pub fn read_named_lump<Q, T>(&self, name: &Q) -> Option<Result<Vec<T>>>
-        where WadName: Borrow<Q>,
-              T: WadReadFrom,
-              Q: Hash + Eq
+    where
+        WadName: Borrow<Q>,
+        T: WadReadFrom,
+        Q: Hash + Eq,
     {
-        self.named_lump_index(name).map(|index| self.read_lump(index))
+        self.named_lump_index(name)
+            .map(|index| self.read_lump(index))
     }
 
     pub fn read_lump<T: WadReadFrom>(&self, index: usize) -> Result<Vec<T>> {
@@ -180,7 +189,6 @@ impl<S, E: Into<Error>> InArchive for StdResult<S, E> {
         self.map_err(|e| e.into().in_archive(archive))
     }
 }
-
 
 #[derive(Copy, Clone)]
 struct LumpInfo {

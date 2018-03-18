@@ -1,4 +1,3 @@
-
 use rand::{SeedableRng, XorShiftRng};
 use time;
 
@@ -88,4 +87,3 @@ fn run_benchmarks(mode: Option<ExecutionMode>, bodies: usize, ticks: usize) {
         println!("ParReduce speedup: {}", (st as f32) / (pt as f32));
     }
 }
-

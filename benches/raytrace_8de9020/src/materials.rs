@@ -1,11 +1,11 @@
 use rand::{Rng, XorShiftRng};
-use vec::{Vec3, Ray, random_in_unit_sphere};
+use vec::{random_in_unit_sphere, Ray, Vec3};
 use model::Hit;
 
 #[derive(Clone, Copy, Debug)]
 pub struct Scatter {
     pub color: Vec3,
-    pub ray: Option<Ray>
+    pub ray: Option<Ray>,
 }
 
 pub trait Material {
@@ -13,7 +13,7 @@ pub trait Material {
 }
 
 pub struct Lambertian {
-    pub albedo: Vec3
+    pub albedo: Vec3,
 }
 
 impl Material for Lambertian {
@@ -21,7 +21,7 @@ impl Material for Lambertian {
         let target = hit.p + hit.normal + random_in_unit_sphere(rng);
         Scatter {
             color: self.albedo,
-            ray: Some(Ray::new(hit.p, target - hit.p))
+            ray: Some(Ray::new(hit.p, target - hit.p)),
         }
     }
 }
@@ -32,7 +32,7 @@ fn reflect(v: Vec3, n: Vec3) -> Vec3 {
 
 pub struct Metal {
     pub albedo: Vec3,
-    pub fuzz: f32
+    pub fuzz: f32,
 }
 
 impl Material for Metal {
@@ -46,7 +46,7 @@ impl Material for Metal {
                 None
             } else {
                 Some(scattered)
-            }
+            },
         }
     }
 }
@@ -56,7 +56,7 @@ pub struct Dielectric {
     // index of refraction inside the material to the index of refraction
     // outside.  But if the material outside is air, its index of refraction is
     // 1 and so it amounts to the same thing.
-    pub index: f32
+    pub index: f32,
 }
 
 fn refract(v: Vec3, n: Vec3, ni_over_nt: f32) -> Option<Vec3> {
@@ -102,8 +102,8 @@ impl Material for Dielectric {
                 if rng.gen::<f32>() > schlick(cosine, self.index) {
                     return Scatter {
                         color: WHITE,
-                        ray: Some(Ray::new(hit.p, refracted))
-                    }
+                        ray: Some(Ray::new(hit.p, refracted)),
+                    };
                 }
             }
             None => {}
@@ -111,7 +111,7 @@ impl Material for Dielectric {
 
         Scatter {
             color: WHITE,
-            ray: Some(Ray::new(hit.p, reflect(r_in.direction, hit.normal)))
+            ray: Some(Ray::new(hit.p, reflect(r_in.direction, hit.normal))),
         }
     }
 }

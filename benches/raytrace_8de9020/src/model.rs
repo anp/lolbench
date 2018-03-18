@@ -1,4 +1,4 @@
-use vec::{Vec3, Ray};
+use vec::{Ray, Vec3};
 use materials::Material;
 
 #[derive(Clone, Copy)]
@@ -6,7 +6,7 @@ pub struct Hit<'obj> {
     pub t: f32,
     pub p: Vec3,
     pub normal: Vec3,
-    pub material: &'obj Material
+    pub material: &'obj Material,
 }
 
 pub trait Model {
@@ -16,7 +16,7 @@ pub trait Model {
 pub struct Sphere {
     pub center: Vec3,
     pub radius: f32,
-    pub material: Box<Material>
+    pub material: Box<Material>,
 }
 
 /// Minimum distance a ray must travel before we'll consider a possible hit.
@@ -42,7 +42,7 @@ impl Model for Sphere {
                     t: t,
                     p: p,
                     normal: (p - self.center) / self.radius,
-                    material: &*self.material
+                    material: &*self.material,
                 });
             }
             let t = (-hb + discriminant.sqrt()) / a;
@@ -52,7 +52,7 @@ impl Model for Sphere {
                     t: t,
                     p: p,
                     normal: (p - self.center) / self.radius,
-                    material: &*self.material
+                    material: &*self.material,
                 });
             }
         }
@@ -69,7 +69,7 @@ impl Model for Vec<Box<Model>> {
                     None => best = Some(hit),
                     Some(prev) => if hit.t < prev.t {
                         best = Some(hit)
-                    }
+                    },
                 }
             }
         }

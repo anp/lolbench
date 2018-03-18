@@ -3,7 +3,6 @@
 //! Based on code developed at ETH by Christoph von Praun, Florian
 //! Schneider, Nicholas Matsakis, and Thomas Gross.
 
-
 use std::error::Error;
 use std::fs::File;
 use std::io::prelude::*;

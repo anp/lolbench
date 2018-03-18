@@ -12,8 +12,8 @@ struct Request<'a> {
 
 #[derive(Debug)]
 struct Header<'a> {
-  name: &'a [u8],
-  value: Vec<&'a [u8]>,
+    name: &'a [u8],
+    value: Vec<&'a [u8]>,
 }
 
 #[cfg_attr(rustfmt, rustfmt_skip)]
@@ -45,22 +45,22 @@ fn is_token(c: u8) -> bool {
 }
 
 fn not_line_ending(c: u8) -> bool {
-  c != b'\r' && c != b'\n'
+    c != b'\r' && c != b'\n'
 }
 
 fn is_space(c: u8) -> bool {
-  c == b' '
+    c == b' '
 }
 
 fn is_not_space(c: u8) -> bool {
-  c != b' '
+    c != b' '
 }
 fn is_horizontal_space(c: u8) -> bool {
-  c == b' ' || c == b'\t'
+    c == b' ' || c == b'\t'
 }
 
 fn is_version(c: u8) -> bool {
-  c >= b'0' && c <= b'9' || c == b'.'
+    c >= b'0' && c <= b'9' || c == b'.'
 }
 
 named!(line_ending, alt!(tag!("\r\n") | tag!("\n")));
@@ -111,35 +111,31 @@ fn message_header(input: &[u8]) -> IResult<&[u8], Header> {
 }
 
 fn request(input: &[u8]) -> IResult<&[u8], (Request, Vec<Header>)> {
-  do_parse!(input,
-    req: request_line           >>
-    h:   many1!(message_header) >>
-         line_ending            >>
-
-    (req, h))
+    do_parse!(
+        input,
+        req: request_line >> h: many1!(message_header) >> line_ending >> (req, h)
+    )
 }
 
-
 fn parse(data: &[u8]) -> Option<Vec<(Request, Vec<Header>)>> {
-  let mut buf = &data[..];
-  let mut v = Vec::new();
-  loop {
-    match request(buf) {
-      Ok((b, r)) => {
-        buf = b;
-        v.push(r);
+    let mut buf = &data[..];
+    let mut v = Vec::new();
+    loop {
+        match request(buf) {
+            Ok((b, r)) => {
+                buf = b;
+                v.push(r);
 
-        if b.is_empty() {
-
-          //println!("{}", i);
-          break;
+                if b.is_empty() {
+                    //println!("{}", i);
+                    break;
+                }
+            }
+            Err(_) => return None,
         }
-      }
-      Err(_) => return None,
     }
-  }
 
-  Some(v)
+    Some(v)
 }
 
 wrap_libtest! {

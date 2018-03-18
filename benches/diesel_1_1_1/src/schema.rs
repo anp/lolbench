@@ -270,7 +270,6 @@ allow_tables_to_appear_in_same_query!(
     with_keywords,
 );
 
-
 #[derive(PartialEq, Eq, Debug, Clone, Queryable, Identifiable, Insertable, AsChangeset,
          Associations, QueryableByName)]
 #[table_name = "users"]

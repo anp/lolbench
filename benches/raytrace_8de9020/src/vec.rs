@@ -5,24 +5,36 @@ use rand::{Rand, Rng, XorShiftRng};
 pub struct Vec3(pub f32, pub f32, pub f32);
 
 impl Vec3 {
-    pub fn x(&self) -> f32 { self.0 }
-    pub fn y(&self) -> f32 { self.1 }
-    pub fn z(&self) -> f32 { self.2 }
+    pub fn x(&self) -> f32 {
+        self.0
+    }
+    pub fn y(&self) -> f32 {
+        self.1
+    }
+    pub fn z(&self) -> f32 {
+        self.2
+    }
 
     pub fn dot(&self, other: Vec3) -> f32 {
         self.0 * other.0 + self.1 * other.1 + self.2 * other.2
     }
 
     pub fn cross(&self, other: Vec3) -> Vec3 {
-        Vec3(self.1 * other.2 - self.2 * other.1,
-             -(self.0 * other.2 - self.2 * other.0),
-             self.0 * other.1 - self.1 * other.0)
+        Vec3(
+            self.1 * other.2 - self.2 * other.1,
+            -(self.0 * other.2 - self.2 * other.0),
+            self.0 * other.1 - self.1 * other.0,
+        )
     }
 
-    pub fn squared_length(self) -> f32 { self.dot(self) }
-    pub fn length(self) -> f32 { self.squared_length().sqrt() }
+    pub fn squared_length(self) -> f32 {
+        self.dot(self)
+    }
+    pub fn length(self) -> f32 {
+        self.squared_length().sqrt()
+    }
 
-    pub fn to_u8(&self) -> [u8;3] {
+    pub fn to_u8(&self) -> [u8; 3] {
         fn u(f: f32) -> u8 {
             if f < 0.0 {
                 0
@@ -100,23 +112,29 @@ pub fn random_in_unit_sphere(rng: &mut XorShiftRng) -> Vec3 {
 
 pub fn random_in_unit_disc(rng: &mut XorShiftRng) -> Vec3 {
     loop {
-        let p = Vec3(2.0 * rng.gen::<f32>() - 1.0, 2.0 * rng.gen::<f32>() - 1.0, 0.0);
+        let p = Vec3(
+            2.0 * rng.gen::<f32>() - 1.0,
+            2.0 * rng.gen::<f32>() - 1.0,
+            0.0,
+        );
         if p.dot(p) < 1.0 {
             return p;
         }
     }
 }
 
-
 #[derive(Clone, Copy, Debug)]
 pub struct Ray {
     pub origin: Vec3,
-    pub direction: Vec3
+    pub direction: Vec3,
 }
 
 impl Ray {
     pub fn new(o: Vec3, d: Vec3) -> Ray {
-        Ray { origin: o, direction: d }
+        Ray {
+            origin: o,
+            direction: d,
+        }
     }
 
     pub fn point_at_parameter(&self, t: f32) -> Vec3 {

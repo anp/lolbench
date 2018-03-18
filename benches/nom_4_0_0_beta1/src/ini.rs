@@ -4,11 +4,11 @@ use std::str;
 use std::collections::HashMap;
 
 named!(
-  category<&str>,
-  map_res!(
-    delimited!(char!('['), take_while!(call!(|c| c != b']')), char!(']')),
-    str::from_utf8
-  )
+    category<&str>,
+    map_res!(
+        delimited!(char!('['), take_while!(call!(|c| c != b']')), char!(']')),
+        str::from_utf8
+    )
 );
 
 named!(key_value    <&[u8],(&str,&str)>,

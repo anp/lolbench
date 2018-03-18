@@ -12,7 +12,8 @@ extern crate wrap_libtest;
 mod backend_specifics;
 mod schema;
 
-use self::schema::{comments, posts, users, Comment, NewComment, NewPost, NewUser, Post, TestConnection, User};
+use self::schema::{comments, posts, users, Comment, NewComment, NewPost, NewUser, Post,
+                   TestConnection, User};
 use diesel::*;
 
 fn connection() -> TestConnection {

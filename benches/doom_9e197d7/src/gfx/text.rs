@@ -1,7 +1,8 @@
+use Window;
+use glium::{Blend, Surface, VertexBuffer};
 use glium::{DrawParameters, Program};
 use glium::Frame;
 use glium::index::{NoIndices, PrimitiveType};
-use glium::{Blend, Surface, VertexBuffer};
 use glium::texture::{ClientFormat, RawImage2d, Texture2d};
 use math::Vec2f;
 use sdl2::pixels::Color;
@@ -20,7 +21,6 @@ use std::error::Error as StdError;
 use std::fmt::{Display, Formatter};
 use std::fmt::Result as FmtResult;
 use std::ops::{Index, IndexMut};
-use Window;
 
 /// A handle to a piece of text created with a `TextRenderer`.
 #[derive(Copy, Clone, Eq, PartialEq)]
@@ -51,25 +51,31 @@ impl TextRenderer {
     pub fn insert(&mut self, win: &Window, text: &str, pos: Vec2f, padding: u32) -> TextId {
         let surface = self.text_to_surface(text, padding).unwrap();
         let texture = surface.with_lock(|pixels| {
-            Texture2d::new(win.facade(),
-                           RawImage2d {
-                               data: Cow::Borrowed(pixels),
-                               width: surface.width(),
-                               height: surface.height(),
-                               format: ClientFormat::U8U8U8U8,
-                           })
-                .unwrap()
+            Texture2d::new(
+                win.facade(),
+                RawImage2d {
+                    data: Cow::Borrowed(pixels),
+                    width: surface.width(),
+                    height: surface.height(),
+                    format: ClientFormat::U8U8U8U8,
+                },
+            ).unwrap()
         });
-        let (w, h) = (surface.width() as f32 / win.width() as f32 * 2.0,
-                      surface.height() as f32 / win.height() as f32 * 2.0);
+        let (w, h) = (
+            surface.width() as f32 / win.width() as f32 * 2.0,
+            surface.height() as f32 / win.height() as f32 * 2.0,
+        );
         let (x, y) = (pos[0] * 2.0 - 1.0, 1.0 - pos[1] * 2.0 - h);
         let text = Text {
-            buffer: VertexBuffer::immutable(win.facade(),
-                                            &[vertex(x, y, 0.0, 1.0),
-                                              vertex(x, y + h, 0.0, 0.0),
-                                              vertex(x + w, y, 1.0, 1.0),
-                                              vertex(x + w, y + h, 1.0, 0.0)])
-                        .unwrap(),
+            buffer: VertexBuffer::immutable(
+                win.facade(),
+                &[
+                    vertex(x, y, 0.0, 1.0),
+                    vertex(x, y + h, 0.0, 0.0),
+                    vertex(x + w, y, 1.0, 1.0),
+                    vertex(x + w, y + h, 1.0, 0.0),
+                ],
+            ).unwrap(),
             texture: texture,
             visible: true,
         };
@@ -92,41 +98,49 @@ impl TextRenderer {
             let uniforms = uniform! {
                 u_tex: &text.texture,
             };
-            frame.draw(&text.buffer,
-                       NoIndices(PrimitiveType::TriangleStrip),
-                       &self.program,
-                       &uniforms,
-                       &self.draw_params)
-                 .unwrap();
+            frame
+                .draw(
+                    &text.buffer,
+                    NoIndices(PrimitiveType::TriangleStrip),
+                    &self.program,
+                    &uniforms,
+                    &self.draw_params,
+                )
+                .unwrap();
         }
         Ok(())
     }
 
     fn text_to_surface(&self, text: &str, padding: u32) -> Result<SdlSurface<'static>, Error> {
         let wrap_length = text.lines()
-                              .filter_map(|line| self.font.size(line).ok())
-                              .map(|size| size.0)
-                              .fold(0, cmp::max) + 10;
+            .filter_map(|line| self.font.size(line).ok())
+            .map(|size| size.0)
+            .fold(0, cmp::max) + 10;
         let mut text = self.font
-                           .render(text,
-                                   ttf::blended_wrapped(Color::RGBA(255, 255, 255, 255),
-                                                        wrap_length))
-                           .unwrap();
-        let mut surface = SdlSurface::new(text.width() + padding * 2,
-                                          text.height() + padding * 2,
-                                          PixelFormatEnum::ARGB8888)
-                              .unwrap();
+            .render(
+                text,
+                ttf::blended_wrapped(Color::RGBA(255, 255, 255, 255), wrap_length),
+            )
+            .unwrap();
+        let mut surface = SdlSurface::new(
+            text.width() + padding * 2,
+            text.height() + padding * 2,
+            PixelFormatEnum::ARGB8888,
+        ).unwrap();
         surface.set_blend_mode(BlendMode::None).unwrap();
         surface.fill_rect(None, Color::RGBA(0, 0, 0, 128)).unwrap();
         surface.set_blend_mode(BlendMode::Blend).unwrap();
         text.set_blend_mode(BlendMode::Blend).unwrap();
-        text.blit(None,
-                  &mut surface,
-                  Some(Rect::new_unwrap(padding as i32,
-                                        padding as i32,
-                                        text.width(),
-                                        text.height())))
-            .unwrap();
+        text.blit(
+            None,
+            &mut surface,
+            Some(Rect::new_unwrap(
+                padding as i32,
+                padding as i32,
+                text.width(),
+                text.height(),
+            )),
+        ).unwrap();
         Ok(surface)
     }
 }

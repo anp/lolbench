@@ -6,7 +6,6 @@ pub struct Args {
     flag_size: usize,
 }
 
-
 use rayon;
 
 use std::cmp::max;
@@ -68,11 +67,7 @@ fn rsort_into<T: Ord + Send + Copy>(src: &mut [T], dest: &mut [T]) {
 // threads and thus we only need a `T: Send` bound.
 fn rmerge<T: Ord + Send + Copy>(a: &mut [T], b: &mut [T], dest: &mut [T]) {
     // Swap so a is always longer.
-    let (a, b) = if a.len() > b.len() {
-        (a, b)
-    } else {
-        (b, a)
-    };
+    let (a, b) = if a.len() > b.len() { (a, b) } else { (b, a) };
     if dest.len() <= MERGE_CHUNK {
         seq_merge(a, b, dest);
         return;
@@ -219,7 +214,7 @@ fn timed_sort<F: FnOnce(&mut [u32])>(n: usize, f: F, name: &str) -> u64 {
     // Check correctness
     assert!(is_sorted(&mut v[..]));
 
-    return nanos
+    return nanos;
 }
 
 mod bench;

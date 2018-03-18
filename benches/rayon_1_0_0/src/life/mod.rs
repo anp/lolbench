@@ -21,7 +21,7 @@ pub struct Board {
     survive: Arc<Vec<usize>>,
     born: Arc<Vec<usize>>,
     rows: usize,
-    cols: usize
+    cols: usize,
 }
 
 impl Board {
@@ -32,14 +32,21 @@ impl Board {
         Board::new_with_custom_rules(rows, cols, born, survive)
     }
 
-    fn new_with_custom_rules(rows: usize, cols: usize, born: Vec<usize>, survive: Vec<usize>) -> Board {
+    fn new_with_custom_rules(
+        rows: usize,
+        cols: usize,
+        born: Vec<usize>,
+        survive: Vec<usize>,
+    ) -> Board {
         let new_board = repeat(false).take(rows * cols).collect();
 
-        Board { board  : new_board,
-                born   : Arc::new(born),
-                survive: Arc::new(survive),
-                rows   : rows,
-                cols   : cols }
+        Board {
+            board: new_board,
+            born: Arc::new(born),
+            survive: Arc::new(survive),
+            rows: rows,
+            cols: cols,
+        }
     }
 
     fn len(&self) -> usize {
@@ -49,11 +56,13 @@ impl Board {
     fn next_board(&self, new_board: Vec<bool>) -> Board {
         assert!(new_board.len() == self.len());
 
-        Board { board  : new_board,
-                born   : self.born.clone(),
-                survive: self.survive.clone(),
-                rows   : self.rows,
-                cols   : self.cols }
+        Board {
+            board: new_board,
+            born: self.born.clone(),
+            survive: self.survive.clone(),
+            rows: self.rows,
+            cols: self.cols,
+        }
     }
 
     pub fn random(&self) -> Board {
@@ -63,7 +72,9 @@ impl Board {
     }
 
     pub fn next_generation(&self) -> Board {
-        let new_brd = (0..self.len()).map(|cell| self.successor_cell(cell)).collect();
+        let new_brd = (0..self.len())
+            .map(|cell| self.successor_cell(cell))
+            .collect();
 
         self.next_board(new_brd)
     }
@@ -85,9 +96,14 @@ impl Board {
         let Wrapping(x_1) = Wrapping(x) - Wrapping(1);
         let Wrapping(y_1) = Wrapping(y) - Wrapping(1);
         let neighbors = [
-            self.cell_live(x_1, y_1), self.cell_live(x, y_1), self.cell_live(x+1, y_1),
-            self.cell_live(x_1, y+0),                         self.cell_live(x+1, y+0),
-            self.cell_live(x_1, y+1), self.cell_live(x, y+1), self.cell_live(x+1, y+1),
+            self.cell_live(x_1, y_1),
+            self.cell_live(x, y_1),
+            self.cell_live(x + 1, y_1),
+            self.cell_live(x_1, y + 0),
+            self.cell_live(x + 1, y + 0),
+            self.cell_live(x_1, y + 1),
+            self.cell_live(x, y + 1),
+            self.cell_live(x + 1, y + 1),
         ];
         neighbors.iter().filter(|&x| *x).count()
     }
@@ -121,12 +137,16 @@ fn test_life() {
 
 fn generations(board: Board, gens: usize) {
     let mut brd = board;
-    for _ in 0..gens { brd = brd.next_generation(); }
+    for _ in 0..gens {
+        brd = brd.next_generation();
+    }
 }
 
 fn parallel_generations(board: Board, gens: usize) {
     let mut brd = board;
-    for _ in 0..gens { brd = brd.parallel_next_generation(); }
+    for _ in 0..gens {
+        brd = brd.parallel_next_generation();
+    }
 }
 
 fn measure(f: fn(Board, usize) -> (), args: &Args) -> u64 {

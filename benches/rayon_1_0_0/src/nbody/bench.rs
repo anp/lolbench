@@ -9,12 +9,13 @@ const BENCH_BODIES: usize = 1000;
 const BENCH_TICKS: usize = 10;
 
 fn nbody_bench<TICK>(b: &mut Bencher, mut tick: TICK)
-    where TICK: FnMut(&mut NBodyBenchmark)
+where
+    TICK: FnMut(&mut NBodyBenchmark),
 {
     let mut rng = XorShiftRng::from_seed([0, 1, 2, 3]);
     let mut benchmark = NBodyBenchmark::new(BENCH_BODIES, &mut rng);
     b.iter(|| {
-        for _ in 0 .. BENCH_TICKS {
+        for _ in 0..BENCH_TICKS {
             tick(&mut benchmark);
         }
     });

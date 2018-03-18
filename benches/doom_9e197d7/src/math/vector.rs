@@ -13,14 +13,17 @@ pub type Vec2<T> = VectorCons<T, VectorCons<T, VectorNil<T>>>;
 pub type Vec3<T> = VectorCons<T, Vec2<T>>;
 pub type Vec4<T> = VectorCons<T, Vec3<T>>;
 
-
-pub trait Vector: Mul<<Self as Vector>::Scalar, Output=Self>
-                + Div<<Self as Vector>::Scalar, Output=Self>
-                + Add<Output=Self> + Sub<Output=Self> + Zero
-                + Clone + PartialEq + PartialOrd
-                + Index<usize, Output=<Self as Vector>::Scalar>
-                + IndexMut<usize> {
-
+pub trait Vector
+    : Mul<<Self as Vector>::Scalar, Output = Self>
+    + Div<<Self as Vector>::Scalar, Output = Self>
+    + Add<Output = Self>
+    + Sub<Output = Self>
+    + Zero
+    + Clone
+    + PartialEq
+    + PartialOrd
+    + Index<usize, Output = <Self as Vector>::Scalar>
+    + IndexMut<usize> {
     type Scalar: Field;
 
     fn dot(&self, rhs: &Self) -> Self::Scalar;
@@ -38,21 +41,24 @@ pub trait Vector: Mul<<Self as Vector>::Scalar, Output=Self>
 
     #[inline]
     fn norm(&self) -> Self::Scalar
-        where Self::Scalar: Float
+    where
+        Self::Scalar: Float,
     {
         self.squared_norm().sqrt()
     }
 
     #[inline]
     fn normalize(&mut self)
-        where Self::Scalar: Float
+    where
+        Self::Scalar: Float,
     {
         *self = self.clone().normalized();
     }
 
     #[inline]
     fn normalized(self) -> Self
-        where Self::Scalar: Float
+    where
+        Self::Scalar: Float,
     {
         let norm = self.norm();
         if norm == Self::Scalar::zero() {
@@ -63,16 +69,31 @@ pub trait Vector: Mul<<Self as Vector>::Scalar, Output=Self>
     }
 }
 
-
-pub trait Field: Mul<Output=Self> + Div<Output=Self>
-               + Add<Output=Self> + Sub<Output=Self>
-               + Zero + One + Clone + PartialEq + PartialOrd {}
+pub trait Field
+    : Mul<Output = Self>
+    + Div<Output = Self>
+    + Add<Output = Self>
+    + Sub<Output = Self>
+    + Zero
+    + One
+    + Clone
+    + PartialEq
+    + PartialOrd {
+}
 
 impl<S> Field for S
-    where S: Mul<Output=S> + Div<Output=S>
-           + Add<Output=S> + Sub<Output=S>
-           + Zero + One + Clone + PartialEq + PartialOrd {}
-
+where
+    S: Mul<Output = S>
+        + Div<Output = S>
+        + Add<Output = S>
+        + Sub<Output = S>
+        + Zero
+        + One
+        + Clone
+        + PartialEq
+        + PartialOrd,
+{
+}
 
 #[repr(C)]
 #[derive(Copy, Clone, PartialEq, PartialOrd)]
@@ -111,7 +132,9 @@ impl<Scalar: Field> Sub for VectorNil<Scalar> {
 }
 
 impl<Scalar> Neg for VectorNil<Scalar>
-        where Scalar: Field + Neg<Output=Scalar> {
+where
+    Scalar: Field + Neg<Output = Scalar>,
+{
     type Output = Self;
     #[inline]
     fn neg(self) -> Self {
@@ -136,16 +159,20 @@ impl<Scalar: Field> Index<usize> for VectorNil<Scalar> {
 
     #[inline]
     fn index(&self, index: usize) -> &Self::Output {
-        panic!("index out of bounds: the len is 0 but the index is {}",
-               index);
+        panic!(
+            "index out of bounds: the len is 0 but the index is {}",
+            index
+        );
     }
 }
 
 impl<Scalar: Field> IndexMut<usize> for VectorNil<Scalar> {
     #[inline]
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
-        panic!("index out of bounds: the len is 0 but the index is {}",
-               index);
+        panic!(
+            "index out of bounds: the len is 0 but the index is {}",
+            index
+        );
     }
 }
 
@@ -178,7 +205,10 @@ impl<Scalar: Field> Vector for VectorNil<Scalar> {
 pub struct VectorCons<Scalar: Field, Tail: Vector<Scalar = Scalar>>(Scalar, Tail);
 
 impl<Scalar, Tail> Mul<Scalar> for VectorCons<Scalar, Tail>
-        where Scalar: Field, Tail: Vector<Scalar=Scalar> {
+where
+    Scalar: Field,
+    Tail: Vector<Scalar = Scalar>,
+{
     type Output = Self;
     #[inline]
     fn mul(self, rhs: Scalar) -> Self {
@@ -187,7 +217,10 @@ impl<Scalar, Tail> Mul<Scalar> for VectorCons<Scalar, Tail>
 }
 
 impl<Scalar, Tail> Div<Scalar> for VectorCons<Scalar, Tail>
-        where Scalar: Field, Tail: Vector<Scalar=Scalar> {
+where
+    Scalar: Field,
+    Tail: Vector<Scalar = Scalar>,
+{
     type Output = Self;
     #[inline]
     fn div(self, rhs: Scalar) -> Self {
@@ -196,7 +229,10 @@ impl<Scalar, Tail> Div<Scalar> for VectorCons<Scalar, Tail>
 }
 
 impl<Scalar, Tail> Add for VectorCons<Scalar, Tail>
-        where Scalar: Field, Tail: Vector<Scalar=Scalar> {
+where
+    Scalar: Field,
+    Tail: Vector<Scalar = Scalar>,
+{
     type Output = Self;
     #[inline]
     fn add(self, rhs: Self) -> Self {
@@ -205,7 +241,10 @@ impl<Scalar, Tail> Add for VectorCons<Scalar, Tail>
 }
 
 impl<Scalar, Tail> Sub for VectorCons<Scalar, Tail>
-        where Scalar: Field, Tail: Vector<Scalar=Scalar> {
+where
+    Scalar: Field,
+    Tail: Vector<Scalar = Scalar>,
+{
     type Output = Self;
     #[inline]
     fn sub(self, rhs: Self) -> Self {
@@ -214,8 +253,10 @@ impl<Scalar, Tail> Sub for VectorCons<Scalar, Tail>
 }
 
 impl<Scalar, Tail> Neg for VectorCons<Scalar, Tail>
-        where Scalar: Field + Neg<Output=Scalar>,
-              Tail: Vector<Scalar=Scalar> + Neg<Output=Tail> {
+where
+    Scalar: Field + Neg<Output = Scalar>,
+    Tail: Vector<Scalar = Scalar> + Neg<Output = Tail>,
+{
     type Output = Self;
     #[inline]
     fn neg(self) -> Self {
@@ -224,7 +265,10 @@ impl<Scalar, Tail> Neg for VectorCons<Scalar, Tail>
 }
 
 impl<Scalar, Tail> Zero for VectorCons<Scalar, Tail>
-        where Scalar: Field, Tail: Vector<Scalar=Scalar> {
+where
+    Scalar: Field,
+    Tail: Vector<Scalar = Scalar>,
+{
     #[inline]
     fn zero() -> Self {
         VectorCons(Scalar::zero(), Tail::zero())
@@ -237,36 +281,46 @@ impl<Scalar, Tail> Zero for VectorCons<Scalar, Tail>
 }
 
 impl<Scalar, Tail> Index<usize> for VectorCons<Scalar, Tail>
-        where Scalar: Field, Tail: Vector<Scalar=Scalar> {
+where
+    Scalar: Field,
+    Tail: Vector<Scalar = Scalar>,
+{
     type Output = Scalar;
 
     #[inline]
     fn index(&self, index: usize) -> &Self::Output {
-        self.get(index)
-            .unwrap_or_else(|| {
-                panic!("index out of bounds: the len is {} but the index is {}",
-                       self.len(),
-                       index);
-            })
+        self.get(index).unwrap_or_else(|| {
+            panic!(
+                "index out of bounds: the len is {} but the index is {}",
+                self.len(),
+                index
+            );
+        })
     }
 }
 
 impl<Scalar, Tail> IndexMut<usize> for VectorCons<Scalar, Tail>
-        where Scalar: Field, Tail: Vector<Scalar=Scalar> {
+where
+    Scalar: Field,
+    Tail: Vector<Scalar = Scalar>,
+{
     #[inline]
     fn index_mut(&mut self, index: usize) -> &mut Self::Output {
         let len = self.len();
-        self.get_mut(index)
-            .unwrap_or_else(|| {
-                panic!("index out of bounds: the len is {} but the index is {}",
-                       len,
-                       index);
-            })
+        self.get_mut(index).unwrap_or_else(|| {
+            panic!(
+                "index out of bounds: the len is {} but the index is {}",
+                len, index
+            );
+        })
     }
 }
 
 impl<Scalar, Tail> Vector for VectorCons<Scalar, Tail>
-        where Scalar: Field, Tail: Vector<Scalar=Scalar> {
+where
+    Scalar: Field,
+    Tail: Vector<Scalar = Scalar>,
+{
     type Scalar = Scalar;
 
     #[inline]
@@ -311,14 +365,16 @@ impl<Scalar: Field> Vec2<Scalar> {
 
     #[inline]
     pub fn angle(&self) -> Scalar
-        where Scalar: Float
+    where
+        Scalar: Float,
     {
         self.0.clone().atan2((self.1).0.clone())
     }
 
     #[inline]
     pub fn normal(self) -> Vec2<Scalar>
-        where Scalar: Neg<Output = Scalar>
+    where
+        Scalar: Neg<Output = Scalar>,
     {
         Vec2::new(-(self.1).0, self.0)
     }
@@ -341,9 +397,11 @@ impl<Scalar: Field> Vec3<Scalar> {
         let (rx, ry, rz) = (rhs.0, (rhs.1).0, ((rhs.1).1).0);
         let (lx2, ly2, lz2) = (lx.clone(), ly.clone(), lz.clone());
         let (rx2, ry2, rz2) = (rx.clone(), ry.clone(), rz.clone());
-        Vec3::new(ly * rz - lz * ry,
-                  lz2 * rx - lx * rz2,
-                  lx2 * ry2 - ly2 * rx2)
+        Vec3::new(
+            ly * rz - lz * ry,
+            lz2 * rx - lx * rz2,
+            lx2 * ry2 - ly2 * rx2,
+        )
     }
 }
 
@@ -354,7 +412,10 @@ impl<Scalar: Field> Debug for VectorNil<Scalar> {
 }
 
 impl<Scalar, Tail> Debug for VectorCons<Scalar, Tail>
-        where Scalar: Field + Debug, Tail: Vector<Scalar=Scalar> + FmtTail {
+where
+    Scalar: Field + Debug,
+    Tail: Vector<Scalar = Scalar> + FmtTail,
+{
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
         try!(write!(fmt, "[{:?}", self.0));
         self.1.fmt_tail(fmt)
@@ -372,7 +433,10 @@ impl<Scalar: Field> FmtTail for VectorNil<Scalar> {
 }
 
 impl<Scalar, Tail> FmtTail for VectorCons<Scalar, Tail>
-        where Scalar: Field + Debug, Tail: Vector<Scalar=Scalar> + FmtTail {
+where
+    Scalar: Field + Debug,
+    Tail: Vector<Scalar = Scalar> + FmtTail,
+{
     fn fmt_tail(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
         try!(write!(fmt, ", {:?}", self.0));
         self.1.fmt_tail(fmt)

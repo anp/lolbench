@@ -15,16 +15,16 @@ extern crate toml;
 extern crate vec_map;
 
 pub use archive::Archive;
+pub use error::{Error, Result};
 pub use image::Image;
 pub use level::Level;
-pub use meta::WadMetadata;
+pub use light::{LightEffect, LightEffectKind, LightInfo};
 pub use meta::SkyMetadata;
 pub use meta::ThingMetadata;
+pub use meta::WadMetadata;
 pub use name::WadName;
 pub use tex::TextureDirectory;
-pub use error::{Error, Result};
-pub use visitor::{LevelVisitor, LevelWalker, Branch, Marker};
-pub use light::{LightEffect, LightEffectKind, LightInfo};
+pub use visitor::{Branch, LevelVisitor, LevelWalker, Marker};
 
 mod name;
 mod archive;

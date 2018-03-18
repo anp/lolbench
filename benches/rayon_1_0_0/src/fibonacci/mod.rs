@@ -30,11 +30,12 @@ fn fib_iterative(n: u32) -> u32 {
 }
 
 fn fib_recursive(n: u32) -> u32 {
-    if n < 2 { return n; }
+    if n < 2 {
+        return n;
+    }
 
     fib_recursive(n - 1) + fib_recursive(n - 2)
 }
-
 
 /// Compute the Fibonacci number recursively, without any parallelism.
 wrap_libtest! {
@@ -42,7 +43,6 @@ wrap_libtest! {
         b.iter(|| assert_eq!(fib_recursive(black_box(N)), FN));
     }
 }
-
 
 /// Compute the Fibonacci number recursively, using rayon::join.
 /// The larger branch F(N-1) is computed first.
@@ -61,7 +61,6 @@ wrap_libtest! {
     }
 }
 
-
 /// Compute the Fibonacci number recursively, using rayon::join.
 /// The smaller branch F(N-2) is computed first.
 wrap_libtest! {
@@ -78,7 +77,6 @@ wrap_libtest! {
         b.iter(|| assert_eq!(fib(black_box(N)), FN));
     }
 }
-
 
 /// Compute the Fibonacci number recursively, using rayon::iter::split to parallelize.
 wrap_libtest! {
@@ -101,7 +99,6 @@ wrap_libtest! {
     }
 }
 
-
 /// Compute the Fibonacci number iteratively, using rayon::iter::split to parallelize.
 wrap_libtest! {
     fn fibonacci_split_iterative(b: &mut Bencher) {
@@ -122,7 +119,6 @@ wrap_libtest! {
         b.iter(|| assert_eq!(fib(black_box(N)), FN));
     }
 }
-
 
 /// Compute the Fibonacci number iteratively, just to show how silly the others
 /// are. Parallelism can't make up for a bad choice of algorithm.
