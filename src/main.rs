@@ -342,8 +342,14 @@ criterion_group!(
     regex_0_2_6::rust_compile::compile_small_bytes,
     regex_0_2_6::rust_compile::compile_small_full,
     regex_0_2_6::rust_compile::compile_huge,
-    regex_0_2_6::rust_compile::compile_huge_bytes,
-    regex_0_2_6::rust_compile::compile_huge_full,
+
+    // Benchmarking regex_0_2_6::rust_compile::compile_huge_bytes: Warming up for 3.0000 sthread 'main' panicked at 
+    // 'called `Result::unwrap()` on an `Err` value: CompiledTooBig(10485760)', /checkout/src/libcore/result.rs:916:5
+    // regex_0_2_6::rust_compile::compile_huge_bytes,
+
+    // Benchmarking regex_0_2_6::rust_compile::compile_huge_full: Warming up for 3.0000 sthread 'main' panicked at 
+    // 'called `Result::unwrap()` on an `Err` value: CompiledTooBig(10485760)', /checkout/src/libcore/result.rs:916:5
+    // regex_0_2_6::rust_compile::compile_huge_full,
     regex_0_2_6::rust_parse::parse_simple,
     regex_0_2_6::rust_parse::parse_simple2,
     regex_0_2_6::rust_parse::parse_small,
