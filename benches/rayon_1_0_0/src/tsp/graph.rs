@@ -17,7 +17,9 @@ impl Graph {
     pub fn new(num_nodes: usize) -> Graph {
         Graph {
             num_nodes: num_nodes,
-            weights: iter::repeat(Weight::max()).take(num_nodes * num_nodes).collect(),
+            weights: iter::repeat(Weight::max())
+                .take(num_nodes * num_nodes)
+                .collect(),
         }
     }
 
@@ -30,7 +32,9 @@ impl Graph {
     }
 
     pub fn node_set(&self) -> NodeSet {
-        NodeSet { bits: FixedBitSet::with_capacity(self.num_nodes) }
+        NodeSet {
+            bits: FixedBitSet::with_capacity(self.num_nodes),
+        }
     }
 
     fn edge_index(&self, source: Node, target: Node) -> usize {
@@ -45,11 +49,19 @@ impl Graph {
 
     pub fn edge_weight(&self, source: Node, target: Node) -> Option<Weight> {
         let w = self.weights[self.edge_index(source, target)];
-        if w.is_max() { None } else { Some(w) }
+        if w.is_max() {
+            None
+        } else {
+            Some(w)
+        }
     }
 
     pub fn edges<'a>(&'a self, source: Node) -> Edges<'a> {
-        Edges { graph: self, source: source, nodes_iter: self.all_nodes() }
+        Edges {
+            graph: self,
+            source: source,
+            nodes_iter: self.all_nodes(),
+        }
     }
 }
 
@@ -64,15 +76,14 @@ impl<'graph> Iterator for Edges<'graph> {
 
     fn next(&mut self) -> Option<Self::Item> {
         self.nodes_iter.next().and_then(move |target| {
-                self.graph.edge_weight(self.source, target)
-                    .map(|weight| {
-                        Edge {
-                            source: self.source,
-                            target: target,
-                            weight: weight,
-                        }
-                    })
-            })
+            self.graph
+                .edge_weight(self.source, target)
+                .map(|weight| Edge {
+                    source: self.source,
+                    target: target,
+                    weight: weight,
+                })
+        })
     }
 }
 

@@ -27,14 +27,8 @@ pub fn new_light(level: &Level, sector: &WadSector) -> LightInfo {
     use LightEffectKind::*;
     let base_level = light_to_f32(sector.light);
     let alt_level = match sector.sector_type {
-        FLASH |
-        FAST_STROBE_1 |
-        FAST_STROBE_2 |
-        FAST_STROBE_SYNC |
-        SLOW_STROBE |
-        SLOW_STROBE_SYNC |
-        GLOW |
-        FLICKER => {
+        FLASH | FAST_STROBE_1 | FAST_STROBE_2 | FAST_STROBE_SYNC | SLOW_STROBE
+        | SLOW_STROBE_SYNC | GLOW | FLICKER => {
             let alt_level = light_to_f32(level.sector_min_light(sector));
             if alt_level == base_level {
                 return LightInfo {
@@ -45,10 +39,12 @@ pub fn new_light(level: &Level, sector: &WadSector) -> LightInfo {
                 alt_level
             }
         }
-        _ => return LightInfo {
-            level: base_level,
-            effect: None,
-        },
+        _ => {
+            return LightInfo {
+                level: base_level,
+                effect: None,
+            }
+        }
     };
     let sync = match sector.sector_type {
         SLOW_STROBE_SYNC | FAST_STROBE_SYNC | GLOW => 0.0,
@@ -58,8 +54,9 @@ pub fn new_light(level: &Level, sector: &WadSector) -> LightInfo {
         FLASH => (Random, FLASH_SPEED, FLASH_DURATION),
         FLICKER => (Random, FLICKER_SPEED, FLICKER_DURATION),
         SLOW_STROBE | SLOW_STROBE_SYNC => (Alternate, SLOW_STROBE_SPEED, SLOW_STROBE_DURATION),
-        FAST_STROBE_1 | FAST_STROBE_2 | FAST_STROBE_SYNC =>
-            (Alternate, FAST_STROBE_SPEED, FAST_STROBE_DURATION),
+        FAST_STROBE_1 | FAST_STROBE_2 | FAST_STROBE_SYNC => {
+            (Alternate, FAST_STROBE_SPEED, FAST_STROBE_DURATION)
+        }
         GLOW => (Glow, GLOW_SPEED, 0.0),
         _ => unreachable!(),
     };
@@ -81,7 +78,10 @@ pub fn with_contrast(light_info: &LightInfo, contrast: Contrast) -> LightInfo {
         Contrast::Darken => -2.0 / 31.0,
         Contrast::Brighten => 2.0 / 31.0,
     };
-    LightInfo { level: clamp(light_info.level + contrast), ..light_info.clone() }
+    LightInfo {
+        level: clamp(light_info.level + contrast),
+        ..light_info.clone()
+    }
 }
 
 fn clamp(level: f32) -> f32 {
@@ -93,7 +93,6 @@ fn clamp(level: f32) -> f32 {
         level
     }
 }
-
 
 #[derive(Eq, PartialEq, Copy, Clone, Debug)]
 pub enum Contrast {

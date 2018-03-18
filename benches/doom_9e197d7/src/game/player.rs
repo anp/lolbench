@@ -2,10 +2,9 @@ use camera::Camera;
 use ctrl::{Analog2d, Gesture};
 use ctrl::GameController;
 use level::Level;
-use math::{Vec3f, Vector, Sphere};
-use sdl2::keyboard::Scancode;
+use math::{Sphere, Vec3f, Vector};
 use num::{Float, Zero};
-
+use sdl2::keyboard::Scancode;
 
 pub struct PlayerBindings {
     pub movement: Analog2d,
@@ -18,15 +17,25 @@ pub struct PlayerBindings {
 impl Default for PlayerBindings {
     fn default() -> PlayerBindings {
         PlayerBindings {
-            movement: Analog2d::Gestures(Gesture::AnyOf(vec![Gesture::KeyHold(Scancode::D),
-                                                             Gesture::KeyHold(Scancode::Right)]),
-                                         Gesture::AnyOf(vec![Gesture::KeyHold(Scancode::A),
-                                                             Gesture::KeyHold(Scancode::Left)]),
-                                         Gesture::AnyOf(vec![Gesture::KeyHold(Scancode::W),
-                                                             Gesture::KeyHold(Scancode::Up)]),
-                                         Gesture::AnyOf(vec![Gesture::KeyHold(Scancode::S),
-                                                             Gesture::KeyHold(Scancode::Down)]),
-                                         1.0),
+            movement: Analog2d::Gestures(
+                Gesture::AnyOf(vec![
+                    Gesture::KeyHold(Scancode::D),
+                    Gesture::KeyHold(Scancode::Right),
+                ]),
+                Gesture::AnyOf(vec![
+                    Gesture::KeyHold(Scancode::A),
+                    Gesture::KeyHold(Scancode::Left),
+                ]),
+                Gesture::AnyOf(vec![
+                    Gesture::KeyHold(Scancode::W),
+                    Gesture::KeyHold(Scancode::Up),
+                ]),
+                Gesture::AnyOf(vec![
+                    Gesture::KeyHold(Scancode::S),
+                    Gesture::KeyHold(Scancode::Down),
+                ]),
+                1.0,
+            ),
             look: Analog2d::Mouse(0.002),
             jump: Gesture::KeyHold(Scancode::Space),
             fly: Gesture::KeyTrigger(Scancode::F),
@@ -34,7 +43,6 @@ impl Default for PlayerBindings {
         }
     }
 }
-
 
 pub struct Player {
     bindings: PlayerBindings,
@@ -52,7 +60,6 @@ pub struct Player {
     ground_drag: f32,
     friction: f32,
 }
-
 
 impl Player {
     pub fn new(fov: f32, aspect_ratio: f32, bindings: PlayerBindings) -> Player {
@@ -82,7 +89,6 @@ impl Player {
         self
     }
 
-
     pub fn update(&mut self, delta_time: f32, controller: &GameController, level: &Level) {
         if controller.poll_gesture(&self.bindings.fly) {
             self.fly = !self.fly;
@@ -103,7 +109,8 @@ impl Player {
             self.noclip(delta_time, &mut head, level);
         }
 
-        self.camera.set_position(head.center + Vec3f::new(0.0, 0.12, 0.0));
+        self.camera
+            .set_position(head.center + Vec3f::new(0.0, 0.12, 0.0));
         self.velocity = self.velocity + force * delta_time;
     }
 
@@ -117,8 +124,8 @@ impl Player {
                     let time = clamp(contact.time, (0.0, 1.0));
                     let displacement = displacement * adjusted_time;
                     head.center = head.center + displacement;
-                    self.velocity = self.velocity -
-                                    contact.normal * contact.normal.dot(&self.velocity);
+                    self.velocity =
+                        self.velocity - contact.normal * contact.normal.dot(&self.velocity);
                     time_left *= 1.0 - time;
                     continue;
                 }
@@ -138,8 +145,10 @@ impl Player {
                 center: head.center + Vec3f::new(0.0, height / 2.0, 0.0),
                 ..*head
             };
-            let height = match level.volume()
-                                    .sweep_sphere(&probe, &Vec3f::new(0.0, -height, 0.0)) {
+            let height = match level
+                .volume()
+                .sweep_sphere(&probe, &Vec3f::new(0.0, -height, 0.0))
+            {
                 Some(contact) => head.center[1] + height * (0.5 - contact.time),
                 None => old_height,
             };
@@ -163,20 +172,18 @@ impl Player {
         self.camera.set_pitch(pitch);
 
         if self.fly {
-            let up = if jump {
-                0.5
-            } else {
-                0.0
-            };
-            Vec3f::new(yaw.cos() * movement[0] + yaw.sin() * movement[1] * pitch.cos(),
-                       -pitch.sin() * movement[1] + up,
-                       -yaw.cos() * movement[1] * pitch.cos() + yaw.sin() * movement[0])
-                .normalized() * self.move_force
+            let up = if jump { 0.5 } else { 0.0 };
+            Vec3f::new(
+                yaw.cos() * movement[0] + yaw.sin() * movement[1] * pitch.cos(),
+                -pitch.sin() * movement[1] + up,
+                -yaw.cos() * movement[1] * pitch.cos() + yaw.sin() * movement[0],
+            ).normalized() * self.move_force
         } else {
-            let movement = Vec3f::new(yaw.cos() * movement[0] + yaw.sin() * movement[1],
-                                      0.0,
-                                      -yaw.cos() * movement[1] + yaw.sin() * movement[0])
-                               .normalized() * self.move_force;
+            let movement = Vec3f::new(
+                yaw.cos() * movement[0] + yaw.sin() * movement[1],
+                0.0,
+                -yaw.cos() * movement[1] + yaw.sin() * movement[0],
+            ).normalized() * self.move_force;
             if grounded {
                 if jump && self.velocity[1] < 0.1 {
                     Vec3f::new(movement[0], 5.0 / delta_time, movement[2])
@@ -189,26 +196,30 @@ impl Player {
         }
     }
 
-    fn force(&mut self,
-             head: &Sphere,
-             delta_time: f32,
-             ctrl: &GameController,
-             level: &Level)
-             -> Vec3f {
-        let feet = Sphere { radius: 0.2, ..*head };
+    fn force(
+        &mut self,
+        head: &Sphere,
+        delta_time: f32,
+        ctrl: &GameController,
+        level: &Level,
+    ) -> Vec3f {
+        let feet = Sphere {
+            radius: 0.2,
+            ..*head
+        };
         let feet_probe = Vec3f::new(0.0, -self.height, 0.0);
-        let (height, normal) = if let Some(contact) = level.volume()
-                                                           .sweep_sphere(&feet, &feet_probe) {
-            if contact.time < 1.0 {
-                (self.height * contact.time, Some(contact.normal))
-            } else if contact.time < 1.0 {
-                (self.height, Some(contact.normal))
+        let (height, normal) =
+            if let Some(contact) = level.volume().sweep_sphere(&feet, &feet_probe) {
+                if contact.time < 1.0 {
+                    (self.height * contact.time, Some(contact.normal))
+                } else if contact.time < 1.0 {
+                    (self.height, Some(contact.normal))
+                } else {
+                    (self.height, None)
+                }
             } else {
                 (self.height, None)
-            }
-        } else {
-            (self.height, None)
-        };
+            };
         let mut force: Vec3f = self.move_force(delta_time, normal.is_some(), ctrl);
         let speed = self.velocity.norm();
         if speed > 0.0 {

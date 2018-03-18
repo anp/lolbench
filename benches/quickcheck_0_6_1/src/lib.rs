@@ -44,7 +44,8 @@ bench_shrink! {
     (shrink_vec_u8_5_tuple, (Vec<u8>, Vec<u8>, Vec<u8>, Vec<u8>, Vec<u8>)),
     (shrink_vec_u8_6_tuple, (Vec<u8>, Vec<u8>, Vec<u8>, Vec<u8>, Vec<u8>, Vec<u8>)),
     (shrink_vec_u8_7_tuple, (Vec<u8>, Vec<u8>, Vec<u8>, Vec<u8>, Vec<u8>, Vec<u8>, Vec<u8>)),
-    (shrink_vec_u8_8_tuple, (Vec<u8>, Vec<u8>, Vec<u8>, Vec<u8>, Vec<u8>, Vec<u8>, Vec<u8>, Vec<u8>)),
+    (shrink_vec_u8_8_tuple,
+        (Vec<u8>, Vec<u8>, Vec<u8>, Vec<u8>, Vec<u8>, Vec<u8>, Vec<u8>, Vec<u8>)),
 
     (shrink_u64_1_tuple, (u64,)),
     (shrink_u64_2_tuple, (u64, u64)),

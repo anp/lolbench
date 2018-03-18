@@ -1,6 +1,6 @@
+use std::error::Error;
 use std::fmt::{Display, Formatter, Result as FmtResult};
 use std::marker::PhantomData;
-use std::error::Error;
 
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub enum GliumCreationError<T> {
@@ -8,14 +8,18 @@ pub enum GliumCreationError<T> {
     IncompatibleOpenGl(String),
 }
 
-impl<T: Error> Display for GliumCreationError<T> where T: Error
+impl<T: Error> Display for GliumCreationError<T>
+where
+    T: Error,
 {
     fn fmt(&self, fmt: &mut Formatter) -> FmtResult {
         write!(fmt, "glium-creation-error")
     }
 }
 
-impl<T: Error> Error for GliumCreationError<T> where T: Error
+impl<T: Error> Error for GliumCreationError<T>
+where
+    T: Error,
 {
     fn description(&self) -> &str {
         "glium-creation-error"
@@ -33,7 +37,7 @@ pub mod uniforms {
         fn as_uniform_value(&self) -> UniformValue;
     }
 
-    #[derive(Debug,Copy, Clone)]
+    #[derive(Debug, Copy, Clone)]
     pub enum UniformValue<'a> {
         Texture2d(&'a super::texture::Texture2d, Option<SamplerBehavior>),
         Float(f32),
@@ -51,9 +55,11 @@ pub mod uniforms {
 
     #[derive(Copy, Clone, Debug)]
     pub struct SamplerBehavior {
-        pub wrap_function: (SamplerWrapFunction,
-                            SamplerWrapFunction,
-                            SamplerWrapFunction),
+        pub wrap_function: (
+            SamplerWrapFunction,
+            SamplerWrapFunction,
+            SamplerWrapFunction,
+        ),
         pub minify_filter: MinifySamplerFilter,
         pub magnify_filter: MagnifySamplerFilter,
         pub max_anisotropy: u16,
@@ -97,9 +103,10 @@ impl Default for BackfaceCullingMode {
 pub struct VertexBuffer<T: Copy>(PhantomData<T>);
 
 impl<T: Copy> VertexBuffer<T> {
-    pub fn immutable<F>(_facade: &F,
-                        _data: &[T])
-                        -> Result<VertexBuffer<T>, vertex::BufferCreationError> {
+    pub fn immutable<F>(
+        _facade: &F,
+        _data: &[T],
+    ) -> Result<VertexBuffer<T>, vertex::BufferCreationError> {
         Ok(VertexBuffer(PhantomData))
     }
 }
@@ -146,17 +153,19 @@ impl Surface for Frame {}
 pub struct Program;
 
 impl Program {
-    pub fn new<F>(_facade: &F,
-                  _input: program::ProgramCreationInput)
-                  -> Result<Program, ProgramCreationError> {
+    pub fn new<F>(
+        _facade: &F,
+        _input: program::ProgramCreationInput,
+    ) -> Result<Program, ProgramCreationError> {
         Ok(Program)
     }
 
-    pub fn from_source<F>(_facade: &F,
-                          _vertex_src: &str,
-                          _frag_src: &str,
-                          _geom_src: Option<&str>)
-                          -> Result<Program, ProgramCreationError> {
+    pub fn from_source<F>(
+        _facade: &F,
+        _vertex_src: &str,
+        _frag_src: &str,
+        _geom_src: Option<&str>,
+    ) -> Result<Program, ProgramCreationError> {
         Ok(Program)
     }
 }
@@ -172,19 +181,21 @@ pub mod texture {
     }
 
     impl Texture2d {
-        pub fn new<'a, F, T: Clone>(_facade: &F,
-                                    image: RawImage2d<'a, T>)
-                                    -> Result<Texture2d, TextureCreationError> {
+        pub fn new<'a, F, T: Clone>(
+            _facade: &F,
+            image: RawImage2d<'a, T>,
+        ) -> Result<Texture2d, TextureCreationError> {
             Ok(Texture2d {
                 width: image.width,
                 height: image.height,
             })
         }
 
-        pub fn empty<F>(_facade: &F,
-                        width: u32,
-                        height: u32)
-                        -> Result<Texture2d, TextureCreationError> {
+        pub fn empty<F>(
+            _facade: &F,
+            width: u32,
+            height: u32,
+        ) -> Result<Texture2d, TextureCreationError> {
             Ok(Texture2d {
                 width: width,
                 height: height,
@@ -228,15 +239,16 @@ pub mod texture {
     }
 
     pub mod buffer_texture {
-        use std::fmt::{Display, Formatter, Result as FmtResult};
         use super::super::buffer::Mapping;
+        use std::fmt::{Display, Formatter, Result as FmtResult};
         pub struct BufferTexture<T: Default + Clone>(Vec<T>);
 
         impl<T: Default + Clone> BufferTexture<T> {
-            pub fn empty_persistent<F>(_facade: &F,
-                                       size: usize,
-                                       _type: BufferTextureType)
-                                       -> Result<BufferTexture<T>, CreationError> {
+            pub fn empty_persistent<F>(
+                _facade: &F,
+                size: usize,
+                _type: BufferTextureType,
+            ) -> Result<BufferTexture<T>, CreationError> {
                 Ok(BufferTexture(vec![T::default(); size]))
             }
 
@@ -244,7 +256,6 @@ pub mod texture {
                 Mapping(&mut self.0[..])
             }
         }
-
 
         impl<T: Clone + Default> super::super::uniforms::AsUniformValue for BufferTexture<T> {
             fn as_uniform_value(&self) -> super::super::uniforms::UniformValue {
@@ -267,7 +278,6 @@ pub mod texture {
                 write!(fmt, "{:?}", self)
             }
         }
-
 
         #[derive(Debug)]
         pub enum CreationError {
@@ -373,18 +383,10 @@ pub enum DrawError {
     AttributeMissing,
     ViewportTooLarge,
     InvalidDepthRange,
-    UniformTypeMismatch {
-        _dummy: (),
-    },
-    UniformBufferToValue {
-        _dummy: (),
-    },
-    UniformValueToBlock {
-        _dummy: (),
-    },
-    UniformBlockLayoutMismatch {
-        _dummy: (),
-    },
+    UniformTypeMismatch { _dummy: () },
+    UniformBufferToValue { _dummy: () },
+    UniformValueToBlock { _dummy: () },
+    UniformBlockLayoutMismatch { _dummy: () },
     UnsupportedVerticesPerPatch,
     TessellationNotSupported,
     TessellationWithoutPatches,
@@ -401,14 +403,16 @@ pub enum DrawError {
 }
 
 pub trait Surface: Sized {
-    fn draw<'a, 'b, T: Copy, U>(&mut self,
-                                _v: &VertexBuffer<T>,
-                                _i: index::NoIndices,
-                                _p: &Program,
-                                _u: &U,
-                                _d: &DrawParameters)
-                                -> Result<(), DrawError>
-        where U: uniforms::Uniforms
+    fn draw<'a, 'b, T: Copy, U>(
+        &mut self,
+        _v: &VertexBuffer<T>,
+        _i: index::NoIndices,
+        _p: &Program,
+        _u: &U,
+        _d: &DrawParameters,
+    ) -> Result<(), DrawError>
+    where
+        U: uniforms::Uniforms,
     {
         Ok(())
     }
@@ -423,7 +427,6 @@ pub mod index {
         TriangleStrip,
     }
 }
-
 
 #[macro_export]
 macro_rules! implement_vertex {

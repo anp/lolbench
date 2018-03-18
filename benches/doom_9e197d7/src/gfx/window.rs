@@ -1,15 +1,13 @@
 use error::Result;
-use glium_sdl2::{DisplayBuild, SDL2Facade};
 use glium::{Frame, Surface};
+use glium_sdl2::{DisplayBuild, SDL2Facade};
 use platform;
 use sdl2;
 use sdl2::Sdl;
 use sdl2::video::GLProfile;
 
-
 const WINDOW_TITLE: &'static str = "Rusty Doom v0.0.7";
 const OPENGL_DEPTH_SIZE: u8 = 24;
-
 
 pub struct Window {
     facade: SDL2Facade,
@@ -27,11 +25,14 @@ impl Window {
         gl_attr.set_depth_size(OPENGL_DEPTH_SIZE);
         gl_attr.set_double_buffer(true);
 
-        let facade = try!(video.window(WINDOW_TITLE, width as u32, height as u32)
-                               .position_centered()
-                               .opengl()
-                               .resizable()
-                               .build_glium());
+        let facade = try!(
+            video
+                .window(WINDOW_TITLE, width as u32, height as u32)
+                .position_centered()
+                .opengl()
+                .resizable()
+                .build_glium()
+        );
 
         sdl2::clear_error();
         Ok(Window {

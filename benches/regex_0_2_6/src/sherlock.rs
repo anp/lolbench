@@ -48,12 +48,17 @@ sherlock!(name_alt1, r"Sherlock|Street", 158);
 sherlock!(name_alt2, r"Sherlock|Holmes", 558);
 // Still using Aho-Corasick, but more patterns. Never enters lazy DFA but
 // also can't use any memchr variant.
-sherlock!(name_alt3, r"Sherlock|Holmes|Watson|Irene|Adler|John|Baker", 740);
+sherlock!(
+    name_alt3,
+    r"Sherlock|Holmes|Watson|Irene|Adler|John|Baker",
+    740
+);
 // Still using Aho-Corasick, but needs the lazy DFA.
 sherlock!(
     name_alt3_nocase,
     r"(?i)Sherlock|Holmes|Watson|Irene|Adler|John|Baker",
-    753);
+    753
+);
 // Should still use Aho-Corasick for the prefixes in each alternate, but
 // we need to use the lazy DFA to complete it.
 sherlock!(name_alt4, r"Sher[a-z]+|Hol[a-z]+", 582);
@@ -108,7 +113,11 @@ sherlock!(before_after_holmes, r"\w+\s+Holmes\s+\w+", 137);
 // Find Holmes co-occuring with Watson in a particular window of characters.
 // This uses Aho-Corasick for the Holmes|Watson prefix, but the lazy DFA for
 // the rest.
-sherlock!(holmes_cochar_watson, r"Holmes.{0,25}Watson|Watson.{0,25}Holmes", 7);
+sherlock!(
+    holmes_cochar_watson,
+    r"Holmes.{0,25}Watson|Watson.{0,25}Holmes",
+    7
+);
 
 // Find Holmes co-occuring with Watson in a particular window of words.
 // This uses Aho-Corasick for the Holmes|Watson prefix, but the lazy DFA for
@@ -116,7 +125,8 @@ sherlock!(holmes_cochar_watson, r"Holmes.{0,25}Watson|Watson.{0,25}Holmes", 7);
 sherlock!(
     holmes_coword_watson,
     r"Holmes(?:\s*.+\s*){0,10}Watson|Watson(?:\s*.+\s*){0,10}Holmes",
-    51);
+    51
+);
 
 // Find some subset of quotes in the text.
 // This does detect the `"` or `'` prefix literal and does a quick scan for
@@ -129,7 +139,8 @@ sherlock!(quotes, r#"["'][^"']{0,30}[?!.]["']"#, 767);
 sherlock!(
     line_boundary_sherlock_holmes,
     r"(?m)^Sherlock Holmes|Sherlock Holmes$",
-    34);
+    34
+);
 
 // All words ending in `n`. This uses Unicode word boundaries, which the DFA
 // can speculatively handle. Since this benchmark is on mostly ASCII text, it

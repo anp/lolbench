@@ -22,10 +22,16 @@ fn check_wad(wad_file: &str) {
     let sdl = sdl2::init().map_err(|e| GeneralError(e.0)).unwrap();
     let win = Window::new(&sdl, 128, 128).unwrap();
 
-    let wad = Archive::open(&wad_file, &concat!(env!("CARGO_MANIFEST_DIR"), "/doom.toml")).unwrap();
+    let wad = Archive::open(
+        &wad_file,
+        &concat!(env!("CARGO_MANIFEST_DIR"), "/doom.toml"),
+    ).unwrap();
     let textures = TextureDirectory::from_archive(&wad).unwrap();
     for level_index in 0..wad.num_levels() {
-        let mut scene = SceneBuilder::new(&win, PathBuf::from(concat!(env!("CARGO_MANIFEST_DIR"), "/src/shaders")));
+        let mut scene = SceneBuilder::new(
+            &win,
+            PathBuf::from(concat!(env!("CARGO_MANIFEST_DIR"), "/src/shaders")),
+        );
         Level::new(&wad, &textures, level_index, &mut scene).unwrap();
         scene.build().unwrap();
     }

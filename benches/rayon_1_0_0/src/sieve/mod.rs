@@ -14,8 +14,8 @@ const CHUNK_SIZE: usize = 100_000;
 // Number of Primes < 10^n
 // https://oeis.org/A006880
 const NUM_PRIMES: &'static [usize] = &[
-    0, // primes in 0..10^0
-    4, // primes in 0..10^1
+    0,  // primes in 0..10^0
+    4,  // primes in 0..10^1
     25, // etc
     168,
     1229,
@@ -47,11 +47,13 @@ fn max(magnitude: usize) -> usize {
 fn sieve_serial(max: usize) -> Vec<bool> {
     let mut sieve = vec![true; max / 2];
     sieve[0] = false; // 1 is not prime
-    for i in 1 .. {
+    for i in 1.. {
         if sieve[i] {
             let p = 2 * i + 1;
             let pp = p * p;
-            if pp >= max { break }
+            if pp >= max {
+                break;
+            }
             clear_stride(&mut sieve, pp / 2, p);
         }
     }
@@ -106,12 +108,16 @@ fn update_chunk(low: &[bool], chunk: &mut [bool], base: usize) {
         if is_prime {
             let p = 2 * i + 1;
             let pp = p * p;
-            if pp >= max { break }
+            if pp >= max {
+                break;
+            }
 
             let pm = if pp < base {
                 // p² is too small - find the first odd multiple that's in range
                 ((base + p - 1) / p | 1) * p
-            } else { pp };
+            } else {
+                pp
+            };
 
             if pm < max {
                 clear_stride(chunk, (pm - base) / 2, p);

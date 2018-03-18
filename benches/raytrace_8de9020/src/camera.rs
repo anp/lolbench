@@ -1,23 +1,30 @@
 use rand::XorShiftRng;
-use vec::{Vec3, Ray, random_in_unit_disc};
+use vec::{random_in_unit_disc, Ray, Vec3};
 
 use std::f32::consts::PI;
 
 #[derive(Clone, Copy, Debug)]
 pub struct Camera {
     origin: Vec3,
-    u: Vec3,  // unit vector in direction of x coordinates
-    v: Vec3,  // unit vector in dirction of y coordinates
-    w: Vec3,  // unit vector from the target toward the camera
+    u: Vec3, // unit vector in direction of x coordinates
+    v: Vec3, // unit vector in dirction of y coordinates
+    w: Vec3, // unit vector from the target toward the camera
     lower_left_corner: Vec3,
     horizontal: Vec3,
     vertical: Vec3,
-    lens_radius: f32
+    lens_radius: f32,
 }
 
 impl Camera {
-    pub fn new(lookfrom: Vec3, lookat: Vec3, vup: Vec3, vfov_degrees: f32, aspect: f32,
-               aperture: f32, focus_distance: f32) -> Camera {
+    pub fn new(
+        lookfrom: Vec3,
+        lookat: Vec3,
+        vup: Vec3,
+        vfov_degrees: f32,
+        aspect: f32,
+        aperture: f32,
+        focus_distance: f32,
+    ) -> Camera {
         let theta = vfov_degrees * PI / 180.0;
         let half_height = (theta / 2.0).tan();
         let half_width = aspect * half_height;
@@ -32,14 +39,16 @@ impl Camera {
             lower_left_corner: lookfrom - focus_distance * (half_width * u + half_height * v + w),
             horizontal: focus_distance * 2.0 * half_width * u,
             vertical: focus_distance * 2.0 * half_height * v,
-            lens_radius: aperture / 2.0
-       }
+            lens_radius: aperture / 2.0,
+        }
     }
 
     pub fn get_ray(&self, u: f32, v: f32, rng: &mut XorShiftRng) -> Ray {
         let Vec3(du, dv, _) = self.lens_radius * random_in_unit_disc(rng);
         let origin = self.origin + du * self.u + dv * self.v;
-        Ray::new(origin,
-                 self.lower_left_corner + u * self.horizontal + v * self.vertical - origin)
+        Ray::new(
+            origin,
+            self.lower_left_corner + u * self.horizontal + v * self.vertical - origin,
+        )
     }
 }

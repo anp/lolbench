@@ -1,6 +1,6 @@
 //! Benchmark Factorial N! = 1×2×⋯×N
 
-use num::{One, BigUint};
+use num::{BigUint, One};
 use rayon;
 use rayon::prelude::*;
 use std::ops::Mul;
@@ -9,11 +9,8 @@ const N: u32 = 9999;
 
 /// Compute the Factorial using a plain iterator.
 fn factorial(n: u32) -> BigUint {
-    (1 .. n + 1)
-        .map(BigUint::from)
-        .fold(BigUint::one(), Mul::mul)
+    (1..n + 1).map(BigUint::from).fold(BigUint::one(), Mul::mul)
 }
-
 
 /// Benchmark the Factorial using a plain iterator.
 wrap_libtest! {
@@ -38,7 +35,6 @@ wrap_libtest! {
     }
 }
 
-
 /// Compute the Factorial using divide-and-conquer serial recursion.
 wrap_libtest! {
     fn factorial_recursion(b: &mut Bencher) {
@@ -53,7 +49,6 @@ wrap_libtest! {
         b.iter(|| assert_eq!(product(1, black_box(N)), f));
     }
 }
-
 
 /// Compute the Factorial using divide-and-conquer parallel join.
 wrap_libtest! {

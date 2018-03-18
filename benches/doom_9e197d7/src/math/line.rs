@@ -44,7 +44,8 @@ impl<T: Copy + Field + Float + NumCast> Line2<T> {
     }
 
     pub fn intersect_point(&self, other: &Line2<T>) -> Option<Vec2<T>> {
-        self.intersect_offset(other).map(|offset| self.at_offset(offset))
+        self.intersect_offset(other)
+            .map(|offset| self.at_offset(offset))
     }
 
     pub fn at_offset(&self, offset: T) -> Vec2<T> {

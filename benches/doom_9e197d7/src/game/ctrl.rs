@@ -1,9 +1,9 @@
 use math::Vec2f;
 use num::Zero;
+use sdl2::{EventPump, Sdl};
 use sdl2::event::Event;
 use sdl2::keyboard::Scancode;
 use sdl2::mouse::{Mouse, MouseUtil};
-use sdl2::{EventPump, Sdl};
 use std::vec::Vec;
 
 pub type Sensitivity = f32;
@@ -73,11 +73,17 @@ impl GameController {
                 Event::Quit { .. } => {
                     self.quit_requested_index = self.current_update_index;
                 }
-                Event::KeyDown{ scancode: Some(scancode), .. } => {
+                Event::KeyDown {
+                    scancode: Some(scancode),
+                    ..
+                } => {
                     self.keyboard_state[scancode as usize] =
                         ButtonState::Down(self.current_update_index);
                 }
-                Event::KeyUp { scancode: Some(scancode), .. } => {
+                Event::KeyUp {
+                    scancode: Some(scancode),
+                    ..
+                } => {
                     self.keyboard_state[scancode as usize] =
                         ButtonState::Up(self.current_update_index);
                 }
@@ -96,18 +102,14 @@ impl GameController {
     pub fn poll_gesture(&self, gesture: &Gesture) -> bool {
         match *gesture {
             Gesture::QuitTrigger => self.quit_requested_index == self.current_update_index,
-            Gesture::KeyHold(code) => {
-                match self.keyboard_state[code as usize] {
-                    ButtonState::Down(_) => true,
-                    _ => false,
-                }
-            }
-            Gesture::KeyTrigger(code) => {
-                match self.keyboard_state[code as usize] {
-                    ButtonState::Down(index) => self.current_update_index == index,
-                    _ => false,
-                }
-            }
+            Gesture::KeyHold(code) => match self.keyboard_state[code as usize] {
+                ButtonState::Down(_) => true,
+                _ => false,
+            },
+            Gesture::KeyTrigger(code) => match self.keyboard_state[code as usize] {
+                ButtonState::Down(index) => self.current_update_index == index,
+                _ => false,
+            },
             Gesture::AnyOf(ref subs) => {
                 for subgesture in subs.iter() {
                     if self.poll_gesture(subgesture) {
@@ -132,22 +134,22 @@ impl GameController {
     pub fn poll_analog2d(&self, motion: &Analog2d) -> Vec2f {
         match *motion {
             Analog2d::Mouse(sensitivity) => self.mouse_rel * sensitivity,
-            Analog2d::Gestures(ref xpos, ref xneg, ref ypos, ref yneg, step) => {
-                Vec2f::new(if self.poll_gesture(xpos) {
-                               step
-                           } else if self.poll_gesture(xneg) {
-                               -step
-                           } else {
-                               0.0
-                           },
-                           if self.poll_gesture(ypos) {
-                               step
-                           } else if self.poll_gesture(yneg) {
-                               -step
-                           } else {
-                               0.0
-                           })
-            }
+            Analog2d::Gestures(ref xpos, ref xneg, ref ypos, ref yneg, step) => Vec2f::new(
+                if self.poll_gesture(xpos) {
+                    step
+                } else if self.poll_gesture(xneg) {
+                    -step
+                } else {
+                    0.0
+                },
+                if self.poll_gesture(ypos) {
+                    step
+                } else if self.poll_gesture(yneg) {
+                    -step
+                } else {
+                    0.0
+                },
+            ),
             Analog2d::NoAnalog2d => Vec2f::zero(),
         }
     }

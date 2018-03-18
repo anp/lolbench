@@ -1,8 +1,6 @@
-
 use num::Float;
 use std::fmt;
 use std::ops::{Add, Index, IndexMut, Mul, Sub};
-
 use vector::{Vec3f, Vector};
 
 /// The type of matrix elements.
@@ -116,7 +114,10 @@ impl Mat4 {
     }
 
     pub fn approx_eq(&self, rhs: &Mat4, tol: Scalar) -> bool {
-        self.data.iter().zip(rhs.data.iter()).all(|(x, y)| (x - y).abs() <= tol)
+        self.data
+            .iter()
+            .zip(rhs.data.iter())
+            .all(|(x, y)| (x - y).abs() <= tol)
     }
 }
 

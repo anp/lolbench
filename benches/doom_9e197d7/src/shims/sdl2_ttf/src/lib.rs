@@ -1,11 +1,11 @@
 extern crate sdl2;
 
-use std::path::Path;
-use sdl2::surface::Surface;
-use sdl2::pixels::{Color, PixelFormatEnum};
-use sdl2::version::Version;
 use sdl2::SdlResult;
+use sdl2::pixels::{Color, PixelFormatEnum};
+use sdl2::surface::Surface;
+use sdl2::version::Version;
 use std::fmt::{Display, Formatter, Result as FmtResult};
+use std::path::Path;
 
 #[must_use]
 pub struct Sdl2TtfContext;
@@ -100,19 +100,26 @@ pub enum RenderMode {
 }
 
 pub fn solid<T>(foreground: T) -> RenderMode
-    where T: Into<Color>
+where
+    T: Into<Color>,
 {
-    RenderMode::Solid { foreground: foreground.into() }
+    RenderMode::Solid {
+        foreground: foreground.into(),
+    }
 }
 
 pub fn blended<T>(foreground: T) -> RenderMode
-    where T: Into<Color>
+where
+    T: Into<Color>,
 {
-    RenderMode::Blended { foreground: foreground.into() }
+    RenderMode::Blended {
+        foreground: foreground.into(),
+    }
 }
 
 pub fn blended_wrapped<T>(foreground: T, wrap_length: u32) -> RenderMode
-    where T: Into<Color>
+where
+    T: Into<Color>,
 {
     RenderMode::BlendedWrapped {
         foreground: foreground.into(),
@@ -121,8 +128,9 @@ pub fn blended_wrapped<T>(foreground: T, wrap_length: u32) -> RenderMode
 }
 
 pub fn shaded<T, U>(foreground: T, background: U) -> RenderMode
-    where T: Into<Color>,
-          U: Into<Color>
+where
+    T: Into<Color>,
+    U: Into<Color>,
 {
     RenderMode::Shaded {
         foreground: foreground.into(),
@@ -136,13 +144,15 @@ impl Font {
     }
 
     pub fn size<'a, T>(&self, _text: T) -> SdlResult<(u32, u32)>
-        where T: Into<Text<'a>>
+    where
+        T: Into<Text<'a>>,
     {
         Ok((10, 20))
     }
 
     pub fn render<'a, T>(&self, _text: T, _mode: RenderMode) -> SdlResult<Surface>
-        where T: Into<Text<'a>>
+    where
+        T: Into<Text<'a>>,
     {
         Surface::new(10, 20, PixelFormatEnum::ARGB8888)
     }

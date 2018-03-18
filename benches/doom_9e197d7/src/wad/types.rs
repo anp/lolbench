@@ -1,8 +1,7 @@
+pub use super::name::WadName;
 use error::Result;
 use read::{WadRead, WadReadFrom};
 use std::io::Read;
-
-pub use super::name::WadName;
 
 pub type LightLevel = i16;
 pub type LinedefFlags = u16;
@@ -20,7 +19,6 @@ pub type SegId = u16;
 pub type LinedefId = u16;
 pub type ChildId = u16;
 
-
 #[derive(Copy, Clone)]
 pub struct WadInfo {
     pub identifier: [u8; 4],
@@ -32,16 +30,17 @@ impl WadReadFrom for WadInfo {
     fn wad_read_from<R: Read>(reader: &mut R) -> Result<Self> {
         let identifier = try!(reader.wad_read::<u32>());
         Ok(WadInfo {
-            identifier: [(identifier & 0xff) as u8,
-                         ((identifier >> 8) & 0xff) as u8,
-                         ((identifier >> 16) & 0xff) as u8,
-                         ((identifier >> 24) & 0xff) as u8],
+            identifier: [
+                (identifier & 0xff) as u8,
+                ((identifier >> 8) & 0xff) as u8,
+                ((identifier >> 16) & 0xff) as u8,
+                ((identifier >> 24) & 0xff) as u8,
+            ],
             num_lumps: try!(reader.wad_read()),
             info_table_offset: try!(reader.wad_read()),
         })
     }
 }
-
 
 #[derive(Copy, Clone)]
 pub struct WadLump {
@@ -59,7 +58,6 @@ impl WadReadFrom for WadLump {
         })
     }
 }
-
 
 #[derive(Copy, Clone)]
 pub struct WadThing {
@@ -82,7 +80,6 @@ impl WadReadFrom for WadThing {
     }
 }
 
-
 #[derive(Copy, Clone)]
 pub struct WadVertex {
     pub x: WadCoord,
@@ -97,7 +94,6 @@ impl WadReadFrom for WadVertex {
         })
     }
 }
-
 
 #[derive(Copy, Clone)]
 pub struct WadLinedef {
@@ -154,7 +150,6 @@ impl WadReadFrom for WadLinedef {
     }
 }
 
-
 #[derive(Copy, Clone)]
 pub struct WadSidedef {
     pub x_offset: WadCoord,
@@ -177,7 +172,6 @@ impl WadReadFrom for WadSidedef {
         })
     }
 }
-
 
 #[derive(Copy, Clone)]
 pub struct WadSector {
@@ -204,7 +198,6 @@ impl WadReadFrom for WadSector {
     }
 }
 
-
 #[derive(Copy, Clone)]
 pub struct WadSubsector {
     pub num_segs: u16,
@@ -219,7 +212,6 @@ impl WadReadFrom for WadSubsector {
         })
     }
 }
-
 
 #[derive(Copy, Clone)]
 pub struct WadSeg {
@@ -243,7 +235,6 @@ impl WadReadFrom for WadSeg {
         })
     }
 }
-
 
 #[derive(Copy, Clone)]
 pub struct WadNode {
@@ -284,7 +275,6 @@ impl WadReadFrom for WadNode {
     }
 }
 
-
 #[derive(Copy, Clone)]
 pub struct WadTextureHeader {
     pub name: WadName,
@@ -307,7 +297,6 @@ impl WadReadFrom for WadTextureHeader {
         })
     }
 }
-
 
 #[derive(Copy, Clone)]
 pub struct WadTexturePatchRef {

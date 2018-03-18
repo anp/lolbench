@@ -1,5 +1,5 @@
-use error::ErrorKind::BadMetadataSyntax;
 use error::{InFile, Result};
+use error::ErrorKind::BadMetadataSyntax;
 use name::WadName;
 use regex::Regex;
 use rustc_serialize::{Decodable, Encodable};
@@ -16,13 +16,11 @@ pub struct SkyMetadata {
     pub tiled_band_size: f32,
 }
 
-
 #[derive(Debug, RustcDecodable, RustcEncodable)]
 pub struct AnimationMetadata {
     pub flats: Vec<Vec<WadName>>,
     pub walls: Vec<Vec<WadName>>,
 }
-
 
 #[derive(Debug, RustcDecodable, RustcEncodable)]
 pub struct ThingMetadata {
@@ -32,7 +30,6 @@ pub struct ThingMetadata {
     pub hanging: bool,
     pub radius: u32,
 }
-
 
 #[derive(Debug, RustcDecodable, RustcEncodable)]
 pub struct ThingDirectoryMetadata {
@@ -44,7 +41,6 @@ pub struct ThingDirectoryMetadata {
     pub keys: Vec<ThingMetadata>,
     pub monsters: Vec<ThingMetadata>,
 }
-
 
 #[derive(Debug, RustcDecodable, RustcEncodable)]
 pub struct WadMetadata {
@@ -62,11 +58,12 @@ impl WadMetadata {
 
     pub fn from_text(text: &str) -> Result<WadMetadata> {
         let mut parser = Parser::new(text);
-        parser.parse()
-              .ok_or_else(move || BadMetadataSyntax(parser.errors).into())
-              .and_then(|value| {
-                  Decodable::decode(&mut Decoder::new(Value::Table(value))).map_err(|e| e.into())
-              })
+        parser
+            .parse()
+            .ok_or_else(move || BadMetadataSyntax(parser.errors).into())
+            .and_then(|value| {
+                Decodable::decode(&mut Decoder::new(Value::Table(value))).map_err(|e| e.into())
+            })
     }
 
     pub fn sky_for(&self, name: &WadName) -> Option<&SkyMetadata> {
@@ -76,17 +73,19 @@ impl WadMetadata {
                 Regex::new(&sky.level_pattern)
                     .map(|r| r.is_match(name.as_ref()))
                     .unwrap_or_else(|_| {
-                        warn!("Invalid level pattern {} for sky {}.",
-                              sky.level_pattern,
-                              sky.texture_name);
+                        warn!(
+                            "Invalid level pattern {} for sky {}.",
+                            sky.level_pattern, sky.texture_name
+                        );
                         false
                     })
             })
             .or_else(|| {
                 if let Some(sky) = self.sky.get(0) {
-                    debug!("No sky found for level {}, using {}.",
-                          name,
-                          sky.texture_name);
+                    debug!(
+                        "No sky found for level {}, using {}.",
+                        name, sky.texture_name
+                    );
                     Some(sky)
                 } else {
                     error!("No sky metadata provided.");
@@ -100,12 +99,32 @@ impl WadMetadata {
             .decorations
             .iter()
             .find(|t| t.thing_type == thing_type)
-            .or_else(|| self.things.weapons.iter().find(|t| t.thing_type == thing_type))
-            .or_else(|| self.things.powerups.iter().find(|t| t.thing_type == thing_type))
-            .or_else(|| self.things.artifacts.iter().find(|t| t.thing_type == thing_type))
+            .or_else(|| {
+                self.things
+                    .weapons
+                    .iter()
+                    .find(|t| t.thing_type == thing_type)
+            })
+            .or_else(|| {
+                self.things
+                    .powerups
+                    .iter()
+                    .find(|t| t.thing_type == thing_type)
+            })
+            .or_else(|| {
+                self.things
+                    .artifacts
+                    .iter()
+                    .find(|t| t.thing_type == thing_type)
+            })
             .or_else(|| self.things.ammo.iter().find(|t| t.thing_type == thing_type))
             .or_else(|| self.things.keys.iter().find(|t| t.thing_type == thing_type))
-            .or_else(|| self.things.monsters.iter().find(|t| t.thing_type == thing_type))
+            .or_else(|| {
+                self.things
+                    .monsters
+                    .iter()
+                    .find(|t| t.thing_type == thing_type)
+            })
     }
 }
 
@@ -115,7 +134,8 @@ mod test {
 
     #[test]
     fn test_wad_metadata() {
-        WadMetadata::from_text(r#"
+        WadMetadata::from_text(
+            r#"
             [[sky]]
                 level_pattern = "MAP(0[1-9]|10|11)"
                 texture_name = "SKY1"
@@ -151,8 +171,8 @@ mod test {
                     sequence = "W"
                     obstacle = false
                     hanging = false
-        "#)
-            .ok()
+        "#,
+        ).ok()
             .expect("test: could not parse test metadata");
     }
 }
