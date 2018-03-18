@@ -80,8 +80,15 @@ criterion_main!(inflate_0_3_4);
 
 ## performance on benchmark machine
 
+Turn off CPU frequency scaling:
+
 `pacman -S cpupower`
 `vim /etc/default/cpupower`, set governor='performance'
 
-use any cpu range:
-`taskset -c 4-7 cargo bench`
+Guaranteeing CPU affinity:
+
+For linux, the run.sh script uses https://github.com/lpechacek/cpuset to reserve CPUs for the benchmark runners.
+
+NOTE: you have to run as root. I tried to use cpuset's "exec as user/group" feature, but rustup had problems with that (thought that /root/.cargo was where it should be installed). For me, this meant `rustup default stable && rustup update` as root and everything worked.
+
+cpuset has a fun trick to move all kernel threads onto the not-used-for-benchmarks core too, which in theory should greatly improve predictability of results.
