@@ -5,7 +5,7 @@ authors = ["dtolnay@gmail.com"]
 publish = false
 
 [dependencies]
-criterion = "*"
+criterion = { version = "*", path = "../../criterion" }
 rustc-serialize = "0.3.24"
 serde = "1.0.27"
 serde_derive = "1.0.27"

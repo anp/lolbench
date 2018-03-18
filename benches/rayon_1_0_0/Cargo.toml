@@ -6,7 +6,7 @@ publish = false
 
 [dependencies]
 rayon = "1.0.0"
-criterion = "*"
+criterion = { version = "*", path = "../../criterion" }
 cgmath = "0.16"
 fixedbitset = "0.1.5"
 glium = "0.20"

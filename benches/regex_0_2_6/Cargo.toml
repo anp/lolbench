@@ -10,7 +10,7 @@ homepage = "https://github.com/rust-lang/regex"
 description = "Regex benchmarks for Rust's and other engines."
 
 [dependencies]
-criterion = "*"
+criterion = { version = "*", path = "../../criterion" }
 lazy_static = "1"
 regex = "0.2.6"
 regex-syntax = "0.4.0"
