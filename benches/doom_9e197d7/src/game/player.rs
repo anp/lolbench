@@ -1,6 +1,6 @@
 use camera::Camera;
-use ctrl::{Analog2d, Gesture};
 use ctrl::GameController;
+use ctrl::{Analog2d, Gesture};
 use level::Level;
 use math::{Sphere, Vec3f, Vector};
 use num::{Float, Zero};

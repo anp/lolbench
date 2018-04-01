@@ -1,9 +1,9 @@
 use math::{ContactInfo, Line2f, Sphere, Vec2f, Vec3f, Vector};
 use num::Zero;
-use std::{f32, i32};
 use std::cell::RefCell;
-use wad::{Branch, LevelVisitor, LightInfo};
+use std::{f32, i32};
 use wad::types::WadName;
+use wad::{Branch, LevelVisitor, LightInfo};
 
 pub struct World {
     nodes: Vec<Node>,

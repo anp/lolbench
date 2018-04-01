@@ -1,5 +1,5 @@
-use vec::{Ray, Vec3};
 use materials::Material;
+use vec::{Ray, Vec3};
 
 #[derive(Clone, Copy)]
 pub struct Hit<'obj> {

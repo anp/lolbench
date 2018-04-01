@@ -1,9 +1,9 @@
-#[cfg(feature = "lib-serde")]
-use std::fmt;
-#[cfg(feature = "lib-serde")]
-use serde::{de, Deserialize, Deserializer, Serialize, Serializer};
 #[cfg(feature = "lib-rustc-serialize")]
 use rustc_serialize::{Decodable, Decoder, Encodable, Encoder};
+#[cfg(feature = "lib-serde")]
+use serde::{de, Deserialize, Deserializer, Serialize, Serializer};
+#[cfg(feature = "lib-serde")]
+use std::fmt;
 
 #[derive(Clone, Copy)]
 pub struct Array;

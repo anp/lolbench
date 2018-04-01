@@ -3,12 +3,12 @@ use std::fmt;
 use std::fmt::Display;
 use std::str::FromStr;
 
-#[cfg(feature = "lib-serde")]
-use serde::ser::{Serialize, Serializer};
-#[cfg(feature = "lib-serde")]
-use serde::de::{self, Deserialize, Deserializer, Unexpected};
 #[cfg(feature = "lib-rustc-serialize")]
 use rustc_serialize::{Decodable, Decoder, Encodable, Encoder};
+#[cfg(feature = "lib-serde")]
+use serde::de::{self, Deserialize, Deserializer, Unexpected};
+#[cfg(feature = "lib-serde")]
+use serde::ser::{Serialize, Serializer};
 
 #[derive(Clone, Copy, Ord, PartialOrd, Eq, PartialEq)]
 pub struct PrimStr<T>(T)

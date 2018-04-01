@@ -6,20 +6,20 @@ extern crate rand; // generate random numbers // output PNG image files
 extern crate wrap_libtest;
 
 // Ray-tracer modules
-mod vec; // basic 3D vector math
-mod model; // geometry of objects in the scene
+mod camera;    // translate 2D pixel coordinates to 3D rays
 mod materials; // reflective properties of surfaces
-mod camera; // translate 2D pixel coordinates to 3D rays
-mod render; // the core ray-tracing algorithm
+mod model;     // geometry of objects in the scene
+mod render;
+mod vec; // basic 3D vector math // the core ray-tracing algorithm
 
 // The rest of the code in this file brings the pieces together
 // to render a scene made of a bunch of spheres.
 
+use camera::Camera;
+use materials::{Dielectric, Lambertian, Material, Metal};
+use model::{Model, Sphere};
 use rand::{Rng, SeedableRng, XorShiftRng};
 use vec::{random_in_unit_disc, Vec3};
-use model::{Model, Sphere};
-use materials::{Dielectric, Lambertian, Material, Metal};
-use camera::Camera;
 
 /// Generate a Model containing a bunch of randomly placed spheres.
 fn random_scene(rng: &mut XorShiftRng) -> Box<Model> {

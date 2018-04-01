@@ -14,10 +14,12 @@
 macro_rules! dna {
     ($name:ident, $pattern:expr, $count:expr) => {
         bench_find!(
-            $name, $pattern, $count,
+            $name,
+            $pattern,
+            $count,
             include_str!("data/regexdna.txt").to_owned()
         );
-    }
+    };
 }
 
 dna!(find_new_lines, r">[^\n]*\n|\n", 83337);

@@ -1,7 +1,7 @@
 //! Some microbenchmarks for splitting strings
 
-use rayon::prelude::*;
 use rand::{Rng, SeedableRng, XorShiftRng};
+use rayon::prelude::*;
 
 lazy_static! {
     static ref HAYSTACK: String = {
@@ -10,10 +10,7 @@ lazy_static! {
         rng.shuffle(&mut bytes);
         String::from_utf8(bytes).unwrap()
     };
-
-    static ref COUNT: usize = {
-        HAYSTACK.split(' ').count()
-    };
+    static ref COUNT: usize = { HAYSTACK.split(' ').count() };
 }
 
 fn get_string_count() -> (&'static str, usize) {

@@ -3,8 +3,8 @@ use std::cmp;
 use std::sync::Arc;
 
 use super::graph::{Graph, Node, NodeSet};
-use super::tour::TourPrefix;
 use super::solver::SolverCx;
+use super::tour::TourPrefix;
 use super::weight::Weight;
 
 pub fn step<'s>(scope: &Scope<'s>, solver: &'s SolverCx<'s>) {

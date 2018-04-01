@@ -1,12 +1,12 @@
 use error::{NeededBy, Result};
-use glium::{BackfaceCullingMode, Depth, DepthTest, DrawParameters, Frame, Program, Surface};
 use glium::index::{NoIndices, PrimitiveType};
 use glium::program::ProgramCreationInput;
-use glium::texture::{ClientFormat, RawImage2d, Texture2d};
 use glium::texture::buffer_texture::{BufferTexture, BufferTextureType};
+use glium::texture::{ClientFormat, RawImage2d, Texture2d};
+use glium::uniforms::SamplerWrapFunction;
 use glium::uniforms::{AsUniformValue, UniformValue, Uniforms};
 use glium::uniforms::{MagnifySamplerFilter, MinifySamplerFilter, SamplerBehavior};
-use glium::uniforms::SamplerWrapFunction;
+use glium::{BackfaceCullingMode, Depth, DepthTest, DrawParameters, Frame, Program, Surface};
 use math::{Mat4, Vec2};
 use platform;
 use std::borrow::Cow;

@@ -1,13 +1,13 @@
 use super::SHADER_ROOT;
 use common::GeneralError;
 use ctrl::{GameController, Gesture};
-use gfx::{Scene, SceneBuilder, Window};
 use gfx::TextRenderer;
+use gfx::{Scene, SceneBuilder, Window};
 use level::Level;
 use math::Vec2f;
 use player::Player;
-use sdl2::{self, Sdl};
 use sdl2::keyboard::Scancode;
+use sdl2::{self, Sdl};
 use std::error::Error;
 use std::path::PathBuf;
 use time;

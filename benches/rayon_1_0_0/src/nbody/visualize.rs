@@ -1,15 +1,15 @@
 use cgmath::{self, Angle, EuclideanSpace, Matrix4, Point3, Rad, Vector3};
-use glium::{Display, Program, Surface};
-use glium::{IndexBuffer, VertexBuffer};
-use glium::{Depth, DepthTest, DrawParameters};
+use glium::glutin::VirtualKeyCode as Key;
 use glium::glutin::{ContextBuilder, EventsLoop, WindowBuilder};
 use glium::glutin::{ElementState, Event, WindowEvent};
-use glium::glutin::VirtualKeyCode as Key;
 use glium::index::PrimitiveType;
+use glium::{Depth, DepthTest, DrawParameters};
+use glium::{Display, Program, Surface};
+use glium::{IndexBuffer, VertexBuffer};
 use rand::{self, Rng, SeedableRng, XorShiftRng};
 
-use nbody::nbody::NBodyBenchmark;
 use nbody::ExecutionMode;
+use nbody::nbody::NBodyBenchmark;
 
 #[derive(Copy, Clone)]
 struct Vertex {

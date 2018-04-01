@@ -190,7 +190,7 @@ macro_rules! make_bench {
                 $check(&vec.unwrap());
             }
         }
-    }
+    };
 }
 
 /// Tests a big vector of i forall i in 0 to N.

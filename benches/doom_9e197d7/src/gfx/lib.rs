@@ -23,9 +23,9 @@ pub use window::Window;
 mod error;
 mod platform;
 mod scene;
+mod text;
 mod vertex;
 mod window;
-mod text;
 
 use math::Vec2f;
 

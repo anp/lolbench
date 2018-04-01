@@ -1,5 +1,5 @@
-use error::{Error, ErrorKind, InFile, Result};
 use error::ErrorKind::{BadWadHeader, MissingRequiredLump};
+use error::{Error, ErrorKind, InFile, Result};
 use meta::WadMetadata;
 use read::{WadRead, WadReadFrom};
 use std::borrow::Borrow;

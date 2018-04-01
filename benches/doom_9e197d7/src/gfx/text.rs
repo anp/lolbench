@@ -1,9 +1,9 @@
 use Window;
-use glium::{Blend, Surface, VertexBuffer};
-use glium::{DrawParameters, Program};
 use glium::Frame;
 use glium::index::{NoIndices, PrimitiveType};
 use glium::texture::{ClientFormat, RawImage2d, Texture2d};
+use glium::{Blend, Surface, VertexBuffer};
+use glium::{DrawParameters, Program};
 use math::Vec2f;
 use sdl2::pixels::Color;
 use sdl2::pixels::PixelFormatEnum;
@@ -18,8 +18,8 @@ use slab::Slab;
 use std::borrow::Cow;
 use std::cmp;
 use std::error::Error as StdError;
-use std::fmt::{Display, Formatter};
 use std::fmt::Result as FmtResult;
+use std::fmt::{Display, Formatter};
 use std::ops::{Index, IndexMut};
 
 /// A handle to a piece of text created with a `TextRenderer`.

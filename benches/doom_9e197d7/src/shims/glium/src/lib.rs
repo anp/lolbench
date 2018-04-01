@@ -436,10 +436,16 @@ macro_rules! implement_vertex {
 
 #[macro_export]
 macro_rules! uniform {
-    () => { $crate::uniforms::UniformStorage };
-    ($field:ident: $value:expr) => { $crate::uniforms::UniformStorage };
-    ($field1:ident: $value1:expr, $($field:ident: $value:expr),+) => {
+    () => {
         $crate::uniforms::UniformStorage
     };
-    ($($field:ident: $value:expr),*,) => { $crate::uniforms::UniformStorage };
+    ($field:ident : $value:expr) => {
+        $crate::uniforms::UniformStorage
+    };
+    ($field1:ident : $value1:expr, $($field:ident : $value:expr),+) => {
+        $crate::uniforms::UniformStorage
+    };
+    ($($field:ident : $value:expr),*,) => {
+        $crate::uniforms::UniformStorage
+    };
 }

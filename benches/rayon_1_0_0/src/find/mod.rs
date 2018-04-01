@@ -1,16 +1,17 @@
-/// Simple benchmarks of `find_any()` performance
-
-use rayon::prelude::*;
 use rand::{Rng, SeedableRng, XorShiftRng};
+/// Simple benchmarks of `find_any()` performance
+use rayon::prelude::*;
 
 lazy_static! {
     static ref HAYSTACK: Vec<[u32; 1]> = {
         let mut rng = XorShiftRng::from_seed([0, 1, 2, 3]);
-        (0..10_000_000).map(|_| {
-            let mut result: [u32; 1] = [0; 1];
-            result[0] = rng.next_u32();
-            result
-        }).collect()
+        (0..10_000_000)
+            .map(|_| {
+                let mut result: [u32; 1] = [0; 1];
+                result[0] = rng.next_u32();
+                result
+            })
+            .collect()
     };
 }
 

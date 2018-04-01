@@ -1,6 +1,6 @@
 use std::error::Error;
-use std::fmt::{Display, Formatter};
 use std::fmt::Result as FmtResult;
+use std::fmt::{Display, Formatter};
 
 #[derive(Debug)]
 pub struct GeneralError(pub String);

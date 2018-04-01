@@ -61,7 +61,7 @@ macro_rules! sort {
                 b.iter(|| v.clone().$f());
             }
         }
-    }
+    };
 }
 
 macro_rules! sort_strings {
@@ -73,7 +73,7 @@ macro_rules! sort_strings {
                 b.iter(|| v.clone().$f());
             }
         }
-    }
+    };
 }
 
 macro_rules! sort_expensive {
