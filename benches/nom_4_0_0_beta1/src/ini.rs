@@ -1,7 +1,7 @@
 use nom::{alphanumeric, multispace, space};
 
-use std::str;
 use std::collections::HashMap;
+use std::str;
 
 named!(
     category<&str>,

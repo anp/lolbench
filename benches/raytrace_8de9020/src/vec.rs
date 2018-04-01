@@ -1,5 +1,5 @@
-use std::ops::*;
 use rand::{Rand, Rng, XorShiftRng};
+use std::ops::*;
 
 #[derive(Clone, Copy, Debug)]
 pub struct Vec3(pub f32, pub f32, pub f32);

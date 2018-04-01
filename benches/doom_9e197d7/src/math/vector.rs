@@ -13,8 +13,8 @@ pub type Vec2<T> = VectorCons<T, VectorCons<T, VectorNil<T>>>;
 pub type Vec3<T> = VectorCons<T, Vec2<T>>;
 pub type Vec4<T> = VectorCons<T, Vec3<T>>;
 
-pub trait Vector
-    : Mul<<Self as Vector>::Scalar, Output = Self>
+pub trait Vector:
+    Mul<<Self as Vector>::Scalar, Output = Self>
     + Div<<Self as Vector>::Scalar, Output = Self>
     + Add<Output = Self>
     + Sub<Output = Self>
@@ -23,7 +23,8 @@ pub trait Vector
     + PartialEq
     + PartialOrd
     + Index<usize, Output = <Self as Vector>::Scalar>
-    + IndexMut<usize> {
+    + IndexMut<usize>
+{
     type Scalar: Field;
 
     fn dot(&self, rhs: &Self) -> Self::Scalar;
@@ -69,8 +70,8 @@ pub trait Vector
     }
 }
 
-pub trait Field
-    : Mul<Output = Self>
+pub trait Field:
+    Mul<Output = Self>
     + Div<Output = Self>
     + Add<Output = Self>
     + Sub<Output = Self>
@@ -78,7 +79,8 @@ pub trait Field
     + One
     + Clone
     + PartialEq
-    + PartialOrd {
+    + PartialOrd
+{
 }
 
 impl<S> Field for S

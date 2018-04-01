@@ -1,8 +1,8 @@
 use glium::{self, GliumCreationError};
 use sdl2::ErrorMessage as SdlError;
 use std::error::Error as StdError;
-use std::fmt::{Display, Formatter};
 use std::fmt::Result as FmtResult;
+use std::fmt::{Display, Formatter};
 use std::io::Error as IoError;
 use std::result::Result as StdResult;
 

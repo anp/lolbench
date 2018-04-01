@@ -1,6 +1,6 @@
+use model::Hit;
 use rand::{Rng, XorShiftRng};
 use vec::{random_in_unit_sphere, Ray, Vec3};
-use model::Hit;
 
 #[derive(Clone, Copy, Debug)]
 pub struct Scatter {

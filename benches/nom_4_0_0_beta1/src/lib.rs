@@ -6,6 +6,6 @@ extern crate wrap_libtest;
 
 pub mod arithmetic;
 pub mod http;
-pub mod ini_str;
 pub mod ini;
+pub mod ini_str;
 pub mod json;

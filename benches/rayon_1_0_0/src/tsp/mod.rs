@@ -12,10 +12,10 @@ use std::time::Instant;
 mod bench;
 pub use self::bench::*;
 mod graph;
-mod tour;
-mod step;
-mod solver;
 mod parser;
+mod solver;
+mod step;
+mod tour;
 mod weight;
 
 use self::graph::{Graph, Node};

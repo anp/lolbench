@@ -2,8 +2,8 @@ use std::path::Path;
 
 use criterion::Bencher;
 
-use super::parse_solver;
 use super::graph::Node;
+use super::parse_solver;
 use super::solver::SolverCx;
 
 fn run_dir(

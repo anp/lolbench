@@ -107,7 +107,11 @@ fn easy0_suffix() -> String {
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ".to_string()
 }
 
-macro_rules! easy0 { () => ("ABCDEFGHIJKLMNOPQRSTUVWXYZ$") }
+macro_rules! easy0 {
+    () => {
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ$"
+    };
+}
 
 bench_match!(easy0_32, easy0!(), get_text(TXT_32, easy0_suffix()));
 bench_match!(easy0_1K, easy0!(), get_text(TXT_1K, easy0_suffix()));
@@ -119,7 +123,9 @@ fn easy1_suffix() -> String {
 }
 
 macro_rules! easy1 {
-    () => (r"A[AB]B[BC]C[CD]D[DE]E[EF]F[FG]G[GH]H[HI]I[IJ]J$")
+    () => {
+        r"A[AB]B[BC]C[CD]D[DE]E[EF]F[FG]G[GH]H[HI]I[IJ]J$"
+    };
 }
 
 bench_match!(easy1_32, easy1!(), get_text(TXT_32, easy1_suffix()));
@@ -131,7 +137,11 @@ fn medium_suffix() -> String {
     "XABCDEFGHIJKLMNOPQRSTUVWXYZ".to_string()
 }
 
-macro_rules! medium { () => (r"[XYZ]ABCDEFGHIJKLMNOPQRSTUVWXYZ$") }
+macro_rules! medium {
+    () => {
+        r"[XYZ]ABCDEFGHIJKLMNOPQRSTUVWXYZ$"
+    };
+}
 
 bench_match!(medium_32, medium!(), get_text(TXT_32, medium_suffix()));
 bench_match!(medium_1K, medium!(), get_text(TXT_1K, medium_suffix()));
@@ -142,7 +152,11 @@ fn hard_suffix() -> String {
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ".to_string()
 }
 
-macro_rules! hard { () => (r"[ -~]*ABCDEFGHIJKLMNOPQRSTUVWXYZ$") }
+macro_rules! hard {
+    () => {
+        r"[ -~]*ABCDEFGHIJKLMNOPQRSTUVWXYZ$"
+    };
+}
 
 bench_match!(hard_32, hard!(), get_text(TXT_32, hard_suffix()));
 bench_match!(hard_1K, hard!(), get_text(TXT_1K, hard_suffix()));
@@ -158,7 +172,7 @@ macro_rules! reallyhard {
         // The point of this being "really" hard is that it should completely
         // thwart any prefix or suffix literal optimizations.
         r"[ -~]*ABCDEFGHIJKLMNOPQRSTUVWXYZ.*"
-    }
+    };
 }
 
 bench_match!(
@@ -186,7 +200,11 @@ fn reallyhard2_suffix() -> String {
     "Sherlock Holmes".to_string()
 }
 
-macro_rules! reallyhard2 { () => (r"\w+\s+Holmes") }
+macro_rules! reallyhard2 {
+    () => {
+        r"\w+\s+Holmes"
+    };
+}
 
 bench_match!(
     reallyhard2_1K,

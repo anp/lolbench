@@ -311,7 +311,7 @@ macro_rules! make_bench {
                 $check(&map.unwrap());
             }
         }
-    }
+    };
 }
 
 /// Tests a big map mapping `i -> i` forall i in 0 to N. This map is

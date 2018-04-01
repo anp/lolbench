@@ -1,5 +1,5 @@
-use error::{InFile, Result};
 use error::ErrorKind::BadMetadataSyntax;
+use error::{InFile, Result};
 use name::WadName;
 use regex::Regex;
 use rustc_serialize::{Decodable, Encodable};

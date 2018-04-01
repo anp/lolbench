@@ -16,8 +16,8 @@ pub use vector::Vector;
 pub use vector::VectorCons;
 pub use vector::VectorNil;
 
+mod contact;
 mod line;
 mod mat;
-mod vector;
 mod sphere;
-mod contact;
+mod vector;

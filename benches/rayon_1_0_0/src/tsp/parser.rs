@@ -1,6 +1,6 @@
+use regex::Regex;
 use std::collections::HashMap;
 use std::str::{FromStr, Lines};
-use regex::Regex;
 
 use super::graph::{Graph, Node};
 use super::weight::Weight;

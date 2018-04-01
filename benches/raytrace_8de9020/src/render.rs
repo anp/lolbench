@@ -1,10 +1,10 @@
-use rand::{Rng, XorShiftRng};
 use lodepng::RGB;
+use rand::{Rng, XorShiftRng};
 
-use vec::{Ray, Vec3};
-use std::f32::consts::PI;
 use camera::Camera;
 use model::Model;
+use std::f32::consts::PI;
+use vec::{Ray, Vec3};
 
 fn color(mut r: Ray, model: &Model, rng: &mut XorShiftRng) -> Vec3 {
     const WHITE: Vec3 = Vec3(1.0, 1.0, 1.0);

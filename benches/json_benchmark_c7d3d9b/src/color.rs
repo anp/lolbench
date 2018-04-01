@@ -1,12 +1,12 @@
 #[cfg(any(feature = "lib-serde", feature = "lib-rustc-serialize"))]
 use std::{fmt, ptr, slice, str};
 
-#[cfg(feature = "lib-serde")]
-use serde::ser::{Serialize, Serializer};
-#[cfg(feature = "lib-serde")]
-use serde::de::{self, Deserialize, Deserializer, Unexpected};
 #[cfg(feature = "lib-rustc-serialize")]
 use rustc_serialize::{Decodable, Decoder, Encodable, Encoder};
+#[cfg(feature = "lib-serde")]
+use serde::de::{self, Deserialize, Deserializer, Unexpected};
+#[cfg(feature = "lib-serde")]
+use serde::ser::{Serialize, Serializer};
 
 #[derive(Clone, Copy)]
 pub struct Color(u32);

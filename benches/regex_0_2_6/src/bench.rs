@@ -16,7 +16,9 @@
 // defined below. Effectively, it allows us to use the same tests for both
 // native and dynamic regexes.
 macro_rules! regex {
-    ($re:expr) => { ::regex::Regex::new(&$re.to_owned()).unwrap() }
+    ($re:expr) => {
+        ::regex::Regex::new(&$re.to_owned()).unwrap()
+    };
 }
 
 // Usage: text!(haystack)
@@ -34,7 +36,9 @@ macro_rules! regex {
 // regex accepts in its `is_match` and `find_iter` methods.
 
 macro_rules! text {
-    ($text:expr) => { $text }
+    ($text:expr) => {
+        $text
+    };
 }
 
 // Macros for writing benchmarks easily. We provide macros for benchmarking
@@ -55,7 +59,7 @@ macro_rules! text {
 macro_rules! bench_match {
     ($name:ident, $pattern:expr, $haystack:expr) => {
         bench_is_match!($name, true, regex!($pattern), $haystack);
-    }
+    };
 }
 
 // USAGE: bench_not_match!(name, pattern, haystack)
@@ -72,7 +76,7 @@ macro_rules! bench_match {
 macro_rules! bench_not_match {
     ($name:ident, $pattern:expr, $haystack:expr) => {
         bench_is_match!($name, false, regex!($pattern), $haystack);
-    }
+    };
 }
 
 // USAGE: bench_is_match!(name, is_match, regex, haystack)
@@ -111,7 +115,7 @@ macro_rules! bench_is_match {
                 });
             }
         }
-    }
+    };
 }
 
 // USAGE: bench_find!(name, pattern, count, haystack)
@@ -137,7 +141,7 @@ macro_rules! bench_find {
                 });
             }
         }
-    }
+    };
 }
 
 // USAGE: bench_captures!(name, pattern, groups, haystack);
@@ -152,7 +156,6 @@ macro_rules! bench_find {
 //   the capture groups in question.
 macro_rules! bench_captures {
     ($name:ident, $pattern:expr, $count:expr, $haystack:expr) => {
-
         wrap_libtest! {
             fn $name(b: &mut Bencher) {
                 let re = $pattern;
@@ -165,5 +168,5 @@ macro_rules! bench_captures {
                 });
             }
         }
-    }
+    };
 }

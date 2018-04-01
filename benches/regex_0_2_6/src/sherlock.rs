@@ -14,10 +14,12 @@
 macro_rules! sherlock {
     ($name:ident, $pattern:expr, $count:expr) => {
         bench_find!(
-            $name, $pattern, $count,
+            $name,
+            $pattern,
+            $count,
             include_str!("data/sherlock.txt").to_owned()
         );
-    }
+    };
 }
 
 // These patterns are all single string literals that compile down to a variant

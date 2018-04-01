@@ -1,7 +1,7 @@
 use nom::{alphanumeric, recognize_float};
 
-use std::str;
 use std::collections::HashMap;
+use std::str;
 
 #[derive(Debug, PartialEq)]
 pub enum JsonValue {
