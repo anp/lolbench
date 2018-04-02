@@ -13,7 +13,6 @@ pub struct RenameThisCommandWrapper {
 impl RenameThisCommandWrapper {
     pub fn new<S: AsRef<OsStr>>(cmd: S) -> Self {
         // cset sh ${CMD}
-        // cset shield --reset
         Self {
             cmd: Command::new(cmd),
             cpu_mask: None,
@@ -49,7 +48,10 @@ impl RenameThisCommandWrapper {
 
     #[cfg(target_os = "linux")]
     fn teardown_shield(&mut self) -> io::Result<()> {
-        unimplemented!("teardown shield not yet implemented");
+        if let Some(ref mask) = self.cpu_mask {
+            Command::new("cset").arg("shield").arg("--reset").status()?;
+        }
+        Ok(())
     }
 
     #[cfg(not(target_os = "linux"))]
@@ -68,6 +70,7 @@ impl RenameThisCommandWrapper {
     pub fn status(&mut self) -> io::Result<ExitStatus> {
         self.setup_shield()?;
 
+        // TODO run inside cpu shield
         let status = self.cmd.status();
 
         // TODO teardown shield
