@@ -52,11 +52,11 @@ impl Image {
         for i_column in 0..width {
             // Each column is defined as a number of vertical `runs' which are
             // defined starting at `offset' in the buffer.
-            let offset = try!(
-                reader.wad_read::<u32>().to_err_with(|| {
-                    format!("unfinished column {}, {}x{}", i_column, width, height)
-                })
-            ) as isize;
+            let offset =
+                try!(reader.wad_read::<u32>().to_err_with(|| format!(
+                    "unfinished column {}, {}x{}",
+                    i_column, width, height
+                ))) as isize;
             if offset >= buffer.len() as isize {
                 return Err(format!(
                     "invalid column offset in {}, offset={}, size={}",
@@ -84,11 +84,10 @@ impl Image {
 
                 // The second byte is the length of this run. Skip an additional
                 // byte which is ignored for some reason.
-                let run_length = *try!(
-                    source.next().to_err_with(|| {
-                        format!("missing run length: column {}, run {}", i_column, i_run)
-                    })
-                ) as usize;
+                let run_length = *try!(source.next().to_err_with(|| format!(
+                    "missing run length: column {}, run {}",
+                    i_column, i_run
+                ))) as usize;
 
                 // Check that the run fits in the image.
                 if row_start + run_length > height {
@@ -99,11 +98,10 @@ impl Image {
                 }
 
                 // An ignored padding byte.
-                try!(
-                    source.next().to_err_with(|| {
-                        format!("missing padding byte 1: column {}, run {}", i_column, i_run)
-                    })
-                );
+                try!(source.next().to_err_with(|| format!(
+                    "missing padding byte 1: column {}, run {}",
+                    i_column, i_run
+                )));
 
                 // Iterator to the beginning of the run in `pixels`. Guaranteed to be in bounds
                 // by the check above.
@@ -130,11 +128,10 @@ impl Image {
                 }
 
                 // And another ignored byte after the run.
-                try!(
-                    source.next().to_err_with(|| {
-                        format!("missing padding byte 2: column {}, run {}", i_column, i_run)
-                    })
-                );
+                try!(source.next().to_err_with(|| format!(
+                    "missing padding byte 2: column {}, run {}",
+                    i_column, i_run
+                )));
                 i_run += 1;
             }
         }
