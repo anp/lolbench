@@ -1,5 +1,9 @@
 # lolbench
 
+deps:
+
+* rustup
+
 ## SIMD?
 
 Some benchmarks will be more interesting/accurate of real usage with:
