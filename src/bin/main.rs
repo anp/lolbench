@@ -43,7 +43,12 @@ fn main() {
         .expect("failed to spawn benchmark builder");
 
     println!("Running benchmarks...");
-    let exit = RenameThisCommandWrapper::new("target/release/run_benches")
+
+    let target_dir = ::std::env::var("CARGO_TARGET_DIR").unwrap_or("target".to_string());
+    let mut binary_path = ::std::path::PathBuf::from(target_dir);
+    binary_path.push("release");
+    binary_path.push("run_benches");
+    let exit = RenameThisCommandWrapper::new(&binary_path)
         .status()
         .expect("failed to run benchmarks");
 
