@@ -13,6 +13,7 @@ use lolbench::cpu_shield::RenameThisCommandWrapper;
 struct Options {
     #[structopt(short = "t", long = "toolchain")]
     toolchain: String,
+    #[cfg(target_os = "linux")]
     #[structopt(short = "c", long = "cpus")]
     cpu_pattern: Option<String>,
     #[cfg(target_os = "linux")]
@@ -48,9 +49,19 @@ fn main() {
     let mut binary_path = ::std::path::PathBuf::from(target_dir);
     binary_path.push("release");
     binary_path.push("run_benches");
-    let exit = RenameThisCommandWrapper::new(&binary_path)
-        .status()
-        .expect("failed to run benchmarks");
+
+    let mut shielded_runner = RenameThisCommandWrapper::new(&binary_path);
+
+    #[cfg(target_os = "linux")]
+    {
+        if let Some(mask) = opt.cpu_pattern {
+            shielded_runner.cpu_mask(mask);
+        }
+
+        shielded_runner.move_kthreads(opt.move_kernel_threads);
+    }
+
+    let exit = shielded_runner.status().expect("failed to run benchmarks");
 
     println!("{:?}", exit);
 }
