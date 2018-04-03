@@ -3,6 +3,8 @@
 deps:
 
 * rustup
+* on linux, cpu shield will call commands with sudo
+  * need to make sure that `cset` can be invoked with sudo without a password
 
 ## SIMD?
 
