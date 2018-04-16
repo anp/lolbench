@@ -248,7 +248,9 @@ criterion_group!(
     rayon_1_0_0::str_split::serial_space_char,
     rayon_1_0_0::str_split::serial_space_fn,
     rayon_1_0_0::str_split::serial_space_str,
-    rayon_1_0_0::tsp::dj10,
+    // Benchmarking rayon_1_0_0::tsp::bench::dj10: Warming up for 3.0000 sthread 'main' panicked 
+    // at 'called `Option::unwrap()` on a `None` value', /checkout/src/libcore/option.rs:335:21
+    // rayon_1_0_0::tsp::dj10,
     rayon_1_0_0::vec_collect::vec_i::with_collect_into_vec,
     rayon_1_0_0::vec_collect::vec_i::with_collect_into_vec_reused,
     rayon_1_0_0::vec_collect::vec_i::with_collect,
