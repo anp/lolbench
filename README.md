@@ -5,6 +5,7 @@ deps:
 * rustup
 * on linux, cpu shield will call commands with sudo
   * need to make sure that `cset` can be invoked with sudo without a password
+* on linux, clang is required to build perf_events wrapper
 
 ## SIMD?
 
@@ -98,3 +99,7 @@ For linux, the run.sh script uses https://github.com/lpechacek/cpuset to reserve
 NOTE: you have to run as root. I tried to use cpuset's "exec as user/group" feature, but rustup had problems with that (thought that /root/.cargo was where it should be installed). For me, this meant `rustup default stable && rustup update` as root and everything worked.
 
 cpuset has a fun trick to move all kernel threads onto the not-used-for-benchmarks core too, which in theory should greatly improve predictability of results.
+
+enabling perf_events for non-privileged users:
+
+`echo 1 | sudo tee /proc/sys/kernel/perf_event_paranoid`
