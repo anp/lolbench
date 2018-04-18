@@ -59,7 +59,8 @@ criterion_group!(
     diesel_1_1_1::bench_medium_complex_query_selecting__1_000_rows_boxed,
     diesel_1_1_1::bench_medium_complex_query_selecting_10_000_rows,
     diesel_1_1_1::bench_medium_complex_query_selecting_10_000_rows_boxed,
-    diesel_1_1_1::loading_associations_sequentially
+    // Benchmarking diesel_1_1_1::loading_associations_sequentially: Warming up for 3.0000 sthread 'main' panicked at 'called `Result::unwrap()` on an `Err` value: DatabaseError(__Unknown, "too many SQL variables")', /checkout/src/libcore/result.rs:916:5
+    // diesel_1_1_1::loading_associations_sequentially
 );
 
 criterion_group!(
