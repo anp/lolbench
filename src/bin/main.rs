@@ -117,7 +117,7 @@ fn run_with_toolchain(toolchain: &str, _cpu_pattern: &Option<String>, _move_kthr
 
     #[cfg(target_os = "linux")]
     {
-        if let Some(mask) = _cpu_pattern {
+        if let &Some(ref mask) = _cpu_pattern {
             shielded_runner.cpu_mask(mask);
         }
 
