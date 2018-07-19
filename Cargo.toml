@@ -2,11 +2,13 @@
 name = "lolbench"
 version = "0.1.0"
 authors = ["Adam Perry <adam.n.perry@gmail.com>"]
+autobenches = false
 
 [dependencies]
 chrono = "0.4"
 clap = "^2.31.1"
 criterion = { version = "0.2.0", path = "criterion", features = ["pmu"] }
+failure = "0.1"
 log = "0.4"
 serde = "1"
 serde_derive = "1"
@@ -25,7 +27,7 @@ nom_4_0_0_beta1 = { path = "benches/nom_4_0_0_beta1" }
 quickcheck_0_6_1 = { path = "benches/quickcheck_0_6_1" }
 rayon_1_0_0 = { path = "benches/rayon_1_0_0" }
 raytrace_8de9020 = { path = "benches/raytrace_8de9020" }
-# regex_0_2_6 = { path = "benches/regex_0_e2_6" }
+regex_0_2_6 = { path = "benches/regex_0_2_6" }
 snap_0_2_4 = { path = "benches/snap_0_2_4" }
 
 # needed for fully static binaries

@@ -1,3 +1,4 @@
+use criterion::Bencher;
 use nom::{alphanumeric, recognize_float};
 
 use std::collections::HashMap;

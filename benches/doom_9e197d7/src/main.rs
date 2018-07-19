@@ -1,3 +1,4 @@
+#[macro_use]
 extern crate criterion;
 #[macro_use]
 extern crate wrap_libtest;
@@ -11,12 +12,24 @@ extern crate sdl2;
 extern crate time;
 extern crate wad;
 
+use criterion::Criterion;
+
 use common::GeneralError;
 use game::Level;
 use gfx::SceneBuilder;
 use gfx::Window;
 use std::path::PathBuf;
 use wad::{Archive, TextureDirectory};
+
+criterion_group! {
+    doom_9e197d7,
+    freedoom1,
+    freedoom2
+}
+
+criterion_main! {
+    doom_9e197d7,
+}
 
 fn check_wad(wad_file: &str) {
     let sdl = sdl2::init().map_err(|e| GeneralError(e.0)).unwrap();

@@ -1,9 +1,12 @@
+#[macro_use]
 extern crate criterion;
 #[macro_use]
 extern crate lazy_static;
 extern crate snap;
 #[macro_use]
 extern crate wrap_libtest;
+
+use criterion::Criterion;
 
 macro_rules! compress {
     ($comp:expr, $name:ident, $filename:expr) => {
@@ -101,4 +104,36 @@ pub mod rust {
     decompress!(decompress, uflat09_txt4, "plrabn12.txt");
     decompress!(decompress, uflat10_pb, "geo.protodata");
     decompress!(decompress, uflat11_gaviota, "kppkn.gtb");
+}
+
+criterion_group! {
+    snap_0_2_4_rust,
+    rust::zflat00_html,
+    rust::zflat01_urls,
+    rust::zflat02_jpg,
+    rust::zflat03_jpg_200,
+    rust::zflat04_pdf,
+    rust::zflat05_html4,
+    rust::zflat06_txt1,
+    rust::zflat07_txt2,
+    rust::zflat08_txt3,
+    rust::zflat09_txt4,
+    rust::zflat10_pb,
+    rust::zflat11_gaviota,
+    rust::uflat00_html,
+    rust::uflat01_urls,
+    rust::uflat02_jpg,
+    rust::uflat03_jpg_200,
+    rust::uflat04_pdf,
+    rust::uflat05_html4,
+    rust::uflat06_txt1,
+    rust::uflat07_txt2,
+    rust::uflat08_txt3,
+    rust::uflat09_txt4,
+    rust::uflat10_pb,
+    rust::uflat11_gaviota
+}
+
+criterion_main! {
+    snap_0_2_4_rust,
 }

@@ -1,4 +1,5 @@
 // Dependencies
+#[macro_use]
 extern crate criterion;
 extern crate lodepng;
 extern crate rand; // generate random numbers // output PNG image files
@@ -6,14 +7,16 @@ extern crate rand; // generate random numbers // output PNG image files
 extern crate wrap_libtest;
 
 // Ray-tracer modules
-mod camera; // translate 2D pixel coordinates to 3D rays
+mod camera;    // translate 2D pixel coordinates to 3D rays
 mod materials; // reflective properties of surfaces
-mod model; // geometry of objects in the scene
+mod model;     // geometry of objects in the scene
 mod render;
 mod vec; // basic 3D vector math // the core ray-tracing algorithm
 
 // The rest of the code in this file brings the pieces together
 // to render a scene made of a bunch of spheres.
+
+use criterion::Criterion;
 
 use camera::Camera;
 use materials::{Dielectric, Lambertian, Material, Metal};
@@ -118,3 +121,6 @@ wrap_libtest! {
         });
     }
 }
+
+criterion_group! { raytrace_8de9020, raytrace_random_scenes }
+criterion_main! { raytrace_8de9020, }

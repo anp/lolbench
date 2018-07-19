@@ -1,0 +1,14 @@
+groups = [
+    "benches/brotli_1_1_3",
+    "benches/crossbeam_epoch_0_4_0",
+    "benches/diesel_1_1_1",
+    "benches/doom_9e197d7",
+    "benches/inflate_0_3_4",
+    "benches/json_benchmark_c7d3d9b",
+    "benches/nom_4_0_0_beta1",
+    "benches/quickcheck_0_6_1",
+    "benches/rayon_1_0_0",
+    "benches/raytrace_8de9020",
+    "benches/regex_0_2_6",
+    "benches/snap_0_2_4",
+]

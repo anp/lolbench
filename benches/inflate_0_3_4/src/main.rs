@@ -1,8 +1,10 @@
+#[macro_use]
 extern crate criterion;
 extern crate inflate;
 #[macro_use]
 extern crate wrap_libtest;
 
+use criterion::Criterion;
 use inflate::inflate_bytes;
 
 wrap_libtest! {
@@ -11,3 +13,6 @@ wrap_libtest! {
         b.iter(|| inflate_bytes(compressed).unwrap());
     }
 }
+
+criterion_group! { inflate_0_3_4, decode }
+criterion_main! { inflate_0_3_4, }

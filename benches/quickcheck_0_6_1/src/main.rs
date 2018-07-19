@@ -1,9 +1,11 @@
+#[macro_use]
 extern crate criterion;
 extern crate quickcheck;
 extern crate rand;
 #[macro_use]
 extern crate wrap_libtest;
 
+use criterion::Criterion;
 use quickcheck::{Arbitrary, StdGen};
 use rand::isaac::IsaacRng;
 
@@ -83,3 +85,57 @@ bench_shrink! {
     (shrink_unit_7_tuple, ((), (), (), (), (), (), ())),
     (shrink_unit_8_tuple, ((), (), (), (), (), (), (), ())),
 }
+
+criterion_group! {
+    quickcheck_0_6_1,
+    shrink_string_1_tuple,
+    shrink_string_2_tuple,
+    shrink_string_3_tuple,
+    shrink_string_4_tuple,
+    shrink_string_5_tuple,
+    shrink_string_6_tuple,
+    shrink_string_7_tuple,
+    shrink_string_8_tuple,
+    shrink_vec_u8_1_tuple,
+    shrink_vec_u8_2_tuple,
+    shrink_vec_u8_3_tuple,
+    shrink_vec_u8_4_tuple,
+    shrink_vec_u8_5_tuple,
+    shrink_vec_u8_6_tuple,
+    shrink_vec_u8_7_tuple,
+    shrink_vec_u8_8_tuple,
+    shrink_u64_1_tuple,
+    shrink_u64_2_tuple,
+    shrink_u64_3_tuple,
+    shrink_u64_4_tuple,
+    shrink_u64_5_tuple,
+    shrink_u64_6_tuple,
+    shrink_u64_7_tuple,
+    shrink_u64_8_tuple,
+    shrink_i64_1_tuple,
+    shrink_i64_2_tuple,
+    shrink_i64_3_tuple,
+    shrink_i64_4_tuple,
+    shrink_i64_5_tuple,
+    shrink_i64_6_tuple,
+    shrink_i64_7_tuple,
+    shrink_i64_8_tuple,
+    shrink_f64_1_tuple,
+    shrink_f64_2_tuple,
+    shrink_f64_3_tuple,
+    shrink_f64_4_tuple,
+    shrink_f64_5_tuple,
+    shrink_f64_6_tuple,
+    shrink_f64_7_tuple,
+    shrink_f64_8_tuple,
+    shrink_unit_1_tuple,
+    shrink_unit_2_tuple,
+    shrink_unit_3_tuple,
+    shrink_unit_4_tuple,
+    shrink_unit_5_tuple,
+    shrink_unit_6_tuple,
+    shrink_unit_7_tuple,
+    shrink_unit_8_tuple
+}
+
+criterion_main!(quickcheck_0_6_1);
