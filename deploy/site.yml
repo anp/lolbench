@@ -1,0 +1,13 @@
+---
+
+- name: apply common configuration to all nodes
+  hosts: all
+  remote_user: adam
+
+- name: deploy supervisor configuration
+  hosts: phoromatic
+  remote_user: adam
+
+- name: deploy runner configuration
+  hosts: runners
+  remote_user: adam
