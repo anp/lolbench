@@ -1,6 +1,3 @@
 [submodule "criterion"]
 	path = criterion
 	url = https://github.com/anp/criterion.rs
-[submodule "phoronix-test-suite"]
-	path = phoronix-test-suite
-	url = https://github.com/anp/phoronix-test-suite

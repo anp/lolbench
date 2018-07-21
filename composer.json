@@ -1,7 +1,0 @@
-{
-    "name": "lolbench-phoromatic",
-    "description": "benchmark results scheduler and aggregator",
-    "require": {
-        "ext-sqlite3": "*"
-    }
-}
