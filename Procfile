@@ -1,1 +1,1 @@
-web: vendor/bin/heroku-php-nginx phoronix-test-suite/phoromatic/public_html/
+web: vendor/bin/heroku-php-nginx phoronix-test-suite/pts-core/phoromatic/public_html/
