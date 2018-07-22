@@ -5,15 +5,73 @@
   remote_user: adam
   become: yes
   become_method: sudo
+  tasks:
+    - name: firewall - install
+      apt:
+        name: ufw
+    - name: firewall - allow ssh
+      ufw:
+        rule: allow
+        port: ssh
+    - name: firewall - enable
+      ufw:
+        state: enabled
+        policy: deny
+    - name: php - 5.6 ppa
+      apt_repository:
+        repo: ppa:ondrej/php
+    - name: apt - update
+      apt:
+        update_cache: yes
+    - name: apt - upgrade
+      apt:
+        upgrade: yes
+    - name: php - install 5.6
+      apt:
+        name: "{{ packages }}"
+      vars:
+        packages:
+          - php5.6
+          - php5.6-cli
+          - php5.6-dom
+          - php5.6-curl
+          - php5.6-gd
+          - php5.6-sqlite3
+          - php5.6-xml
+    # - name: install phoronix-test-suite
+    #   apt:
+    #     deb: TODO vendor it
+    - name: apt - clean up
+      apt:
+        autoremove: yes
+    - name: apt- more aggressive cleanup
+      apt:
+        autoclean: yes
 
 - name: deploy supervisor configuration
   hosts: phoromatic
   remote_user: adam
   become: yes
   become_method: sudo
+# ufw allow 'Nginx Full'
+# add-apt-repository ppa:certbot/certbot
+# apt-get install python-certbot-nginx
+# certbot --nginx -d lolbench.rust.af
+# cronjob
+# systemctl reload nginx
+# systemctl restart php5.6-fpm
+# apt-get install php5.6-fpm
+# chown pts-data to www-data
+# ln -s /mnt/volume_sfo2_02/pts-data /var/www/.phoronix-test-suite
+# su -l www-data -c 'phoronix-test-suite phoromatic.set-root-admin-password'
+
+# vim /var/www/.phoronix-test-suite/user-config.xml
+# vim /etc/nginx/sites-available/default
+# vim /etc/php/5.6/fpm/php.ini
 
 - name: deploy runner configuration
   hosts: runners
   remote_user: adam
   become: yes
   become_method: sudo
+# phoronix-test-suite phoromatic.connect lolbench.rust.af:443/17GUMY
