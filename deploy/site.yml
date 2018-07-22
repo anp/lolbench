@@ -13,6 +13,10 @@
       ufw:
         rule: allow
         port: ssh
+    - name: firewall - allow https
+      ufw:
+        rule: allow
+        port: https
     - name: firewall - enable
       ufw:
         state: enabled
@@ -20,6 +24,7 @@
     - name: php - 5.6 ppa
       apt_repository:
         repo: ppa:ondrej/php
+        state: deleted
     - name: apt - update
       apt:
         update_cache: yes
@@ -38,9 +43,17 @@
           - php5.6-gd
           - php5.6-sqlite3
           - php5.6-xml
-    # - name: install phoronix-test-suite
-    #   apt:
-    #     deb: TODO vendor it
+          - php5.6-zip
+    - name: copy pts deb
+      copy:
+        src: phoronix-test-suite_8.0.1_all.deb
+        dest: /tmp/pts.deb
+        owner: root
+        group: root
+        mode: 0644
+    - name: install phoronix-test-suite
+      apt:
+        deb: /tmp/pts.deb
     - name: apt - clean up
       apt:
         autoremove: yes
@@ -75,3 +88,20 @@
   become: yes
   become_method: sudo
 # phoronix-test-suite phoromatic.connect lolbench.rust.af:443/17GUMY
+# `echo 1 | sudo tee /proc/sys/kernel/perf_event_paranoid`
+
+
+# Turn off CPU frequency scaling:
+
+# `pacman -S cpupower`
+# `vim /etc/default/cpupower`, set governor='performance'
+
+# Guaranteeing CPU affinity:
+
+# For linux, the run.sh script uses https://github.com/lpechacek/cpuset to reserve CPUs for the benchmark runners.
+
+# NOTE: you have to run as root. I tried to use cpuset's "exec as user/group" feature, but rustup had problems with that (thought that /root/.cargo was where it should be installed). For me, this meant `rustup default stable && rustup update` as root and everything worked.
+
+# cpuset has a fun trick to move all kernel threads onto the not-used-for-benchmarks core too, which in theory should greatly improve predictability of results.
+
+# enabling perf_events for non-privileged users:
