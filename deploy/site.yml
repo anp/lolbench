@@ -3,11 +3,17 @@
 - name: apply common configuration to all nodes
   hosts: all
   remote_user: adam
+  become: yes
+  become_method: sudo
 
 - name: deploy supervisor configuration
   hosts: phoromatic
   remote_user: adam
+  become: yes
+  become_method: sudo
 
 - name: deploy runner configuration
   hosts: runners
   remote_user: adam
+  become: yes
+  become_method: sudo
