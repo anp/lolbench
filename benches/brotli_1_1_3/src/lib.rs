@@ -1,23 +1,8 @@
 extern crate alloc_no_stdlib;
 extern crate brotli;
-#[macro_use]
 extern crate criterion;
 #[macro_use]
 extern crate wrap_libtest;
-
-use criterion::Criterion;
-
-criterion_group!(
-    brotli_1_1_3,
-    bench_e2e_decode_q5_1024k,
-    bench_e2e_rt_q9_5_1024k,
-    bench_e2e_rt_q9_1024k,
-    bench_e2e_rt_q5_1024k
-);
-
-criterion_main!{
-    brotli_1_1_3,
-}
 
 use criterion::Bencher;
 

@@ -7,73 +7,94 @@ extern crate log;
 extern crate serde;
 #[macro_use]
 extern crate serde_derive;
+extern crate proc_macro2;
+#[macro_use]
+extern crate quote;
 extern crate serde_json;
 extern crate simple_logger;
-#[macro_use]
 extern crate structopt;
+extern crate syn;
+extern crate toml;
+extern crate walkdir;
 
+use std::path::PathBuf;
 use std::process::Command;
-
-use chrono::{Duration, NaiveDate, Utc};
-use structopt::StructOpt;
 
 pub mod benchmark;
 pub mod cpu_shield;
+pub mod extract;
 pub mod measure;
 
-pub(crate) type Result<T> = std::result::Result<T, failure::Error>;
+pub type Result<T> = std::result::Result<T, failure::Error>;
 
-#[derive(StructOpt, Debug)]
-struct Options {
-    #[structopt(short = "c", long = "cpus")]
-    cpu_pattern: Option<String>,
-    #[structopt(short = "k", long = "move-kthreads")]
-    move_kernel_threads: bool,
-    #[structopt(subcommand)]
-    cmd: SubCommand,
-}
+#[macro_export]
+macro_rules! criterion_from_env {
+    ($( $build_method:ident, )*) => {
+        {
+            let mut crit = ::criterion::Criterion::default().without_plots();
 
-#[derive(Debug, StructOpt)]
-enum SubCommand {
-    #[structopt(name = "single")]
-    Single { toolchain: String },
-    #[structopt(name = "nightlies-since")]
-    NightliesSince { date: NaiveDate },
-}
+            $(
+                if let Ok(v) = ::std::env::var(
+                    concat!("lolbench_", stringify!($build_method))
+                ) {
+                    println!("setting {}", stringify!($build_method));
+                    crit = crit.$build_method(v.parse().unwrap());
+                }
+            )*
 
-fn main() {
-    let opt = Options::from_args();
-
-    simple_logger::init_with_level(log::Level::Debug).unwrap();
-
-    match opt.cmd {
-        SubCommand::Single { toolchain } => {
-            run_with_toolchain(&toolchain, &opt.cpu_pattern, opt.move_kernel_threads)
-                .expect(&format!("couldn't run benchmarks for {}", toolchain));
+            crit
         }
-        SubCommand::NightliesSince { date } => {
-            let mut current = date;
-            let today = Utc::today().naive_utc();
+    };
+}
 
-            while current <= today {
-                let toolchain = format!("nightly-{}", current);
-                info!("running {}", toolchain);
+#[macro_export]
+macro_rules! lolbench {
+    ($krate:ident, $benchmark:ident) => {
+        extern crate criterion;
+        extern crate $krate;
 
-                run_with_toolchain(&toolchain, &opt.cpu_pattern, opt.move_kernel_threads)
-                    .expect(&format!("couldn't run benchmarks for {}", toolchain));
+        trait CriterionExt: Sized {
+            fn warm_up_time_ms(self, ms: usize) -> ::criterion::Criterion;
+            fn measurement_time_ms(self, ms: usize) -> ::criterion::Criterion;
+        }
 
-                current += Duration::days(1);
+        impl CriterionExt for ::criterion::Criterion {
+            #[inline]
+            fn warm_up_time_ms(self, ms: usize) -> Self {
+                self.warm_up_time(::std::time::Duration::from_millis(ms as u64))
+            }
+
+            #[inline]
+            fn measurement_time_ms(self, ms: usize) -> Self {
+                self.measurement_time(::std::time::Duration::from_millis(ms as u64))
             }
         }
-    }
+
+        fn main() {
+            use std::default::Default;
+            ::criterion::init_logging();
+
+            let mut crit = criterion_from_env!(
+                sample_size,
+                warm_up_time_ms,
+                measurement_time_ms,
+                nresamples,
+                noise_threshold,
+                confidence_level,
+                significance_level,
+            );
+
+            $krate::$benchmark(&mut crit);
+        }
+    };
 }
 
-fn run_with_toolchain(
+pub fn run_with_toolchain(
     toolchain: &str,
     _cpu_pattern: &Option<String>,
     _move_kthreads: bool,
 ) -> Result<()> {
-    let target_dir = format!("target-{}", toolchain);
+    // let target_dir = format!("target-{}", toolchain);
 
     if !install_toolchain(toolchain)? {
         warn!("couldn't install {}", toolchain);
@@ -104,7 +125,7 @@ fn run_with_toolchain(
     Ok(())
 }
 
-fn install_toolchain(toolchain: &str) -> Result<bool> {
+pub fn install_toolchain(toolchain: &str) -> Result<bool> {
     info!("Installing {}...", toolchain);
     let install_output = Command::new("rustup")
         .arg("toolchain")

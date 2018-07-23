@@ -1,5 +1,19 @@
 # lolbench
 
+# TODO
+
+* run extract command on other projects confirm all working
+* extractor could easily rewrite #[bench], criterion_group, and wrap_libtest, all in place (run rustfmt after)
+* extractor should add benchmarks to an unassigned section of the configuration
+* subcommand to time benchmarks, test multiple values for each tweakable environment variable in the new harness
+* create config file pointing different boxes at each other
+* set up CI to build all of the test binaries and run each once
+* LTO, strip, cgu=1, incrcomp=false
+* hash single function binaries
+* flesh out contributing guide
+
+---
+
 deps:
 
 * rustup

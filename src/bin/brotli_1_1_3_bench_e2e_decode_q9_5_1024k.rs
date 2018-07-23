@@ -1,0 +1,1 @@
+# [ macro_use ] extern crate lolbench ; lolbench ! ( brotli_1_1_3 , bench_e2e_decode_q9_5_1024k ) ;

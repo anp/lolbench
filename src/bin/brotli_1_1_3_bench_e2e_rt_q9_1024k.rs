@@ -1,0 +1,1 @@
+# [ macro_use ] extern crate lolbench ; lolbench ! ( brotli_1_1_3 , bench_e2e_rt_q9_1024k ) ;
