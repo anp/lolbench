@@ -24,26 +24,26 @@
     - name: php - 5.6 ppa
       apt_repository:
         repo: ppa:ondrej/php
-        state: deleted
+        state: absent
     - name: apt - update
       apt:
         update_cache: yes
     - name: apt - upgrade
       apt:
         upgrade: yes
-    - name: php - install 5.6
+    - name: php - install
       apt:
         name: "{{ packages }}"
       vars:
         packages:
-          - php5.6
-          - php5.6-cli
-          - php5.6-dom
-          - php5.6-curl
-          - php5.6-gd
-          - php5.6-sqlite3
-          - php5.6-xml
-          - php5.6-zip
+          - php7.0
+          - php7.0-cli
+          - php7.0-dom
+          - php7.0-curl
+          - php7.0-gd
+          - php7.0-sqlite3
+          - php7.0-xml
+          - php7.0-zip
     - name: copy pts deb
       copy:
         src: phoronix-test-suite_8.0.1_all.deb

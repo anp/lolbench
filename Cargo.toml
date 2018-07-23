@@ -4,10 +4,8 @@ version = "0.1.0"
 authors = ["Adam Perry <adam.n.perry@gmail.com>"]
 autobenches = false
 
-[profile.release]
-lto = true
-codegen-units = 1
-incremental = false
+# [profile.release]
+# lto = true
 
 [dependencies]
 chrono = "0.4"
