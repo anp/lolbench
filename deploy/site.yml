@@ -1,100 +1,60 @@
 ---
 
-- name: apply common configuration to all nodes
+- name: why dont we do it in the site.yml
   hosts: all
   remote_user: adam
   become: yes
   become_method: sudo
   tasks:
-    - name: firewall - install
+    # - name: apt - update
+    #   apt:
+    #     update_cache: yes
+    # - name: apt - upgrade
+    #   apt:
+    #     upgrade: yes
+    - name: install packages
       apt:
-        name: ufw
+        name: '{{ packages }}'
+      vars:
+        packages:
+          - cpufrequtils
+          - ufw
     - name: firewall - allow ssh
       ufw:
         rule: allow
         port: ssh
-    - name: firewall - allow https
-      ufw:
-        rule: allow
-        port: https
     - name: firewall - enable
       ufw:
         state: enabled
         policy: deny
-    - name: php - 5.6 ppa
-      apt_repository:
-        repo: ppa:ondrej/php
-        state: absent
-    - name: apt - update
-      apt:
-        update_cache: yes
-    - name: apt - upgrade
-      apt:
-        upgrade: yes
-    - name: php - install
-      apt:
-        name: "{{ packages }}"
-      vars:
-        packages:
-          - php7.0
-          - php7.0-cli
-          - php7.0-dom
-          - php7.0-curl
-          - php7.0-gd
-          - php7.0-sqlite3
-          - php7.0-xml
-          - php7.0-zip
-    - name: copy pts deb
-      copy:
-        src: phoronix-test-suite_8.0.1_all.deb
-        dest: /tmp/pts.deb
-        owner: root
-        group: root
-        mode: 0644
-    - name: install phoronix-test-suite
-      apt:
-        deb: /tmp/pts.deb
     - name: apt - clean up
       apt:
         autoremove: yes
-    - name: apt- more aggressive cleanup
+    - name: apt - more aggressive cleanup
       apt:
         autoclean: yes
-
-- name: deploy supervisor configuration
-  hosts: phoromatic
-  remote_user: adam
-  become: yes
-  become_method: sudo
-# ufw allow 'Nginx Full'
-# add-apt-repository ppa:certbot/certbot
-# apt-get install python-certbot-nginx
-# certbot --nginx -d lolbench.rust.af
-# cronjob
-# systemctl reload nginx
-# systemctl restart php5.6-fpm
-# apt-get install php5.6-fpm
-# chown pts-data to www-data
-# ln -s /mnt/volume_sfo2_02/pts-data /var/www/.phoronix-test-suite
-# su -l www-data -c 'phoronix-test-suite phoromatic.set-root-admin-password'
-
-# vim /var/www/.phoronix-test-suite/user-config.xml
-# vim /etc/nginx/sites-available/default
-# vim /etc/php/5.6/fpm/php.ini
-
-- name: deploy runner configuration
-  hosts: runners
-  remote_user: adam
-  become: yes
-  become_method: sudo
-# phoronix-test-suite phoromatic.connect lolbench.rust.af:443/17GUMY
-# `echo 1 | sudo tee /proc/sys/kernel/perf_event_paranoid`
-
-
-# Turn off CPU frequency scaling:
-
-# `pacman -S cpupower`
-# `vim /etc/default/cpupower`, set governor='performance'
+    - name: relax perf_event_paranoid
+      command: echo 1 > /proc/sys/kernel/perf_event_paranoid
+    - name: disable cpu frequency scaling
+      copy:
+        src: cpufrequtils.default
+        dest: /etc/default/cpufrequtils
+        owner: root
+        group: root
+        mode: 0644
+    - name: restart cpufrequtils
+      systemd:
+        name: cpufrequtils
+        daemon_reload: yes
+        state: restarted
+        no_block: yes
+    - name: passwordless sudo
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: '^%sudo'
+        line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s'
 
 # Guaranteeing CPU affinity:
 
@@ -104,4 +64,30 @@
 
 # cpuset has a fun trick to move all kernel threads onto the not-used-for-benchmarks core too, which in theory should greatly improve predictability of results.
 
-# enabling perf_events for non-privileged users:
+# - name: deploy supervisor configuration
+#   hosts: phoromatic
+#   remote_user: adam
+#   become: yes
+#   become_method: sudo
+# # ufw allow 'Nginx Full'
+# # add-apt-repository ppa:certbot/certbot
+# # apt-get install python-certbot-nginx
+# # certbot --nginx -d lolbench.rust.af
+# # cronjob
+# # systemctl reload nginx
+# # systemctl restart php5.6-fpm
+# # apt-get install php5.6-fpm
+# # chown pts-data to www-data
+# # ln -s /mnt/volume_sfo2_02/pts-data /var/www/.phoronix-test-suite
+# # su -l www-data -c 'phoronix-test-suite phoromatic.set-root-admin-password'
+
+# # vim /var/www/.phoronix-test-suite/user-config.xml
+# # vim /etc/nginx/sites-available/default
+# # vim /etc/php/5.6/fpm/php.ini
+
+# - name: deploy runner configuration
+#   hosts: runners
+#   remote_user: adam
+#   become: yes
+#   become_method: sudo
+# phoronix-test-suite phoromatic.connect lolbench.rust.af:443/17GUMY

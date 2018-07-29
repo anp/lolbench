@@ -1,6 +1,3 @@
-[phoromatic]
-lolbench.rust.af
-
 [runners]
 molly.lolbench.rust.af
 sally.lolbench.rust.af

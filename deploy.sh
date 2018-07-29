@@ -7,4 +7,8 @@ set -xe
 playbook="$SCRIPTPATH/deploy/site.yml"
 inventory="$SCRIPTPATH/deploy/hosts"
 
-ansible-playbook --ask-become-pass --inventory "$inventory" "$playbook"
+# NOTE: when setting up a new machine this has to be re-enabled
+    # --ask-become-pass \
+ansible-playbook \
+    --inventory "$inventory" \
+    "$playbook"
