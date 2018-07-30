@@ -4,7 +4,6 @@ pub mod mergesort;
 pub mod nbody;
 pub mod quicksort;
 pub mod sieve;
-pub mod tsp;
 
 // these are not "full-fledged" benchmarks yet,
 // they only run with cargo bench
