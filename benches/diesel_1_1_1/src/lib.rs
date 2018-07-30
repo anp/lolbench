@@ -11,9 +11,7 @@ extern crate lolbench_support;
 mod backend_specifics;
 mod schema;
 
-use self::schema::{
-    comments, posts, users, Comment, NewComment, NewPost, NewUser, Post, TestConnection, User,
-};
+use self::schema::{posts, users, NewUser, Post, TestConnection, User};
 use diesel::*;
 
 fn connection() -> TestConnection {
@@ -150,66 +148,3 @@ bench_medium_complex_query!(
     bench_medium_complex_query_selecting_10_000_rows,
     bench_medium_complex_query_selecting_10_000_rows_boxed
 );
-
-wrap_libtest! {
-    fn loading_associations_sequentially(b: &mut Bencher) {
-        // SETUP A TON OF DATA
-        let conn = connection();
-        let data: Vec<_> = (0..100)
-            .map(|i| {
-                let hair_color = if i % 2 == 0 { "black" } else { "brown" };
-                NewUser::new(&format!("User {}", i), Some(hair_color))
-            })
-            .collect();
-        insert_into(users::table)
-            .values(&data)
-            .execute(&conn)
-            .unwrap();
-        let all_users = users::table.load::<User>(&conn).unwrap();
-        let data: Vec<_> = all_users
-            .iter()
-            .flat_map(|user| {
-                let user_id = user.id;
-                (0..10).map(move |i| {
-                    let title = format!("Post {} by user {}", i, user_id);
-                    NewPost::new(user_id, &title, None)
-                })
-            })
-            .collect();
-        insert_into(posts::table)
-            .values(&data)
-            .execute(&conn)
-            .unwrap();
-        let all_posts = posts::table.load::<Post>(&conn).unwrap();
-        let data: Vec<_> = all_posts
-            .iter()
-            .flat_map(|post| {
-                let post_id = post.id;
-                (0..10).map(move |i| {
-                    let title = format!("Comment {} on post {}", i, post_id);
-                    (title, post_id)
-                })
-            })
-            .collect();
-        let comment_data: Vec<_> = data.iter()
-            .map(|&(ref title, post_id)| NewComment(post_id, &title))
-            .collect();
-        insert_into(comments::table)
-            .values(&comment_data)
-            .execute(&conn)
-            .unwrap();
-
-        // ACTUAL BENCHMARK
-        b.iter(|| {
-            let users = users::table.load::<User>(&conn).unwrap();
-            let posts = Post::belonging_to(&users).load::<Post>(&conn).unwrap();
-            let comments = Comment::belonging_to(&posts)
-                .load::<Comment>(&conn)
-                .unwrap()
-                .grouped_by(&posts);
-            let posts_and_comments = posts.into_iter().zip(comments).grouped_by(&users);
-            let _result: Vec<(User, Vec<(Post, Vec<Comment>)>)> =
-                black_box(users.into_iter().zip(posts_and_comments).collect());
-        })
-    }
-}
