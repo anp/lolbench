@@ -1,15 +1,6 @@
-use nom::{alphanumeric, multispace, space};
+use nom::{alphanumeric, space};
 
-use std::collections::HashMap;
 use std::str;
-
-named!(
-  category<&str>,
-  map_res!(
-    delimited!(char!('['), take_while!(call!(|c| c != b']')), char!(']')),
-    str::from_utf8
-  )
-);
 
 named!(key_value    <&[u8],(&str,&str)>,
   do_parse!(
@@ -25,39 +16,6 @@ named!(key_value    <&[u8],(&str,&str)>,
   >>      (key, val)
   )
 );
-
-named!(categories<&[u8], HashMap<&str, HashMap<&str,&str> > >,
-  map!(
-    many0!(
-      separated_pair!(
-        category,
-        opt!(multispace),
-        map!(
-          many0!(terminated!(key_value, opt!(multispace))),
-          |vec: Vec<_>| vec.into_iter().collect()
-        )
-      )
-    ),
-    |vec: Vec<_>| vec.into_iter().collect()
-  )
-);
-
-wrap_libtest! {
-  ini,
-  fn bench_ini(b: &mut test::Bencher) {
-    let str = "[owner]
-  name=John Doe
-  organization=Acme Widgets Inc.
-
-  [database]
-  server=192.0.2.62
-  port=143
-  file=payroll.dat
-  ";
-
-    b.iter(|| categories(str.as_bytes()).unwrap());
-  }
-}
 
 wrap_libtest! {
   ini,
