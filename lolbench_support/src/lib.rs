@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate proc_macro_hack;
 
-pub extern crate criterion;
+extern crate criterion;
 extern crate failure;
 
 pub use criterion::{black_box, init_logging, Bencher, Criterion};
