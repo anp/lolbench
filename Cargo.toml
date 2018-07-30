@@ -2,6 +2,14 @@
 name = "lolbench-cli"
 version = "0.0.1"
 
+# NOTE(anp): while this crate isn't used directly for code in the bench crates, it *is* the
+# workspace root, which means that its profiles apply to everything in the workspace.
+[profile.dev]
+incremental = true
+
+[profile.release]
+lto = true
+
 [dependencies]
 chrono = "0.4"
 clap = "^2.31.1"
