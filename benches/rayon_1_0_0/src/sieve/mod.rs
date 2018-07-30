@@ -1,13 +1,7 @@
-#[derive(Deserialize)]
-pub struct Args {
-    cmd_bench: bool,
-}
-
 pub mod bench;
 
 use odds::stride::StrideMut;
 use rayon::prelude::*;
-use time;
 
 const CHUNK_SIZE: usize = 100_000;
 
@@ -131,18 +125,4 @@ fn clear_stride(slice: &mut [bool], from: usize, stride: usize) {
     for x in StrideMut::from_slice(slice, stride as isize) {
         *x = false;
     }
-}
-
-fn measure(f: fn(usize) -> Vec<bool>) -> u64 {
-    const MAGNITUDE: usize = 9;
-
-    let start = time::precise_time_ns();
-    let sieve = f(max(MAGNITUDE));
-    let duration = time::precise_time_ns() - start;
-
-    // sanity check the number of primes found
-    let num_primes = 1 + sieve.into_iter().filter(|&b| b).count();
-    assert_eq!(num_primes, NUM_PRIMES[MAGNITUDE]);
-
-    duration
 }

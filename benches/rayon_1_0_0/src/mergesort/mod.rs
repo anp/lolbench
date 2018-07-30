@@ -1,15 +1,8 @@
 use rand::{Rng, SeedableRng, XorShiftRng};
 
-#[derive(Deserialize)]
-pub struct Args {
-    cmd_bench: bool,
-    flag_size: usize,
-}
-
 use rayon;
 
 use std::cmp::max;
-use std::time::Instant;
 
 pub fn merge_sort<T: Ord + Send + Copy>(v: &mut [T]) {
     let n = v.len();
@@ -200,21 +193,6 @@ pub fn is_sorted<T: Send + Ord>(v: &mut [T]) -> bool {
 fn default_vec(n: usize) -> Vec<u32> {
     let mut rng = XorShiftRng::from_seed([0, 1, 2, 3]);
     (0..n).map(|_| rng.next_u32()).collect()
-}
-
-fn timed_sort<F: FnOnce(&mut [u32])>(n: usize, f: F, name: &str) -> u64 {
-    let mut v = default_vec(n);
-
-    let start = Instant::now();
-    f(&mut v[..]);
-    let dur = Instant::now() - start;
-    let nanos = dur.subsec_nanos() as u64 + dur.as_secs() * 1_000_000_000u64;
-    println!("{}: sorted {} ints: {} s", name, n, nanos as f32 / 1e9f32);
-
-    // Check correctness
-    assert!(is_sorted(&mut v[..]));
-
-    return nanos;
 }
 
 mod bench;

@@ -4,11 +4,11 @@ use std::collections::HashMap;
 use std::str;
 
 named!(
-    category<&str>,
-    map_res!(
-        delimited!(char!('['), take_while!(call!(|c| c != b']')), char!(']')),
-        str::from_utf8
-    )
+  category<&str>,
+  map_res!(
+    delimited!(char!('['), take_while!(call!(|c| c != b']')), char!(']')),
+    str::from_utf8
+  )
 );
 
 named!(key_value    <&[u8],(&str,&str)>,
@@ -23,22 +23,6 @@ named!(key_value    <&[u8],(&str,&str)>,
          )
   >>      opt!(pair!(char!(';'), take_while!(call!(|c| c != b'\n'))))
   >>      (key, val)
-  )
-);
-
-named!(keys_and_values<&[u8], HashMap<&str, &str> >,
-  map!(
-    many0!(terminated!(key_value, opt!(multispace))),
-    |vec: Vec<_>| vec.into_iter().collect()
-  )
-);
-
-named!(category_and_keys<&[u8],(&str,HashMap<&str,&str>)>,
-  do_parse!(
-    category: category         >>
-              opt!(multispace) >>
-    keys: keys_and_values      >>
-    (category, keys)
   )
 );
 
@@ -59,6 +43,7 @@ named!(categories<&[u8], HashMap<&str, HashMap<&str,&str> > >,
 );
 
 wrap_libtest! {
+  ini,
   fn bench_ini(b: &mut test::Bencher) {
     let str = "[owner]
   name=John Doe
@@ -75,6 +60,7 @@ wrap_libtest! {
 }
 
 wrap_libtest! {
+  ini,
   fn bench_ini_keys_and_values(b: &mut test::Bencher) {
     let str = "server=192.0.2.62
   port=143
@@ -88,6 +74,7 @@ wrap_libtest! {
 }
 
 wrap_libtest! {
+  ini,
   fn bench_ini_key_value(b: &mut test::Bencher) {
     let str = "server=192.0.2.62\n";
 

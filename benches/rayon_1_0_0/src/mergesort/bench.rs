@@ -1,4 +1,4 @@
-use criterion::Bencher;
+use lolbench_support::Bencher;
 
 // Size to use when doing `cargo bench`; extensively tuned to run in
 // "not too long" on my laptop -nmatsakis
@@ -15,12 +15,14 @@ fn bench_harness<F: FnMut(&mut [u32])>(mut f: F, b: &mut Bencher) {
 }
 
 wrap_libtest! {
+    mergesort::bench,
     fn merge_sort_par_bench(b: &mut Bencher) {
         bench_harness(super::merge_sort, b);
     }
 }
 
 wrap_libtest! {
+    mergesort::bench,
     fn merge_sort_seq_bench(b: &mut Bencher) {
         bench_harness(super::seq_merge_sort, b);
     }

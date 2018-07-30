@@ -1,7 +1,6 @@
-use Window;
-use glium::Frame;
 use glium::index::{NoIndices, PrimitiveType};
 use glium::texture::{ClientFormat, RawImage2d, Texture2d};
+use glium::Frame;
 use glium::{Blend, Surface, VertexBuffer};
 use glium::{DrawParameters, Program};
 use math::Vec2f;
@@ -21,6 +20,7 @@ use std::error::Error as StdError;
 use std::fmt::Result as FmtResult;
 use std::fmt::{Display, Formatter};
 use std::ops::{Index, IndexMut};
+use Window;
 
 /// A handle to a piece of text created with a `TextRenderer`.
 #[derive(Copy, Clone, Eq, PartialEq)]
@@ -50,7 +50,7 @@ impl TextRenderer {
 
     pub fn insert(&mut self, win: &Window, text: &str, pos: Vec2f, padding: u32) -> TextId {
         let surface = self.text_to_surface(text, padding).unwrap();
-        let texture = surface.with_lock(|pixels| {
+        surface.with_lock(|pixels| {
             Texture2d::new(
                 win.facade(),
                 RawImage2d {
@@ -76,7 +76,6 @@ impl TextRenderer {
                     vertex(x + w, y + h, 1.0, 0.0),
                 ],
             ).unwrap(),
-            texture: texture,
             visible: true,
         };
         TextId(self.slab.insert(text).ok().expect("too many text objects."))
@@ -177,7 +176,6 @@ impl Display for Error {
 }
 
 pub struct Text {
-    texture: Texture2d,
     buffer: VertexBuffer<TextVertex>,
     visible: bool,
 }

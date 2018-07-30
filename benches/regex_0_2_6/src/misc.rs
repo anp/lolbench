@@ -14,65 +14,69 @@ use std::iter::repeat;
 
 use regex::Regex;
 
-bench_match!(literal, r"y", {
+bench_match!(misc, literal, r"y", {
     format!("{}y", repeat("x").take(50).collect::<String>())
 });
 
-bench_match!(not_literal, r".y", {
+bench_match!(misc, not_literal, r".y", {
     format!("{}y", repeat("x").take(50).collect::<String>())
 });
 
-bench_match!(match_class, "[abcdw]", {
+bench_match!(misc, match_class, "[abcdw]", {
     format!("{}w", repeat("xxxx").take(20).collect::<String>())
 });
 
-bench_match!(match_class_in_range, "[ac]", {
+bench_match!(misc, match_class_in_range, "[ac]", {
     format!("{}c", repeat("bbbb").take(20).collect::<String>())
 });
 
-bench_not_match!(anchored_literal_short_non_match, r"^zbc(d|e)", {
+bench_not_match!(misc, anchored_literal_short_non_match, r"^zbc(d|e)", {
     "abcdefghijklmnopqrstuvwxyz".to_owned()
 });
 
-bench_not_match!(anchored_literal_long_non_match, r"^zbc(d|e)", {
+bench_not_match!(misc, anchored_literal_long_non_match, r"^zbc(d|e)", {
     repeat("abcdefghijklmnopqrstuvwxyz")
         .take(15)
         .collect::<String>()
 });
 
-bench_match!(anchored_literal_short_match, r"^.bc(d|e)", {
+bench_match!(misc, anchored_literal_short_match, r"^.bc(d|e)", {
     "abcdefghijklmnopqrstuvwxyz".to_owned()
 });
 
-bench_match!(anchored_literal_long_match, r"^.bc(d|e)", {
+bench_match!(misc, anchored_literal_long_match, r"^.bc(d|e)", {
     repeat("abcdefghijklmnopqrstuvwxyz")
         .take(15)
         .collect::<String>()
 });
 
-bench_match!(one_pass_short, r"^.bc(d|e)*$", {
+bench_match!(misc, one_pass_short, r"^.bc(d|e)*$", {
     "abcddddddeeeededd".to_owned()
 });
 
-bench_match!(one_pass_short_not, r".bc(d|e)*$", {
+bench_match!(misc, one_pass_short_not, r".bc(d|e)*$", {
     "abcddddddeeeededd".to_owned()
-});
-
-bench_match!(one_pass_long_prefix, r"^abcdefghijklmnopqrstuvwxyz.*$", {
-    "abcdefghijklmnopqrstuvwxyz".to_owned()
 });
 
 bench_match!(
+    misc,
+    one_pass_long_prefix,
+    r"^abcdefghijklmnopqrstuvwxyz.*$",
+    { "abcdefghijklmnopqrstuvwxyz".to_owned() }
+);
+
+bench_match!(
+    misc,
     one_pass_long_prefix_not,
     r"^.bcdefghijklmnopqrstuvwxyz.*$",
     { "abcdefghijklmnopqrstuvwxyz".to_owned() }
 );
 
-bench_match!(long_needle1, r"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaab", {
+bench_match!(misc, long_needle1, r"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaab", {
     repeat("a").take(100_000).collect::<String>() + "b"
 });
 
-bench_match!(long_needle2, r"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbba", {
+bench_match!(misc, long_needle2, r"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbba", {
     repeat("b").take(100_000).collect::<String>() + "a"
 });
 
@@ -80,11 +84,15 @@ bench_match!(long_needle2, r"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbba", {
 // optimization. In particular, it is easy for a naive implementation to
 // take quadratic worst case time. This benchmark provides a case for such
 // a scenario.
-bench_not_match!(reverse_suffix_no_quadratic, r"[r-z].*bcdefghijklmnopq", {
-    repeat("bcdefghijklmnopq").take(500).collect::<String>()
-});
+bench_not_match!(
+    misc,
+    reverse_suffix_no_quadratic,
+    r"[r-z].*bcdefghijklmnopq",
+    { repeat("bcdefghijklmnopq").take(500).collect::<String>() }
+);
 
 wrap_libtest! {
+    misc,
     fn replace_all(b: &mut Bencher) {
         let re = regex!("[cjrw]");
         let text = "abcdefghijklmnopqrstuvwxyz";
@@ -113,10 +121,10 @@ macro_rules! easy0 {
     };
 }
 
-bench_match!(easy0_32, easy0!(), get_text(TXT_32, easy0_suffix()));
-bench_match!(easy0_1K, easy0!(), get_text(TXT_1K, easy0_suffix()));
-bench_match!(easy0_32K, easy0!(), get_text(TXT_32K, easy0_suffix()));
-bench_match!(easy0_1MB, easy0!(), get_text(TXT_1MB, easy0_suffix()));
+bench_match!(misc, easy0_32, easy0!(), get_text(TXT_32, easy0_suffix()));
+bench_match!(misc, easy0_1K, easy0!(), get_text(TXT_1K, easy0_suffix()));
+bench_match!(misc, easy0_32K, easy0!(), get_text(TXT_32K, easy0_suffix()));
+bench_match!(misc, easy0_1MB, easy0!(), get_text(TXT_1MB, easy0_suffix()));
 
 fn easy1_suffix() -> String {
     "AABCCCDEEEFGGHHHIJJ".to_string()
@@ -128,10 +136,10 @@ macro_rules! easy1 {
     };
 }
 
-bench_match!(easy1_32, easy1!(), get_text(TXT_32, easy1_suffix()));
-bench_match!(easy1_1K, easy1!(), get_text(TXT_1K, easy1_suffix()));
-bench_match!(easy1_32K, easy1!(), get_text(TXT_32K, easy1_suffix()));
-bench_match!(easy1_1MB, easy1!(), get_text(TXT_1MB, easy1_suffix()));
+bench_match!(misc, easy1_32, easy1!(), get_text(TXT_32, easy1_suffix()));
+bench_match!(misc, easy1_1K, easy1!(), get_text(TXT_1K, easy1_suffix()));
+bench_match!(misc, easy1_32K, easy1!(), get_text(TXT_32K, easy1_suffix()));
+bench_match!(misc, easy1_1MB, easy1!(), get_text(TXT_1MB, easy1_suffix()));
 
 fn medium_suffix() -> String {
     "XABCDEFGHIJKLMNOPQRSTUVWXYZ".to_string()
@@ -143,10 +151,30 @@ macro_rules! medium {
     };
 }
 
-bench_match!(medium_32, medium!(), get_text(TXT_32, medium_suffix()));
-bench_match!(medium_1K, medium!(), get_text(TXT_1K, medium_suffix()));
-bench_match!(medium_32K, medium!(), get_text(TXT_32K, medium_suffix()));
-bench_match!(medium_1MB, medium!(), get_text(TXT_1MB, medium_suffix()));
+bench_match!(
+    misc,
+    medium_32,
+    medium!(),
+    get_text(TXT_32, medium_suffix())
+);
+bench_match!(
+    misc,
+    medium_1K,
+    medium!(),
+    get_text(TXT_1K, medium_suffix())
+);
+bench_match!(
+    misc,
+    medium_32K,
+    medium!(),
+    get_text(TXT_32K, medium_suffix())
+);
+bench_match!(
+    misc,
+    medium_1MB,
+    medium!(),
+    get_text(TXT_1MB, medium_suffix())
+);
 
 fn hard_suffix() -> String {
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ".to_string()
@@ -158,10 +186,10 @@ macro_rules! hard {
     };
 }
 
-bench_match!(hard_32, hard!(), get_text(TXT_32, hard_suffix()));
-bench_match!(hard_1K, hard!(), get_text(TXT_1K, hard_suffix()));
-bench_match!(hard_32K, hard!(), get_text(TXT_32K, hard_suffix()));
-bench_match!(hard_1MB, hard!(), get_text(TXT_1MB, hard_suffix()));
+bench_match!(misc, hard_32, hard!(), get_text(TXT_32, hard_suffix()));
+bench_match!(misc, hard_1K, hard!(), get_text(TXT_1K, hard_suffix()));
+bench_match!(misc, hard_32K, hard!(), get_text(TXT_32K, hard_suffix()));
+bench_match!(misc, hard_1MB, hard!(), get_text(TXT_1MB, hard_suffix()));
 
 fn reallyhard_suffix() -> String {
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ".to_string()
@@ -176,21 +204,25 @@ macro_rules! reallyhard {
 }
 
 bench_match!(
+    misc,
     reallyhard_32,
     reallyhard!(),
     get_text(TXT_32, reallyhard_suffix())
 );
 bench_match!(
+    misc,
     reallyhard_1K,
     reallyhard!(),
     get_text(TXT_1K, reallyhard_suffix())
 );
 bench_match!(
+    misc,
     reallyhard_32K,
     reallyhard!(),
     get_text(TXT_32K, reallyhard_suffix())
 );
 bench_match!(
+    misc,
     reallyhard_1MB,
     reallyhard!(),
     get_text(TXT_1MB, reallyhard_suffix())
@@ -207,6 +239,7 @@ macro_rules! reallyhard2 {
 }
 
 bench_match!(
+    misc,
     reallyhard2_1K,
     reallyhard2!(),
     get_text(TXT_1K, reallyhard2_suffix())
@@ -236,12 +269,14 @@ bench_match!(
 // I've opted to just do the more conservative anchor optimization.
 //
 bench_captures!(
+    misc,
     short_haystack_1x,
     Regex::new(r"(bbbb)cccc(bbb)").unwrap(),
     2,
     String::from("aaaabbbbccccbbbdddd")
 );
 bench_captures!(
+    misc,
     short_haystack_2x,
     Regex::new(r"(bbbb)cccc(bbb)").unwrap(),
     2,
@@ -252,6 +287,7 @@ bench_captures!(
     )
 );
 bench_captures!(
+    misc,
     short_haystack_3x,
     Regex::new(r"(bbbb)cccc(bbb)").unwrap(),
     2,
@@ -262,6 +298,7 @@ bench_captures!(
     )
 );
 bench_captures!(
+    misc,
     short_haystack_4x,
     Regex::new(r"(bbbb)cccc(bbb)").unwrap(),
     2,
@@ -272,6 +309,7 @@ bench_captures!(
     )
 );
 bench_captures!(
+    misc,
     short_haystack_10x,
     Regex::new(r"(bbbb)cccc(bbb)").unwrap(),
     2,
@@ -282,6 +320,7 @@ bench_captures!(
     )
 );
 bench_captures!(
+    misc,
     short_haystack_100x,
     Regex::new(r"(bbbb)cccc(bbb)").unwrap(),
     2,
@@ -292,6 +331,7 @@ bench_captures!(
     )
 );
 bench_captures!(
+    misc,
     short_haystack_1000x,
     Regex::new(r"(bbbb)cccc(bbb)").unwrap(),
     2,
@@ -302,6 +342,7 @@ bench_captures!(
     )
 );
 bench_captures!(
+    misc,
     short_haystack_10000x,
     Regex::new(r"(bbbb)cccc(bbb)").unwrap(),
     2,
@@ -312,6 +353,7 @@ bench_captures!(
     )
 );
 bench_captures!(
+    misc,
     short_haystack_100000x,
     Regex::new(r"(bbbb)cccc(bbb)").unwrap(),
     2,
@@ -322,6 +364,7 @@ bench_captures!(
     )
 );
 bench_captures!(
+    misc,
     short_haystack_1000000x,
     Regex::new(r"(bbbb)cccc(bbb)").unwrap(),
     2,

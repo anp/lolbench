@@ -1,0 +1,10 @@
+[package]
+name = "lolbench_support"
+version = "0.1.0"
+authors = ["Adam Perry <adam.n.perry@gmail.com>"]
+
+[dependencies]
+criterion = { version = "0.2.0", path = "../criterion", features = ["pmu"] }
+failure = "0.1"
+lolbench_extractor = { path = "../lolbench_extractor" }
+proc-macro-hack = "0.4"

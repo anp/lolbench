@@ -136,8 +136,9 @@ mod util {
 }
 
 macro_rules! make_bench {
-    ($generate:ident, $check:ident) => {
+    ($module:path, $generate:ident, $check:ident) => {
         wrap_libtest! {
+            $module,
             fn with_collect(b: &mut Bencher) {
                 use vec_collect::util;
                 let mut vec = None;
@@ -147,6 +148,7 @@ macro_rules! make_bench {
         }
 
         wrap_libtest! {
+            $module,
             fn with_linked_list_collect_vec(b: &mut Bencher) {
                 use vec_collect::util;
                 let mut vec = None;
@@ -156,6 +158,7 @@ macro_rules! make_bench {
         }
 
         wrap_libtest! {
+            $module,
             fn with_linked_list_collect_vec_sized(b: &mut Bencher) {
                 use vec_collect::util;
                 let mut vec = None;
@@ -165,6 +168,7 @@ macro_rules! make_bench {
         }
 
         wrap_libtest! {
+            $module,
             fn with_linked_list_map_reduce_vec_sized(b: &mut Bencher) {
                 use vec_collect::util;
                 let mut vec = None;
@@ -174,6 +178,7 @@ macro_rules! make_bench {
         }
 
         wrap_libtest! {
+            $module,
             fn with_vec_vec_sized(b: &mut Bencher) {
                 use vec_collect::util;
                 let mut vec = None;
@@ -183,6 +188,7 @@ macro_rules! make_bench {
         }
 
         wrap_libtest! {
+            $module,
             fn with_fold(b: &mut Bencher) {
                 use vec_collect::util;
                 let mut vec = None;
@@ -209,6 +215,7 @@ pub mod vec_i {
     }
 
     wrap_libtest! {
+        vec_collect::vec_i,
         fn with_collect_into_vec(b: &mut Bencher) {
             let mut vec = None;
             b.iter(|| {
@@ -221,6 +228,7 @@ pub mod vec_i {
     }
 
     wrap_libtest! {
+        vec_collect::vec_i,
         fn with_collect_into_vec_reused(b: &mut Bencher) {
             let mut vec = vec![];
             b.iter(|| generate().collect_into_vec(&mut vec));
@@ -228,7 +236,7 @@ pub mod vec_i {
         }
     }
 
-    make_bench!(generate, check);
+    make_bench!(vec_collect::vec_i, generate, check);
 }
 
 /// Tests a big vector of i forall i in 0 to N, with a no-op
@@ -247,5 +255,5 @@ pub mod vec_i_filtered {
         assert!(v.iter().cloned().eq(0..N));
     }
 
-    make_bench!(generate, check);
+    make_bench!(vec_collect::vec_i_filtered, generate, check);
 }

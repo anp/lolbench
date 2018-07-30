@@ -57,8 +57,8 @@ macro_rules! text {
 //
 // haystack should be a String.
 macro_rules! bench_match {
-    ($name:ident, $pattern:expr, $haystack:expr) => {
-        bench_is_match!($name, true, regex!($pattern), $haystack);
+    ($module:ident, $name:ident, $pattern:expr, $haystack:expr) => {
+        bench_is_match!($module, $name, true, regex!($pattern), $haystack);
     };
 }
 
@@ -74,8 +74,8 @@ macro_rules! bench_match {
 //
 // haystack should be a String.
 macro_rules! bench_not_match {
-    ($name:ident, $pattern:expr, $haystack:expr) => {
-        bench_is_match!($name, false, regex!($pattern), $haystack);
+    ($module:ident, $name:ident, $pattern:expr, $haystack:expr) => {
+        bench_is_match!($module, $name, false, regex!($pattern), $haystack);
     };
 }
 
@@ -93,8 +93,9 @@ macro_rules! bench_not_match {
 //
 // haystack should be a String.
 macro_rules! bench_is_match {
-    ($name:ident, $is_match:expr, $re:expr, $haystack:expr) => {
+    ($module:ident, $name:ident, $is_match:expr, $re:expr, $haystack:expr) => {
         wrap_libtest! {
+            $module,
             fn $name(b: &mut Bencher) {
                 // Why do we use lazy_static here? It seems sensible to just
                 // compile a regex outside of the b.iter() call and be done with
@@ -130,8 +131,9 @@ macro_rules! bench_is_match {
 //
 // haystack should be a String.
 macro_rules! bench_find {
-    ($name:ident, $pattern:expr, $count:expr, $haystack:expr) => {
+    ($module:ident, $name:ident, $pattern:expr, $count:expr, $haystack:expr) => {
         wrap_libtest! {
+            $module,
             fn $name(b: &mut Bencher) {
                 let re = regex!($pattern);
                 let text = text!($haystack);
@@ -155,8 +157,9 @@ macro_rules! bench_find {
 //   bench_captures will benchmark how fast re.captures() produces
 //   the capture groups in question.
 macro_rules! bench_captures {
-    ($name:ident, $pattern:expr, $count:expr, $haystack:expr) => {
+    ($module:ident, $name:ident, $pattern:expr, $count:expr, $haystack:expr) => {
         wrap_libtest! {
+            $module,
             fn $name(b: &mut Bencher) {
                 let re = $pattern;
                 let text = text!($haystack);

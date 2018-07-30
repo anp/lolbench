@@ -2,51 +2,19 @@
 #![recursion_limit = "128"]
 
 #[macro_use]
-extern crate criterion;
-#[macro_use]
 extern crate diesel;
 #[macro_use]
 extern crate diesel_migrations;
 #[macro_use]
-extern crate wrap_libtest;
+extern crate lolbench_support;
 
 mod backend_specifics;
 mod schema;
-
-use criterion::Criterion;
 
 use self::schema::{
     comments, posts, users, Comment, NewComment, NewPost, NewUser, Post, TestConnection, User,
 };
 use diesel::*;
-
-criterion_group! {
-    diesel_1_1_1,
-    bench_trivial_query_selecting______1_row,
-    bench_trivial_query_selecting______1_row_boxed,
-    bench_trivial_query_selecting_____10_rows,
-    bench_trivial_query_selecting_____10_rows_boxed,
-    bench_trivial_query_selecting____100_rows,
-    bench_trivial_query_selecting____100_rows_boxed,
-    bench_trivial_query_selecting__1_000_rows,
-    bench_trivial_query_selecting__1_000_rows_boxed,
-    bench_trivial_query_selecting_10_000_rows,
-    bench_trivial_query_selecting_10_000_rows_boxed,
-    bench_medium_complex_query_selecting______1_row,
-    bench_medium_complex_query_selecting______1_row_boxed,
-    bench_medium_complex_query_selecting_____10_rows,
-    bench_medium_complex_query_selecting_____10_rows_boxed,
-    bench_medium_complex_query_selecting____100_rows,
-    bench_medium_complex_query_selecting____100_rows_boxed,
-    bench_medium_complex_query_selecting__1_000_rows,
-    bench_medium_complex_query_selecting__1_000_rows_boxed,
-    bench_medium_complex_query_selecting_10_000_rows,
-    bench_medium_complex_query_selecting_10_000_rows_boxed,
-    // Benchmarking diesel_1_1_1::loading_associations_sequentially: Warming up for 3.0000 sthread 'main' panicked at 'called `Result::unwrap()` on an `Err` value: DatabaseError(__Unknown, "too many SQL variables")', /checkout/src/libcore/result.rs:916:5
-    // loading_associations_sequentially
-}
-
-criterion_main! { diesel_1_1_1, }
 
 fn connection() -> TestConnection {
     schema::connection()

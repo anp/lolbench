@@ -3,6 +3,7 @@ use epoch::Owned;
 use utils::scoped::scope;
 
 wrap_libtest! {
+    defer,
     fn single_alloc_defer_free(b: &mut Bencher) {
         b.iter(|| {
             let guard = &epoch::pin();
@@ -15,6 +16,7 @@ wrap_libtest! {
 }
 
 wrap_libtest! {
+    defer,
     fn single_defer(b: &mut Bencher) {
         b.iter(|| {
             let guard = &epoch::pin();
@@ -26,6 +28,7 @@ wrap_libtest! {
 }
 
 wrap_libtest! {
+    defer,
     fn multi_alloc_defer_free(b: &mut Bencher) {
         const THREADS: usize = 16;
         const STEPS: usize = 10_000;
@@ -49,6 +52,7 @@ wrap_libtest! {
 }
 
 wrap_libtest! {
+    defer,
     fn multi_defer(b: &mut Bencher) {
         const THREADS: usize = 16;
         const STEPS: usize = 10_000;

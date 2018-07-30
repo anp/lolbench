@@ -4,7 +4,5 @@ version = "0.1.0"
 authors = ["Adam Perry <adam.n.perry@gmail.com>"]
 
 [dependencies]
-# important to allow "any" criterion version because this will be compiled into the parent binary
-criterion = { version = "*", path = "../../criterion" }
 inflate = "0.3.4"
-wrap_libtest = { path = "../../wrap_libtest" }
+lolbench_support = { path = "../../lolbench_support" }

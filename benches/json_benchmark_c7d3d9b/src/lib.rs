@@ -1,9 +1,7 @@
 #[macro_use]
-extern crate criterion;
-#[macro_use]
 extern crate serde_derive;
 #[macro_use]
-extern crate wrap_libtest;
+extern crate lolbench_support;
 
 extern crate time;
 
@@ -79,7 +77,6 @@ macro_rules! bench_file {
         parse_struct: $parse_struct:expr,
         stringify_struct: $stringify_struct:expr,
     } => {
-
 
         wrap_libtest! {
             fn $dom_fn_name(b: &mut Bencher) {
@@ -183,26 +180,4 @@ where
     let mut writer = adapter::IoWriteAsFmtWrite::new(writer);
     let mut encoder = rustc_serialize::json::Encoder::new(&mut writer);
     value.encode(&mut encoder)
-}
-
-use criterion::Criterion;
-
-criterion_group! {
-    json_benchmark_c7d3d9b,
-    serde_canada_dom,
-    serde_canada_struct,
-    serde_citm_dom,
-    serde_citm_struct,
-    serde_twitter_dom,
-    serde_twitter_struct,
-    serialize_canada_dom,
-    serialize_canada_struct,
-    serialize_citm_dom,
-    serialize_citm_struct,
-    serialize_twitter_dom,
-    serialize_twitter_struct
-}
-
-criterion_main! {
-    json_benchmark_c7d3d9b,
 }

@@ -14,6 +14,7 @@ fn factorial(n: u32) -> BigUint {
 
 /// Benchmark the Factorial using a plain iterator.
 wrap_libtest! {
+    factorial,
     fn factorial_iterator(b: &mut Bencher) {
         let f = factorial(N);
         b.iter(|| assert_eq!(factorial(black_box(N)), f));
@@ -22,6 +23,7 @@ wrap_libtest! {
 
 /// Compute the Factorial using rayon::par_iter.
 wrap_libtest! {
+    factorial,
     fn factorial_par_iter(b: &mut Bencher) {
         fn fact(n: u32) -> BigUint {
             (1 .. n + 1).into_par_iter()
@@ -37,6 +39,7 @@ wrap_libtest! {
 
 /// Compute the Factorial using divide-and-conquer serial recursion.
 wrap_libtest! {
+    factorial,
     fn factorial_recursion(b: &mut Bencher) {
 
         fn product(a: u32, b: u32) -> BigUint {
@@ -52,6 +55,7 @@ wrap_libtest! {
 
 /// Compute the Factorial using divide-and-conquer parallel join.
 wrap_libtest! {
+    factorial,
     fn factorial_join(b: &mut Bencher) {
         fn product(a: u32, b: u32) -> BigUint {
             if a == b { return a.into(); }

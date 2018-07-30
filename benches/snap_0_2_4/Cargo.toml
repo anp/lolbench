@@ -4,7 +4,6 @@ version = "0.1.0"
 authors = ["Adam Perry <adam.n.perry@gmail.com>"]
 
 [dependencies]
-criterion = { version = "*", path = "../../criterion" }
 lazy_static = "0.1"
 snap = "0.2.4"
-wrap_libtest = { path = "../../wrap_libtest" }
+lolbench_support = { path = "../../lolbench_support" }

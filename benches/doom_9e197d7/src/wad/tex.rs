@@ -5,7 +5,7 @@ use gfx::Bounds;
 use image::Image;
 use math::{Vec2, Vec2f};
 use name::WadName;
-use num::{Float, Zero};
+use num::Zero;
 use read::WadRead;
 use std::cmp;
 use std::collections::BTreeMap;

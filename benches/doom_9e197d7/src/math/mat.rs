@@ -1,7 +1,6 @@
-use num::Float;
 use std::fmt;
 use std::ops::{Add, Index, IndexMut, Mul, Sub};
-use vector::{Vec3f, Vector};
+use vector::Vec3f;
 
 /// The type of matrix elements.
 pub type Scalar = f32;

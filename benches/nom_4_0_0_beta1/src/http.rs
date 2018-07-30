@@ -1,6 +1,4 @@
 use nom::IResult;
-use std::env;
-use std::fs::File;
 
 #[cfg_attr(rustfmt, rustfmt_skip)]
 #[derive(Debug)]
@@ -139,15 +137,16 @@ fn parse(data: &[u8]) -> Option<Vec<(Request, Vec<Header>)>> {
 }
 
 wrap_libtest! {
-  fn one_test(b: &mut Bencher) {
-    let data = &b"GET / HTTP/1.1
-  Host: www.reddit.com
-  User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:15.0) Gecko/20100101 Firefox/15.0.1
-  Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-  Accept-Language: en-us,en;q=0.5
-  Accept-Encoding: gzip, deflate
-  Connection: keep-alive"
-      [..];
+http,
+fn one_test(b: &mut Bencher) {
+        let data = &b"GET / HTTP/1.1
+    Host: www.reddit.com
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.8; rv:15.0) Gecko/20100101 Firefox/15.0.1
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+    Accept-Language: en-us,en;q=0.5
+    Accept-Encoding: gzip, deflate
+    Connection: keep-alive"
+    [..];
     b.iter(|| parse(data));
-  }
+}
 }

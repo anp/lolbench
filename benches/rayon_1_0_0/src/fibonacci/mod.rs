@@ -39,6 +39,7 @@ fn fib_recursive(n: u32) -> u32 {
 
 /// Compute the Fibonacci number recursively, without any parallelism.
 wrap_libtest! {
+    fibonacci,
     fn fibonacci_recursive(b: &mut Bencher) {
         b.iter(|| assert_eq!(fib_recursive(black_box(N)), FN));
     }
@@ -47,6 +48,7 @@ wrap_libtest! {
 /// Compute the Fibonacci number recursively, using rayon::join.
 /// The larger branch F(N-1) is computed first.
 wrap_libtest! {
+    fibonacci,
     fn fibonacci_join_1_2(b: &mut Bencher) {
         fn fib(n: u32) -> u32 {
             if n < 2 { return n; }
@@ -64,6 +66,7 @@ wrap_libtest! {
 /// Compute the Fibonacci number recursively, using rayon::join.
 /// The smaller branch F(N-2) is computed first.
 wrap_libtest! {
+    fibonacci,
     fn fibonacci_join_2_1(b: &mut Bencher) {
         fn fib(n: u32) -> u32 {
             if n < 2 { return n; }
@@ -80,6 +83,7 @@ wrap_libtest! {
 
 /// Compute the Fibonacci number recursively, using rayon::iter::split to parallelize.
 wrap_libtest! {
+    fibonacci,
     fn fibonacci_split_recursive(b: &mut Bencher) {
         fn fib(n: u32) -> u32 {
             use rayon::iter::ParallelIterator;
@@ -101,6 +105,7 @@ wrap_libtest! {
 
 /// Compute the Fibonacci number iteratively, using rayon::iter::split to parallelize.
 wrap_libtest! {
+    fibonacci,
     fn fibonacci_split_iterative(b: &mut Bencher) {
         fn fib(n: u32) -> u32 {
             use rayon::iter::ParallelIterator;
@@ -123,6 +128,7 @@ wrap_libtest! {
 /// Compute the Fibonacci number iteratively, just to show how silly the others
 /// are. Parallelism can't make up for a bad choice of algorithm.
 wrap_libtest! {
+    fibonacci,
     fn fibonacci_iterative(b: &mut Bencher) {
         b.iter(|| assert_eq!(fib_iterative(black_box(N)), FN));
     }

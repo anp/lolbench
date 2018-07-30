@@ -1,5 +1,5 @@
-use nom::IResult;
 use nom::types::CompleteStr;
+use nom::IResult;
 
 use std::collections::HashMap;
 
@@ -248,17 +248,18 @@ key4 = value4
 }
 
 wrap_libtest! {
-  fn bench_ini_str(b: &mut test::Bencher) {
-    let s = "[owner]
-  name=John Doe
-  organization=Acme Widgets Inc.
+    ini_str,
+    fn bench_ini_str(b: &mut test::Bencher) {
+        let s = "[owner]
+    name=John Doe
+    organization=Acme Widgets Inc.
 
-  [database]
-  server=192.0.2.62
-  port=143
-  file=payroll.dat
-  ";
+    [database]
+    server=192.0.2.62
+    port=143
+    file=payroll.dat
+    ";
 
-    b.iter(|| categories(CompleteStr(s)).unwrap());
-  }
+        b.iter(|| categories(CompleteStr(s)).unwrap());
+    }
 }

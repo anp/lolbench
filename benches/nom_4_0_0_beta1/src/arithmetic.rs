@@ -24,16 +24,17 @@ named!(
     term<i64>,
     do_parse!(
         init: factor
-            >> res:
-                fold_many0!(
-                    pair!(alt!(tag!("*") | tag!("/")), factor),
-                    init,
-                    |acc, (op, val): (&[u8], i64)| if (op[0] as char) == '*' {
+            >> res: fold_many0!(
+                pair!(alt!(tag!("*") | tag!("/")), factor),
+                init,
+                |acc, (op, val): (&[u8], i64)| {
+                    if (op[0] as char) == '*' {
                         acc * val
                     } else {
                         acc / val
                     }
-                ) >> (res)
+                }
+            ) >> (res)
     )
 );
 
@@ -41,20 +42,22 @@ named!(
     expr<i64>,
     do_parse!(
         init: term
-            >> res:
-                fold_many0!(
-                    pair!(alt!(tag!("+") | tag!("-")), term),
-                    init,
-                    |acc, (op, val): (&[u8], i64)| if (op[0] as char) == '+' {
+            >> res: fold_many0!(
+                pair!(alt!(tag!("+") | tag!("-")), term),
+                init,
+                |acc, (op, val): (&[u8], i64)| {
+                    if (op[0] as char) == '+' {
                         acc + val
                     } else {
                         acc - val
                     }
-                ) >> (res)
+                }
+            ) >> (res)
     )
 );
 
 wrap_libtest! {
+  arithmetic,
   fn arithmetic(b: &mut Bencher) {
     let data = &b"  2*2 / ( 5 - 1) + 3 / 4 * (2 - 7 + 567 *12 /2) + 3*(1+2*( 45 /2));";
 

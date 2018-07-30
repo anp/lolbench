@@ -1,9 +1,7 @@
 use error::{ErrorKind, Result};
 use read::{WadRead, WadReadFrom};
 use rustc_serialize::{Decodable, Decoder, Encodable, Encoder};
-use std::ascii::AsciiExt;
 use std::borrow::Borrow;
-use std::error::Error;
 use std::fmt;
 use std::fmt::Debug;
 use std::fmt::Display;

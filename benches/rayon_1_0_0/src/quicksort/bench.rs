@@ -1,6 +1,6 @@
-use criterion::Bencher;
-
 use super::{Parallel, Sequential};
+
+use lolbench_support::Bencher;
 
 // Size to use when doing `cargo bench`; extensively tuned to run in
 // "not too long" on my laptop -nmatsakis
@@ -17,18 +17,21 @@ fn bench_harness<F: FnMut(&mut [u32])>(mut f: F, b: &mut Bencher) {
 }
 
 wrap_libtest! {
+    quicksort::bench,
     fn quick_sort_par_bench(b: &mut Bencher) {
         bench_harness(super::quick_sort::<Parallel, u32>, b);
     }
 }
 
 wrap_libtest! {
+    quicksort::bench,
     fn quick_sort_seq_bench(b: &mut Bencher) {
         bench_harness(super::quick_sort::<Sequential, u32>, b);
     }
 }
 
 wrap_libtest! {
+    quicksort::bench,
     fn quick_sort_splitter(b: &mut Bencher) {
         use rayon::iter::ParallelIterator;
 

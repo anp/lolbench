@@ -6,7 +6,6 @@ publish = false
 
 [dependencies]
 rayon = "1.0.0"
-criterion = { version = "*", path = "../../criterion" }
 cgmath = "0.16"
 fixedbitset = "0.1.5"
 glium = "0.20"
@@ -18,4 +17,4 @@ regex = "0.2"
 serde = "1"
 serde_derive = "1"
 time = "0.1"
-wrap_libtest = { path = "../../wrap_libtest" }
+lolbench_support = { path = "../../lolbench_support" }

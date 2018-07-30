@@ -5,6 +5,7 @@ use rayon::prelude::*;
 use std::usize;
 
 wrap_libtest! {
+    join_microbench,
     fn increment_all(b: &mut Bencher) {
         let mut big_vec = vec![0_usize; 100*1024];
         b.iter(|| {
@@ -15,6 +16,7 @@ wrap_libtest! {
 }
 
 wrap_libtest! {
+    join_microbench,
     fn increment_all_min(b: &mut Bencher) {
         let mut big_vec = vec![0_usize; 100*1024];
         b.iter(|| {
@@ -26,6 +28,7 @@ wrap_libtest! {
 }
 
 wrap_libtest! {
+    join_microbench,
     fn increment_all_serialized(b: &mut Bencher) {
         let mut big_vec = vec![0_usize; 100*1024];
         b.iter(|| {
@@ -37,6 +40,7 @@ wrap_libtest! {
 }
 
 wrap_libtest! {
+    join_microbench,
     fn increment_all_max(b: &mut Bencher) {
         let mut big_vec = vec![0_usize; 100*1024];
         b.iter(|| {
@@ -48,6 +52,7 @@ wrap_libtest! {
 }
 
 wrap_libtest! {
+    join_microbench,
     fn increment_all_atomized(b: &mut Bencher) {
         let mut big_vec = vec![0_usize; 100*1024];
         b.iter(|| {
@@ -59,6 +64,7 @@ wrap_libtest! {
 }
 
 wrap_libtest! {
+    join_microbench,
     fn join_recursively(b: &mut Bencher) {
         fn join_recursively(n: usize) {
             if n == 0 {

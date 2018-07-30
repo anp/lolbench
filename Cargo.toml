@@ -1,43 +1,33 @@
 [package]
-name = "lolbench"
-version = "0.1.0"
-authors = ["Adam Perry <adam.n.perry@gmail.com>"]
-autobenches = false
-
-# [profile.release]
-# lto = true
+name = "lolbench-cli"
+version = "0.0.1"
 
 [dependencies]
 chrono = "0.4"
 clap = "^2.31.1"
-criterion = { version = "0.2.0", path = "criterion", features = ["pmu"] }
 failure = "0.1"
+glob = "0.2"
 log = "0.4"
-proc-macro2 = "0.4"
-quote = "0.6"
+lolbench_support = { path = "./lolbench_support" }
 serde = "1"
 serde_derive = "1"
 serde_json = "1"
 simple_logger = "0.5"
 structopt = { version = "0.2", default-features = false }
-syn = { version = "0.14", features = [ "extra-traits", "parsing", "full" ] }
-toml = "0.4"
-walkdir = "2.1.4"
 
-brotli_1_1_3 = { path = "benches/brotli_1_1_3" }
-crossbeam_epoch_0_4_0 = { path = "benches/crossbeam_epoch_0_4_0" }
-diesel_1_1_1 = { path = "benches/diesel_1_1_1" }
-doom_9e197d7 = { path = "benches/doom_9e197d7" }
-inflate_0_3_4 = { path = "benches/inflate_0_3_4" }
-json_benchmark_c7d3d9b = { path = "benches/json_benchmark_c7d3d9b" }
-nom_4_0_0_beta1 = { path = "benches/nom_4_0_0_beta1" }
-quickcheck_0_6_1 = { path = "benches/quickcheck_0_6_1" }
-rayon_1_0_0 = { path = "benches/rayon_1_0_0" }
-raytrace_8de9020 = { path = "benches/raytrace_8de9020" }
-regex_0_2_6 = { path = "benches/regex_0_2_6" }
-snap_0_2_4 = { path = "benches/snap_0_2_4" }
-
-# needed for fully static binaries
-libsqlite3-sys = { version = "*", features = ["bundled"] }
+[dev-dependencies]
+# benchmarks, included here to ensure they continue to compile and to make cargo workbench stuff ok
+brotli_1_1_3 = { path = "./benches/brotli_1_1_3" }
+crossbeam_epoch_0_4_0 = { path = "./benches/crossbeam_epoch_0_4_0" }
+diesel_1_1_1 = { path = "./benches/diesel_1_1_1" }
+doom_9e197d7 = { path = "./benches/doom_9e197d7" }
+inflate_0_3_4 = { path = "./benches/inflate_0_3_4" }
+json_benchmark_c7d3d9b = { path = "./benches/json_benchmark_c7d3d9b" }
+nom_4_0_0_beta1 = { path = "./benches/nom_4_0_0_beta1" }
+quickcheck_0_6_1 = { path = "./benches/quickcheck_0_6_1" }
+rayon_1_0_0 = { path = "./benches/rayon_1_0_0" }
+raytrace_8de9020 = { path = "./benches/raytrace_8de9020" }
+regex_0_2_6 = { path = "./benches/regex_0_2_6" }
+snap_0_2_4 = { path = "./benches/snap_0_2_4" }
 
 [workspace]

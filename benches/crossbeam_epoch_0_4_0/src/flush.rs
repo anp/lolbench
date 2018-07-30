@@ -4,6 +4,7 @@ use epoch;
 use utils::scoped::scope;
 
 wrap_libtest! {
+    flush,
     fn single_flush(b: &mut Bencher) {
         const THREADS: usize = 16;
 
@@ -27,6 +28,7 @@ wrap_libtest! {
 }
 
 wrap_libtest! {
+    flush,
     fn multi_flush(b: &mut Bencher) {
         const THREADS: usize = 16;
         const STEPS: usize = 10_000;

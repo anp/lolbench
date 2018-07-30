@@ -14,6 +14,7 @@
 macro_rules! dna {
     ($name:ident, $pattern:expr, $count:expr) => {
         bench_find!(
+            regexdna,
             $name,
             $pattern,
             $count,

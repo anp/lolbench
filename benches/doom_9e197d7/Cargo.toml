@@ -21,7 +21,7 @@ getopts = "0.2.14"
 time = "0.1.34"
 env_logger = "0.3.2"
 log = "0.3.4"
-wrap_libtest = { path = "../../wrap_libtest" }
+lolbench_support = { path = "../../lolbench_support" }
 
 [dependencies.sdl2]
 path = "src/shims/sdl2"

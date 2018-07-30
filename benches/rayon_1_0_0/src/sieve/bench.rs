@@ -1,4 +1,4 @@
-use criterion::Bencher;
+use lolbench_support::Bencher;
 
 use super::NUM_PRIMES;
 
@@ -15,18 +15,21 @@ where
 }
 
 wrap_libtest! {
+    sieve::bench,
     fn sieve_serial(b: &mut Bencher) {
         sieve_bench(b, super::sieve_serial);
     }
 }
 
 wrap_libtest! {
+    sieve::bench,
     fn sieve_chunks(b: &mut Bencher) {
         sieve_bench(b, super::sieve_chunks);
     }
 }
 
 wrap_libtest! {
+    sieve::bench,
     fn sieve_parallel(b: &mut Bencher) {
         sieve_bench(b, super::sieve_parallel);
     }

@@ -18,6 +18,7 @@ fn get_string_count() -> (&'static str, usize) {
 }
 
 wrap_libtest! {
+    str_split,
     fn parallel_space_char(b: &mut Bencher) {
         let (string, count) = get_string_count();
         b.iter(|| assert_eq!(string.par_split(' ').count(), count))
@@ -25,6 +26,7 @@ wrap_libtest! {
 }
 
 wrap_libtest! {
+    str_split,
     fn parallel_space_fn(b: &mut Bencher) {
         let (string, count) = get_string_count();
         b.iter(|| assert_eq!(string.par_split(|c| c == ' ').count(), count))
@@ -32,6 +34,7 @@ wrap_libtest! {
 }
 
 wrap_libtest! {
+    str_split,
     fn serial_space_char(b: &mut Bencher) {
         let (string, count) = get_string_count();
         b.iter(|| assert_eq!(string.split(' ').count(), count))
@@ -39,6 +42,7 @@ wrap_libtest! {
 }
 
 wrap_libtest! {
+    str_split,
     fn serial_space_fn(b: &mut Bencher) {
         let (string, count) = get_string_count();
         b.iter(|| assert_eq!(string.split(|c| c == ' ').count(), count))
@@ -46,6 +50,7 @@ wrap_libtest! {
 }
 
 wrap_libtest! {
+    str_split,
     fn serial_space_str(b: &mut Bencher) {
         let (string, count) = get_string_count();
         b.iter(|| assert_eq!(string.split(" ").count(), count))

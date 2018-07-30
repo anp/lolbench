@@ -3,7 +3,7 @@ use ctrl::GameController;
 use ctrl::{Analog2d, Gesture};
 use level::Level;
 use math::{Sphere, Vec3f, Vector};
-use num::{Float, Zero};
+use num::Zero;
 use sdl2::keyboard::Scancode;
 
 pub struct PlayerBindings {

@@ -1,0 +1,16 @@
+[package]
+name = "lolbench_extractor"
+version = "0.1.0"
+authors = ["Adam Perry <adam.n.perry@gmail.com>"]
+
+[lib]
+proc-macro = true
+
+[dependencies]
+failure = "0.1"
+proc-macro-hack = "0.4"
+proc-macro2 = "0.4"
+quote = "0.6"
+slug = "0.1"
+syn = { version = "0.14", features = [ "extra-traits", "parsing", "full" ] }
+toml = "0.4"

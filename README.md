@@ -2,8 +2,7 @@
 
 # TODO
 
-* run extract command on other projects confirm all working
-* extractor could easily rewrite #[bench], criterion_group, and wrap_libtest, all in place (run rustfmt after)
+* new command could easily rewrite #[bench], criterion_group, and wrap_libtest, all in place (run rustfmt after)
 * extractor should add benchmarks to an unassigned section of the configuration
 * subcommand to time benchmarks, test multiple values for each tweakable environment variable in the new harness
 * create config file pointing different boxes at each other
@@ -31,8 +30,8 @@ export RUSTFLAGS="-C target-cpu=native"
 
 ## Adding new benchmarks
 
-1. `cargo new cratename_version`, e.g. `inflate_0_3_4`
-2. in newly created crate's Cargo.toml (example from inflate), add a `*` dep on criterion and an exact version dep on the crate to be tested:
+1. inside the `benches` dir, `cargo new cratename_version`, e.g. `inflate_0_3_4`
+2. in newly created crate's Cargo.toml (example from inflate), add an exact version dep on the crate to be tested and a path dep on the support crate:
 
 ```toml
 [package]
@@ -41,10 +40,8 @@ version = "0.1.0"
 authors = ["Adam Perry <adam.n.perry@gmail.com>"]
 
 [dependencies]
-# important to allow "any" criterion version because this will be compiled into the parent binary
-criterion = "*"
 inflate = "0.3.4"
-wrap_libtest = { path = "../../wrap_libtest" }
+lolbench_support = { path = "../../lolbench_support" }
 ```
 
 3. in root Cargo.toml, add path dependency on newly created crate:
@@ -56,10 +53,9 @@ inflate_0_3_4 = { path = "./inflate_0_3_4" }
 4. Create benchmark functions in `subcrate/lib.rs`. If you're porting from the libtest bench harness to criterion, the [criterion user guide](https://japaric.github.io/criterion.rs/book/criterion_rs.html) is a good place to start. A convenience macro is provided that will wrap an existing cargo benchmark in a criterion bench runner: `wrap_libtest!`. See the below example from inflate for usage:
 
 ```rs
-extern crate criterion;
 extern crate inflate;
 #[macro_use]
-extern crate wrap_libtest;
+extern crate lolbench_support;
 
 use inflate::inflate_bytes;
 
@@ -71,49 +67,20 @@ wrap_libtest!
 }
 ```
 
-There are two important modifications you'll have to make to a cargo benchmark:
+There are three important modifications you'll have to make to a cargo benchmark:
 
 * remove the `#[bench]` directive
+* if the benchmark function isn't at the crate root, either re-export it from the crate root
+  or add its intra-crate module path to the macro invocation (see examples in rayon)
 * ensure that any calls to `test::black_box` are called as just `black_box` (no module path). The wrapper macro will handle importing the equivalent criterion API that will work on any stable/beta/nightly compiler.
 
-5. In `src/main.rs`, import the subcrate:
-
-```rs
-extern crate inflate_0_3_4;
-```
-
-6. In `src/main.rs`, create a benchmark group (note: multiple functions can be appended to this macro call)
-
-```rs
-criterion_group!(inflate_0_3_4, inflate_0_3_4::decode);
-```
-
-You can append more benchmark functions after the first.
-
-7. In `src/main.rs`, add your benchmark group to the `criterion_main!` macro:
-
-```rs
-criterion_main!(inflate_0_3_4);
-```
-
-8. Run the benchmark suite to ensure everything is being measured correctly
+5. Run the benchmark suite to ensure everything is being measured correctly
 
 
 ## performance on benchmark machine
 
-Turn off CPU frequency scaling:
-
-`pacman -S cpupower`
-`vim /etc/default/cpupower`, set governor='performance'
-
-Guaranteeing CPU affinity:
-
-For linux, the run.sh script uses https://github.com/lpechacek/cpuset to reserve CPUs for the benchmark runners.
+see ansible playbooks and cpu_shield.rs for info about bench noise mitigation
 
 NOTE: you have to run as root. I tried to use cpuset's "exec as user/group" feature, but rustup had problems with that (thought that /root/.cargo was where it should be installed). For me, this meant `rustup default stable && rustup update` as root and everything worked.
 
 cpuset has a fun trick to move all kernel threads onto the not-used-for-benchmarks core too, which in theory should greatly improve predictability of results.
-
-enabling perf_events for non-privileged users:
-
-`echo 1 | sudo tee /proc/sys/kernel/perf_event_paranoid`

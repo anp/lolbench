@@ -14,6 +14,7 @@
 macro_rules! sherlock {
     ($name:ident, $pattern:expr, $count:expr) => {
         bench_find!(
+            sherlock,
             $name,
             $pattern,
             $count,

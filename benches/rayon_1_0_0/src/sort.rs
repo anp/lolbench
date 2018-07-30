@@ -56,6 +56,7 @@ fn gen_big_random(len: usize) -> Vec<[u64; 16]> {
 macro_rules! sort {
     ($f:ident, $name:ident, $gen:expr, $len:expr) => {
         wrap_libtest! {
+            sort,
             fn $name(b: &mut Bencher) {
                 let v = $gen($len);
                 b.iter(|| v.clone().$f());
@@ -67,6 +68,7 @@ macro_rules! sort {
 macro_rules! sort_strings {
     ($f:ident, $name:ident, $gen:expr, $len:expr) => {
         wrap_libtest! {
+            sort,
             fn $name(b: &mut Bencher) {
                 let v = $gen($len);
                 let v = v.iter().map(|s| &**s).collect::<Vec<&str>>();
@@ -79,6 +81,7 @@ macro_rules! sort_strings {
 macro_rules! sort_expensive {
     ($f:ident, $name:ident, $gen:expr, $len:expr) => {
         wrap_libtest! {
+            sort,
             fn $name(b: &mut Bencher) {
                 let v = $gen($len);
                 b.iter(|| {

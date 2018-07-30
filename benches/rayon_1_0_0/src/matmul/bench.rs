@@ -1,6 +1,7 @@
 const ROW_SIZE: usize = 256;
 
 wrap_libtest! {
+    matmul::bench,
     fn bench_matmul_strassen(b: &mut Bencher) {
         let n = ROW_SIZE * ROW_SIZE;
         let x = vec![1f32; n];

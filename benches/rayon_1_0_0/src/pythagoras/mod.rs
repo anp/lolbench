@@ -60,6 +60,7 @@ fn euclid() -> u32 {
 
 /// Benchmark without rayon at all
 wrap_libtest! {
+    pythagoras,
     fn euclid_serial(b: &mut Bencher) {
         let count = euclid();
         b.iter(|| assert_eq!(euclid(), count))
@@ -68,6 +69,7 @@ wrap_libtest! {
 
 /// Use huge minimums to force it fully serialized.
 wrap_libtest! {
+    pythagoras,
     fn euclid_faux_serial(b: &mut Bencher) {
         let count = euclid();
         let serial = |r: Iter<u32>| r.with_min_len(usize::MAX);
@@ -77,6 +79,7 @@ wrap_libtest! {
 
 /// Use the default without any weights
 wrap_libtest! {
+    pythagoras,
     fn euclid_parallel_weightless(b: &mut Bencher) {
         let count = euclid();
         b.iter(|| assert_eq!(par_euclid_weightless(), count))
@@ -85,6 +88,7 @@ wrap_libtest! {
 
 /// Use the default settings.
 wrap_libtest! {
+    pythagoras,
     fn euclid_parallel_one(b: &mut Bencher) {
         let count = euclid();
         b.iter(|| assert_eq!(par_euclid(|m| m, |n| n), count))
@@ -93,6 +97,7 @@ wrap_libtest! {
 
 /// Use a low maximum to force the outer loop parallelized.
 wrap_libtest! {
+    pythagoras,
     fn euclid_parallel_outer(b: &mut Bencher) {
         let count = euclid();
         let parallel = |r: Iter<u32>| r.with_max_len(1);
@@ -102,6 +107,7 @@ wrap_libtest! {
 
 /// Use low maximums to force it fully parallelized.
 wrap_libtest! {
+    pythagoras,
     fn euclid_parallel_full(b: &mut Bencher) {
         let count = euclid();
         let parallel = |r: Iter<u32>| r.with_max_len(1);

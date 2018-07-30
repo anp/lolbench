@@ -2,18 +2,10 @@ use rand::{thread_rng, Rng};
 use std::iter::repeat;
 use std::num::Wrapping;
 use std::sync::Arc;
-use time;
 
 use rayon::prelude::*;
 
 pub mod bench;
-
-#[derive(Deserialize)]
-pub struct Args {
-    cmd_bench: bool,
-    flag_size: usize,
-    flag_gens: usize,
-}
 
 #[derive(PartialEq, Eq, Clone, Debug)]
 pub struct Board {
@@ -147,14 +139,4 @@ fn parallel_generations(board: Board, gens: usize) {
     for _ in 0..gens {
         brd = brd.parallel_next_generation();
     }
-}
-
-fn measure(f: fn(Board, usize) -> (), args: &Args) -> u64 {
-    let (n, gens) = (args.flag_size, args.flag_gens);
-    let brd = Board::new(n, n).random();
-    let start = time::precise_time_ns();
-
-    f(brd, gens);
-
-    time::precise_time_ns() - start
 }

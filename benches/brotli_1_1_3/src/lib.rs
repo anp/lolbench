@@ -1,13 +1,11 @@
 extern crate alloc_no_stdlib;
 extern crate brotli;
-extern crate criterion;
 #[macro_use]
-extern crate wrap_libtest;
-
-use criterion::Bencher;
+extern crate lolbench_support;
 
 extern crate brotli_decompressor;
 extern crate core;
+
 use alloc_no_stdlib::{Allocator, SliceWrapper, SliceWrapperMut};
 use brotli::dictionary::{kBrotliDictionary, kBrotliDictionaryOffsetsByLength};
 use brotli::transform::TransformDictionaryWord;
@@ -202,7 +200,7 @@ trait Runner {
     fn iter<Fn: FnMut()>(&mut self, cb: &mut Fn);
 }
 
-struct BenchmarkPassthrough<'a>(pub &'a mut Bencher);
+struct BenchmarkPassthrough<'a>(pub &'a mut lolbench_support::Bencher);
 impl<'a> Runner for BenchmarkPassthrough<'a> {
     fn iter<Fn: FnMut()>(&mut self, cb: &mut Fn) {
         self.0.iter(cb)

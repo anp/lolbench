@@ -1,4 +1,4 @@
-use criterion::Bencher;
+use lolbench_support::Bencher;
 use rand::{SeedableRng, XorShiftRng};
 
 use super::nbody::NBodyBenchmark;
@@ -22,18 +22,21 @@ where
 }
 
 wrap_libtest! {
+    nbody::bench,
     fn nbody_seq(b: &mut Bencher) {
         nbody_bench(b, |n| { n.tick_seq(); });
     }
 }
 
 wrap_libtest! {
+    nbody::bench,
     fn nbody_par(b: &mut Bencher) {
         nbody_bench(b, |n| { n.tick_par(); });
     }
 }
 
 wrap_libtest! {
+    nbody::bench,
     fn nbody_parreduce(b: &mut Bencher) {
         nbody_bench(b, |n| { n.tick_par_reduce(); });
     }

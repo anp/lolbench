@@ -1,15 +1,7 @@
-#[derive(Deserialize)]
-pub struct Args {
-    cmd_bench: bool,
-    flag_size: usize,
-}
-
 pub use self::bench::*;
 
 use rayon;
 use rayon::prelude::*;
-
-use std::time::Instant;
 
 // TODO: Investigate other cache patterns for row-major order that may be more
 // parallelizable.
@@ -363,31 +355,6 @@ fn test_matmul() {
     }
     matmul_strassen(&a[..], &b[..], &mut rmul[..]);
     assert_eq!(rmul, seqmul);
-}
-
-fn timed_matmul<F: FnOnce(&[f32], &[f32], &mut [f32])>(size: usize, f: F, name: &str) -> u64 {
-    let size = size.next_power_of_two();
-    let n = size * size;
-    let mut a = vec![0f32; n];
-    let mut b = vec![0f32; n];
-    for i in 0..n {
-        a[i] = i as f32;
-        b[i] = (i + 7) as f32;
-    }
-    let mut dest = vec![0f32; n];
-
-    let start = Instant::now();
-    f(&a[..], &b[..], &mut dest[..]);
-    let dur = Instant::now() - start;
-    let nanos = dur.subsec_nanos() as u64 + dur.as_secs() * 1_000_000_000u64;
-    println!(
-        "{}:\t{}x{} matrix: {} s",
-        name,
-        size,
-        size,
-        nanos as f32 / 1e9f32
-    );
-    return nanos;
 }
 
 mod bench;

@@ -1,20 +1,23 @@
-extern crate lolbench;
-
+#[macro_use]
+extern crate failure;
 #[macro_use]
 extern crate log;
+#[macro_use]
+extern crate serde_derive;
 #[macro_use]
 extern crate structopt;
 
 extern crate chrono;
 extern crate clap;
+extern crate lolbench_support;
 extern crate serde;
 extern crate serde_json;
 extern crate simple_logger;
-extern crate syn;
-extern crate toml;
-extern crate walkdir;
 
-use std::path::PathBuf;
+use lolbench_support::Result;
+
+pub mod benchmark;
+pub mod cpu_shield;
 
 use chrono::{Duration, NaiveDate, Utc};
 use structopt::StructOpt;
@@ -31,11 +34,6 @@ struct Options {
 
 #[derive(Debug, StructOpt)]
 enum SubCommand {
-    #[structopt(name = "extract")]
-    ExtractBins {
-        directory: String,
-        bin_output: String,
-    },
     #[structopt(name = "single")]
     Single { toolchain: String },
     #[structopt(name = "nightlies-since")]
@@ -48,17 +46,8 @@ fn main() {
     simple_logger::init_with_level(log::Level::Debug).unwrap();
 
     match opt.cmd {
-        SubCommand::ExtractBins {
-            directory,
-            bin_output,
-        } => {
-            let dir = PathBuf::from(directory);
-            let bin_output = PathBuf::from(bin_output);
-            lolbench::extract::extract_and_write_crate(&dir, &bin_output)
-                .expect(&format!("couldn't extract benchmark runners for {:?}", dir));
-        }
         SubCommand::Single { toolchain } => {
-            lolbench::run_with_toolchain(&toolchain, &opt.cpu_pattern, opt.move_kernel_threads)
+            benchmark::run_with_toolchain(&toolchain, &opt.cpu_pattern, opt.move_kernel_threads)
                 .expect(&format!("couldn't run benchmarks for {}", toolchain));
         }
         SubCommand::NightliesSince { date } => {
@@ -69,8 +58,11 @@ fn main() {
                 let toolchain = format!("nightly-{}", current);
                 info!("running {}", toolchain);
 
-                lolbench::run_with_toolchain(&toolchain, &opt.cpu_pattern, opt.move_kernel_threads)
-                    .expect(&format!("couldn't run benchmarks for {}", toolchain));
+                benchmark::run_with_toolchain(
+                    &toolchain,
+                    &opt.cpu_pattern,
+                    opt.move_kernel_threads,
+                ).expect(&format!("couldn't run benchmarks for {}", toolchain));
 
                 current += Duration::days(1);
             }

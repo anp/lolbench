@@ -221,8 +221,9 @@ mod util {
 }
 
 macro_rules! make_bench {
-    ($generate:ident, $check:ident) => {
+    ($module:ident, $generate:ident, $check:ident) => {
         wrap_libtest! {
+            map_collect::$module,
             fn with_collect(b: &mut Bencher) {
                 use map_collect::util;
                 let mut map = None;
@@ -232,6 +233,7 @@ macro_rules! make_bench {
         }
 
         wrap_libtest! {
+            map_collect::$module,
             fn with_mutex(b: &mut Bencher) {
                 use map_collect::util;
                 let mut map = None;
@@ -241,6 +243,7 @@ macro_rules! make_bench {
         }
 
         wrap_libtest! {
+            map_collect::$module,
             fn with_mutex_vec(b: &mut Bencher) {
                 use map_collect::util;
                 let mut map = None;
@@ -250,6 +253,7 @@ macro_rules! make_bench {
         }
 
         wrap_libtest! {
+            map_collect::$module,
             fn with_linked_list_collect(b: &mut Bencher) {
                 use map_collect::util;
                 let mut map = None;
@@ -259,6 +263,7 @@ macro_rules! make_bench {
         }
 
         wrap_libtest! {
+            map_collect::$module,
             fn with_linked_list_collect_vec(b: &mut Bencher) {
                 use map_collect::util;
                 let mut map = None;
@@ -268,6 +273,7 @@ macro_rules! make_bench {
         }
 
         wrap_libtest! {
+            map_collect::$module,
             fn with_linked_list_collect_vec_sized(b: &mut Bencher) {
                 use map_collect::util;
                 let mut map = None;
@@ -277,6 +283,7 @@ macro_rules! make_bench {
         }
 
         wrap_libtest! {
+            map_collect::$module,
             fn with_linked_list_map_reduce_vec_sized(b: &mut Bencher) {
                 use map_collect::util;
                 let mut map = None;
@@ -286,6 +293,7 @@ macro_rules! make_bench {
         }
 
         wrap_libtest! {
+            map_collect::$module,
             fn with_vec_vec_sized(b: &mut Bencher) {
                 use map_collect::util;
                 let mut map = None;
@@ -295,6 +303,7 @@ macro_rules! make_bench {
         }
 
         wrap_libtest! {
+            map_collect::$module,
             fn with_fold(b: &mut Bencher) {
                 use map_collect::util;
                 let mut map = None;
@@ -304,6 +313,7 @@ macro_rules! make_bench {
         }
 
         wrap_libtest! {
+            map_collect::$module,
             fn with_fold_vec(b: &mut Bencher) {
                 use map_collect::util;
                 let mut map = None;
@@ -336,7 +346,7 @@ pub mod i_to_i {
         }
     }
 
-    make_bench!(generate, check);
+    make_bench!(i_to_i, generate, check);
 }
 
 /// Tests a big map mapping `i % 10 -> i` forall i in 0 to N. This map
@@ -360,5 +370,5 @@ pub mod i_mod_10_to_i {
         }
     }
 
-    make_bench!(generate, check);
+    make_bench!(i_mod_10_to_i, generate, check);
 }
