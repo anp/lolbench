@@ -54,9 +54,7 @@ impl BenchEntrypoint {
             extern crate #crate_name_ident;
             extern crate lolbench_support;
 
-            use std::default::Default;
-
-            use lolbench_support::{Criterion, criterion_from_env, init_logging};
+            use lolbench_support::{criterion_from_env, init_logging};
 
             fn main() {
                 init_logging();
@@ -66,6 +64,7 @@ impl BenchEntrypoint {
 
             #[test]
             fn run_bench() {
+                use std::default::Default;
                 init_logging();
                 let mut crit = Criterion::default();
                 #crate_name_ident::#fn_name(&mut crit);
