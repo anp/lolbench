@@ -1,5 +1,4 @@
-mod bench;
-pub use self::bench::*;
+pub mod bench;
 mod nbody;
 mod visualize;
 

@@ -1,4 +1,4 @@
-pub use self::bench::*;
+pub mod bench;
 
 use rayon;
 use rayon::prelude::*;
@@ -356,5 +356,3 @@ fn test_matmul() {
     matmul_strassen(&a[..], &b[..], &mut rmul[..]);
     assert_eq!(rmul, seqmul);
 }
-
-mod bench;

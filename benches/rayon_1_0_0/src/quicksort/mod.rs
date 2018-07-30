@@ -87,5 +87,4 @@ fn default_vec(n: usize) -> Vec<u32> {
     (0..n).map(|_| rng.next_u32()).collect()
 }
 
-mod bench;
-pub use self::bench::*;
+pub mod bench;

@@ -8,8 +8,7 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
 
-mod bench;
-pub use self::bench::*;
+pub mod bench;
 mod graph;
 mod parser;
 mod solver;

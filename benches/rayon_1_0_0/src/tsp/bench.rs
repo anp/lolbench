@@ -45,7 +45,7 @@ fn run_dir(
 // basically, but still exercise the spawning stuff -- each run
 // should spawn 6! (720) tasks or so this way.
 wrap_libtest! {
-    tsp,
+    tsp::bench,
     fn dj10(b: &mut Bencher) {
         run_dir(b, "dj10.tsp", 4, 2577, vec![0, 1, 3, 2, 4, 6, 8, 7, 5, 9, 0]);
     }
