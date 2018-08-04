@@ -41,7 +41,7 @@ authors = ["Adam Perry <adam.n.perry@gmail.com>"]
 
 [dependencies]
 inflate = "0.3.4"
-lolbench_support = { path = "../../lolbench_support" }
+lolbench_support = { path = "../../support" }
 ```
 
 3. in root Cargo.toml, add path dependency on newly created crate:

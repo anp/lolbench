@@ -5,4 +5,4 @@ authors = ["Adam Perry <adam.n.perry@gmail.com>"]
 
 [dependencies]
 nom = "4.0.0-beta1"
-lolbench_support = { path = "../../lolbench_support" }
+lolbench_support = { path = "../../support" }

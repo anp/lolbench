@@ -7,4 +7,4 @@ authors = ["Adam Perry <adam.n.perry@gmail.com>"]
 alloc-no-stdlib = "1.2"
 brotli = "=1.1.3"
 brotli-decompressor = "=1.2.1"
-lolbench_support = { path = "../../lolbench_support" }
+lolbench_support = { path = "../../support" }

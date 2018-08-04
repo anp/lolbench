@@ -6,5 +6,5 @@ authors = ["Adam Perry <adam.n.perry@gmail.com>"]
 [dependencies]
 criterion = { version = "0.2.0", path = "../criterion", features = ["pmu"] }
 failure = "0.1"
-lolbench_extractor = { path = "../lolbench_extractor" }
+lolbench_extractor = { path = "../extractor" }
 proc-macro-hack = "0.4"

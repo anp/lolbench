@@ -6,4 +6,4 @@ authors = ["Adam Perry <adam.n.perry@gmail.com>"]
 [dependencies]
 quickcheck = "0.6.1"
 rand = "0.4.2"
-lolbench_support = { path = "../../lolbench_support" }
+lolbench_support = { path = "../../support" }
