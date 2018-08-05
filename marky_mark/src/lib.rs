@@ -29,11 +29,10 @@ type Result<T> = ::std::result::Result<T, failure::Error>;
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct Benchmark {
     #[serde(skip_serializing_if = "Option::is_none")]
-    runner: Option<String>,
-    name: String,
+    pub runner: Option<String>,
+    pub name: String,
     #[serde(rename = "crate")]
-    crate_name: String,
-    checksum: Option<Checksum>,
+    pub crate_name: String,
 }
 
 impl Benchmark {
@@ -41,7 +40,6 @@ impl Benchmark {
         Self {
             name: name.to_string(),
             crate_name: crate_name.to_string(),
-            checksum: None,
             runner: None,
         }
     }
@@ -90,7 +88,6 @@ impl Benchmark {
 
     pub fn rendered(&mut self) -> String {
         let source = self.source();
-        self.checksum = Some(Checksum::new(&source));
         format!("//{}\n{}", serde_json::to_string(&self).unwrap(), source)
     }
 
@@ -141,23 +138,6 @@ impl Benchmark {
         }
 
         Ok(need_to_write)
-    }
-}
-
-use digest::FixedOutput;
-use generic_array::GenericArray;
-use sha2::{Digest, Sha256};
-
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-#[serde(tag = "method", content = "value")]
-pub enum Checksum {
-    #[serde(rename = "sha256-generic-array")]
-    Sha256(GenericArray<u8, <Sha256 as FixedOutput>::OutputSize>),
-}
-
-impl Checksum {
-    pub fn new(s: &str) -> Self {
-        Checksum::Sha256(Sha256::digest_str(s))
     }
 }
 

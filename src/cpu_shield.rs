@@ -1,16 +1,33 @@
+use super::prelude::*;
+
 use std::ffi::OsStr;
 use std::io;
 use std::ops::{Deref, DerefMut};
 use std::process::{Child, Command, ExitStatus, Output};
 
-pub struct RenameThisCommandWrapper {
-    shielded: Command,
-    cpu_mask: Option<String>,
+#[derive(Debug, Deserialize, Eq, PartialEq, PartialOrd, Ord, Serialize)]
+pub struct ShieldSpec {
+    cpu_mask: String,
     kthread_on: bool,
 }
 
+impl ShieldSpec {
+    pub fn new(cpu_mask: String, kthread_on: bool) -> Result<Self> {
+        // FIXME(anp): these arguments need to be validated
+        Ok(Self {
+            cpu_mask,
+            kthread_on,
+        })
+    }
+}
+
+pub struct RenameThisCommandWrapper {
+    shielded: Command,
+    spec: Option<ShieldSpec>,
+}
+
 impl RenameThisCommandWrapper {
-    pub fn new<S: AsRef<OsStr>>(cmd: S) -> Self {
+    pub fn new<S: AsRef<OsStr>>(cmd: S, spec: Option<ShieldSpec>) -> Self {
         let shielded = if cfg!(target_os = "linux") {
             let mut shielded = Command::new("cset");
             shielded.arg("sh");
@@ -20,89 +37,67 @@ impl RenameThisCommandWrapper {
             Command::new(cmd)
         };
 
-        Self {
-            shielded: shielded,
-            cpu_mask: None,
-            kthread_on: false,
-        }
-    }
-
-    pub fn cpu_mask<S: AsRef<str>>(&mut self, mask: S) -> &mut Self {
-        if cfg!(not(target_os = "linux")) {
-            unimplemented!();
-        }
-
-        self.cpu_mask = Some(String::from(mask.as_ref()));
-        self
-    }
-
-    pub fn move_kthreads(&mut self, move_them: bool) -> &mut Self {
-        if cfg!(not(target_os = "linux")) {
-            unimplemented!();
-        }
-
-        self.kthread_on = move_them;
-        self
-    }
-
-    fn setup_shield(&self) -> io::Result<ExitStatus> {
-        // sudo cset shield --cpu=${CPU_MASK} --kthread=${on|off}
-
-        // TODO notify sudo dep, find another way to do this
-        let mut shield_create = Command::new("sudo");
-        shield_create.arg("cset");
-        shield_create.arg("shield");
-        // NOTE: this should only get called if the cpu_mask has already been validated
-        let mask = self.cpu_mask.iter().cloned().next().unwrap();
-        shield_create.arg(format!("--cpu={}", mask));
-
-        if self.kthread_on {
-            shield_create.arg("--kthread=on");
-        }
-
-        shield_create.status()
-    }
-
-    fn teardown_shield(&self) {
-        let reset_res = Command::new("sudo")
-            .arg("cset")
-            .arg("shield")
-            .arg("--reset")
-            .status();
-
-        match reset_res {
-            Err(why) => println!("error destroying shield: {:#?}", why),
-
-            _ => (),
-        };
+        Self { shielded, spec }
     }
 
     pub fn spawn(&mut self) -> io::Result<Child> {
         unimplemented!();
     }
 
-    pub fn output(&mut self) -> io::Result<Output> {
-        if self.cpu_mask.is_some() {
-            self.setup_shield()?;
-            let output = self.shielded.output();
-            self.teardown_shield();
-            output
+    fn maybe_with_shielded<F, R>(&mut self, f: F) -> Result<R>
+    where
+        F: FnOnce(&mut Command) -> R,
+    {
+        if let Some(spec) = self.spec.as_ref() {
+            // fn setup_shield(&self) -> io::Result<ExitStatus> {
+            // sudo cset shield --cpu=${CPU_MASK} --kthread=${on|off}
+
+            // TODO notify sudo dep, find another way to do this
+            // let mut shield_create = Command::new("sudo");
+            // shield_create.arg("cset");
+            // shield_create.arg("shield");
+            // // NOTE: this should only get called if the cpu_mask has already been validated
+            // let mask = self.spec.cpu_mask.iter().cloned().next().unwrap();
+            // shield_create.arg(format!("--cpu={}", mask));
+
+            // if self.spec.kthread_on {
+            //     shield_create.arg("--kthread=on");
+            // }
+
+            // shield_create.status()
+            // }
+
+            // fn teardown_shield(&self) {
+            //     // let reset_res = Command::new("sudo")
+            //     //     .arg("cset")
+            //     //     .arg("shield")
+            //     //     .arg("--reset")
+            //     //     .status();
+
+            //     // match reset_res {
+            //     //     Err(why) => println!("error destroying shield: {:#?}", why),
+
+            //     //     _ => (),
+            //     // };
+            // // }
+
+            //         let output = self.shielded.output();
+            //         self.teardown_shield();
+            //         output
+            //     } else {
+            //         self.shielded.output()
+            unimplemented!()
         } else {
-            self.shielded.output()
+            Ok(f(&mut self.shielded))
         }
     }
 
-    pub fn status(&mut self) -> io::Result<ExitStatus> {
-        // make sure the shield is running if need be
-        if self.cpu_mask.is_some() {
-            self.setup_shield()?;
-            // if mask provided, cset sh ${CMD}
-            let status = self.shielded.status();
-            self.teardown_shield();
-            status
-        } else {
-            self.shielded.status()
-        }
+    pub fn output(&mut self) -> Result<Output> {
+        Ok(self.maybe_with_shielded(|cmd| cmd.output())??)
+    }
+
+    pub fn status(&mut self) -> Result<ExitStatus> {
+        Ok(self.maybe_with_shielded(|cmd| cmd.status())??)
     }
 }
 

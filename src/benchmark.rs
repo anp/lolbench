@@ -1,4 +1,4 @@
-use super::Result;
+use super::prelude::*;
 
 use std::collections::BTreeMap;
 use std::fs;
@@ -14,7 +14,7 @@ pub fn run_benchmark(
     bench_name: &str,
     toolchain: &str,
     target_dir: impl AsRef<Path>,
-    _cpu_pattern: Option<&str>,
+    _cpu_pattern: Option<String>,
     _move_kthreads: bool,
 ) -> Result<ExitStatus> {
     let cargo_action = |action: &str| -> Result<()> {
@@ -52,16 +52,14 @@ pub fn run_benchmark(
     let mut binary_path = Path::new(target_dir.as_ref()).join("release");
     binary_path.push("run_benches");
 
-    let mut shielded_runner = RenameThisCommandWrapper::new(&binary_path);
-    shielded_runner.env("CARGO_TARGET_DIR", target_dir.as_ref());
+    let shield_spec = if cfg!(target_os = "linux") {
+        _cpu_pattern.map(|mask| ShieldSpec::new(mask, _move_kthreads).unwrap())
+    } else {
+        None
+    };
 
-    #[cfg(target_os = "linux")]
-    {
-        if let Some(mask) = _cpu_pattern {
-            shielded_runner.cpu_mask(mask);
-            shielded_runner.move_kthreads(_move_kthreads);
-        }
-    }
+    let mut shielded_runner = RenameThisCommandWrapper::new(&binary_path, shield_spec);
+    shielded_runner.env("CARGO_TARGET_DIR", target_dir.as_ref());
 
     Ok(shielded_runner.status()?)
 }
@@ -70,15 +68,16 @@ pub fn run_with_toolchain(
     toolchain: &str,
     _cpu_pattern: &Option<String>,
     _move_kthreads: bool,
+    _output_dir: &Path,
 ) -> Result<()> {
-    // let target_dir = format!("target-{}", toolchain);
+    unimplemented!();
+
+    // let target_dir = _output_dir.join(format!("target-{}", toolchain));
 
     if !install_toolchain(toolchain)? {
         warn!("couldn't install {}", toolchain);
         return Ok(());
     }
-
-    // FIXME(anp): pass the right compiler flags (LTO, etc)
 
     // FIXME(anp): figure out which benchmarks to run
     // FIXME(anp): run each benchmark in turn, and post process them separately

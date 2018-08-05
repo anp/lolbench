@@ -248,6 +248,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "num-integer 0.1.36 (registry+https://github.com/rust-lang/crates.io-index)",
  "num-traits 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde 1.0.43 (registry+https://github.com/rust-lang/crates.io-index)",
  "time 0.1.39 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -967,6 +968,7 @@ dependencies = [
  "json_benchmark_c7d3d9b 0.0.1",
  "log 0.4.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "lolbench_support 0.1.0",
+ "marky_mark 0.1.0",
  "nom_4_0_0_beta1 0.1.0",
  "quickcheck_0_6_1 0.1.0",
  "rayon_1_0_0 0.0.0",

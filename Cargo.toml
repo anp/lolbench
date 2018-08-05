@@ -5,18 +5,20 @@ version = "0.0.1"
 # NOTE(anp): while this crate isn't used directly for code in the bench crates, it *is* the
 # workspace root, which means that its profiles apply to everything in the workspace.
 [profile.dev]
-incremental = true
+opt-level = 1
+debug = 1
 
 [profile.release]
 lto = true
 
 [dependencies]
-chrono = "0.4"
+chrono = { version = "0.4", features = ["serde"] }
 clap = "^2.31.1"
 failure = "0.1"
 glob = "0.2"
 log = "0.4"
 lolbench_support = { path = "./support" }
+marky_mark = { path = "./marky_mark" }
 serde = "1"
 serde_derive = "1"
 serde_json = "1"
