@@ -31,6 +31,7 @@ pub mod prelude {
     pub use std::collections::BTreeSet;
     pub use std::path::{Path, PathBuf};
 
+    pub use chrono::prelude::*;
     pub use chrono::{NaiveDate, NaiveDateTime, NaiveTime};
 }
 

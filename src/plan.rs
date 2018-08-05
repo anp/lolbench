@@ -11,9 +11,6 @@ pub struct Plans {
     /// When the plan was generated in UTC according to the local clock.
     generated_at: NaiveDateTime,
 
-    /// Configuration of CPU resources.
-    shield_spec: ShieldSpec,
-
     /// All of the benchmarks which should be run, with which options.
     plans: BTreeSet<RunPlan>,
 }
@@ -22,11 +19,12 @@ impl Plans {
     pub(crate) fn new(benches_dir: &Path, bench_opts: BenchOpts) -> Result<Self> {
         info!("Searching {} for benchmarks...", benches_dir.display());
 
-        let mut benchmarks = Vec::new();
+        let mut benchmarks: Vec<(PathBuf, Benchmark)> = Vec::new();
         for file in glob(&format!("{}/**/*.rs", benches_dir.display()))? {
-            let contents = read_to_string(file?)?;
+            let file = file?;
+            let contents = read_to_string(&file)?;
             if let Ok((bench, _)) = Benchmark::parse(&contents) {
-                benchmarks.push(bench);
+                benchmarks.push((file, bench));
             }
         }
 
@@ -34,7 +32,7 @@ impl Plans {
 
         let benchmarks = benchmarks
             .into_iter()
-            .filter(|b| bench_opts.filter.matches(b))
+            .filter(|b| bench_opts.filter.matches(&b.1))
             .collect::<Vec<_>>();
 
         info!(
@@ -43,42 +41,89 @@ impl Plans {
             benchmarks.len()
         );
 
-        // TODO figure out which toolchains to use
+        let toolchains = bench_opts.toolchains.all_of_em();
 
-        // TODO create run plans
-        unimplemented!()
-    }
+        info!("Will run with these toolchains: {:?}", toolchains);
 
-    pub fn write(&self, p: &Path) -> Result<()> {
-        unimplemented!()
+        let plans = toolchains
+            .into_iter()
+            .flat_map(move |toolchain: String| {
+                let shield = bench_opts.shield_spec.as_ref().map(Clone::clone);
+
+                benchmarks
+                    .clone()
+                    .into_iter()
+                    .map(move |(path, benchmark)| RunPlan {
+                        benchmark,
+                        shield: shield.clone(),
+                        toolchain: toolchain.clone(),
+                        source_path: path.to_owned(),
+                    })
+            })
+            .collect();
+
+        Ok(Self {
+            generated_at: Utc::now().naive_utc(),
+            plans,
+        })
     }
 }
 
 #[derive(Debug, Deserialize, Eq, PartialEq, PartialOrd, Ord, Serialize)]
 pub struct RunPlan {
+    shield: Option<ShieldSpec>,
     toolchain: String,
     source_path: PathBuf,
-    binary_path: PathBuf,
+    benchmark: Benchmark,
 }
 
 #[derive(Debug, Deserialize, Eq, PartialEq, PartialOrd, Ord, Serialize)]
 pub struct BenchOpts {
     shield_spec: Option<ShieldSpec>,
     filter: BenchFilter,
+    toolchains: ToolchainSpec,
 }
 
 impl BenchOpts {
-    pub fn unshielded(filter: BenchFilter) -> Self {
+    pub fn unshielded(filter: BenchFilter, toolchains: ToolchainSpec) -> Self {
         Self {
             filter,
+            toolchains,
             shield_spec: None,
         }
     }
 
-    pub fn shielded(filter: BenchFilter, shield: ShieldSpec) -> Self {
+    pub fn shielded(filter: BenchFilter, toolchains: ToolchainSpec, shield: ShieldSpec) -> Self {
         Self {
             filter,
+            toolchains,
             shield_spec: Some(shield),
+        }
+    }
+}
+
+#[derive(Debug, Deserialize, Eq, PartialEq, PartialOrd, Ord, Serialize)]
+pub enum ToolchainSpec {
+    Single(String),
+    Range(NaiveDate, NaiveDate),
+}
+
+impl ToolchainSpec {
+    fn all_of_em(&self) -> Vec<String> {
+        use ToolchainSpec::*;
+        match self {
+            Single(s) => vec![s.to_owned()],
+            Range(start, end) => {
+                let mut current = *start;
+                let mut nightlies = Vec::new();
+
+                while current <= *end {
+                    nightlies.push(format!("nightly-{}", current));
+                    current = current.succ();
+                }
+
+                nightlies
+            }
         }
     }
 }

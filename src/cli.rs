@@ -5,28 +5,15 @@ use structopt::StructOpt;
 enum SubCommand {
     #[structopt(name = "dry-run")]
     Plan {
-        /// Specify a file to write machine-readable plan file to. Default is to pretty print to
-        /// stdout.
-        #[structopt(short = "o", long = "output", parse(from_os_str))]
-        output_path: Option<PathBuf>,
-
         #[structopt(flatten)]
         bench_opts: RawBenchOpts,
     },
 }
 
-fn plan(benches_dir: &Path, bench_opts: BenchOpts, output_path: Option<PathBuf>) -> Result<()> {
+fn plan(benches_dir: &Path, bench_opts: BenchOpts) -> Result<()> {
     let plans = Plans::new(benches_dir, bench_opts)?;
 
-    info!("Generated new plans:\n\n{:?}", plans);
-
-    if let Some(output_path) = output_path {
-        info!("Writing to {}...", output_path.display());
-
-        plans.write(&output_path)?;
-
-        info!("Done writing!");
-    }
+    info!("Generated new plans:\n\n{:#?}", plans);
 
     Ok(())
 }
@@ -34,10 +21,7 @@ fn plan(benches_dir: &Path, bench_opts: BenchOpts, output_path: Option<PathBuf>)
 impl SubCommand {
     fn exec(self, benches_dir: &Path, _overall_output_dir: &Path) -> Result<()> {
         match self {
-            SubCommand::Plan {
-                bench_opts,
-                output_path,
-            } => plan(benches_dir, BenchOpts::from_raw(bench_opts)?, output_path),
+            SubCommand::Plan { bench_opts } => plan(benches_dir, BenchOpts::from_raw(bench_opts)?),
         }
     }
 }
@@ -59,27 +43,52 @@ pub struct RawBenchOpts {
     // TODO docs
     #[structopt(flatten)]
     pub run_filter: RawBenchFilter,
+
+    // TODO docs
+    #[structopt(flatten)]
+    pub toolchains: RawToolchainSpec,
 }
 
 #[derive(Debug, Deserialize, Serialize, StructOpt)]
-pub struct RawToolchainFilter {
+pub struct RawToolchainSpec {
     /// Run benchmarks with a single toolchain.
     #[structopt(long = "single-toolchain")]
     single_toolchain: Option<String>,
 
     /// Run benchmarks with nightlies from a date range.
     #[structopt(long = "start-date")]
-    start: NaiveDate,
+    start: Option<NaiveDate>,
 
     /// Run benchmarks with nightlies from a date range.
     #[structopt(long = "end-date")]
-    end: NaiveDate,
+    end: Option<NaiveDate>,
+}
+
+impl ToolchainSpec {
+    fn from_raw(raw: RawToolchainSpec) -> Result<Self> {
+        use self::RawToolchainSpec as RTS;
+        Ok(match raw {
+            RTS {
+                single_toolchain: Some(toolchain),
+                start: None,
+                end: None,
+            } => ToolchainSpec::Single(toolchain),
+
+            RTS {
+                single_toolchain: None,
+                start: Some(start),
+                end: Some(end),
+            } => ToolchainSpec::Range(start, end),
+
+            _ => bail!("unsupported toolchain configuration"),
+        })
+    }
 }
 
 #[derive(Debug, Deserialize, Serialize, StructOpt)]
 pub struct RawBenchFilter {
     /// Run all benchmarks in the suite.
-    #[structopt(long = "all")]
+    #[structopt(long = "all-benches")]
     pub all: bool,
 
     /// Run the benchmarks assigned to the given runner.
@@ -90,11 +99,16 @@ pub struct RawBenchFilter {
 impl BenchOpts {
     pub(crate) fn from_raw(raw: super::cli::RawBenchOpts) -> Result<Self> {
         let filter = BenchFilter::from_raw(raw.run_filter)?;
+        let toolchains = ToolchainSpec::from_raw(raw.toolchains)?;
 
         Ok(if let Some(pattern) = raw.cpu_pattern {
-            Self::shielded(filter, ShieldSpec::new(pattern, raw.move_kernel_threads)?)
+            Self::shielded(
+                filter,
+                toolchains,
+                ShieldSpec::new(pattern, raw.move_kernel_threads)?,
+            )
         } else {
-            Self::unshielded(filter)
+            Self::unshielded(filter, toolchains)
         })
     }
 }

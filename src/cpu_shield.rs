@@ -5,7 +5,7 @@ use std::io;
 use std::ops::{Deref, DerefMut};
 use std::process::{Child, Command, ExitStatus, Output};
 
-#[derive(Debug, Deserialize, Eq, PartialEq, PartialOrd, Ord, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, PartialOrd, Ord, Serialize)]
 pub struct ShieldSpec {
     cpu_mask: String,
     kthread_on: bool,

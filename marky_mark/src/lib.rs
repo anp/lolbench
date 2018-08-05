@@ -26,7 +26,7 @@ use syn::{Ident as SynIdent, Path as SynPath};
 
 type Result<T> = ::std::result::Result<T, failure::Error>;
 
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, PartialOrd, Ord, Serialize)]
 pub struct Benchmark {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub runner: Option<String>,
