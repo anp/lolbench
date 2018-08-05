@@ -7,4 +7,7 @@ authors = ["Adam Perry <adam.n.perry@gmail.com>"]
 criterion = { version = "0.2.0", path = "../criterion", features = ["pmu"] }
 failure = "0.1"
 lolbench_extractor = { path = "../extractor" }
+noisy_float = { version = "0.1", features = ["serde-1"] }
 proc-macro-hack = "0.4"
+serde = "1"
+serde_derive = "1"

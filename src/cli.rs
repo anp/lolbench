@@ -10,8 +10,8 @@ enum SubCommand {
     },
 }
 
-fn plan(benches_dir: &Path, bench_opts: BenchOpts) -> Result<()> {
-    let plans = Plans::new(benches_dir, bench_opts)?;
+fn plan(benches_dir: &Path, bench_opts: BenchOpts, output_dir: &Path) -> Result<()> {
+    let plans = Plans::new(benches_dir, bench_opts, output_dir)?;
 
     info!("Generated new plans:\n\n{:#?}", plans);
 
@@ -19,9 +19,13 @@ fn plan(benches_dir: &Path, bench_opts: BenchOpts) -> Result<()> {
 }
 
 impl SubCommand {
-    fn exec(self, benches_dir: &Path, _overall_output_dir: &Path) -> Result<()> {
+    fn exec(self, benches_dir: &Path, overall_output_dir: &Path) -> Result<()> {
         match self {
-            SubCommand::Plan { bench_opts } => plan(benches_dir, BenchOpts::from_raw(bench_opts)?),
+            SubCommand::Plan { bench_opts } => plan(
+                benches_dir,
+                BenchOpts::from_raw(bench_opts)?,
+                overall_output_dir,
+            ),
         }
     }
 }

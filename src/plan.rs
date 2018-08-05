@@ -16,7 +16,11 @@ pub struct Plans {
 }
 
 impl Plans {
-    pub(crate) fn new(benches_dir: &Path, bench_opts: BenchOpts) -> Result<Self> {
+    pub(crate) fn new(
+        benches_dir: &Path,
+        bench_opts: BenchOpts,
+        output_dir: &Path,
+    ) -> Result<Self> {
         info!("Searching {} for benchmarks...", benches_dir.display());
 
         let mut benchmarks: Vec<(PathBuf, Benchmark)> = Vec::new();
@@ -53,28 +57,23 @@ impl Plans {
                 benchmarks
                     .clone()
                     .into_iter()
-                    .map(move |(path, benchmark)| RunPlan {
-                        benchmark,
-                        shield: shield.clone(),
-                        toolchain: toolchain.clone(),
-                        source_path: path.to_owned(),
+                    .map(move |(path, benchmark)| {
+                        RunPlan::new(
+                            benchmark,
+                            shield.clone(),
+                            toolchain.clone(),
+                            path.to_owned(),
+                            output_dir.to_owned(),
+                        )
                     })
             })
-            .collect();
+            .collect::<Result<BTreeSet<RunPlan>>>()?;
 
         Ok(Self {
             generated_at: Utc::now().naive_utc(),
             plans,
         })
     }
-}
-
-#[derive(Debug, Deserialize, Eq, PartialEq, PartialOrd, Ord, Serialize)]
-pub struct RunPlan {
-    shield: Option<ShieldSpec>,
-    toolchain: String,
-    source_path: PathBuf,
-    benchmark: Benchmark,
 }
 
 #[derive(Debug, Deserialize, Eq, PartialEq, PartialOrd, Ord, Serialize)]

@@ -1,8 +1,14 @@
 #[macro_use]
 extern crate proc_macro_hack;
+#[macro_use]
+extern crate serde_derive;
 
 extern crate criterion;
 extern crate failure;
+extern crate noisy_float;
+extern crate serde;
+
+use noisy_float::prelude::*;
 
 pub use criterion::{black_box, init_logging, Bencher, Criterion};
 pub type Result<T> = std::result::Result<T, failure::Error>;
@@ -79,36 +85,51 @@ macro_rules! wrap_libtest {
         }
     };
 }
+macro_rules! crit {
+    ($( $build_method:ident: $build_method_ty:ty, )*) => {
+        pub fn criterion_from_env() -> Criterion {
+            let mut crit = ::criterion::Criterion::default().without_plots();
 
-pub fn criterion_from_env() -> Criterion {
-    macro_rules! crit {
-        ($( $build_method:ident, )*) => {
-            {
-                let mut crit = ::criterion::Criterion::default().without_plots();
+            $(
+                if let Ok(v) = ::std::env::var(
+                    concat!("lolbench_", stringify!($build_method))
+                ) {
+                    println!("setting {}", stringify!($build_method));
+                    crit = crit.$build_method(v.parse().unwrap());
+                }
+            )*
 
-                $(
-                    if let Ok(v) = ::std::env::var(
-                        concat!("lolbench_", stringify!($build_method))
-                    ) {
-                        println!("setting {}", stringify!($build_method));
-                        crit = crit.$build_method(v.parse().unwrap());
-                    }
-                )*
+            crit
+        }
 
-                crit
+        #[derive(Debug, Deserialize, Eq, PartialEq, PartialOrd, Ord, Serialize)]
+        pub struct CriterionConfig {
+            $(
+                pub $build_method: $build_method_ty,
+            )*
+        }
+
+        impl CriterionConfig {
+            pub fn envs(&self) -> Vec<(String, String)> {
+                vec![
+                    $((
+                        format!("lolbench_{}", stringify!($build_method)),
+                        self.$build_method.to_string(),
+                    ),)*
+                ]
             }
-        };
-    }
+        }
+    };
+}
 
-    crit!(
-        sample_size,
-        warm_up_time_ms,
-        measurement_time_ms,
-        nresamples,
-        noise_threshold,
-        confidence_level,
-        significance_level,
-    )
+crit! {
+    sample_size: usize,
+    warm_up_time_ms: usize,
+    measurement_time_ms: usize,
+    nresamples: usize,
+    noise_threshold: R32,
+    confidence_level: R32,
+    significance_level: R32,
 }
 
 pub trait CriterionExt: Sized {

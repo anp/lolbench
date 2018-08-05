@@ -2,153 +2,142 @@ use super::prelude::*;
 
 use std::collections::BTreeMap;
 use std::fs;
-use std::path::Path;
-use std::process::{Command, ExitStatus};
+use std::process::Command;
 
 use serde_json;
 
 use cpu_shield::RenameThisCommandWrapper;
 
-pub fn run_benchmark(
-    bench_dir: impl AsRef<Path>,
-    bench_name: &str,
-    toolchain: &str,
-    target_dir: impl AsRef<Path>,
-    _cpu_pattern: Option<String>,
-    _move_kthreads: bool,
-) -> Result<ExitStatus> {
-    let cargo_action = |action: &str| -> Result<()> {
-        info!("{:?} {} with {}...", bench_dir.as_ref(), action, toolchain);
+#[derive(Debug, Deserialize, Eq, PartialEq, PartialOrd, Ord, Serialize)]
+pub struct RunPlan {
+    shield: Option<ShieldSpec>,
+    toolchain: String,
+    source_path: PathBuf,
+    output_dir: PathBuf,
+    target_dir: PathBuf,
+    manifest_path: PathBuf,
+    benchmark: Benchmark,
+    binary_path: PathBuf,
+}
+
+impl RunPlan {
+    pub fn new(
+        benchmark: Benchmark,
+        shield: Option<ShieldSpec>,
+        toolchain: String,
+        source_path: PathBuf,
+        output_dir: PathBuf,
+    ) -> Result<Self> {
+        let target_dir = PathBuf::from(output_dir.join(format!("target-{}", toolchain)));
+        let binary_path = target_dir
+            .join("release")
+            .join(source_path.file_stem().unwrap());
+
+        let mut manifest_path = None;
+        for dir in source_path.ancestors() {
+            let candidate = dir.join("Cargo.toml");
+            if candidate.is_file() {
+                manifest_path = Some(candidate);
+                break;
+            }
+        }
+
+        let manifest_path = manifest_path.unwrap();
+
+        Ok(Self {
+            benchmark,
+            shield,
+            toolchain,
+            source_path,
+            output_dir,
+            target_dir,
+            manifest_path,
+            binary_path,
+        })
+    }
+
+    fn build(&self) -> Result<()> {
         let build_output = Command::new("rustup")
             .arg("run")
-            .arg(toolchain)
+            .arg(&self.toolchain)
             .arg("cargo")
-            .arg(action)
+            .arg("build")
             .arg("--release")
+            .arg("--manifest-path")
+            .arg(&self.manifest_path)
             .arg("--bin")
-            .arg(bench_name)
-            .current_dir(bench_dir.as_ref())
-            .env("CARGO_TARGET_DIR", target_dir.as_ref())
+            .arg(&self.benchmark.name)
+            .env("CARGO_TARGET_DIR", &self.target_dir)
             .output()?;
 
         if !build_output.status.success() {
+            let stdout = String::from_utf8(build_output.stdout).unwrap();
             let stderr = String::from_utf8(build_output.stderr).unwrap();
             bail!(
-                "failed to {} {:?} with {}{}",
-                action,
-                bench_dir.as_ref(),
-                toolchain,
+                "failed to build {:?}. stdout: {}, stderr: {}",
+                self,
+                stdout,
                 stderr
             );
         }
 
         Ok(())
-    };
-
-    cargo_action("build")?;
-
-    println!("Running benchmarks on {}...", toolchain);
-
-    let mut binary_path = Path::new(target_dir.as_ref()).join("release");
-    binary_path.push("run_benches");
-
-    let shield_spec = if cfg!(target_os = "linux") {
-        _cpu_pattern.map(|mask| ShieldSpec::new(mask, _move_kthreads).unwrap())
-    } else {
-        None
-    };
-
-    let mut shielded_runner = RenameThisCommandWrapper::new(&binary_path, shield_spec);
-    shielded_runner.env("CARGO_TARGET_DIR", target_dir.as_ref());
-
-    Ok(shielded_runner.status()?)
-}
-
-pub fn run_with_toolchain(
-    toolchain: &str,
-    _cpu_pattern: &Option<String>,
-    _move_kthreads: bool,
-    _output_dir: &Path,
-) -> Result<()> {
-    unimplemented!();
-
-    // let target_dir = _output_dir.join(format!("target-{}", toolchain));
-
-    if !install_toolchain(toolchain)? {
-        warn!("couldn't install {}", toolchain);
-        return Ok(());
     }
 
-    // FIXME(anp): figure out which benchmarks to run
-    // FIXME(anp): run each benchmark in turn, and post process them separately
-    // FIXME(anp): accept an output path argument and bundle them all together
+    pub fn run(self) -> Result<Estimates> {
+        info!("running {:?}", self);
 
-    // let exit = benchmark::run_benchmarks(
-    // bench_dir: impl AsRef<Path>,
-    // bench_name: &str,
-    // toolchain: &str,
-    // target_dir: impl AsRef<Path>,
-    // _cpu_pattern: Option<&str>,
-    // _move_kthreads: bool,
-    //     toolchain,
-    //     target_dir,
-    //     _cpu_pattern.as_ref().map(|s| s.as_str()),
-    //     _move_kthreads,
-    // ).expect("running benchmark");
+        if let Err(why) = self.attempt_toolchain_install() {
+            warn!(
+                "the next series of commands will almost certainly fail. error: {:?}",
+                why
+            );
+        };
 
-    // println!("exit status: {:?}", exit);
+        self.build()?;
 
-    post_process(toolchain)?;
+        RenameThisCommandWrapper::new(&self.binary_path, self.shield.clone())
+            .env("CARGO_TARGET_DIR", &self.target_dir)
+            .status()?;
 
-    Ok(())
-}
+        Ok(self.post_process()?)
+    }
 
-pub fn install_toolchain(toolchain: &str) -> Result<bool> {
-    info!("Installing {}...", toolchain);
-    let install_output = Command::new("rustup")
-        .arg("toolchain")
-        .arg("install")
-        .arg(toolchain)
-        .output()
-        .expect("unable to run rustup");
+    pub fn attempt_toolchain_install(&self) -> Result<()> {
+        info!("Installing {}...", self.toolchain);
+        let install_output = Command::new("rustup")
+            .arg("toolchain")
+            .arg("install")
+            .arg(&self.toolchain)
+            .output()?;
 
-    if !install_output.status.success() {
-        let stderr = String::from_utf8(install_output.stderr).unwrap();
+        if !install_output.status.success() {
+            let stderr = String::from_utf8(install_output.stderr).unwrap();
 
-        if !stderr.find("no release found").is_some() {
-            // we failed to install, and rustup isn't telling us that it can't find the release
-            // so something is probably wrong (disk space, perms, etc)
-            bail!(
+            if !stderr.find("no release found").is_some() {
+                // we failed to install, and rustup isn't telling us that it can't find the release
+                // so something is probably wrong (disk space, perms, etc)
+                bail!(
                 "rustup failed to install {}, but it wasn't because the release was missing: {}",
-                toolchain,
+                self.toolchain,
                 stderr
             );
+            }
+
+            bail!("No release found for {}.", self.toolchain);
         }
-
-        warn!("No release found for {}.", toolchain);
-        Ok(false)
-    } else {
-        Ok(true)
+        Ok(())
     }
-}
 
-pub fn post_process(toolchain: &str) -> Result<()> {
-    let mut measurements = BTreeMap::new();
-    let target_dir = format!("target-{}", &toolchain);
-    let criterion_dir = Path::new(&target_dir).join("criterion");
+    fn post_process(&self) -> Result<Estimates> {
+        let criterion_dir = self.target_dir.join("criterion");
+        let path: PathBuf = panic!("TODO some sort of magic to infer criterion output dir");
 
-    println!("postprocessing");
-    for entry in fs::read_dir(&criterion_dir).expect("reading criterion directory") {
-        let entry = entry.expect("reading directory entry");
-        let path = entry.path();
+        info!("postprocessing");
         let benchmark = path.file_name()
             .expect("finding the filename")
             .to_string_lossy()
             .to_string();
-
-        if !entry.file_type().expect("finding the file type").is_dir() {
-            continue;
-        }
 
         let runtime_estimates_path = path.join("new").join("estimates.json");
         let metrics_estimates_path = path.join("new").join("metrics-estimates.json");
@@ -156,54 +145,41 @@ pub fn post_process(toolchain: &str) -> Result<()> {
         let runtime_estimates_json = fs::read_to_string(runtime_estimates_path)?;
         let metrics_estimates_json = fs::read_to_string(metrics_estimates_path)?;
 
-        let runtime_estimates: Estimates = serde_json::from_str(&runtime_estimates_json)?;
-        let mut metrics_estimates: BTreeMap<String, Estimates> =
-            serde_json::from_str(&metrics_estimates_json)?;
+        let runtime_estimates: Statistic = serde_json::from_str(&runtime_estimates_json)?;
+        let mut metrics_estimates: Estimates = serde_json::from_str(&metrics_estimates_json)?;
 
         metrics_estimates.insert(String::from("nanoseconds"), runtime_estimates);
-        measurements.insert(benchmark, metrics_estimates);
+
+        Ok(metrics_estimates)
     }
-
-    let compiled = CompiledResults {
-        toolchain: toolchain.to_string(),
-        measurements,
-    };
-
-    fs::write(
-        criterion_dir.join("lolbench-output.json"),
-        serde_json::to_string_pretty(&compiled)?,
-    )?;
-
-    Ok(())
-}
-
-#[derive(Serialize)]
-struct CompiledResults {
-    toolchain: String,
-    measurements: BTreeMap<String, BTreeMap<String, Estimates>>,
 }
 
 // the below is adapted from criterion
 
-type Estimates = BTreeMap<Statistic, Estimate>;
+type Estimates = BTreeMap<String, Statistic>;
 
-#[derive(Clone, Copy, Eq, Ord, PartialEq, PartialOrd, Deserialize, Serialize, Debug)]
-pub enum Statistic {
-    Mean,
-    Median,
-    MedianAbsDev,
-    Slope,
-    StdDev,
+#[derive(Clone, Copy, PartialEq, PartialOrd, Deserialize, Serialize, Debug)]
+pub struct Statistic {
+    #[serde(rename = "Mean")]
+    mean: Estimate,
+    #[serde(rename = "Median")]
+    median: Estimate,
+    #[serde(rename = "MedianAbsDev")]
+    median_abs_dev: Estimate,
+    #[serde(rename = "Slope")]
+    slope: Estimate,
+    #[serde(rename = "StdDev")]
+    std_dev: Estimate,
 }
 
-#[derive(Clone, Copy, PartialEq, Deserialize, Serialize, Debug)]
+#[derive(Clone, Copy, PartialEq, PartialOrd, Deserialize, Serialize, Debug)]
 struct ConfidenceInterval {
     confidence_level: f64,
     lower_bound: f64,
     upper_bound: f64,
 }
 
-#[derive(Clone, Copy, PartialEq, Deserialize, Serialize, Debug)]
+#[derive(Clone, Copy, PartialEq, PartialOrd, Deserialize, Serialize, Debug)]
 struct Estimate {
     /// The confidence interval for this estimate
     confidence_interval: ConfidenceInterval,

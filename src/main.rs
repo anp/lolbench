@@ -22,11 +22,13 @@ pub mod cpu_shield;
 pub mod plan;
 
 pub mod prelude {
+    pub use super::benchmark::*;
     pub use super::cli::*;
     pub use super::cpu_shield::*;
     pub use super::plan::*;
 
     pub use lolbench_support::Result;
+    pub use marky_mark::*;
 
     pub use std::collections::BTreeSet;
     pub use std::path::{Path, PathBuf};
