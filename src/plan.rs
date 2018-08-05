@@ -143,3 +143,35 @@ impl BenchFilter {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn toolchain_date_range() {
+        let spec = ToolchainSpec::Range(
+            NaiveDate::from_ymd(2015, 5, 15),
+            NaiveDate::from_ymd(2015, 6, 2),
+        );
+
+        macro_rules! lolol {
+            ( $( $datefrag:expr, )* ) => {
+                vec![
+                $(
+                    String::from(concat!("nightly-2015-", $datefrag)),
+                )*
+                ]
+            };
+        }
+
+        assert_eq!(
+            spec.all_of_em(),
+            lolol![
+                "05-15", "05-16", "05-17", "05-18", "05-19", "05-20", "05-21", "05-22", "05-23",
+                "05-24", "05-25", "05-26", "05-27", "05-28", "05-29", "05-30", "05-31", "06-01",
+                "06-02",
+            ]
+        )
+    }
+}
