@@ -49,44 +49,39 @@ impl RenameThisCommandWrapper {
         F: FnOnce(&mut Command) -> R,
     {
         if let Some(spec) = self.spec.as_ref() {
-            // fn setup_shield(&self) -> io::Result<ExitStatus> {
             // sudo cset shield --cpu=${CPU_MASK} --kthread=${on|off}
 
             // TODO notify sudo dep, find another way to do this
-            // let mut shield_create = Command::new("sudo");
-            // shield_create.arg("cset");
-            // shield_create.arg("shield");
-            // // NOTE: this should only get called if the cpu_mask has already been validated
-            // let mask = self.spec.cpu_mask.iter().cloned().next().unwrap();
-            // shield_create.arg(format!("--cpu={}", mask));
+            let mut shield_create = Command::new("sudo");
+            shield_create.arg("cset");
+            shield_create.arg("shield");
 
-            // if self.spec.kthread_on {
-            //     shield_create.arg("--kthread=on");
-            // }
+            // NOTE: this should only get called if the cpu_mask has already been validated
+            shield_create.arg(format!("--cpu={}", spec.cpu_mask));
 
-            // shield_create.status()
-            // }
+            if spec.kthread_on {
+                shield_create.arg("--kthread=on");
+            }
 
-            // fn teardown_shield(&self) {
-            //     // let reset_res = Command::new("sudo")
-            //     //     .arg("cset")
-            //     //     .arg("shield")
-            //     //     .arg("--reset")
-            //     //     .status();
+            shield_create.status()?;
 
-            //     // match reset_res {
-            //     //     Err(why) => println!("error destroying shield: {:#?}", why),
+            // end cset shield setup
 
-            //     //     _ => (),
-            //     // };
-            // // }
+            let result = f(&mut self.shielded);
 
-            //         let output = self.shielded.output();
-            //         self.teardown_shield();
-            //         output
-            //     } else {
-            //         self.shielded.output()
-            unimplemented!()
+            // tear down shield
+            let reset_res = Command::new("sudo")
+                .arg("cset")
+                .arg("shield")
+                .arg("--reset")
+                .status();
+
+            match reset_res {
+                Err(why) => println!("error destroying shield: {:#?}", why),
+                _ => (),
+            };
+
+            Ok(result)
         } else {
             Ok(f(&mut self.shielded))
         }
