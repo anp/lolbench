@@ -8,7 +8,7 @@ use serde_json;
 
 use cpu_shield::RenameThisCommandWrapper;
 
-#[derive(Debug, Deserialize, Eq, PartialEq, PartialOrd, Ord, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, PartialOrd, Ord, Serialize)]
 pub struct RunPlan {
     shield: Option<ShieldSpec>,
     toolchain: String,
@@ -56,34 +56,6 @@ impl RunPlan {
         })
     }
 
-    fn build(&self) -> Result<()> {
-        let build_output = Command::new("rustup")
-            .arg("run")
-            .arg(&self.toolchain)
-            .arg("cargo")
-            .arg("build")
-            .arg("--release")
-            .arg("--manifest-path")
-            .arg(&self.manifest_path)
-            .arg("--bin")
-            .arg(&self.benchmark.name)
-            .env("CARGO_TARGET_DIR", &self.target_dir)
-            .output()?;
-
-        if !build_output.status.success() {
-            let stdout = String::from_utf8(build_output.stdout).unwrap();
-            let stderr = String::from_utf8(build_output.stderr).unwrap();
-            bail!(
-                "failed to build {:?}. stdout: {}, stderr: {}",
-                self,
-                stdout,
-                stderr
-            );
-        }
-
-        Ok(())
-    }
-
     pub fn run(self) -> Result<Estimates> {
         info!("running {:?}", self);
 
@@ -129,6 +101,34 @@ impl RunPlan {
         Ok(())
     }
 
+    fn build(&self) -> Result<()> {
+        let build_output = Command::new("rustup")
+            .arg("run")
+            .arg(&self.toolchain)
+            .arg("cargo")
+            .arg("build")
+            .arg("--release")
+            .arg("--manifest-path")
+            .arg(&self.manifest_path)
+            .arg("--bin")
+            .arg(&self.benchmark.name)
+            .env("CARGO_TARGET_DIR", &self.target_dir)
+            .output()?;
+
+        if !build_output.status.success() {
+            let stdout = String::from_utf8(build_output.stdout).unwrap();
+            let stderr = String::from_utf8(build_output.stderr).unwrap();
+            bail!(
+                "failed to build {:?}. stdout: {}, stderr: {}",
+                self,
+                stdout,
+                stderr
+            );
+        }
+
+        Ok(())
+    }
+
     fn post_process(&self) -> Result<Estimates> {
         let criterion_dir = self.target_dir.join("criterion");
         let path: PathBuf = panic!("TODO some sort of magic to infer criterion output dir");
@@ -156,7 +156,7 @@ impl RunPlan {
 
 // the below is adapted from criterion
 
-type Estimates = BTreeMap<String, Statistic>;
+pub type Estimates = BTreeMap<String, Statistic>;
 
 #[derive(Clone, Copy, PartialEq, PartialOrd, Deserialize, Serialize, Debug)]
 pub struct Statistic {

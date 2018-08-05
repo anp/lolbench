@@ -16,11 +16,17 @@ pub struct Plans {
 }
 
 impl Plans {
-    pub(crate) fn new(
-        benches_dir: &Path,
-        bench_opts: BenchOpts,
-        output_dir: &Path,
-    ) -> Result<Self> {
+    pub fn run(self) -> Result<BTreeMap<RunPlan, Estimates>> {
+        let mut res = BTreeMap::new();
+
+        for plan in self.plans {
+            res.insert(plan.clone(), plan.run()?);
+        }
+
+        Ok(res)
+    }
+
+    pub fn new(benches_dir: &Path, bench_opts: BenchOpts, output_dir: &Path) -> Result<Self> {
         info!("Searching {} for benchmarks...", benches_dir.display());
 
         let mut benchmarks: Vec<(PathBuf, Benchmark)> = Vec::new();

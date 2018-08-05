@@ -30,7 +30,7 @@ pub mod prelude {
     pub use lolbench_support::Result;
     pub use marky_mark::*;
 
-    pub use std::collections::BTreeSet;
+    pub use std::collections::{BTreeMap, BTreeSet};
     pub use std::path::{Path, PathBuf};
 
     pub use chrono::prelude::*;
