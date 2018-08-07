@@ -3,45 +3,182 @@ extern crate failure;
 #[macro_use]
 extern crate log;
 #[macro_use]
-extern crate serde_derive;
-#[macro_use]
 extern crate structopt;
 
 extern crate chrono;
 extern crate clap;
-extern crate glob;
 extern crate lolbench_support;
-extern crate marky_mark;
-extern crate serde;
-extern crate serde_json;
 extern crate simple_logger;
 
-pub mod benchmark;
-mod cli;
-pub mod cpu_shield;
-pub mod plan;
+use std::path::{Path, PathBuf};
 
-pub mod prelude {
-    pub use super::benchmark::*;
-    pub use super::cli::*;
-    pub use super::cpu_shield::*;
-    pub use super::plan::*;
-
-    pub use lolbench_support::Result;
-    pub use marky_mark::*;
-
-    pub use std::collections::{BTreeMap, BTreeSet};
-    pub use std::path::{Path, PathBuf};
-
-    pub use chrono::prelude::*;
-    pub use chrono::{NaiveDate, NaiveDateTime, NaiveTime};
-}
-
-use prelude::*;
-
+use chrono::NaiveDate;
 use structopt::StructOpt;
 
+use lolbench_support::*;
+
 fn main() -> Result<()> {
-    simple_logger::init_with_level(log::Level::Debug).unwrap();
-    cli::Cli::from_args().exec()
+    simple_logger::init().unwrap();
+    Cli::from_args().exec()
+}
+
+#[derive(Debug, StructOpt)]
+enum SubCommand {
+    #[structopt(name = "dry-run")]
+    Plan {
+        #[structopt(flatten)]
+        bench_opts: RawBenchOpts,
+    },
+}
+
+fn plan(benches_dir: &Path, bench_opts: BenchOpts, output_dir: &Path) -> Result<()> {
+    let plans = Plans::new(benches_dir, bench_opts, output_dir)?;
+
+    info!("Generated new plans:\n\n{:#?}", plans);
+
+    Ok(())
+}
+
+impl SubCommand {
+    fn exec(self, benches_dir: &Path, overall_output_dir: &Path) -> Result<()> {
+        match self {
+            SubCommand::Plan { bench_opts } => {
+                plan(benches_dir, bench_opts.validate()?, overall_output_dir)
+            }
+        }
+    }
+}
+
+#[derive(Debug, StructOpt)]
+pub struct RawBenchOpts {
+    // TODO(anp): structopt mangles this help message horribly
+    /// Selects specific CPUs on which *only* benchmarks will run. Currently only supported when run
+    /// as root on Linux. Accepts a pattern of CPU IDs and ID ranges delimited by commas
+    /// (e.g. 0,1,2 or 0-2,4). Defaults to none.
+    #[structopt(short = "c", long = "cpus")]
+    pub cpu_pattern: Option<String>,
+
+    /// If a CPU pattern is set, also ask the kernel to try to relocate kernel tasks off of
+    /// benchmark CPUs.
+    #[structopt(short = "k", long = "move-kthreads")]
+    pub move_kernel_threads: bool,
+
+    // TODO docs
+    #[structopt(flatten)]
+    pub run_filter: RawBenchFilter,
+
+    // TODO docs
+    #[structopt(flatten)]
+    pub toolchains: RawToolchainSpec,
+}
+
+#[derive(Debug, StructOpt)]
+pub struct RawToolchainSpec {
+    /// Run benchmarks with a single toolchain.
+    #[structopt(long = "single-toolchain")]
+    single_toolchain: Option<String>,
+
+    /// Run benchmarks with nightlies from a date range.
+    #[structopt(long = "start-date")]
+    start: Option<NaiveDate>,
+
+    /// Run benchmarks with nightlies from a date range.
+    #[structopt(long = "end-date")]
+    end: Option<NaiveDate>,
+}
+
+impl RawToolchainSpec {
+    fn validate(self) -> Result<ToolchainSpec> {
+        use self::RawToolchainSpec as RTS;
+        Ok(match self {
+            RTS {
+                single_toolchain: Some(toolchain),
+                start: None,
+                end: None,
+            } => ToolchainSpec::Single(toolchain),
+
+            RTS {
+                single_toolchain: None,
+                start: Some(start),
+                end: Some(end),
+            } => ToolchainSpec::Range(start, end),
+
+            _ => bail!("unsupported toolchain configuration"),
+        })
+    }
+}
+
+#[derive(Debug, StructOpt)]
+pub struct RawBenchFilter {
+    /// Run all benchmarks in the suite.
+    #[structopt(long = "all-benches")]
+    pub all: bool,
+
+    /// Run the benchmarks assigned to the given runner.
+    #[structopt(long = "runner")]
+    pub runner: Option<String>,
+}
+
+impl RawBenchOpts {
+    fn validate(self) -> Result<BenchOpts> {
+        let filter = self.run_filter.validate()?;
+        let toolchains = self.toolchains.validate()?;
+
+        Ok(if let Some(pattern) = self.cpu_pattern {
+            BenchOpts::shielded(
+                filter,
+                toolchains,
+                ShieldSpec::new(pattern, self.move_kernel_threads)?,
+            )
+        } else {
+            BenchOpts::unshielded(filter, toolchains)
+        })
+    }
+}
+
+impl RawBenchFilter {
+    fn validate(self) -> Result<BenchFilter> {
+        use self::RawBenchFilter as RBF;
+
+        Ok(match self {
+            RBF {
+                all: true,
+                runner: None,
+            } => BenchFilter::All,
+            RBF {
+                all: false,
+                runner: Some(runner),
+            } => BenchFilter::Runner(runner),
+            _ => bail!("exactly one benchmark filter must be applied at once"),
+        })
+    }
+}
+
+/// Run benchmarks to assess the performance of code generated by Rust toolchains.
+#[derive(StructOpt, Debug)]
+pub struct Cli {
+    #[structopt(subcommand)]
+    cmd: SubCommand,
+
+    /// Directory to benchmark sources.
+    #[structopt(long = "lol", parse(from_os_str))]
+    benches_dir: Option<PathBuf>,
+
+    /// Directory to write build output and analysis results to.
+    #[structopt(short = "o", long = "long", parse(from_os_str))]
+    output_dir: Option<PathBuf>,
+}
+
+impl Cli {
+    pub fn exec(self) -> Result<()> {
+        let benches_dir = self.benches_dir
+            .as_ref()
+            .map(Clone::clone)
+            .unwrap_or_else(|| ::std::env::current_dir().unwrap().join("benches"));
+
+        let output_dir = self.output_dir
+            .unwrap_or_else(|| ::std::env::current_dir().unwrap());
+
+        self.cmd.exec(&benches_dir, &output_dir)
+    }
 }

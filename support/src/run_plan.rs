@@ -1,28 +1,33 @@
-use super::prelude::*;
+use super::Result;
 
 use std::collections::BTreeMap;
 use std::fs;
+use std::path::PathBuf;
 use std::process::Command;
 
 use serde_json;
 
-use cpu_shield::RenameThisCommandWrapper;
+use marky_mark::Benchmark;
+
+use cpu_shield::{RenameThisCommandWrapper, ShieldSpec};
+use CriterionConfig;
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, PartialOrd, Ord, Serialize)]
 pub struct RunPlan {
     shield: Option<ShieldSpec>,
     toolchain: String,
     source_path: PathBuf,
-    output_dir: PathBuf,
     target_dir: PathBuf,
     manifest_path: PathBuf,
     benchmark: Benchmark,
     binary_path: PathBuf,
+    bench_config: Option<CriterionConfig>,
 }
 
 impl RunPlan {
     pub fn new(
         benchmark: Benchmark,
+        bench_config: Option<CriterionConfig>,
         shield: Option<ShieldSpec>,
         toolchain: String,
         source_path: PathBuf,
@@ -49,10 +54,10 @@ impl RunPlan {
             shield,
             toolchain,
             source_path,
-            output_dir,
             target_dir,
             manifest_path,
             binary_path,
+            bench_config,
         })
     }
 
@@ -66,11 +71,34 @@ impl RunPlan {
             );
         };
 
+        info!("building benchmark binary");
+
         self.build()?;
 
-        RenameThisCommandWrapper::new(&self.binary_path, self.shield.clone())
-            .env("CARGO_TARGET_DIR", &self.target_dir)
-            .status()?;
+        info!("shelling out to {}", self.binary_path.display());
+
+        let mut cmd = RenameThisCommandWrapper::new(&self.binary_path, self.shield.clone());
+        cmd.env("CARGO_TARGET_DIR", &self.target_dir);
+
+        if let Some(cfg) = &self.bench_config {
+            for (k, v) in cfg.envs() {
+                cmd.env(k, v);
+            }
+        }
+
+        let output = cmd.output()?;
+
+        let stdout = String::from_utf8(output.stdout)?;
+        let stderr = String::from_utf8(output.stderr)?;
+
+        if !output.status.success() {
+            bail!("benchmark failed! stdout: {}, stderr: {}", stdout, stderr);
+        }
+
+        debug!(
+            "benchmark run complete.\nstdout: {}\nstderr: {}",
+            stdout, stderr
+        );
 
         Ok(self.post_process()?)
     }
@@ -111,7 +139,7 @@ impl RunPlan {
             .arg("--manifest-path")
             .arg(&self.manifest_path)
             .arg("--bin")
-            .arg(&self.benchmark.name)
+            .arg(&self.source_path.file_stem().unwrap())
             .env("CARGO_TARGET_DIR", &self.target_dir)
             .output()?;
 
@@ -130,25 +158,40 @@ impl RunPlan {
     }
 
     fn post_process(&self) -> Result<Estimates> {
-        let criterion_dir = self.target_dir.join("criterion");
-        let path: PathBuf = panic!("TODO some sort of magic to infer criterion output dir");
+        let path = self.target_dir
+            .join("criterion")
+            .join(format!(
+                "{}::{}",
+                &self.benchmark.crate_name, &self.benchmark.name
+            ))
+            .join("new");
 
         info!("postprocessing");
-        let benchmark = path.file_name()
-            .expect("finding the filename")
-            .to_string_lossy()
-            .to_string();
 
-        let runtime_estimates_path = path.join("new").join("estimates.json");
-        let metrics_estimates_path = path.join("new").join("metrics-estimates.json");
+        let runtime_estimates_path = path.join("estimates.json");
 
+        debug!("reading runtime estimates from disk");
         let runtime_estimates_json = fs::read_to_string(runtime_estimates_path)?;
-        let metrics_estimates_json = fs::read_to_string(metrics_estimates_path)?;
 
+        debug!("parsing runtime estimates");
         let runtime_estimates: Statistic = serde_json::from_str(&runtime_estimates_json)?;
-        let mut metrics_estimates: Estimates = serde_json::from_str(&metrics_estimates_json)?;
+
+        let mut metrics_estimates = Estimates::new();
 
         metrics_estimates.insert(String::from("nanoseconds"), runtime_estimates);
+
+        let metrics_estimates_path = path.join("metrics-estimates.json");
+        debug!("reading metrics estimates from disk");
+        if let Ok(metrics_estimates_json) = fs::read_to_string(metrics_estimates_path) {
+            debug!("parsing metrics estimates");
+            let estimates: Estimates = serde_json::from_str(&metrics_estimates_json)?;
+            metrics_estimates.extend(estimates);
+        } else {
+            warn!(
+                "couldn't read metrics-estimates.json for {:?}",
+                &self.benchmark
+            );
+        }
 
         Ok(metrics_estimates)
     }
@@ -158,6 +201,7 @@ impl RunPlan {
 
 pub type Estimates = BTreeMap<String, Statistic>;
 
+// TODO(anp): tests for this with criterion output
 #[derive(Clone, Copy, PartialEq, PartialOrd, Deserialize, Serialize, Debug)]
 pub struct Statistic {
     #[serde(rename = "Mean")]
@@ -187,4 +231,49 @@ struct Estimate {
     point_estimate: f64,
     /// The standard error of this estimate
     standard_error: f64,
+}
+
+#[cfg(test)]
+pub fn test_bench_end_to_end() {
+    use log;
+    use noisy_float::prelude::*;
+    use simple_logger;
+
+    simple_logger::init_with_level(log::Level::Debug).unwrap();
+
+    let target_dir = Path::new(env!("CARGO_MANIFEST_DIR")).join("target");
+    let binary_path = target_dir.join("release").join("bench-e2e-decode-q5-1024k");
+
+    let plan = RunPlan {
+        shield: None,
+        toolchain: String::from("stable"),
+        source_path: Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("benches")
+            .join("brotli_1_1_3")
+            .join("src")
+            .join("bin")
+            .join("bench-e2e-decode-q5-1024k.rs"),
+        target_dir,
+        manifest_path: Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("benches")
+            .join("brotli_1_1_3")
+            .join("Cargo.toml"),
+        benchmark: Benchmark {
+            runner: None,
+            name: String::from("bench_e2e_decode_q5_1024k"),
+            crate_name: String::from("brotli_1_1_3"),
+        },
+        binary_path,
+        bench_config: Some(CriterionConfig {
+            confidence_level: r32(0.95),
+            measurement_time_ms: 500,
+            nresamples: 2,
+            noise_threshold: r32(0.0),
+            sample_size: 5,
+            significance_level: r32(0.05),
+            warm_up_time_ms: 1,
+        }),
+    };
+
+    let _result = plan.run().unwrap();
 }

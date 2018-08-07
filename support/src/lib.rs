@@ -1,17 +1,30 @@
 #[macro_use]
+extern crate failure;
+#[macro_use]
+extern crate log;
+#[macro_use]
 extern crate proc_macro_hack;
 #[macro_use]
 extern crate serde_derive;
 
+extern crate chrono;
 extern crate criterion;
-extern crate failure;
+extern crate glob;
+extern crate marky_mark;
 extern crate noisy_float;
 extern crate serde;
+extern crate serde_json;
 
 use noisy_float::prelude::*;
 
 pub use criterion::{black_box, init_logging, Bencher, Criterion};
 pub type Result<T> = std::result::Result<T, failure::Error>;
+
+pub use self::{cpu_shield::*, plan::*, run_plan::*};
+
+mod cpu_shield;
+mod plan;
+mod run_plan;
 
 // This is what allows the users to depend on just your
 // declaration crate rather than both crates.
@@ -102,7 +115,7 @@ macro_rules! crit {
             crit
         }
 
-        #[derive(Debug, Deserialize, Eq, PartialEq, PartialOrd, Ord, Serialize)]
+        #[derive(Clone, Debug, Deserialize, Eq, PartialEq, PartialOrd, Ord, Serialize)]
         pub struct CriterionConfig {
             $(
                 pub $build_method: $build_method_ty,

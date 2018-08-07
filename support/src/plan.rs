@@ -1,10 +1,16 @@
-use super::prelude::*;
+use super::Result;
 
+use std::collections::{BTreeMap, BTreeSet};
 use std::fs::read_to_string;
+use std::path::{Path, PathBuf};
 
+use chrono::{NaiveDate, NaiveDateTime, Utc};
 use glob::glob;
 
 use marky_mark::Benchmark;
+
+use cpu_shield::ShieldSpec;
+use run_plan::{Estimates, RunPlan};
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Plans {
@@ -66,6 +72,8 @@ impl Plans {
                     .map(move |(path, benchmark)| {
                         RunPlan::new(
                             benchmark,
+                            // TODO(anp): serialize criterion config if we have it
+                            None,
                             shield.clone(),
                             toolchain.clone(),
                             path.to_owned(),

@@ -1,8 +1,7 @@
-use super::prelude::*;
+use super::Result;
 
 use std::ffi::OsStr;
 use std::io;
-use std::ops::{Deref, DerefMut};
 use std::process::{Child, Command, ExitStatus, Output};
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, PartialOrd, Ord, Serialize)]
@@ -28,7 +27,11 @@ pub struct RenameThisCommandWrapper {
 
 impl RenameThisCommandWrapper {
     pub fn new<S: AsRef<OsStr>>(cmd: S, spec: Option<ShieldSpec>) -> Self {
-        let shielded = if cfg!(target_os = "linux") {
+        let shielded = if let Some(spec) = &spec {
+            if !cfg!(target_os = "linux") {
+                panic!("cpu shielding not supported on non-linux OSes");
+            }
+
             let mut shielded = Command::new("cset");
             shielded.arg("sh");
             shielded.arg(cmd);
@@ -49,6 +52,7 @@ impl RenameThisCommandWrapper {
         F: FnOnce(&mut Command) -> R,
     {
         if let Some(spec) = self.spec.as_ref() {
+            info!("creating cpu shield");
             // sudo cset shield --cpu=${CPU_MASK} --kthread=${on|off}
 
             // TODO notify sudo dep, find another way to do this
@@ -63,7 +67,17 @@ impl RenameThisCommandWrapper {
                 shield_create.arg("--kthread=on");
             }
 
-            shield_create.status()?;
+            let output = shield_create.output()?;
+
+            if !output.status.success() {
+                let stdout = String::from_utf8(output.stdout)?;
+                let stderr = String::from_utf8(output.stderr)?;
+                bail!(
+                    "unable to create cpu shield. stdout: {}, stderr: {}",
+                    stdout,
+                    stderr
+                );
+            }
 
             // end cset shield setup
 
@@ -77,12 +91,13 @@ impl RenameThisCommandWrapper {
                 .status();
 
             match reset_res {
-                Err(why) => println!("error destroying shield: {:#?}", why),
+                Err(why) => error!("error destroying shield: {:#?}", why),
                 _ => (),
             };
 
             Ok(result)
         } else {
+            info!("running binary");
             Ok(f(&mut self.shielded))
         }
     }
@@ -94,18 +109,13 @@ impl RenameThisCommandWrapper {
     pub fn status(&mut self) -> Result<ExitStatus> {
         Ok(self.maybe_with_shielded(|cmd| cmd.status())??)
     }
-}
 
-impl Deref for RenameThisCommandWrapper {
-    type Target = Command;
-
-    fn deref(&self) -> &Self::Target {
-        &self.shielded
-    }
-}
-
-impl DerefMut for RenameThisCommandWrapper {
-    fn deref_mut(&mut self) -> &mut Command {
-        &mut self.shielded
+    pub fn env<K, V>(&mut self, key: K, val: V) -> &mut Self
+    where
+        K: AsRef<OsStr>,
+        V: AsRef<OsStr>,
+    {
+        self.shielded.env(key, val);
+        self
     }
 }
