@@ -6,7 +6,7 @@ run() {
     cd "$root_dir/$1" && cargo test
 }
 
-set +xe
+set -xe
 
 run extractor
 run support
