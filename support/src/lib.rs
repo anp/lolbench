@@ -7,6 +7,9 @@ extern crate proc_macro_hack;
 #[macro_use]
 extern crate serde_derive;
 
+#[cfg(test)]
+extern crate simple_logger;
+
 extern crate chrono;
 extern crate criterion;
 extern crate glob;

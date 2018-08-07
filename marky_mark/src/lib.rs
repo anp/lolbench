@@ -63,27 +63,76 @@ impl Benchmark {
                 let mut crit = criterion_from_env();
                 #crate_name_syn::#name_syn(&mut crit);
             }
-
-            #[test]
-            fn run_bench() {
-                use std::default::Default;
-                use std::time::Duration;
-                use lolbench_support::Criterion;
-                init_logging();
-                let mut crit = Criterion::default();
-
-                crit = crit.sample_size(2);
-                crit = crit.warm_up_time(Duration::from_micros(1));
-                crit = crit.measurement_time(Duration::from_micros(1));
-                crit = crit.nresamples(1);
-
-                #crate_name_syn::#name_syn(&mut crit);
-            }
         };
 
         source.to_string()
 
         // TODO(anp): guarantee that rustfmt is available somehow and run it on the file
+    }
+
+    fn test_source(&self) -> String {
+        let name_syn: SynPath = syn::parse_str(&self.name).unwrap();
+        let crate_name_syn = SynIdent::new(&self.crate_name, Span::call_site());
+
+        let source = quote! {
+            extern crate #crate_name_syn;
+            extern crate lolbench_support;
+
+            use lolbench_support::{criterion_from_env, init_logging};
+
+            fn main() {
+                init_logging();
+                let mut crit = criterion_from_env();
+                #crate_name_syn::#name_syn(&mut crit);
+            }
+
+            #[test]
+            fn test_bench_end_to_end() {
+                use log;
+                use noisy_float::prelude::*;
+                use simple_logger;
+
+                simple_logger::init_with_level(log::Level::Debug).unwrap();
+
+                let target_dir = Path::new(env!("CARGO_MANIFEST_DIR")).join("target");
+                let binary_path = target_dir.join("release").join("bench-e2e-decode-q5-1024k");
+
+                let plan = RunPlan {
+                    shield: None,
+                    toolchain: String::from("stable"),
+                    source_path: Path::new(env!("CARGO_MANIFEST_DIR"))
+                        .join("benches")
+                        .join("brotli_1_1_3")
+                        .join("src")
+                        .join("bin")
+                        .join("bench-e2e-decode-q5-1024k.rs"),
+                    target_dir,
+                    manifest_path: Path::new(env!("CARGO_MANIFEST_DIR"))
+                        .join("benches")
+                        .join("brotli_1_1_3")
+                        .join("Cargo.toml"),
+                    benchmark: Benchmark {
+                        runner: None,
+                        name: String::from("bench_e2e_decode_q5_1024k"),
+                        crate_name: String::from("brotli_1_1_3"),
+                    },
+                    binary_path,
+                    bench_config: Some(CriterionConfig {
+                        confidence_level: r32(0.95),
+                        measurement_time_ms: 500,
+                        nresamples: 2,
+                        noise_threshold: r32(0.0),
+                        sample_size: 5,
+                        significance_level: r32(0.05),
+                        warm_up_time_ms: 1,
+                    }),
+                };
+
+                let _result = plan.run().unwrap();
+            }
+        };
+
+        source.to_string()
     }
 
     pub fn rendered(&mut self) -> String {

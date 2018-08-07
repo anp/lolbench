@@ -2,7 +2,7 @@ use super::Result;
 
 use std::collections::BTreeMap;
 use std::fs;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::process::Command;
 
 use serde_json;
@@ -231,49 +231,4 @@ struct Estimate {
     point_estimate: f64,
     /// The standard error of this estimate
     standard_error: f64,
-}
-
-#[cfg(test)]
-pub fn test_bench_end_to_end() {
-    use log;
-    use noisy_float::prelude::*;
-    use simple_logger;
-
-    simple_logger::init_with_level(log::Level::Debug).unwrap();
-
-    let target_dir = Path::new(env!("CARGO_MANIFEST_DIR")).join("target");
-    let binary_path = target_dir.join("release").join("bench-e2e-decode-q5-1024k");
-
-    let plan = RunPlan {
-        shield: None,
-        toolchain: String::from("stable"),
-        source_path: Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("benches")
-            .join("brotli_1_1_3")
-            .join("src")
-            .join("bin")
-            .join("bench-e2e-decode-q5-1024k.rs"),
-        target_dir,
-        manifest_path: Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("benches")
-            .join("brotli_1_1_3")
-            .join("Cargo.toml"),
-        benchmark: Benchmark {
-            runner: None,
-            name: String::from("bench_e2e_decode_q5_1024k"),
-            crate_name: String::from("brotli_1_1_3"),
-        },
-        binary_path,
-        bench_config: Some(CriterionConfig {
-            confidence_level: r32(0.95),
-            measurement_time_ms: 500,
-            nresamples: 2,
-            noise_threshold: r32(0.0),
-            sample_size: 5,
-            significance_level: r32(0.05),
-            warm_up_time_ms: 1,
-        }),
-    };
-
-    let _result = plan.run().unwrap();
 }
