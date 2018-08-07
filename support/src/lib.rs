@@ -18,9 +18,9 @@ extern crate noisy_float;
 extern crate serde;
 extern crate serde_json;
 
-use noisy_float::prelude::*;
-
 pub use criterion::{black_box, init_logging, Bencher, Criterion};
+pub use marky_mark::Benchmark;
+pub use noisy_float::prelude::*;
 pub type Result<T> = std::result::Result<T, failure::Error>;
 
 pub use self::{cpu_shield::*, plan::*, run_plan::*};

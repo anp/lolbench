@@ -70,71 +70,6 @@ impl Benchmark {
         // TODO(anp): guarantee that rustfmt is available somehow and run it on the file
     }
 
-    fn test_source(&self) -> String {
-        let name_syn: SynPath = syn::parse_str(&self.name).unwrap();
-        let crate_name_syn = SynIdent::new(&self.crate_name, Span::call_site());
-
-        let source = quote! {
-            extern crate #crate_name_syn;
-            extern crate lolbench_support;
-
-            use lolbench_support::{criterion_from_env, init_logging};
-
-            fn main() {
-                init_logging();
-                let mut crit = criterion_from_env();
-                #crate_name_syn::#name_syn(&mut crit);
-            }
-
-            #[test]
-            fn test_bench_end_to_end() {
-                use log;
-                use noisy_float::prelude::*;
-                use simple_logger;
-
-                simple_logger::init_with_level(log::Level::Debug).unwrap();
-
-                let target_dir = Path::new(env!("CARGO_MANIFEST_DIR")).join("target");
-                let binary_path = target_dir.join("release").join("bench-e2e-decode-q5-1024k");
-
-                let plan = RunPlan {
-                    shield: None,
-                    toolchain: String::from("stable"),
-                    source_path: Path::new(env!("CARGO_MANIFEST_DIR"))
-                        .join("benches")
-                        .join("brotli_1_1_3")
-                        .join("src")
-                        .join("bin")
-                        .join("bench-e2e-decode-q5-1024k.rs"),
-                    target_dir,
-                    manifest_path: Path::new(env!("CARGO_MANIFEST_DIR"))
-                        .join("benches")
-                        .join("brotli_1_1_3")
-                        .join("Cargo.toml"),
-                    benchmark: Benchmark {
-                        runner: None,
-                        name: String::from("bench_e2e_decode_q5_1024k"),
-                        crate_name: String::from("brotli_1_1_3"),
-                    },
-                    binary_path,
-                    bench_config: Some(CriterionConfig {
-                        confidence_level: r32(0.95),
-                        measurement_time_ms: 500,
-                        nresamples: 2,
-                        noise_threshold: r32(0.0),
-                        sample_size: 5,
-                        significance_level: r32(0.05),
-                        warm_up_time_ms: 1,
-                    }),
-                };
-
-                let _result = plan.run().unwrap();
-            }
-        };
-
-        source.to_string()
-    }
-
     pub fn rendered(&mut self) -> String {
         let source = self.source();
         format!("//{}\n{}", serde_json::to_string(&self).unwrap(), source)
@@ -154,10 +89,6 @@ impl Benchmark {
     }
 
     pub fn write(&mut self, full_path: &Path) -> Result<bool> {
-        let mut file_contents = self.rendered();
-
-        let mut need_to_write = true;
-
         // if there's an existing file for this bench's path, we need to know about two questions
         //
         // 1. is there persistent config that was written before which we need to preserve?
@@ -174,20 +105,82 @@ impl Benchmark {
                     }
                 }
             }
-
-            // need to re-render the contents after potentially mutating
-            file_contents = self.rendered();
-
-            need_to_write = file_contents != existing_contents;
         }
 
-        if need_to_write {
-            create_dir_all(full_path.parent().unwrap())?;
-            write(&full_path, file_contents.as_bytes())?;
-        }
-
-        Ok(need_to_write)
+        write_if_changed(&self.rendered(), &full_path)
     }
+}
+
+pub fn test_source(bench_name: &str, crate_name: &str, binary_name: &str) -> String {
+    let crate_name_syn = SynIdent::new(crate_name, Span::call_site());
+
+    let bench_source_name = format!("{}.rs", binary_name);
+
+    let source = quote! {
+        extern crate #crate_name_syn;
+        extern crate lolbench_support;
+
+        use std::path::Path;
+
+        use lolbench_support::{Benchmark, CriterionConfig, RunPlan, r32};
+
+        #[test]
+        fn end_to_end() {
+            let target_dir = Path::new(env!("CARGO_MANIFEST_DIR")).join("target");
+            let binary_path = target_dir.join("release").join(#binary_name);
+
+            let plan = RunPlan {
+                shield: None,
+                toolchain: String::from("stable"),
+                source_path: Path::new(env!("CARGO_MANIFEST_DIR"))
+                    .join("benches")
+                    .join(#crate_name)
+                    .join("src")
+                    .join("bin")
+                    .join(#bench_source_name),
+                target_dir,
+                manifest_path: Path::new(env!("CARGO_MANIFEST_DIR"))
+                    .join("benches")
+                    .join(#crate_name)
+                    .join("Cargo.toml"),
+                benchmark: Benchmark {
+                    runner: None,
+                    name: String::from(#bench_name),
+                    crate_name: String::from(#crate_name),
+                },
+                binary_path,
+                bench_config: Some(CriterionConfig {
+                    confidence_level: r32(0.95),
+                    measurement_time_ms: 500,
+                    nresamples: 2,
+                    noise_threshold: r32(0.0),
+                    sample_size: 5,
+                    significance_level: r32(0.05),
+                    warm_up_time_ms: 1,
+                }),
+            };
+
+            if let Err(why) = plan.run() {
+                panic!("{}", why);
+            }
+        }
+    };
+
+    source.to_string()
+}
+
+pub fn write_if_changed(file_contents: &str, test_path: &Path) -> Result<bool> {
+    let need_to_write = match read_to_string(&test_path) {
+        Ok(existing) => existing != file_contents,
+        _ => true,
+    };
+
+    if need_to_write {
+        create_dir_all(test_path.parent().unwrap())?;
+        write(&test_path, file_contents.as_bytes())?;
+    }
+
+    Ok(need_to_write)
 }
 
 #[cfg(test)]

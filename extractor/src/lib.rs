@@ -8,7 +8,7 @@ extern crate slug;
 use std::env;
 use std::path::Path;
 
-use marky_mark::Benchmark;
+use marky_mark::*;
 use slug::slugify;
 
 type Result<T> = std::result::Result<T, failure::Error>;
@@ -31,42 +31,20 @@ fn lolbench_entrypoint(bench_path: &str) -> Result<String> {
     let manifest_dir = env::var("CARGO_MANIFEST_DIR")?;
     let bins_dir = Path::new(&manifest_dir).join("src").join("bin");
 
-    let full_path = bins_dir.join(&format!("{}.rs", slugify(bench_path.to_string())));
+    let bin_name = slugify(bench_path.to_string());
+    let source_name = format!("{}.rs", bin_name);
+    let full_path = bins_dir.join(&source_name);
+
+    let test_source_name = format!("{}-{}", slugify(&crate_name), &source_name);
+    let test_path = Path::new(&manifest_dir)
+        .join("..")
+        .join("..")
+        .join("tests")
+        .join(&test_source_name);
+    let test_source = test_source(&bench_path, &crate_name, &bin_name);
 
     Benchmark::new(&crate_name, bench_path).write(&full_path)?;
+    write_if_changed(&test_source, &test_path)?;
 
     returned
-}
-
-#[cfg(test)]
-mod tests {
-    use std::fs::read_to_string;
-    use std::path::Path;
-    use std::process::Command;
-
-    use marky_mark::Benchmark;
-
-    #[test]
-    fn test_inflate() {
-        let inflate_dir = Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("..")
-            .join("benches")
-            .join("inflate_0_3_4");
-
-        let output = Command::new("cargo")
-            .arg("test")
-            .current_dir(&inflate_dir)
-            .output()
-            .unwrap();
-
-        assert!(
-            output.status.success(),
-            "failed to run inflate's tests: {}",
-            String::from_utf8_lossy(&output.stdout),
-        );
-
-        let decode_path = inflate_dir.join("src").join("bin").join("decode.rs");
-        let decode_contents = read_to_string(&decode_path).unwrap();
-        Benchmark::parse(&decode_contents).unwrap();
-    }
 }
