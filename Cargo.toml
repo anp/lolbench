@@ -8,9 +8,6 @@ version = "0.0.1"
 opt-level = 1
 debug = 1
 
-[profile.release]
-lto = true
-
 [dependencies]
 chrono = "0.4"
 clap = "^2.31.1"
