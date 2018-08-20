@@ -5,5 +5,4 @@ authors = ["Jason Orendorff <jason.orendorff@gmail.com>"]
 
 [dependencies]
 rand = "0.4.2"
-lodepng = "0.5.1"
 lolbench_support = { path = "../../support" }

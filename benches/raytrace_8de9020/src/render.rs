@@ -1,4 +1,3 @@
-use lodepng::RGB;
 use rand::{Rng, XorShiftRng};
 
 use camera::Camera;
@@ -37,7 +36,7 @@ fn color(mut r: Ray, model: &Model, rng: &mut XorShiftRng) -> Vec3 {
     }
 }
 
-pub fn render(
+pub(crate) fn render(
     rng: &mut XorShiftRng,
     scene: &Model,
     camera: &Camera,
@@ -68,4 +67,10 @@ pub fn render(
         }
     }
     pixels
+}
+
+pub struct RGB<T> {
+    r: T,
+    g: T,
+    b: T,
 }

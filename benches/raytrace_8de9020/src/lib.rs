@@ -1,5 +1,4 @@
 // Dependencies
-extern crate lodepng;
 extern crate rand; // generate random numbers // output PNG image files
 #[macro_use]
 extern crate lolbench_support;
