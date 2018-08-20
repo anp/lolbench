@@ -6,7 +6,7 @@ jobs:
     steps:
       - checkout
 
-      - run: git submodule init --update --recursive
+      - run: git submodule update --init --recursive
 
       - restore_cache:
           keys:
