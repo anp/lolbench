@@ -13,7 +13,7 @@ jobs:
           keys:
             - home_cargo
 
-      - run: cargo test --release --verbose --all --all-targets
+      - run: cargo test --release --all --all-targets
 
       - save_cache:
           key: home_cargo
