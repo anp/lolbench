@@ -5,6 +5,14 @@ jobs:
       - image: rust:latest
     steps:
       - checkout
-      - run:
-          name: Test all
-          command: cargo test --release --verbose --all --all-targets
+
+      - restore_cache:
+          keys:
+            - home_cargo
+
+      - run: cargo test --release --verbose --all --all-targets
+
+      - save_cache:
+          key: home_cargo
+          paths:
+            - ~/.cargo
