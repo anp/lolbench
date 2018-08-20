@@ -1,10 +1,13 @@
 # lolbench
 
+[![CircleCI](https://circleci.com/gh/anp/lolbench/tree/master.svg?style=shield)](https://circleci.com/gh/anp/lolbench/tree/master)
+
+This project is an effort to reproducibly benchmark "in the wild" Rust code against newer compiler versions to detect performance regressions. Still a WIP for the moment, but many are the larger building blocks are in place.
+
 # TODO
 
 * new command could easily rewrite #[bench], criterion_group, and wrap_libtest, all in place (run rustfmt after)
 * extractor should add benchmarks to an unassigned section of the configuration
-* subcommand to time benchmarks, test multiple values for each tweakable environment variable in the new harness
 * create config file pointing different boxes at each other
 * set up CI to build all of the test binaries and run each once
 * LTO, strip, cgu=1, incrcomp=false
