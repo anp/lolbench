@@ -6,7 +6,9 @@ jobs:
     steps:
       - checkout
       - run: git submodule update --init --recursive
-      - run: apt-get install llvm-dev libclang-dev clang
+      - run: apt-get update -y
+      - run: apt-get upgrade -y
+      - run: apt-get install -y llvm-dev libclang-dev clang
       - restore_cache:
           keys:
             - home_cargo
