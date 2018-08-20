@@ -1,8 +1,0 @@
-language: rust
-rust:
-  - stable
-cache: cargo
-script:
-  - cargo build --verbose --all --all-targets
-  - cargo build --release --verbose --all --all-targets
-  - cargo test --release --verbose --all --all-targets
