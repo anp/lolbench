@@ -43,8 +43,10 @@ pub(crate) fn render(
     width: usize,
     height: usize,
     samples: usize,
-) -> Vec<RGB<u8>> {
-    let mut pixels: Vec<RGB<u8>> = Vec::with_capacity(width * height);
+) {
+    use lolbench_support::black_box;
+
+    let mut pixels = Vec::with_capacity(width * height);
     for y in 0..height {
         let j = height - 1 - y;
         for i in 0..width {
@@ -59,18 +61,8 @@ pub(crate) fn render(
             col = col / samples as f32;
             col = Vec3(col.x().sqrt(), col.y().sqrt(), col.z().sqrt());
             let rgb = col.to_u8();
-            pixels.push(RGB {
-                r: rgb[0],
-                g: rgb[1],
-                b: rgb[2],
-            });
+            pixels.push(rgb);
         }
     }
-    pixels
-}
-
-pub struct RGB<T> {
-    r: T,
-    g: T,
-    b: T,
+    black_box(pixels);
 }
