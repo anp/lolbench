@@ -942,24 +942,12 @@ dependencies = [
 name = "lolbench-cli"
 version = "0.0.1"
 dependencies = [
- "brotli_1_1_3 0.1.0",
  "chrono 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "clap 2.31.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "crossbeam_epoch_0_4_0 0.1.0",
- "diesel_1_1_1 0.1.0",
- "doom_9e197d7 0.0.7",
  "failure 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "inflate_0_3_4 0.1.0",
- "json_benchmark_c7d3d9b 0.0.1",
  "log 0.4.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "lolbench_support 0.1.0",
- "nom_4_0_0_beta1 0.1.0",
- "quickcheck_0_6_1 0.1.0",
- "rayon_1_0_0 0.0.0",
- "raytrace_8de9020 0.1.0",
- "regex_0_2_6 0.1.0",
  "simple_logger 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "snap_0_2_4 0.1.0",
  "structopt 0.2.7 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
