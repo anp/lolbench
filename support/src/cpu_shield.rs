@@ -27,7 +27,7 @@ pub struct RenameThisCommandWrapper {
 
 impl RenameThisCommandWrapper {
     pub fn new<S: AsRef<OsStr>>(cmd: S, spec: Option<ShieldSpec>) -> Self {
-        let shielded = if let Some(spec) = &spec {
+        let shielded = if spec.is_some() {
             if !cfg!(target_os = "linux") {
                 panic!("cpu shielding not supported on non-linux OSes");
             }
