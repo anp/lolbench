@@ -5,6 +5,7 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
+use noisy_float::prelude::*;
 use serde_json;
 
 use marky_mark::Benchmark;
@@ -147,7 +148,7 @@ impl RunPlan {
             let stdout = String::from_utf8(build_output.stdout).unwrap();
             let stderr = String::from_utf8(build_output.stderr).unwrap();
             bail!(
-                "failed to build {:?}. stdout: {}, stderr: {}",
+                "failed to build {:#?}.\nstdout: {},\nstderr: {}",
                 self,
                 stdout,
                 stderr
@@ -158,7 +159,8 @@ impl RunPlan {
     }
 
     fn post_process(&self) -> Result<Estimates> {
-        let path = self.target_dir
+        let path = self
+            .target_dir
             .join("criterion")
             .join(format!(
                 "{}::{}",
@@ -170,7 +172,10 @@ impl RunPlan {
 
         let runtime_estimates_path = path.join("estimates.json");
 
-        debug!("reading runtime estimates from disk");
+        debug!(
+            "reading runtime estimates from disk @ {}",
+            runtime_estimates_path.display()
+        );
         let runtime_estimates_json = fs::read_to_string(runtime_estimates_path)?;
 
         debug!("parsing runtime estimates");
