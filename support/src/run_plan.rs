@@ -27,7 +27,7 @@ pub struct RunPlan {
 
 impl RunPlan {
     pub fn new(
-        benchmark: Benchmark,
+        mut benchmark: Benchmark,
         bench_config: Option<CriterionConfig>,
         shield: Option<ShieldSpec>,
         toolchain: String,
@@ -49,6 +49,8 @@ impl RunPlan {
         }
 
         let manifest_path = manifest_path.unwrap();
+
+        benchmark.strip();
 
         Ok(Self {
             benchmark,

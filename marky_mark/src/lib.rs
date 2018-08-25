@@ -50,7 +50,7 @@ impl Benchmark {
         n
     }
 
-    fn strip(&mut self) {
+    pub fn strip(&mut self) {
         lazy_static! {
             static ref WHITESPACE: Regex = Regex::new("[[:space:]]+").unwrap();
         }
@@ -59,6 +59,21 @@ impl Benchmark {
         let name = WHITESPACE.replace_all(&self.name, "").to_string();
         self.crate_name = crate_name;
         self.name = name;
+    }
+
+    pub fn parse(s: &str) -> Result<(Self, String)> {
+        let mut lines = s.lines();
+
+        let first_line = match lines.next() {
+            Some(l) => l.trim_left_matches("//"),
+            None => bail!("missing first line"),
+        };
+
+        let remaining = lines.fold(String::new(), |remaining, line| remaining + line);
+
+        let mut parsed: Self = serde_json::from_str(first_line)?;
+        parsed.strip();
+        Ok((parsed, remaining))
     }
 
     pub fn set_runner(&mut self, runner: &str) {
@@ -90,21 +105,6 @@ impl Benchmark {
     pub fn rendered(&mut self) -> String {
         let source = self.source();
         format!("//{}\n{}", serde_json::to_string(&self).unwrap(), source)
-    }
-
-    pub fn parse(s: &str) -> Result<(Self, String)> {
-        let mut lines = s.lines();
-
-        let first_line = match lines.next() {
-            Some(l) => l.trim_left_matches("//"),
-            None => bail!("missing first line"),
-        };
-
-        let remaining = lines.fold(String::new(), |remaining, line| remaining + line);
-
-        let mut parsed: Self = serde_json::from_str(first_line)?;
-        parsed.strip();
-        Ok((parsed, remaining))
     }
 
     pub fn write(&mut self, full_path: &Path) -> Result<bool> {
