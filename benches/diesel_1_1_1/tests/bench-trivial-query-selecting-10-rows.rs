@@ -1,0 +1,1 @@
+extern crate lolbench_support ; # [ test ] fn end_to_end ( ) { lolbench_support :: end_to_end_test ( "diesel_1_1_1" , "bench_trivial_query_selecting_____10_rows" , "bench-trivial-query-selecting-10-rows.rs" , "bench-trivial-query-selecting-10-rows" , ) ; }

@@ -1,0 +1,1 @@
+extern crate lolbench_support ; # [ test ] fn end_to_end ( ) { lolbench_support :: end_to_end_test ( "rayon_1_0_0" , "map_collect::i_mod_10_to_i ::\n                    with_linked_list_map_reduce_vec_sized" , "map-collect-i-mod-10-to-i-with-linked-list-map-reduce-vec-sized.rs" , "map-collect-i-mod-10-to-i-with-linked-list-map-reduce-vec-sized" , ) ; }

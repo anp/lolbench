@@ -1,0 +1,1 @@
+extern crate lolbench_support ; # [ test ] fn end_to_end ( ) { lolbench_support :: end_to_end_test ( "rayon_1_0_0" , "sort :: demo_quick_sort_mostly_ascending" , "sort-demo-quick-sort-mostly-ascending.rs" , "sort-demo-quick-sort-mostly-ascending" , ) ; }

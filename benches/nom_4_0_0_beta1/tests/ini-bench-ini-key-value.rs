@@ -1,0 +1,1 @@
+extern crate lolbench_support ; # [ test ] fn end_to_end ( ) { lolbench_support :: end_to_end_test ( "nom_4_0_0_beta1" , "ini :: bench_ini_key_value" , "ini-bench-ini-key-value.rs" , "ini-bench-ini-key-value" , ) ; }

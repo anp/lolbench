@@ -1,0 +1,1 @@
+extern crate lolbench_support ; # [ test ] fn end_to_end ( ) { lolbench_support :: end_to_end_test ( "regex_0_2_6" , "sherlock :: line_boundary_sherlock_holmes" , "sherlock-line-boundary-sherlock-holmes.rs" , "sherlock-line-boundary-sherlock-holmes" , ) ; }

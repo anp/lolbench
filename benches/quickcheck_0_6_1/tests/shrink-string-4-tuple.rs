@@ -1,0 +1,1 @@
+extern crate lolbench_support ; # [ test ] fn end_to_end ( ) { lolbench_support :: end_to_end_test ( "quickcheck_0_6_1" , "shrink_string_4_tuple" , "shrink-string-4-tuple.rs" , "shrink-string-4-tuple" , ) ; }

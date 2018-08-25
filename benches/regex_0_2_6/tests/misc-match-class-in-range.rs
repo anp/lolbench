@@ -1,0 +1,1 @@
+extern crate lolbench_support ; # [ test ] fn end_to_end ( ) { lolbench_support :: end_to_end_test ( "regex_0_2_6" , "misc :: match_class_in_range" , "misc-match-class-in-range.rs" , "misc-match-class-in-range" , ) ; }

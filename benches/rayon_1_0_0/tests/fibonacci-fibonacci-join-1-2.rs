@@ -1,0 +1,1 @@
+extern crate lolbench_support ; # [ test ] fn end_to_end ( ) { lolbench_support :: end_to_end_test ( "rayon_1_0_0" , "fibonacci :: fibonacci_join_1_2" , "fibonacci-fibonacci-join-1-2.rs" , "fibonacci-fibonacci-join-1-2" , ) ; }

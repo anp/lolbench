@@ -1,0 +1,1 @@
+extern crate lolbench_support ; # [ test ] fn end_to_end ( ) { lolbench_support :: end_to_end_test ( "crossbeam_epoch_0_4_0" , "pin :: single_default_handle_pin" , "pin-single-default-handle-pin.rs" , "pin-single-default-handle-pin" , ) ; }

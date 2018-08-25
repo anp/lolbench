@@ -1,0 +1,1 @@
+extern crate lolbench_support ; # [ test ] fn end_to_end ( ) { lolbench_support :: end_to_end_test ( "rayon_1_0_0" , "sort :: demo_quick_sort_random" , "sort-demo-quick-sort-random.rs" , "sort-demo-quick-sort-random" , ) ; }

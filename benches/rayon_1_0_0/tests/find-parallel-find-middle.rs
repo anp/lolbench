@@ -1,0 +1,1 @@
+extern crate lolbench_support ; # [ test ] fn end_to_end ( ) { lolbench_support :: end_to_end_test ( "rayon_1_0_0" , "find :: parallel_find_middle" , "find-parallel-find-middle.rs" , "find-parallel-find-middle" , ) ; }
