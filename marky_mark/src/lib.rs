@@ -131,57 +131,19 @@ impl Benchmark {
 }
 
 pub fn test_source(bench_name: &str, crate_name: &str, binary_name: &str) -> String {
-    let crate_name_syn = SynIdent::new(crate_name, Span::call_site());
-
     let bench_source_name = format!("{}.rs", binary_name);
 
     let source = quote! {
-        extern crate #crate_name_syn;
         extern crate lolbench_support;
-
-        use std::path::Path;
-
-        use lolbench_support::{Benchmark, CriterionConfig, RunPlan, r32};
 
         #[test]
         fn end_to_end() {
-            let target_dir = Path::new(env!("CARGO_MANIFEST_DIR")).join("target");
-            let binary_path = target_dir.join("release").join(#binary_name);
-
-            let plan = RunPlan {
-                shield: None,
-                toolchain: String::from("stable"),
-                source_path: Path::new(env!("CARGO_MANIFEST_DIR"))
-                    .join("benches")
-                    .join(#crate_name)
-                    .join("src")
-                    .join("bin")
-                    .join(#bench_source_name),
-                target_dir,
-                manifest_path: Path::new(env!("CARGO_MANIFEST_DIR"))
-                    .join("benches")
-                    .join(#crate_name)
-                    .join("Cargo.toml"),
-                benchmark: Benchmark {
-                    runner: None,
-                    name: String::from(#bench_name),
-                    crate_name: String::from(#crate_name),
-                },
-                binary_path,
-                bench_config: Some(CriterionConfig {
-                    confidence_level: r32(0.95),
-                    measurement_time_ms: 500,
-                    nresamples: 2,
-                    noise_threshold: r32(0.0),
-                    sample_size: 5,
-                    significance_level: r32(0.05),
-                    warm_up_time_ms: 1,
-                }),
-            };
-
-            if let Err(why) = plan.run() {
-                panic!("{}", why);
-            }
+            lolbench_support::end_to_end_test(
+                #crate_name,
+                #bench_name,
+                #bench_source_name,
+                #binary_name,
+            );
         }
     };
 

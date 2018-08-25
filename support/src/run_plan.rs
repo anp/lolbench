@@ -232,3 +232,54 @@ struct Estimate {
     /// The standard error of this estimate
     standard_error: f64,
 }
+
+pub fn end_to_end_test(
+    crate_name: &str,
+    bench_name: &str,
+    bench_source_name: &str,
+    binary_name: &str,
+) {
+    let _ = ::simple_logger::init();
+
+    let target_dir = Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("..")
+        .join("target");
+    let binary_path = target_dir.join("release").join(binary_name);
+
+    let plan = RunPlan {
+        shield: None,
+        toolchain: String::from("stable"),
+        source_path: Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("..")
+            .join("benches")
+            .join(crate_name)
+            .join("src")
+            .join("bin")
+            .join(bench_source_name),
+        target_dir,
+        manifest_path: Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("..")
+            .join("benches")
+            .join(crate_name)
+            .join("Cargo.toml"),
+        benchmark: Benchmark {
+            runner: None,
+            name: String::from(bench_name),
+            crate_name: String::from(crate_name),
+        },
+        binary_path,
+        bench_config: Some(CriterionConfig {
+            confidence_level: r32(0.95),
+            measurement_time_ms: 500,
+            nresamples: 2,
+            noise_threshold: r32(0.0),
+            sample_size: 5,
+            significance_level: r32(0.05),
+            warm_up_time_ms: 1,
+        }),
+    };
+
+    if let Err(why) = plan.run() {
+        panic!("{}", why);
+    }
+}
