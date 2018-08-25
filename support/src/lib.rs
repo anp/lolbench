@@ -7,9 +7,6 @@ extern crate proc_macro_hack;
 #[macro_use]
 extern crate serde_derive;
 
-#[cfg(test)]
-extern crate simple_logger;
-
 extern crate chrono;
 extern crate criterion;
 extern crate glob;
@@ -17,6 +14,7 @@ extern crate marky_mark;
 extern crate noisy_float;
 extern crate serde;
 extern crate serde_json;
+extern crate simple_logger;
 
 pub use criterion::{black_box, init_logging, Bencher, Criterion};
 pub use marky_mark::Benchmark;
