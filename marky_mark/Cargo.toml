@@ -10,8 +10,10 @@ digest = "*"
 failure = "0.1"
 # accept any version of this so that it "unifies" with the sha2 version
 generic-array = { version = "*", features = ["serde"] }
+lazy_static = "1"
 proc-macro2 = "0.4"
 quote = "0.6"
+regex = "1"
 serde = "1"
 serde_derive = "1"
 serde_json = "1"

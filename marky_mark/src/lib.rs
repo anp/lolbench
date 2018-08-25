@@ -2,6 +2,8 @@
 #[macro_use]
 extern crate failure;
 #[macro_use]
+extern crate lazy_static;
+#[macro_use]
 extern crate quote;
 #[macro_use]
 extern crate serde_derive;
@@ -9,6 +11,7 @@ extern crate serde_derive;
 extern crate digest;
 extern crate generic_array;
 extern crate proc_macro2;
+extern crate regex;
 extern crate serde;
 extern crate serde_json;
 extern crate sha2;
@@ -22,6 +25,7 @@ use std::fs::{create_dir_all, read_to_string, write};
 use std::path::Path;
 
 use proc_macro2::Span;
+use regex::Regex;
 use syn::{Ident as SynIdent, Path as SynPath};
 
 type Result<T> = ::std::result::Result<T, failure::Error>;
@@ -37,11 +41,24 @@ pub struct Benchmark {
 
 impl Benchmark {
     pub fn new(crate_name: &str, name: &str) -> Self {
-        Self {
+        let mut n = Self {
             name: name.to_string(),
             crate_name: crate_name.to_string(),
             runner: None,
+        };
+        n.strip();
+        n
+    }
+
+    fn strip(&mut self) {
+        lazy_static! {
+            static ref WHITESPACE: Regex = Regex::new("[[:space:]]+").unwrap();
         }
+
+        let crate_name = WHITESPACE.replace_all(&self.crate_name, "").to_string();
+        let name = WHITESPACE.replace_all(&self.name, "").to_string();
+        self.crate_name = crate_name;
+        self.name = name;
     }
 
     pub fn set_runner(&mut self, runner: &str) {
@@ -85,7 +102,9 @@ impl Benchmark {
 
         let remaining = lines.fold(String::new(), |remaining, line| remaining + line);
 
-        Ok((serde_json::from_str(first_line)?, remaining))
+        let mut parsed: Self = serde_json::from_str(first_line)?;
+        parsed.strip();
+        Ok((parsed, remaining))
     }
 
     pub fn write(&mut self, full_path: &Path) -> Result<bool> {
