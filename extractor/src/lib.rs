@@ -29,18 +29,15 @@ fn lolbench_entrypoint(bench_path: &str) -> Result<String> {
 
     let crate_name = ::std::env::var("CARGO_PKG_NAME")?;
     let manifest_dir = env::var("CARGO_MANIFEST_DIR")?;
-    let bins_dir = Path::new(&manifest_dir).join("src").join("bin");
 
     let bin_name = slugify(bench_path.to_string());
     let source_name = format!("{}.rs", bin_name);
-    let full_path = bins_dir.join(&source_name);
+    let full_path = Path::new(&manifest_dir)
+        .join("src")
+        .join("bin")
+        .join(&source_name);
 
-    let test_source_name = format!("{}-{}", slugify(&crate_name), &source_name);
-    let test_path = Path::new(&manifest_dir)
-        .join("..")
-        .join("..")
-        .join("tests")
-        .join(&test_source_name);
+    let test_path = Path::new(&manifest_dir).join("tests").join(&source_name);
     let test_source = test_source(&bench_path, &crate_name, &bin_name);
 
     Benchmark::new(&crate_name, bench_path).write(&full_path)?;
