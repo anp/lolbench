@@ -7,7 +7,7 @@ use std::path::{Path, PathBuf};
 use chrono::{NaiveDate, NaiveDateTime, Utc};
 use glob::glob;
 
-use marky_mark::Benchmark;
+use marky_mark::{Benchmark, Registry};
 
 use cpu_shield::ShieldSpec;
 use run_plan::{Estimates, RunPlan};
@@ -35,20 +35,14 @@ impl Plans {
     pub fn new(benches_dir: &Path, bench_opts: BenchOpts, output_dir: &Path) -> Result<Self> {
         info!("Searching {} for benchmarks...", benches_dir.display());
 
-        let mut benchmarks: Vec<(PathBuf, Benchmark)> = Vec::new();
-        for file in glob(&format!("{}/**/*.rs", benches_dir.display()))? {
-            let file = file?;
-            let contents = read_to_string(&file)?;
-            if let Ok((bench, _)) = Benchmark::parse(&contents) {
-                benchmarks.push((file, bench));
-            }
-        }
+        let (reg, _f) = Registry::from_disk()?;
+        let benchmarks = reg.benches();
 
         info!("Found and parsed {} benchmarks.", benchmarks.len());
 
         let benchmarks = benchmarks
             .into_iter()
-            .filter(|b| bench_opts.filter.matches(&b.1))
+            .filter(|b| bench_opts.filter.matches(&b))
             .collect::<Vec<_>>();
 
         info!(
@@ -66,20 +60,18 @@ impl Plans {
             .flat_map(move |toolchain: String| {
                 let shield = bench_opts.shield_spec.as_ref().map(Clone::clone);
 
-                benchmarks
-                    .clone()
-                    .into_iter()
-                    .map(move |(path, benchmark)| {
-                        RunPlan::new(
-                            benchmark,
-                            // TODO(anp): serialize criterion config if we have it
-                            None,
-                            shield.clone(),
-                            toolchain.clone(),
-                            path.to_owned(),
-                            output_dir.to_owned(),
-                        )
-                    })
+                benchmarks.clone().into_iter().map(move |benchmark| {
+                    let path = benchmark.entrypoint_path.clone();
+                    RunPlan::new(
+                        benchmark,
+                        // TODO(anp): serialize criterion config if we have it
+                        None,
+                        shield.clone(),
+                        toolchain.clone(),
+                        path,
+                        output_dir.to_owned(),
+                    )
+                })
             })
             .collect::<Result<BTreeSet<RunPlan>>>()?;
 

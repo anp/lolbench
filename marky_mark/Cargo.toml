@@ -8,6 +8,7 @@ description = "crate for generating and parsing machine-readable benchmark specs
 # accept any version of this so that it "unifies" with the sha2 version
 digest = "*"
 failure = "0.1"
+fs2 = "0.4"
 # accept any version of this so that it "unifies" with the sha2 version
 generic-array = { version = "*", features = ["serde"] }
 lazy_static = "1"

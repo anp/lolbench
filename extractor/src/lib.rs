@@ -21,7 +21,6 @@ proc_macro_expr_impl! {
 }
 
 fn lolbench_entrypoint(bench_path: &str) -> Result<String> {
-    // TODO update benchmarks manifest
     let returned = Ok(format!(
         "println!(\"entering lolbench-generated benchmark {}\");",
         bench_path.trim()
@@ -40,7 +39,7 @@ fn lolbench_entrypoint(bench_path: &str) -> Result<String> {
     let test_path = Path::new(&manifest_dir).join("tests").join(&source_name);
     let test_source = test_source(&bench_path, &crate_name, &bin_name);
 
-    Benchmark::new(&crate_name, bench_path).write(&full_path)?;
+    Benchmark::new(&crate_name, bench_path, &full_path).write_and_register(&full_path)?;
     write_if_changed(&test_source, &test_path)?;
 
     returned

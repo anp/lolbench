@@ -271,8 +271,10 @@ pub fn end_to_end_test(
             .join("Cargo.toml"),
         benchmark: Benchmark {
             runner: None,
+            runtime_estimate: None,
             name: String::from(bench_name),
             crate_name: String::from(crate_name),
+            entrypoint_path: binary_path.clone(),
         },
         binary_path,
         bench_config: Some(CriterionConfig {
