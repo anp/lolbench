@@ -81,6 +81,7 @@
         dest: /lib/systemd/system/lolbench.timer
     - name: systemd-enable
       systemd:
+        daemon_reload: yes
         enabled: yes
         name: lolbench.timer
     - name: systemd-start
