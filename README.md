@@ -6,6 +6,7 @@ This project is an effort to reproducibly benchmark "in the wild" Rust code agai
 
 # TODO
 
+* GC rustup installs, target directories
 * new command could easily rewrite #[bench], criterion_group, and wrap_libtest, all in place (run rustfmt after)
 * extractor should add benchmarks to an unassigned section of the configuration
 * create config file pointing different boxes at each other

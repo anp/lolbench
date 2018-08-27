@@ -1,0 +1,7 @@
+[Unit]
+Description=lolbench agent
+
+[Service]
+Type=oneshot
+SendSIGKILL=no
+ExecStart={{ deploy_dir }}/process.sh

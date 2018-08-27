@@ -1,4 +1,5 @@
 [runners]
-molly.lolbench.rust.af
-sally.lolbench.rust.af
 wilhelm.lolbench.rust.af
+
+[runners:vars]
+deploy_dir=/home/adam/lolbench

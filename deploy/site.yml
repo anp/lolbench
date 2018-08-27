@@ -1,11 +1,12 @@
 ---
 
-- name: why dont we do it in the site.yml
+- name: ensure_deps
   hosts: all
   remote_user: adam
   become: yes
   become_method: sudo
   tasks:
+    # NOTE(anp): uncomment this to update, yeah i agree its dumb
     # - name: apt - update
     #   apt:
     #     update_cache: yes
@@ -18,6 +19,7 @@
       vars:
         packages:
           - cpufrequtils
+          - git
           - ufw
     - name: firewall - allow ssh
       ufw:
@@ -56,38 +58,32 @@
         line: '%sudo ALL=(ALL) NOPASSWD: ALL'
         validate: 'visudo -cf %s'
 
-# Guaranteeing CPU affinity:
+    - name: rustup
+      shell: curl https://sh.rustup.rs -sSf | sh -s -- -y
+      become: yes
+      become_user: adam
+    - name: clone
+      git:
+        repo: https://github.com/anp/lolbench.git
+        dest: '{{ deploy_dir }}'
+        refspec: '{{ gitsha }}'
+        version: '{{ gitsha }}'
+      become: yes
+      become_user: adam
 
-# For linux, the run.sh script uses https://github.com/lpechacek/cpuset to reserve CPUs for the benchmark runners.
-
-# NOTE: you have to run as root. I tried to use cpuset's "exec as user/group" feature, but rustup had problems with that (thought that /root/.cargo was where it should be installed). For me, this meant `rustup default stable && rustup update` as root and everything worked.
-
-# cpuset has a fun trick to move all kernel threads onto the not-used-for-benchmarks core too, which in theory should greatly improve predictability of results.
-
-# - name: deploy supervisor configuration
-#   hosts: phoromatic
-#   remote_user: adam
-#   become: yes
-#   become_method: sudo
-# # ufw allow 'Nginx Full'
-# # add-apt-repository ppa:certbot/certbot
-# # apt-get install python-certbot-nginx
-# # certbot --nginx -d lolbench.rust.af
-# # cronjob
-# # systemctl reload nginx
-# # systemctl restart php5.6-fpm
-# # apt-get install php5.6-fpm
-# # chown pts-data to www-data
-# # ln -s /mnt/volume_sfo2_02/pts-data /var/www/.phoronix-test-suite
-# # su -l www-data -c 'phoronix-test-suite phoromatic.set-root-admin-password'
-
-# # vim /var/www/.phoronix-test-suite/user-config.xml
-# # vim /etc/nginx/sites-available/default
-# # vim /etc/php/5.6/fpm/php.ini
-
-# - name: deploy runner configuration
-#   hosts: runners
-#   remote_user: adam
-#   become: yes
-#   become_method: sudo
-# phoronix-test-suite phoromatic.connect lolbench.rust.af:443/17GUMY
+    - name: systemd-config
+      template:
+        src: lolbench.service.j2
+        dest: /lib/systemd/system/lolbench.service
+    - name: systemd-timer
+      template:
+        src: lolbench.timer.j2
+        dest: /lib/systemd/system/lolbench.timer
+    - name: systemd-enable
+      systemd:
+        enabled: yes
+        name: lolbench.timer
+    - name: systemd-start
+      systemd:
+        state: restarted
+        name: lolbench.timer

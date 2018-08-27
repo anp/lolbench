@@ -1,0 +1,10 @@
+[Unit]
+Description=lolbench agent
+After=syslog.target network.target
+
+[Timer]
+OnBootSec=300
+Persistent=true
+
+[Install]
+WantedBy=multi-user.target
