@@ -21,9 +21,10 @@ pub use marky_mark::Benchmark;
 pub use noisy_float::prelude::*;
 pub type Result<T> = std::result::Result<T, failure::Error>;
 
-pub use self::{cpu_shield::*, plan::*, run_plan::*};
+pub use self::{cpu_shield::*, estimates::*, plan::*, run_plan::*};
 
 mod cpu_shield;
+mod estimates;
 mod plan;
 mod run_plan;
 

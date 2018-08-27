@@ -24,6 +24,9 @@ fn main() -> Result<()> {
 
 #[derive(Debug, StructOpt)]
 enum SubCommand {
+    #[structopt(name = "record-estimates")]
+    Record,
+
     #[structopt(name = "dry-run")]
     Plan {
         #[structopt(flatten)]
@@ -31,8 +34,8 @@ enum SubCommand {
     },
 }
 
-fn plan(benches_dir: &Path, bench_opts: BenchOpts, output_dir: &Path) -> Result<()> {
-    let plans = Plans::new(benches_dir, bench_opts, output_dir)?;
+fn plan(bench_opts: BenchOpts, output_dir: &Path) -> Result<()> {
+    let plans = Plans::new(bench_opts, output_dir)?;
 
     info!("Generated new plans:\n\n{:#?}", plans);
 
@@ -40,11 +43,10 @@ fn plan(benches_dir: &Path, bench_opts: BenchOpts, output_dir: &Path) -> Result<
 }
 
 impl SubCommand {
-    fn exec(self, benches_dir: &Path, overall_output_dir: &Path) -> Result<()> {
+    fn exec(self, overall_output_dir: &Path) -> Result<()> {
         match self {
-            SubCommand::Plan { bench_opts } => {
-                plan(benches_dir, bench_opts.validate()?, overall_output_dir)
-            }
+            SubCommand::Plan { bench_opts } => plan(bench_opts.validate()?, overall_output_dir),
+            SubCommand::Record => record_runtime_estimates(),
         }
     }
 }
@@ -171,14 +173,10 @@ pub struct Cli {
 
 impl Cli {
     pub fn exec(self) -> Result<()> {
-        let benches_dir = self.benches_dir
-            .as_ref()
-            .map(Clone::clone)
-            .unwrap_or_else(|| ::std::env::current_dir().unwrap().join("benches"));
-
-        let output_dir = self.output_dir
+        let output_dir = self
+            .output_dir
             .unwrap_or_else(|| ::std::env::current_dir().unwrap());
 
-        self.cmd.exec(&benches_dir, &output_dir)
+        self.cmd.exec(&output_dir)
     }
 }

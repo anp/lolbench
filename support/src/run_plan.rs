@@ -1,6 +1,7 @@
 use super::Result;
 
 use std::collections::BTreeMap;
+use std::fmt::{Display, Formatter, Result as FmtResult};
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::Command;
@@ -23,6 +24,15 @@ pub struct RunPlan {
     pub benchmark: Benchmark,
     pub binary_path: PathBuf,
     pub bench_config: Option<CriterionConfig>,
+}
+
+impl Display for RunPlan {
+    fn fmt(&self, f: &mut Formatter) -> FmtResult {
+        f.write_fmt(format_args!(
+            "{}::{}@{:?}",
+            self.benchmark.crate_name, self.benchmark.name, self.benchmark.runner,
+        ))
+    }
 }
 
 impl RunPlan {
@@ -65,44 +75,8 @@ impl RunPlan {
     }
 
     pub fn run(self) -> Result<Estimates> {
-        info!("running {:?}", self);
-
-        if let Err(why) = self.attempt_toolchain_install() {
-            warn!(
-                "the next series of commands will almost certainly fail. error: {:?}",
-                why
-            );
-        };
-
-        info!("building benchmark binary");
-
-        self.build()?;
-
-        info!("shelling out to {}", self.binary_path.display());
-
-        let mut cmd = RenameThisCommandWrapper::new(&self.binary_path, self.shield.clone());
-        cmd.env("CARGO_TARGET_DIR", &self.target_dir);
-
-        if let Some(cfg) = &self.bench_config {
-            for (k, v) in cfg.envs() {
-                cmd.env(k, v);
-            }
-        }
-
-        let output = cmd.output()?;
-
-        let stdout = String::from_utf8(output.stdout)?;
-        let stderr = String::from_utf8(output.stderr)?;
-
-        if !output.status.success() {
-            bail!("benchmark failed! stdout: {}, stderr: {}", stdout, stderr);
-        }
-
-        debug!(
-            "benchmark run complete.\nstdout: {}\nstderr: {}",
-            stdout, stderr
-        );
-
+        info!("running {}", self);
+        self.exec()?;
         Ok(self.post_process()?)
     }
 
@@ -133,6 +107,15 @@ impl RunPlan {
     }
 
     fn build(&self) -> Result<()> {
+        if let Err(why) = self.attempt_toolchain_install() {
+            warn!(
+                "the next series of commands will almost certainly fail. error: {:?}",
+                why
+            );
+        };
+
+        info!("building {}", self);
+
         let build_output = Command::new("rustup")
             .arg("run")
             .arg(&self.toolchain)
@@ -144,23 +127,58 @@ impl RunPlan {
             .arg("--bin")
             .arg(&self.source_path.file_stem().unwrap())
             .env("CARGO_TARGET_DIR", &self.target_dir)
-            .output()?;
+            .status()?;
 
-        if !build_output.status.success() {
-            let stdout = String::from_utf8(build_output.stdout).unwrap();
-            let stderr = String::from_utf8(build_output.stderr).unwrap();
-            bail!(
-                "failed to build {:#?}.\nstdout: {},\nstderr: {}",
-                self,
-                stdout,
-                stderr
-            );
-        }
+        // if !build_output.status.success() {
+        //     let stdout = String::from_utf8(build_output.stdout).unwrap();
+        //     let stderr = String::from_utf8(build_output.stderr).unwrap();
+        //     bail!(
+        //         "failed to build {:#?}.\nstdout: {},\nstderr: {}",
+        //         self,
+        //         stdout,
+        //         stderr
+        //     );
+        // }
+
+        info!("done building {}", self);
 
         Ok(())
     }
 
+    fn exec(&self) -> Result<()> {
+        // build before running!
+        self.build()?;
+
+        info!("running {}", self);
+
+        let mut cmd = RenameThisCommandWrapper::new(&self.binary_path, self.shield.clone());
+        cmd.env("CARGO_TARGET_DIR", &self.target_dir);
+
+        if let Some(cfg) = &self.bench_config {
+            for (k, v) in cfg.envs() {
+                cmd.env(k, v);
+            }
+        }
+
+        let output = cmd.output()?;
+
+        let stdout = String::from_utf8(output.stdout)?;
+        let stderr = String::from_utf8(output.stderr)?;
+
+        if !output.status.success() {
+            bail!("benchmark failed! stdout: {}, stderr: {}", stdout, stderr);
+        }
+
+        debug!(
+            "benchmark run complete.\nstdout: {}\nstderr: {}",
+            stdout, stderr
+        );
+        Ok(())
+    }
+
     fn post_process(&self) -> Result<Estimates> {
+        info!("post-processing {}", self);
+
         let path = self
             .target_dir
             .join("criterion")

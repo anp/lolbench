@@ -90,7 +90,7 @@ impl Benchmark {
         self.runner = Some(runner.to_owned());
     }
 
-    fn key(&self) -> String {
+    pub fn key(&self) -> String {
         format!("{}::{}", self.crate_name, self.name)
     }
 
@@ -222,7 +222,10 @@ impl Registry {
             .entry(benchmark.key())
             .and_modify(|b| b.absorg(benchmark))
             .or_insert_with(|| benchmark.clone());
+        self.write()
+    }
 
+    pub fn write(&self) -> Result<()> {
         let contents = ecx!(
             "Serializing benchmark registry to TOML",
             ::toml::to_string_pretty(self)

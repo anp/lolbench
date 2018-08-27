@@ -1,11 +1,9 @@
 use super::Result;
 
 use std::collections::{BTreeMap, BTreeSet};
-use std::fs::read_to_string;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 use chrono::{NaiveDate, NaiveDateTime, Utc};
-use glob::glob;
 
 use marky_mark::{Benchmark, Registry};
 
@@ -32,9 +30,7 @@ impl Plans {
         Ok(res)
     }
 
-    pub fn new(benches_dir: &Path, bench_opts: BenchOpts, output_dir: &Path) -> Result<Self> {
-        info!("Searching {} for benchmarks...", benches_dir.display());
-
+    pub fn new(bench_opts: BenchOpts, output_dir: &Path) -> Result<Self> {
         let (reg, _f) = Registry::from_disk()?;
         let benchmarks = reg.benches();
 
