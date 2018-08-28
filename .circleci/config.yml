@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  test:
     docker:
       - image: rust:latest
     steps:
@@ -19,3 +19,9 @@ jobs:
           key: home_cargo
           paths:
             - ~/.cargo
+workflows:
+  version: 2
+  main:
+    jobs:
+      #TODO deploy lolbench in this workflow
+      - test
