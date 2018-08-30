@@ -14,8 +14,6 @@ pub fn plan_benchmarks(opts: BenchOpts) -> Result<BTreeMap<Toolchain, Vec<RunPla
     let benchmarks = ::registry::get_benches(opts.runner.as_ref().map(String::as_str))?;
     let toolchains = opts.toolchains.all_of_em();
 
-    info!("Will run with these toolchains: {:?}", toolchains);
-
     let mut plans = BTreeMap::new();
 
     for toolchain in toolchains {

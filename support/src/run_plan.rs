@@ -18,7 +18,7 @@ pub struct RunPlan {
     pub source_path: PathBuf,
     pub manifest_path: PathBuf,
     pub benchmark: Benchmark,
-    pub binary_path: PathBuf,
+    pub binary_name: String,
     pub bench_config: Option<CriterionConfig>,
 }
 
@@ -33,16 +33,17 @@ impl Display for RunPlan {
 
 impl RunPlan {
     pub fn new(
-        mut benchmark: Benchmark,
+        benchmark: Benchmark,
         bench_config: Option<CriterionConfig>,
         shield: Option<ShieldSpec>,
         toolchain: Toolchain,
         source_path: PathBuf,
     ) -> Result<Self> {
-        let binary_path = toolchain
-            .target_dir()
-            .join("release")
-            .join(source_path.file_stem().unwrap());
+        let binary_name = source_path
+            .file_stem()
+            .unwrap()
+            .to_string_lossy()
+            .to_string();
 
         let mut manifest_path = None;
         for dir in source_path.ancestors() {
@@ -55,17 +56,22 @@ impl RunPlan {
 
         let manifest_path = manifest_path.unwrap();
 
-        benchmark.strip();
-
         Ok(Self {
             benchmark,
             shield,
             toolchain,
             source_path,
             manifest_path,
-            binary_path,
+            binary_name,
             bench_config,
         })
+    }
+
+    fn binary_path(&self) -> PathBuf {
+        self.toolchain
+            .target_dir()
+            .join("release")
+            .join(&self.binary_name)
     }
 
     pub fn validate(&self) -> Result<()> {
@@ -73,10 +79,13 @@ impl RunPlan {
         ensure!(self.manifest_path.is_file(), "manifest_path is not a file");
 
         // pub shield: Option<ShieldSpec>,
-        // pub toolchain: String,
-        // pub benchmark: Benchmark,
-        // pub bench_config: Option<CriterionConfig>,
-        // pub binary_path: PathBuf,
+        if let Some(_spec) = &self.shield {
+            // TODO(anp) validate it!
+        }
+
+        if let Some(_cfg) = &self.bench_config {
+            // TODO(anp) validate it!
+        }
 
         Ok(())
     }
@@ -86,36 +95,50 @@ impl RunPlan {
         self.toolchain
             .build_benchmark(&self.source_path, &self.manifest_path)?;
 
-        let bin_contents = ::std::fs::read(&self.binary_path)?;
+        let bin_path = self.binary_path();
+
+        debug!("reading contents of {} at {}", self, bin_path.display());
+        let bin_contents = ::std::fs::read(&bin_path)?;
+
+        debug!("hashing binary contents");
         Ok(digest(&SHA256, &bin_contents).as_ref().to_owned())
     }
 
     /// Runs the benchmark target, implicitly writing criterion results to the target directory.
     pub fn exec(&self) -> Result<()> {
-        info!("running {}", self);
+        debug!("configuring command for {}", self);
 
-        let mut cmd = RenameThisCommandWrapper::new(&self.binary_path, self.shield.clone());
+        let mut cmd = RenameThisCommandWrapper::new("rustup", self.shield.clone());
+        cmd.args(&[
+            "run",
+            &self.toolchain.to_string(),
+            "cargo",
+            "run",
+            "--release",
+            "--manifest-path",
+        ]);
+        cmd.arg(&self.manifest_path); // silly types
+        cmd.args(&["--bin", &self.binary_name]);
+
         cmd.env("CARGO_TARGET_DIR", &self.toolchain.target_dir());
 
         if let Some(cfg) = &self.bench_config {
+            debug!("applying criterion config");
             for (k, v) in cfg.envs() {
                 cmd.env(k, v);
             }
         }
 
+        info!("running {} with {:?}", self, cmd);
         let output = cmd.output()?;
 
-        let stdout = String::from_utf8(output.stdout)?;
-        let stderr = String::from_utf8(output.stderr)?;
+        let stdout = String::from_utf8_lossy(&output.stdout);
+        let stderr = String::from_utf8_lossy(&output.stderr);
 
         if !output.status.success() {
             bail!("benchmark failed! stdout: {}, stderr: {}", stdout, stderr);
         }
 
-        debug!(
-            "benchmark run complete.\nstdout: {}\nstderr: {}",
-            stdout, stderr
-        );
         Ok(())
     }
 }

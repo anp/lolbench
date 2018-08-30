@@ -1,5 +1,4 @@
 #![recursion_limit = "256"]
-#[macro_use]
 extern crate failure;
 #[macro_use]
 extern crate lazy_static;
@@ -44,8 +43,6 @@ macro_rules! ecx {
 pub struct Benchmark {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub runner: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub runtime_estimate: Option<u32>,
     pub name: String,
     #[serde(rename = "crate")]
     pub crate_name: String,
@@ -58,8 +55,7 @@ impl Benchmark {
             name: name.to_string(),
             crate_name: crate_name.to_string(),
             runner: None,
-            runtime_estimate: None,
-            entrypoint_path: path.to_path_buf(),
+            entrypoint_path: path.to_owned(),
         };
         n.strip();
         n
@@ -133,7 +129,6 @@ impl Benchmark {
         }
 
         assign_opt!(runner);
-        assign_opt!(runtime_estimate);
     }
 }
 
@@ -237,67 +232,5 @@ impl Registry {
         )?;
 
         Ok(())
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn roundtrips() {
-        let mut header = Benchmark::new("test_crate", "test_bench");
-        let rendered = header.rendered();
-
-        let (mut parsed, remaining) = Benchmark::parse(&rendered).unwrap();
-        assert_eq!(header, parsed);
-        assert_eq!(remaining, header.source());
-
-        let parsed_rendered = parsed.rendered();
-        assert_eq!(rendered, parsed_rendered);
-    }
-
-    #[test]
-    fn write() {
-        let mut header = Benchmark::new("test_crate", "test_bench");
-        let rendered = header.rendered();
-
-        let tmpfile = tempfile::NamedTempFile::new().unwrap();
-        let bench_path = tmpfile.path();
-        header.write(&bench_path).unwrap();
-
-        let written = read_to_string(&bench_path).unwrap();
-
-        assert_eq!(rendered, written);
-    }
-
-    #[test]
-    fn preserve_runner() {
-        let runner = "they-call-me-tim";
-
-        let mut header = Benchmark::new("test_crate", "test_bench");
-        let mut without_runner = header.clone();
-        header.set_runner(runner);
-
-        let tmpfile = tempfile::NamedTempFile::new().unwrap();
-        let bench_path = tmpfile.path();
-        header.write(&bench_path).unwrap();
-
-        let written = read_to_string(&bench_path).unwrap();
-        let (written_header, _) = Benchmark::parse(&written).unwrap();
-
-        assert_eq!(
-            written_header.runner, header.runner,
-            "runner should be preserved in writing"
-        );
-
-        without_runner.write(&bench_path).unwrap();
-        let written = read_to_string(&bench_path).unwrap();
-        let (written_header, _) = Benchmark::parse(&written).unwrap();
-
-        let written_runner = written_header
-            .runner
-            .expect("runner should have been preserved");
-        assert_eq!(written_runner, runner);
     }
 }

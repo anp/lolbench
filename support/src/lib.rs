@@ -19,6 +19,12 @@ extern crate serde_json;
 extern crate simple_logger;
 extern crate slug;
 
+#[cfg(test)]
+#[macro_use]
+extern crate proptest;
+#[cfg(test)]
+extern crate tempfile;
+
 pub use criterion::{black_box, init_logging, Bencher, Criterion};
 pub use marky_mark::Benchmark;
 pub use noisy_float::prelude::*;

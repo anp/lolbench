@@ -72,7 +72,10 @@ where
             contents: to_store,
         };
 
-        let file = File::create(self.abs_path(data_dir))?;
+        let own_path = self.abs_path(data_dir);
+        ::std::fs::create_dir_all(&own_path.parent().unwrap())?;
+
+        let file = File::create(&own_path)?;
         let mut writer = BufWriter::new(file);
         serde_json::to_writer(&mut writer, &to_write)?;
         Ok(())
@@ -144,7 +147,7 @@ pub(crate) mod measurement {
     }
 
     impl StorageKey for Key {
-        type Contents = Estimates;
+        type Contents = ::std::result::Result<Estimates, ::collector::Error>;
 
         fn parents(&self) -> Vec<String> {
             vec![String::from("measurements")]
@@ -207,4 +210,56 @@ struct Estimate {
     point_estimate: f64,
     /// The standard error of this estimate
     standard_error: f64,
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use tempfile::tempdir;
+
+    #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+    struct TestKey {
+        a: u8,
+        b: u8,
+        c: u8,
+    }
+
+    impl StorageKey for TestKey {
+        type Contents = Vec<String>;
+
+        fn parents(&self) -> Vec<String> {
+            vec![self.a.to_string(), self.b.to_string()]
+        }
+
+        fn basename(&self) -> String {
+            self.c.to_string()
+        }
+    }
+
+    proptest! {
+        #[test]
+        fn roundtrips(
+            a in 0..255u8,
+            b in 0..255u8,
+            c in 0..255u8,
+            ref contents in ::proptest::collection::vec(".*", 1..100)
+        ) {
+            use super::StorageKey;
+
+            let tempdir = tempdir().unwrap();
+            let data_dir = tempdir.path();
+
+            let key = TestKey {
+                a, b, c
+            };
+
+            let contents = contents.to_owned();
+            let expected = contents.clone();
+
+            assert_eq!(key.get(data_dir).unwrap(), None);
+            key.set(data_dir, contents).unwrap();
+            assert_eq!(key.get(data_dir).unwrap().unwrap().1, expected);
+        }
+    }
+
 }

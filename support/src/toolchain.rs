@@ -16,7 +16,7 @@ impl Toolchain {
         let target_name = source.file_stem().unwrap().to_string_lossy();
         info!("building {} with {}", target_name, self);
 
-        if !Command::new("rustup")
+        let output = Command::new("rustup")
             .arg("run")
             .arg(&self.spec)
             .arg("cargo")
@@ -27,9 +27,9 @@ impl Toolchain {
             .arg("--bin")
             .arg(&*target_name)
             .env("CARGO_TARGET_DIR", &self.target_dir)
-            .status()?
-            .success()
-        {
+            .output()?;
+
+        if !output.status.success() {
             bail!("Unable to build {} with {}", target_name, self);
         }
 

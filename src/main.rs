@@ -1,6 +1,5 @@
 #[macro_use]
 extern crate failure;
-#[macro_use]
 extern crate log;
 #[macro_use]
 extern crate structopt;
@@ -10,8 +9,7 @@ extern crate clap;
 extern crate lolbench_support;
 extern crate simple_logger;
 
-use std::path::{Path, PathBuf};
-use std::rc::Rc;
+use std::path::PathBuf;
 
 use chrono::{NaiveDate, Utc};
 use structopt::StructOpt;

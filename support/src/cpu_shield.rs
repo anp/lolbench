@@ -31,6 +31,7 @@ impl Display for ShieldSpec {
     }
 }
 
+#[derive(Debug)]
 pub struct RenameThisCommandWrapper {
     shielded: Command,
     spec: Option<ShieldSpec>,
@@ -119,6 +120,20 @@ impl RenameThisCommandWrapper {
 
     pub fn status(&mut self) -> Result<ExitStatus> {
         Ok(self.maybe_with_shielded(|cmd| cmd.status())??)
+    }
+
+    pub fn arg<S: AsRef<OsStr>>(&mut self, arg: S) -> &mut Self {
+        self.shielded.arg(arg);
+        self
+    }
+
+    pub fn args<I, S>(&mut self, args: I) -> &mut Self
+    where
+        I: IntoIterator<Item = S>,
+        S: AsRef<OsStr>,
+    {
+        self.shielded.args(args);
+        self
     }
 
     pub fn env<K, V>(&mut self, key: K, val: V) -> &mut Self

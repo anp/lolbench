@@ -11,6 +11,22 @@ use storage::{index, measurement, Estimates, Statistic, StorageKey};
 use toolchain::Toolchain;
 use CriterionConfig;
 
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub(crate) struct Error {
+    kind: ErrorKind,
+    num_retries: u8,
+    max_retries: u8,
+    retryable: bool,
+}
+
+const DEFAULT_MAX_RETRIES: u8 = 2;
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub(crate) enum ErrorKind {
+    Run(String),
+    PostProcess(String),
+}
+
 /// Runs benchmarks, memoizes their results, and allows results to be shared across multiple
 /// toolchains if the binaries they produce are identical.
 pub struct Collector(PathBuf);
@@ -47,29 +63,60 @@ impl Collector {
             rp.shield.clone(),
         );
 
-        let (should_write_measure, estimates) = if let Some((_ts, e)) = mkey.get(&self.0)? {
-            (false, e)
-        } else {
-            rp.exec()?;
-            (true, self.process(&rp)?)
+        let get_estimates = || -> ::std::result::Result<_, Error> {
+            rp.exec().map_err(|why| Error {
+                kind: ErrorKind::Run(why.to_string()),
+                max_retries: DEFAULT_MAX_RETRIES,
+                num_retries: 0,
+                retryable: false,
+            })?;
+
+            self.process(&rp).map_err(|why| Error {
+                kind: ErrorKind::Run(why.to_string()),
+                max_retries: DEFAULT_MAX_RETRIES,
+                num_retries: 0,
+                retryable: false,
+            })
         };
 
+        let (should_write_measure, estimates) = if let Some((_ts, r)) = mkey.get(&self.0)? {
+            let e = match r {
+                Ok(e) => Ok(e),
+                Err(Error {
+                    retryable: _retryable,
+                    num_retries: _num_retries,
+                    max_retries: _max_retries,
+                    kind: _kind,
+                }) => {
+                    unimplemented!();
+                }
+            };
+            (false, e)
+        } else {
+            (true, get_estimates())
+        };
+
+        info!("finished running and parsing estimates");
+
         if should_write_idx {
+            info!("index storage needs updating");
             ikey.set(&self.0, binary_hash)?;
         }
 
         if should_write_measure {
+            info!("measurement storage needs updating");
             mkey.set(&self.0, estimates)?;
         }
 
         // TODO git commit/push operations go here
 
+        info!("all done with {}", rp);
         Ok(())
     }
 
     /// Parses the results of a benchmark. This assumes that the benchmark has already been
     /// executed.
-    pub fn process(&self, rp: &RunPlan) -> Result<Estimates> {
+    fn process(&self, rp: &RunPlan) -> Result<Estimates> {
         info!("post-processing {}", rp);
 
         let path = rp
@@ -118,13 +165,9 @@ pub fn end_to_end_test(
     bench_name: &str,
     bench_source_name: &str,
     binary_name: &str,
+    source_path: &Path,
 ) {
     let _ = ::simple_logger::init();
-
-    let target_dir = Path::new(env!("CARGO_MANIFEST_DIR"))
-        .join("..")
-        .join("target");
-    let binary_path = target_dir.join("release").join(binary_name);
 
     let plan = RunPlan {
         shield: None,
@@ -143,12 +186,11 @@ pub fn end_to_end_test(
             .join("Cargo.toml"),
         benchmark: Benchmark {
             runner: None,
-            runtime_estimate: None,
             name: String::from(bench_name),
             crate_name: String::from(crate_name),
-            entrypoint_path: binary_path.clone(),
+            entrypoint_path: source_path.to_owned(),
         },
-        binary_path,
+        binary_name: binary_name.to_owned(),
         bench_config: Some(CriterionConfig {
             confidence_level: r32(0.95),
             measurement_time_ms: 500,
