@@ -31,6 +31,8 @@ impl Collector {
     pub fn run(&self, rp: RunPlan) -> Result<()> {
         let ikey = index::Key::new(rp.benchmark.key(), rp.toolchain.clone());
 
+        // TODO git cleanliness operations go here
+
         let (should_write_idx, binary_hash) = if let Some((_ts, h)) = ikey.get(&self.0)? {
             (false, h)
         } else {
@@ -59,6 +61,8 @@ impl Collector {
         if should_write_measure {
             mkey.set(&self.0, estimates)?;
         }
+
+        // TODO git commit/push operations go here
 
         Ok(())
     }
