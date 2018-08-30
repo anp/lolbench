@@ -4,4 +4,11 @@ Description=lolbench agent
 [Service]
 Type=oneshot
 SendSIGKILL=no
-ExecStart={{ deploy_dir }}/process.sh
+WorkingDirectory={{ deploy_dir }}
+ExecStart=cargo run -- \
+    measure \
+    --runner '{{ runner }}' \
+    --data-dir '{{ data_dir }}' \
+    --nightlies-since {{ epoch_nightly }} \
+    --move-kernel-threads \
+    --cpu-pattern "{{ allowed_cpus }}"

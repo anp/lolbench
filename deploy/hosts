@@ -1,5 +1,7 @@
 [runners]
-wilhelm.lolbench.rust.af
+wilhelm.lolbench.rust.af runner=wilhelm,allowed_cpus=0-2
 
 [runners:vars]
+data_dir=/home/adam/lolbench-data
 deploy_dir=/home/adam/lolbench
+epoch_nightly=2018-01-01
