@@ -7,26 +7,32 @@ extern crate proc_macro_hack;
 #[macro_use]
 extern crate serde_derive;
 
+extern crate byteorder;
 extern crate chrono;
 extern crate criterion;
 extern crate glob;
 extern crate marky_mark;
 extern crate noisy_float;
+extern crate ring;
 extern crate serde;
 extern crate serde_json;
 extern crate simple_logger;
+extern crate slug;
 
 pub use criterion::{black_box, init_logging, Bencher, Criterion};
 pub use marky_mark::Benchmark;
 pub use noisy_float::prelude::*;
 pub type Result<T> = std::result::Result<T, failure::Error>;
 
-pub use self::{cpu_shield::*, estimates::*, plan::*, run_plan::*};
+pub use self::{collector::*, cpu_shield::*, planner::*, run_plan::*, storage::*, toolchain::*};
 
+mod collector;
 mod cpu_shield;
-mod estimates;
-mod plan;
+mod planner;
+mod registry;
 mod run_plan;
+mod storage;
+mod toolchain;
 
 // This is what allows the users to depend on just your
 // declaration crate rather than both crates.

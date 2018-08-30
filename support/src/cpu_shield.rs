@@ -1,13 +1,14 @@
 use super::Result;
 
 use std::ffi::OsStr;
+use std::fmt::{Display, Formatter, Result as FmtResult};
 use std::io;
 use std::process::{Child, Command, ExitStatus, Output};
 
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, PartialOrd, Ord, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, PartialOrd, Ord, Serialize)]
 pub struct ShieldSpec {
-    cpu_mask: String,
-    kthread_on: bool,
+    pub cpu_mask: String,
+    pub kthread_on: bool,
 }
 
 impl ShieldSpec {
@@ -17,6 +18,16 @@ impl ShieldSpec {
             cpu_mask,
             kthread_on,
         })
+    }
+}
+
+impl Display for ShieldSpec {
+    fn fmt(&self, f: &mut Formatter) -> FmtResult {
+        f.write_fmt(format_args!(
+            "{}{}",
+            if self.kthread_on { "k" } else { "" },
+            self.cpu_mask
+        ))
     }
 }
 
