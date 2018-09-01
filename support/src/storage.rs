@@ -147,7 +147,7 @@ pub(crate) mod index {
         }
 
         fn basename(&self) -> String {
-            slugify(format!("{}.json", self.toolchain))
+            slugify(self.toolchain.to_string())
         }
     }
 }
