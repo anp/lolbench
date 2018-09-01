@@ -10,6 +10,7 @@ use serde::{de::DeserializeOwned, Serialize};
 use serde_json;
 
 use cpu_shield::ShieldSpec;
+use run_plan::RunPlan;
 use toolchain::Toolchain;
 
 /// A trait which allows a struct to behave as the key in a very simple persistent K/V filesystem
@@ -90,6 +91,35 @@ pub(crate) struct Container<K, V> {
     pub contents: V,
 }
 
+pub(crate) enum Entry<K, T> {
+    New(K, T, PathBuf),
+    Existing(T),
+}
+
+impl<K, T> ::std::ops::Deref for Entry<K, T> {
+    type Target = T;
+
+    fn deref(&self) -> &Self::Target {
+        match self {
+            Entry::New(_, t, _) => t,
+            Entry::Existing(t) => t,
+        }
+    }
+}
+
+impl<K, T> Entry<K, T>
+where
+    K: StorageKey<Contents = T> + DeserializeOwned + Serialize,
+    T: DeserializeOwned + Serialize,
+{
+    pub fn ensure_persisted(self) -> Result<()> {
+        Ok(match self {
+            Entry::New(k, t, data_dir) => k.set(&data_dir, t)?,
+            _ => (),
+        })
+    }
+}
+
 pub(crate) mod index {
     use super::*;
 
@@ -100,10 +130,10 @@ pub(crate) mod index {
     }
 
     impl Key {
-        pub fn new(bench_key: impl Into<String>, toolchain: Toolchain) -> Self {
+        pub fn new(rp: &RunPlan) -> Self {
             Self {
-                benchmark_key: bench_key.into(),
-                toolchain,
+                benchmark_key: rp.benchmark.key(),
+                toolchain: rp.toolchain.clone(),
             }
         }
     }

@@ -129,7 +129,7 @@ impl RunPlan {
             }
         }
 
-        info!("running {} with {:?}", self, cmd);
+        debug!("running {} with {:?}", self, cmd);
         let output = cmd.output()?;
 
         let stdout = String::from_utf8_lossy(&output.stdout);

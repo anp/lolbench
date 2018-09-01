@@ -2,6 +2,9 @@
 extern crate failure;
 #[macro_use]
 extern crate log;
+#[allow(unused_imports)]
+#[macro_use]
+extern crate lolbench_extractor;
 #[macro_use]
 extern crate proc_macro_hack;
 #[macro_use]
@@ -30,23 +33,18 @@ pub use marky_mark::Benchmark;
 pub use noisy_float::prelude::*;
 pub type Result<T> = std::result::Result<T, failure::Error>;
 
-pub use self::{collector::*, cpu_shield::*, planner::*, run_plan::*, storage::*, toolchain::*};
+pub use self::{collector::*, cpu_shield::*, run_plan::*, storage::*, toolchain::*};
+#[doc(hidden)]
+pub use lolbench_extractor::*;
 
 mod collector;
 mod cpu_shield;
-mod planner;
 mod registry;
 mod run_plan;
 mod storage;
 mod toolchain;
 
-// This is what allows the users to depend on just your
-// declaration crate rather than both crates.
-#[allow(unused_imports)]
-#[macro_use]
-extern crate lolbench_extractor;
-#[doc(hidden)]
-pub use lolbench_extractor::*;
+use chrono::NaiveDate;
 
 // lolbench_entrypoint_impl is provided by the lolbench_extractor crate.
 proc_macro_expr_decl! {
@@ -173,5 +171,70 @@ impl CriterionExt for ::criterion::Criterion {
     #[inline]
     fn measurement_time_ms(self, ms: usize) -> Self {
         self.measurement_time(::std::time::Duration::from_millis(ms as u64))
+    }
+}
+
+#[derive(Debug, Deserialize, Eq, PartialEq, PartialOrd, Ord, Serialize)]
+pub struct BenchOpts {
+    pub shield_spec: Option<ShieldSpec>,
+    pub runner: Option<String>,
+    pub toolchains: ToolchainSpec,
+}
+
+#[derive(Debug, Deserialize, Eq, PartialEq, PartialOrd, Ord, Serialize)]
+pub enum ToolchainSpec {
+    Single(String),
+    Range(NaiveDate, NaiveDate),
+}
+
+impl ToolchainSpec {
+    fn all_of_em(&self) -> Vec<Toolchain> {
+        use ToolchainSpec::*;
+        match self {
+            Single(s) => vec![Toolchain::from(s)],
+            Range(start, end) => {
+                let mut current = *start;
+                let mut nightlies = Vec::new();
+
+                while current <= *end {
+                    nightlies.push(Toolchain::from(&format!("nightly-{}", current)));
+                    current = current.succ();
+                }
+
+                nightlies
+            }
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn toolchain_date_range() {
+        let spec = ToolchainSpec::Range(
+            NaiveDate::from_ymd(2015, 5, 15),
+            NaiveDate::from_ymd(2015, 6, 2),
+        );
+
+        macro_rules! lolol {
+            ( $( $datefrag:expr, )* ) => {
+                vec![
+                $(
+                    Toolchain::from(concat!("nightly-2015-", $datefrag)),
+                )*
+                ]
+            };
+        }
+
+        assert_eq!(
+            spec.all_of_em(),
+            lolol![
+                "05-15", "05-16", "05-17", "05-18", "05-19", "05-20", "05-21", "05-22", "05-23",
+                "05-24", "05-25", "05-26", "05-27", "05-28", "05-29", "05-30", "05-31", "06-01",
+                "06-02",
+            ]
+        )
     }
 }

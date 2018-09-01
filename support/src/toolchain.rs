@@ -8,7 +8,6 @@ use std::process::Command;
 pub struct Toolchain {
     spec: String,
     target_dir: PathBuf,
-    uninstall_on_drop: bool,
 }
 
 impl Toolchain {
@@ -41,7 +40,6 @@ impl Toolchain {
         Toolchain {
             spec: s.to_string(),
             target_dir: PathBuf::from(format!("/tmp/target-{}", s)),
-            uninstall_on_drop: false,
         }
     }
 
@@ -49,8 +47,17 @@ impl Toolchain {
         &self.target_dir
     }
 
+    pub fn installed(&self) -> Result<bool> {
+        let installed_toolchains_output = Command::new("rustup")
+            .arg("toolchain")
+            .arg("list")
+            .output()?;
+
+        let stdout = String::from_utf8_lossy(&installed_toolchains_output.stdout);
+        Ok(stdout.contains(&self.spec))
+    }
+
     pub fn install(&self) -> Result<()> {
-        // FIXME check if we should uninstall on drop!
         info!("Installing {}...", self);
         let install_output = Command::new("rustup")
             .arg("toolchain")
@@ -84,18 +91,6 @@ impl Toolchain {
             .arg(&self.spec)
             .status()?;
         Ok(())
-    }
-}
-
-impl Drop for Toolchain {
-    fn drop(&mut self) {
-        if self.uninstall_on_drop {
-            if let Err(why) = self.uninstall() {
-                error!("Unable to uninstall {}: {:?}", self, why);
-            } else {
-                info!("Uninstall successful.");
-            }
-        }
     }
 }
 

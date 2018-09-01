@@ -1,5 +1,6 @@
 #[macro_use]
 extern crate failure;
+#[macro_use]
 extern crate log;
 #[macro_use]
 extern crate structopt;
@@ -83,15 +84,14 @@ impl Measure {
             shield_spec,
         };
 
-        let collector = Collector::rehydrate(&self.data_dir)?;
+        info!("ensuring data dir {} exists", self.data_dir.display());
+        let mut collector = Collector::new(&self.data_dir)?;
 
-        for (toolchain, benchmarks) in plan_benchmarks(opts)? {
-            toolchain.install()?;
+        info!("discovering potential builds to run");
+        let plans = collector.enumerate_builds_for_opts(opts)?;
 
-            for benchmark in benchmarks {
-                collector.run(benchmark)?;
-            }
-        }
+        info!("running all of our plans");
+        collector.run_all(plans)?;
 
         Ok(())
     }
