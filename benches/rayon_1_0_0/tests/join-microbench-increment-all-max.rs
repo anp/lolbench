@@ -1,1 +1,1 @@
-extern crate lolbench_support ; # [ test ] fn end_to_end ( ) { lolbench_support :: end_to_end_test ( "rayon_1_0_0" , "join_microbench :: increment_all_max" , "join-microbench-increment-all-max.rs" , "join-microbench-increment-all-max" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "rayon_1_0_0" , "join_microbench :: increment_all_max" , "join-microbench-increment-all-max.rs" , "join-microbench-increment-all-max" , ) ; }

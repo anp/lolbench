@@ -1,1 +1,1 @@
-extern crate lolbench_support ; # [ test ] fn end_to_end ( ) { lolbench_support :: end_to_end_test ( "nom_4_0_0_beta1" , "arithmetic :: arithmetic" , "arithmetic-arithmetic.rs" , "arithmetic-arithmetic" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "nom_4_0_0_beta1" , "arithmetic :: arithmetic" , "arithmetic-arithmetic.rs" , "arithmetic-arithmetic" , ) ; }

@@ -28,3 +28,6 @@ stringify-dom = []
 parse-struct = []
 stringify-struct = []
 zero-copy = []
+
+[dev-dependencies]
+lolbench = { path = "../../" }

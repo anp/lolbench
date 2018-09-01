@@ -1,1 +1,1 @@
-extern crate lolbench_support ; # [ test ] fn end_to_end ( ) { lolbench_support :: end_to_end_test ( "snap_0_2_4" , "uflat06_txt1" , "uflat06-txt1.rs" , "uflat06-txt1" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "snap_0_2_4" , "uflat06_txt1" , "uflat06-txt1.rs" , "uflat06-txt1" , ) ; }

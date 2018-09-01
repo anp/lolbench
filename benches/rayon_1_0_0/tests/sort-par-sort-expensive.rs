@@ -1,1 +1,1 @@
-extern crate lolbench_support ; # [ test ] fn end_to_end ( ) { lolbench_support :: end_to_end_test ( "rayon_1_0_0" , "sort :: par_sort_expensive" , "sort-par-sort-expensive.rs" , "sort-par-sort-expensive" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "rayon_1_0_0" , "sort :: par_sort_expensive" , "sort-par-sort-expensive.rs" , "sort-par-sort-expensive" , ) ; }

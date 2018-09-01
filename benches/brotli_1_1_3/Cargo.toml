@@ -8,3 +8,6 @@ alloc-no-stdlib = "1.2"
 brotli = "=1.1.3"
 brotli-decompressor = "=1.2.1"
 lolbench_support = { path = "../../support" }
+
+[dev-dependencies]
+lolbench = { path = "../../" }

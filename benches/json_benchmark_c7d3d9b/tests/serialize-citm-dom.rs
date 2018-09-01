@@ -1,1 +1,1 @@
-extern crate lolbench_support ; # [ test ] fn end_to_end ( ) { lolbench_support :: end_to_end_test ( "json_benchmark_c7d3d9b" , "serialize_citm_dom" , "serialize-citm-dom.rs" , "serialize-citm-dom" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "json_benchmark_c7d3d9b" , "serialize_citm_dom" , "serialize-citm-dom.rs" , "serialize-citm-dom" , ) ; }

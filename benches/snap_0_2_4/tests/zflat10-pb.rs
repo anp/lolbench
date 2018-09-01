@@ -1,1 +1,1 @@
-extern crate lolbench_support ; # [ test ] fn end_to_end ( ) { lolbench_support :: end_to_end_test ( "snap_0_2_4" , "zflat10_pb" , "zflat10-pb.rs" , "zflat10-pb" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "snap_0_2_4" , "zflat10_pb" , "zflat10-pb.rs" , "zflat10-pb" , ) ; }

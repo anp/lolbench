@@ -1,1 +1,1 @@
-extern crate lolbench_support ; # [ test ] fn end_to_end ( ) { lolbench_support :: end_to_end_test ( "regex_0_2_6" , "misc :: short_haystack_100000x" , "misc-short-haystack-100000x.rs" , "misc-short-haystack-100000x" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "regex_0_2_6" , "misc :: short_haystack_100000x" , "misc-short-haystack-100000x.rs" , "misc-short-haystack-100000x" , ) ; }

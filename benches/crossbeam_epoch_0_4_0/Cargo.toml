@@ -7,3 +7,6 @@ authors = ["Adam Perry <adam.n.perry@gmail.com>"]
 crossbeam-epoch = "0.4.0"
 crossbeam-utils = "0.2.2"
 lolbench_support = { path = "../../support" }
+
+[dev-dependencies]
+lolbench = { path = "../../" }

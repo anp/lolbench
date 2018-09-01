@@ -1,1 +1,1 @@
-extern crate lolbench_support ; # [ test ] fn end_to_end ( ) { lolbench_support :: end_to_end_test ( "rayon_1_0_0" , "sort :: par_sort_descending" , "sort-par-sort-descending.rs" , "sort-par-sort-descending" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "rayon_1_0_0" , "sort :: par_sort_descending" , "sort-par-sort-descending.rs" , "sort-par-sort-descending" , ) ; }

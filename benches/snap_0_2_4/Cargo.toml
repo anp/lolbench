@@ -7,3 +7,6 @@ authors = ["Adam Perry <adam.n.perry@gmail.com>"]
 lazy_static = "0.1"
 snap = "0.2.4"
 lolbench_support = { path = "../../support" }
+
+[dev-dependencies]
+lolbench = { path = "../../" }

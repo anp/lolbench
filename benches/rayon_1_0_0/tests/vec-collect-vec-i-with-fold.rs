@@ -1,1 +1,1 @@
-extern crate lolbench_support ; # [ test ] fn end_to_end ( ) { lolbench_support :: end_to_end_test ( "rayon_1_0_0" , "vec_collect::vec_i :: with_fold" , "vec-collect-vec-i-with-fold.rs" , "vec-collect-vec-i-with-fold" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "rayon_1_0_0" , "vec_collect::vec_i :: with_fold" , "vec-collect-vec-i-with-fold.rs" , "vec-collect-vec-i-with-fold" , ) ; }

@@ -3,15 +3,11 @@ use super::Result;
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::{Path, PathBuf};
 
-use marky_mark::Benchmark;
-use noisy_float::prelude::*;
-// use serde::{de::DeserializeOwned, Serialize};
 use serde_json;
 
 use run_plan::RunPlan;
 use storage::{index, measurement, Entry, Estimates, Statistic, StorageKey};
 use toolchain::Toolchain;
-use CriterionConfig;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub(crate) struct Error {
@@ -221,51 +217,4 @@ impl Collector {
 
         Ok(metrics_estimates)
     }
-}
-
-pub fn end_to_end_test(
-    crate_name: &str,
-    bench_name: &str,
-    bench_source_name: &str,
-    binary_name: &str,
-    source_path: &Path,
-) {
-    let _ = ::simple_logger::init();
-
-    let plan = RunPlan {
-        shield: None,
-        toolchain: Toolchain::from("stable"),
-        source_path: Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("..")
-            .join("benches")
-            .join(crate_name)
-            .join("src")
-            .join("bin")
-            .join(bench_source_name),
-        manifest_path: Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("..")
-            .join("benches")
-            .join(crate_name)
-            .join("Cargo.toml"),
-        benchmark: Benchmark {
-            runner: None,
-            name: String::from(bench_name),
-            crate_name: String::from(crate_name),
-            entrypoint_path: source_path.to_owned(),
-        },
-        binary_name: binary_name.to_owned(),
-        bench_config: Some(CriterionConfig {
-            confidence_level: r32(0.95),
-            measurement_time_ms: 500,
-            nresamples: 2,
-            noise_threshold: r32(0.0),
-            sample_size: 5,
-            significance_level: r32(0.05),
-            warm_up_time_ms: 1,
-        }),
-    };
-
-    // FIXME make this a proper temp dir
-    let collector = Collector::new(Path::new("/tmp/lolbenchtest")).unwrap();
-    collector.run(&plan).unwrap();
 }

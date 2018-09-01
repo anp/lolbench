@@ -1,5 +1,5 @@
 [package]
-name = "lolbench-cli"
+name = "lolbench"
 version = "0.0.1"
 
 # NOTE(anp): while this crate isn't used directly for code in the bench crates, it *is* the

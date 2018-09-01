@@ -136,11 +136,11 @@ pub fn test_source(bench_name: &str, crate_name: &str, binary_name: &str) -> Str
     let bench_source_name = format!("{}.rs", binary_name);
 
     let source = quote! {
-        extern crate lolbench_support;
+        extern crate lolbench;
 
         #[test]
         fn end_to_end() {
-            lolbench_support::end_to_end_test(
+            lolbench::end_to_end_test(
                 #crate_name,
                 #bench_name,
                 #bench_source_name,

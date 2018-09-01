@@ -1,1 +1,1 @@
-extern crate lolbench_support ; # [ test ] fn end_to_end ( ) { lolbench_support :: end_to_end_test ( "quickcheck_0_6_1" , "shrink_u64_2_tuple" , "shrink-u64-2-tuple.rs" , "shrink-u64-2-tuple" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "quickcheck_0_6_1" , "shrink_u64_2_tuple" , "shrink-u64-2-tuple.rs" , "shrink-u64-2-tuple" , ) ; }

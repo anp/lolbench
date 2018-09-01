@@ -1,1 +1,1 @@
-extern crate lolbench_support ; # [ test ] fn end_to_end ( ) { lolbench_support :: end_to_end_test ( "regex_0_2_6" , "regexdna :: subst11" , "regexdna-subst11.rs" , "regexdna-subst11" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "regex_0_2_6" , "regexdna :: subst11" , "regexdna-subst11.rs" , "regexdna-subst11" , ) ; }

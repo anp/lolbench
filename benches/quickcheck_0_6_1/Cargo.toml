@@ -7,3 +7,6 @@ authors = ["Adam Perry <adam.n.perry@gmail.com>"]
 quickcheck = "0.6.1"
 rand = "0.4.2"
 lolbench_support = { path = "../../support" }
+
+[dev-dependencies]
+lolbench = { path = "../../" }

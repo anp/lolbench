@@ -13,6 +13,7 @@ jobs:
           keys:
             - home_cargo
 
+      - run: cargo build --release --all --all-targets
       - run: cargo test --release --all --all-targets
 
       - save_cache:

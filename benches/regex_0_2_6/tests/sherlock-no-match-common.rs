@@ -1,1 +1,1 @@
-extern crate lolbench_support ; # [ test ] fn end_to_end ( ) { lolbench_support :: end_to_end_test ( "regex_0_2_6" , "sherlock :: no_match_common" , "sherlock-no-match-common.rs" , "sherlock-no-match-common" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "regex_0_2_6" , "sherlock :: no_match_common" , "sherlock-no-match-common.rs" , "sherlock-no-match-common" , ) ; }

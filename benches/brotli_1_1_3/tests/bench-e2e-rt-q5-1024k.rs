@@ -1,1 +1,1 @@
-extern crate lolbench_support ; # [ test ] fn end_to_end ( ) { lolbench_support :: end_to_end_test ( "brotli_1_1_3" , "bench_e2e_rt_q5_1024k" , "bench-e2e-rt-q5-1024k.rs" , "bench-e2e-rt-q5-1024k" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "brotli_1_1_3" , "bench_e2e_rt_q5_1024k" , "bench-e2e-rt-q5-1024k.rs" , "bench-e2e-rt-q5-1024k" , ) ; }

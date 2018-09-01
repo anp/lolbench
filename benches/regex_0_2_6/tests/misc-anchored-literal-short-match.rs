@@ -1,1 +1,1 @@
-extern crate lolbench_support ; # [ test ] fn end_to_end ( ) { lolbench_support :: end_to_end_test ( "regex_0_2_6" , "misc :: anchored_literal_short_match" , "misc-anchored-literal-short-match.rs" , "misc-anchored-literal-short-match" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "regex_0_2_6" , "misc :: anchored_literal_short_match" , "misc-anchored-literal-short-match.rs" , "misc-anchored-literal-short-match" , ) ; }

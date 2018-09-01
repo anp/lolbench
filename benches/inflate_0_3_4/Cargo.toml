@@ -6,3 +6,6 @@ authors = ["Adam Perry <adam.n.perry@gmail.com>"]
 [dependencies]
 inflate = "0.3.4"
 lolbench_support = { path = "../../support" }
+
+[dev-dependencies]
+lolbench = { path = "../../" }

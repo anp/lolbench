@@ -25,3 +25,6 @@ lolbench_support = { path = "../../support" }
 
 [dependencies.sdl2]
 path = "src/shims/sdl2"
+
+[dev-dependencies]
+lolbench = { path = "../../" }
