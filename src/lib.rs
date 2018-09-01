@@ -26,6 +26,7 @@ extern crate tempfile;
 
 mod collector;
 mod cpu_shield;
+mod generator;
 mod registry;
 mod run_plan;
 mod storage;
@@ -38,7 +39,9 @@ use std::{
 
 use chrono::NaiveDate;
 
-pub use self::{collector::*, cpu_shield::*, registry::*, run_plan::*, storage::*, toolchain::*};
+pub use self::{
+    collector::*, cpu_shield::*, generator::*, registry::*, run_plan::*, storage::*, toolchain::*,
+};
 pub use lolbench_support::*;
 pub use marky_mark::*;
 

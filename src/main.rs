@@ -22,6 +22,18 @@ fn main() -> Result<()> {
 }
 
 #[derive(Debug, StructOpt)]
+struct Generate {
+    /// Name of the benchmark crate to add.
+    name: String,
+}
+
+impl Generate {
+    fn run(self) -> Result<()> {
+        generate_new_benchmark_crate(&self.name)
+    }
+}
+
+#[derive(Debug, StructOpt)]
 struct Measure {
     // TODO(anp): structopt mangles this help message horribly
     /// Selects specific CPUs on which *only* benchmarks will run. Currently only supported when run
@@ -96,6 +108,11 @@ pub struct Cli {
 
 #[derive(Debug, StructOpt)]
 enum SubCommand {
+    #[structopt(name = "generate-crate")]
+    Generate {
+        #[structopt(flatten)]
+        inner: Generate,
+    },
     #[structopt(name = "measure")]
     Measure {
         #[structopt(flatten)]
@@ -107,6 +124,7 @@ impl Cli {
     pub fn exec(self) -> Result<()> {
         match self.cmd {
             SubCommand::Measure { inner } => inner.run(),
+            SubCommand::Generate { inner } => inner.run(),
         }
     }
 }

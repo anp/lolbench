@@ -13,6 +13,11 @@ jobs:
           keys:
             - home_cargo
 
+      # TODO check rustfmt on all crates
+
+      # run this first so we can fail faster
+      - run: cargo test-core
+
       - run: cargo build --release --all --all-targets
       - run: cargo test --release --all --all-targets
 

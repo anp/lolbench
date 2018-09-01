@@ -1,4 +1,8 @@
 [alias]
+new-bench-crate='run -- generate-crate'
+
+build-all='build --all --all-targets'
+test-all='test --all --all-targets --release'
 test-core='''
 test
     --package lolbench

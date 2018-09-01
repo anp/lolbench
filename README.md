@@ -4,76 +4,85 @@
 
 This project is an effort to reproducibly benchmark "in the wild" Rust code against newer compiler versions to detect performance regressions. Still a WIP for the moment, but many are the larger building blocks are in place.
 
-## tldr
+## Getting Started
 
 ### Dependencies
 
 * rustup
 * clang (Linux only)
 
-Want to dive in? Make sure you have 50GB or more of disk space available if you want to build everything!
+### Building & Running
 
 ```
-$ git clone ...
 $ git submodule update --init
-$ cargo build --all
-$ cargo build --all --release
 $ cargo test-core
 ```
 
-# TODO
+If for some reason you want to build everything, make sure you have roughly **50GB** of free disk space and run:
 
-* LTO, strip, cgu=1, incrcomp=false
-* flesh out contributing guide
+```
+$ cargo build-all [--release]
+```
+
+Every benchmark comes with its own test target too, which can be run like so:
+
+```
+$ cargo test-all
+```
 
 ## Adding new benchmarks
 
-1. inside the `benches` dir, `cargo new cratename_version`, e.g. `inflate_0_3_4`
-2. in newly created crate's Cargo.toml (example from inflate), add an exact version dep on the crate to be tested and a path dep on the support crate:
+### What kinds of benchmarks?
 
-```toml
-[package]
-name = "inflate_0_3_4"
-version = "0.1.0"
-authors = ["Adam Perry <adam.n.perry@gmail.com>"]
+All benchmarks contributed to lolbench should compile against the current stable compiler after being ported from Rust's nightly-only benchmark harness to lolbench's harness. Benchmarks should have low variance and should aim to have a single iteration take less than a second or two unless the length of time is very important to measuring some quality of the code.
 
-[dependencies]
-inflate = "0.3.4"
-lolbench_support = { path = "../../support" }
+Ideally the runtime characteristics of a benchmark would be unaffected by:
+
+* random number generation
+* I/O
+* OS process & thread scheduling
+* significant amounts of non-Rust code (FFI code is good to measure, but the FFI'd-to code is less interesting)
+
+### Instructions
+
+These instructions assume you want to add new benchmarks in the form of a new crate in the `benches/` directory. If you want to add new benchmarks to an existing benchmark crate, please follow the examples already present in that crate.
+
+#### Creating the crate
+
+Run `cargo new-bench-crate CRATE_NAME` with the name of the new crate. Names should describe what will be benchmarked and *should also include a version substring* after an underscore (see existing for examples). This is important to allow us to add multiple versions of a crate in our benchmarks in the future.
+
+Add the path of the new benchmark crate (relative to the repo root) to the workspace members in the root `Cargo.toml`.
+
+Add any necessary dependencies to the benchmark crate, making sure to specify exact semver bounds for any crates.io dependencies.
+
+Add individual benchmarks functions to the new crate. A convenience macro is provided that will wrap an existing cargo benchmark in a criterion bench runner: `wrap_libtest!`, and an example benchmark which uses it is included with the generated benchmark crate. See more below for information on adapting benchmarks from existing frameworks.
+
+#### Adapting cargo/libtest benchmarks
+
+There are a few important modifications you'll have to make to a cargo benchmark in addition to wrapping it in the `wrap_libtest!` macro:
+
+1. Remove the `#[bench]` directive above the benchmark function.
+2. If the benchmark function isn't in the crate's root module, add its intra-crate module path to the `wrap_libtest` macro invocation. See `benches/rayon_1_0_0/src/fibonacci/mod.rs` for examples where the `fibonacci` module has been included in the macro invocation.
+3. Ensure that any calls to `test::black_box` are called as just `black_box` without a module path. The wrapper macro will handle importing the equivalent criterion API that will work on any stable/beta/nightly compiler but it is not able to rewrite fully-qualified uses.
+
+#### Testing it out
+
+In the new bench crate's directory, run:
+
+```
+$ cargo build
+$ cargo build --release
+$ cargo test --release
 ```
 
-3. in root Cargo.toml, add path dependency on newly created crate:
+If the benchmarks succeed, commit:
 
-```toml
-inflate_0_3_4 = { path = "./inflate_0_3_4" }
-```
+* the benchmark crate, including the generated targets under `bin` and `test`
+* changes to `registry.toml`
 
-4. Create benchmark functions in `subcrate/lib.rs`. If you're porting from the libtest bench harness to criterion, the [criterion user guide](https://japaric.github.io/criterion.rs/book/criterion_rs.html) is a good place to start. A convenience macro is provided that will wrap an existing cargo benchmark in a criterion bench runner: `wrap_libtest!`. See the below example from inflate for usage:
+CI will ensure that all benchmarks still build on your PR, you don't need to run the test target for every benchmark crate locally.
 
-```rs
-extern crate inflate;
-#[macro_use]
-extern crate lolbench_support;
-
-use inflate::inflate_bytes;
-
-wrap_libtest!
-    fn decode(b: &mut Bencher) {
-        let compressed = include_bytes!("./1m_random_deflated");
-        b.iter(|| inflate_bytes(compressed).unwrap());
-    }
-}
-```
-
-There are three important modifications you'll have to make to a cargo benchmark:
-
-* remove the `#[bench]` directive
-* if the benchmark function isn't at the crate root, either re-export it from the crate root
-  or add its intra-crate module path to the macro invocation (see examples in rayon)
-* ensure that any calls to `test::black_box` are called as just `black_box` (no module path). The wrapper macro will handle importing the equivalent criterion API that will work on any stable/beta/nightly compiler.
-
-5. Run `cargo build` in your benchmark crate's directory, followed by `cargo test`. If the benchmarks succeed, commit the relevant binary and test targets and the changes to `registry.toml`.
 
 ## CPU Shielding
 
-On Linux, this flag uses [cpuset](https://github.com/lpechacek/cpuset) to migrate all non-lolbench processes to other CPUs than the provided range in order to improve reliability of our benchmark measurements. To use this feature you must have cpuset installed and run lolbench under a user account that can run sudo without an interactive prompt. Unless you need to specifically investigate the behavior of the CPU shield, it's recommended to run lolbench without root privileges.
+On Linux, this feature uses [cpuset](https://github.com/lpechacek/cpuset) to migrate all non-lolbench processes to other CPUs than the provided range in order to improve reliability of our benchmark measurements. To use this feature you must have cpuset installed and run lolbench under a user account that can run sudo without an interactive prompt. Unless you need to specifically investigate the behavior of the CPU shield, it's recommended to run lolbench without root privileges.
