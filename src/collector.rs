@@ -31,12 +31,16 @@ pub(crate) enum ErrorKind {
 
 /// Runs benchmarks, memoizes their results, and allows results to be shared across multiple
 /// toolchains if the binaries they produce are identical.
-pub struct Collector(PathBuf);
+pub struct Collector {
+    dir: PathBuf,
+}
 
 impl Collector {
     pub fn new(data_dir: &Path) -> Result<Self> {
         ::std::fs::create_dir_all(data_dir)?;
-        Ok(Collector(data_dir.to_path_buf()))
+        Ok(Collector {
+            dir: data_dir.to_path_buf(),
+        })
     }
 
     pub fn run_benches_with_toolchain(
@@ -90,13 +94,13 @@ impl Collector {
 
         Ok(match maybe_existing {
             Some(e) => Entry::Existing(e),
-            None => Entry::New(key, rp.build()?, self.0.clone()),
+            None => Entry::New(key, rp.build()?, self.dir.clone()),
         })
     }
 
     fn existing_binary_hash(&self, rp: &RunPlan) -> Result<(index::Key, Option<Vec<u8>>)> {
         let ikey = index::Key::new(&rp);
-        let found = ikey.get(&self.0)?.map(|a| a.1);
+        let found = ikey.get(&self.dir)?.map(|a| a.1);
         Ok((ikey, found))
     }
 
@@ -127,7 +131,7 @@ impl Collector {
                         })
                     });
 
-                Entry::New(mkey, res, self.0.clone())
+                Entry::New(mkey, res, self.dir.clone())
             }
         })
     }
@@ -147,7 +151,7 @@ impl Collector {
             rp.shield.clone(),
         );
 
-        let found = mkey.get(&self.0)?.map(|a| a.1);
+        let found = mkey.get(&self.dir)?.map(|a| a.1);
         Ok((mkey, found))
     }
 
