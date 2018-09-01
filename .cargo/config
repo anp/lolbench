@@ -1,0 +1,8 @@
+[alias]
+test-core='''
+test
+    --package lolbench
+    --package lolbench_extractor
+    --package lolbench_support
+    --package marky_mark
+'''
