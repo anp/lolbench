@@ -47,7 +47,7 @@ impl Toolchain {
         &self.target_dir
     }
 
-    pub fn installed(&self) -> Result<bool> {
+    fn is_installed(&self) -> Result<bool> {
         let installed_toolchains_output = Command::new("rustup")
             .arg("toolchain")
             .arg("list")
@@ -57,7 +57,12 @@ impl Toolchain {
         Ok(stdout.contains(&self.spec))
     }
 
-    pub fn install(&self) -> Result<()> {
+    pub fn ensure_installed(&self) -> Result<Option<InstallGuard>> {
+        if self.is_installed()? {
+            info!("{} already installed, skipping installation", self);
+            return Ok(None);
+        }
+
         info!("Installing {}...", self);
         let install_output = Command::new("rustup")
             .arg("toolchain")
@@ -80,7 +85,8 @@ impl Toolchain {
 
             bail!("No release found for {}.", self.spec);
         }
-        Ok(())
+
+        Ok(Some(InstallGuard(self.clone())))
     }
 
     pub fn uninstall(&self) -> Result<()> {
@@ -97,5 +103,15 @@ impl Toolchain {
 impl Display for Toolchain {
     fn fmt(&self, f: &mut Formatter) -> FmtResult {
         f.write_fmt(format_args!("{}", self.spec))
+    }
+}
+
+pub struct InstallGuard(Toolchain);
+
+impl Drop for InstallGuard {
+    fn drop(&mut self) {
+        if let Err(e) = self.0.uninstall() {
+            error!("unable to uninstall {}: {:?}", self.0, e);
+        }
     }
 }

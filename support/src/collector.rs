@@ -11,7 +11,7 @@ use serde_json;
 use run_plan::RunPlan;
 use storage::{index, measurement, Entry, Estimates, Statistic, StorageKey};
 use toolchain::Toolchain;
-use {BenchOpts, CriterionConfig};
+use CriterionConfig;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub(crate) struct Error {
@@ -39,56 +39,50 @@ impl Collector {
         Ok(Collector(data_dir.to_path_buf()))
     }
 
-    pub fn run_all(&mut self, candidates: BTreeMap<Toolchain, BTreeSet<RunPlan>>) -> Result<()> {
-        // for (toolchain, benchmarks) in self.enumerate_builds(opts)? {
-        //     // TODO pass over all of these and see which ones actually need to be built
-        //     toolchain.install()?;
+    pub fn run_benches_with_toolchain(
+        &self,
+        toolchain: Toolchain,
+        run_plans: &[RunPlan],
+    ) -> Result<()> {
+        let _guard = toolchain.ensure_installed()?;
 
-        //     for plan in benchmarks {
-        //         self.run(plan)?;
-        //     }
-        // }
+        for rp in run_plans {
+            self.run(rp)?;
+        }
 
         Ok(())
     }
 
-    pub fn enumerate_builds_for_opts(
+    pub fn compute_builds_needed(
         &self,
-        opts: BenchOpts,
-    ) -> Result<BTreeMap<Toolchain, BTreeSet<RunPlan>>> {
-        let benchmarks = ::registry::get_benches(opts.runner.as_ref().map(String::as_str))?;
-        let toolchains = opts.toolchains.all_of_em();
+        plans: &BTreeMap<Toolchain, BTreeSet<RunPlan>>,
+    ) -> Result<BTreeMap<Toolchain, Vec<RunPlan>>> {
+        let mut needed = BTreeMap::new();
 
-        let mut plans = BTreeMap::new();
-
-        for toolchain in toolchains {
-            let shield = opts.shield_spec.as_ref().map(Clone::clone);
-            let create_runplan = |benchmark: &Benchmark| {
-                let path = benchmark.entrypoint_path.clone();
-                RunPlan::new(
-                    benchmark.clone(),
-                    // TODO(anp): serialize criterion config if we have it
-                    None,
-                    shield.clone(),
-                    toolchain.clone(),
-                    path,
-                )
-            };
-
-            for benchmark in &benchmarks {
-                let rp = create_runplan(benchmark)?;
-                rp.validate()?;
-
-                // TODO check if we can skip this
-
-                plans
-                    .entry(toolchain.clone())
-                    .or_insert(BTreeSet::new())
-                    .insert(rp);
+        for (toolchain, run_plans) in plans {
+            for rp in run_plans {
+                if !self.plan_can_be_skipped_with_no_work(rp)? {
+                    needed
+                        .entry(toolchain.clone())
+                        .or_insert_with(Vec::new)
+                        .push(rp.to_owned());
+                }
             }
         }
 
-        Ok(plans)
+        Ok(needed)
+    }
+
+    fn plan_can_be_skipped_with_no_work(&self, rp: &RunPlan) -> Result<bool> {
+        Ok(if let (_, Some(hash)) = self.existing_binary_hash(rp)? {
+            if let (_, Some(Ok(_))) = self.existing_estimates(rp, &hash)? {
+                true
+            } else {
+                false
+            }
+        } else {
+            false
+        })
     }
 
     fn compute_binary_hash(&self, rp: &RunPlan) -> Result<Entry<index::Key, Vec<u8>>> {
@@ -164,11 +158,11 @@ impl Collector {
     /// directory already has their respsective outputs for the provided RunPlan.
     ///
     /// Assumes that the `RunPlan`'s toolchain has already been installed.
-    pub fn run(&mut self, rp: RunPlan) -> Result<()> {
+    pub fn run(&self, rp: &RunPlan) -> Result<()> {
         // TODO git cleanliness and update operations go here
 
-        let binary_hash = self.compute_binary_hash(&rp)?;
-        let estimates = self.compute_estimates(&rp, &*binary_hash)?;
+        let binary_hash = self.compute_binary_hash(rp)?;
+        let estimates = self.compute_estimates(rp, &*binary_hash)?;
 
         binary_hash.ensure_persisted()?;
         estimates.ensure_persisted()?;
@@ -268,6 +262,6 @@ pub fn end_to_end_test(
     };
 
     // FIXME make this a proper temp dir
-    let mut collector = Collector::new(Path::new("/tmp/lolbenchtest")).unwrap();
-    collector.run(plan).unwrap();
+    let collector = Collector::new(Path::new("/tmp/lolbenchtest")).unwrap();
+    collector.run(&plan).unwrap();
 }

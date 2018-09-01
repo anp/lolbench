@@ -28,6 +28,11 @@ extern crate proptest;
 #[cfg(test)]
 extern crate tempfile;
 
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    path::Path,
+};
+
 pub use criterion::{black_box, init_logging, Bencher, Criterion};
 pub use marky_mark::Benchmark;
 pub use noisy_float::prelude::*;
@@ -45,6 +50,32 @@ mod storage;
 mod toolchain;
 
 use chrono::NaiveDate;
+
+pub fn measure(opts: BenchOpts, data_dir: &Path) -> Result<()> {
+    info!("ensuring data dir {} exists", data_dir.display());
+    let collector = Collector::new(data_dir)?;
+
+    info!("cataloging potential builds to run");
+    let candidates = opts.enumerate_bench_candidates()?;
+
+    info!(
+        "{} possible benchmark plans to run to satisfy provided options, pruning...",
+        candidates.len()
+    );
+
+    let to_run = collector.compute_builds_needed(&candidates)?;
+
+    info!("{} plans to run after pruning, running...", to_run.len());
+
+    for (toolchain, benches) in to_run {
+        info!("running {} benches with {}", benches.len(), toolchain);
+        collector.run_benches_with_toolchain(toolchain, &benches)?;
+    }
+
+    info!("all done!");
+
+    Ok(())
+}
 
 // lolbench_entrypoint_impl is provided by the lolbench_extractor crate.
 proc_macro_expr_decl! {
@@ -179,6 +210,44 @@ pub struct BenchOpts {
     pub shield_spec: Option<ShieldSpec>,
     pub runner: Option<String>,
     pub toolchains: ToolchainSpec,
+}
+
+impl BenchOpts {
+    pub fn enumerate_bench_candidates(&self) -> Result<BTreeMap<Toolchain, BTreeSet<RunPlan>>> {
+        let benchmarks = ::registry::get_benches(self.runner.as_ref().map(String::as_str))?;
+        let toolchains = self.toolchains.all_of_em();
+
+        let mut plans = BTreeMap::new();
+
+        for toolchain in toolchains {
+            let shield = self.shield_spec.as_ref().map(Clone::clone);
+            let create_runplan = |benchmark: &Benchmark| {
+                let path = benchmark.entrypoint_path.clone();
+                RunPlan::new(
+                    benchmark.clone(),
+                    // TODO(anp): serialize criterion config if we have it
+                    None,
+                    shield.clone(),
+                    toolchain.clone(),
+                    path,
+                )
+            };
+
+            for benchmark in &benchmarks {
+                let rp = create_runplan(benchmark)?;
+                rp.validate()?;
+
+                // TODO check if we can skip this
+
+                plans
+                    .entry(toolchain.clone())
+                    .or_insert(BTreeSet::new())
+                    .insert(rp);
+            }
+        }
+
+        Ok(plans)
+    }
 }
 
 #[derive(Debug, Deserialize, Eq, PartialEq, PartialOrd, Ord, Serialize)]

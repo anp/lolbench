@@ -1,12 +1,11 @@
 #[macro_use]
 extern crate failure;
 #[macro_use]
-extern crate log;
-#[macro_use]
 extern crate structopt;
 
 extern crate chrono;
 extern crate clap;
+extern crate log;
 extern crate lolbench_support;
 extern crate simple_logger;
 
@@ -84,16 +83,7 @@ impl Measure {
             shield_spec,
         };
 
-        info!("ensuring data dir {} exists", self.data_dir.display());
-        let mut collector = Collector::new(&self.data_dir)?;
-
-        info!("discovering potential builds to run");
-        let plans = collector.enumerate_builds_for_opts(opts)?;
-
-        info!("running all of our plans");
-        collector.run_all(plans)?;
-
-        Ok(())
+        measure(opts, &self.data_dir)
     }
 }
 
