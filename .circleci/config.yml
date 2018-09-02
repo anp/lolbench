@@ -1,34 +1,76 @@
 version: 2
-jobs:
-  test:
+anchors:
+  - &rust_job
+    resource_class: large
+    docker:
+      - image: rust:latest
+
+  - &setup
+    run:
+      name: Set up the environment
+      command: git submodule update --init --recursive
+
+  - &install_deps
+    run:
+      name: Install workspace dependencies
+      command: |
+        apt-get update -y
+        apt-get upgrade -y
+        apt-get install -y llvm-dev libclang-dev clang
+
+  - &restore_cache
+    restore_cache:
+      key: cargo-v0-{{ checksum "Cargo.lock" }}
+
+  - &save_cache
+    save_cache:
+      key: cargo-v0-{{ checksum "Cargo.lock" }}
+      paths:
+        - ~/.cargo
+        - ~/.rustup
+
+  - &bench_crate
+    resource_class: large
     docker:
       - image: rust:latest
     steps:
       - checkout
-      - run: git submodule update --init --recursive
+      - *setup
+      - *restore_cache
+      - *install_deps
+      - run: cargo test --release
+      - *save_cache
 
-      - run: apt-get update -y
-      - run: apt-get upgrade -y
-      - run: apt-get install -y llvm-dev libclang-dev clang
 
-      - restore_cache:
-          keys:
-            - home_cargo
-
+jobs:
+  check_formatting:
+    <<: *rust_job
+    steps:
+      - checkout
+      - *setup
       - run: rustup component add rustfmt-preview
       - run: cargo fmt-core -- --check
 
-      - run: cargo build --release --all --all-targets
-      - run: cargo test --release --all --all-targets
+  core_tests:
+    <<: *rust_job
+    steps:
+      - checkout
+      - *setup
+      - *restore_cache
+      - *install_deps
+      - run: cargo test-core
+      # - run: cargo build --release --all --all-targets
+      # - run: cargo test --release --all --all-targets
+      - *save_cache
 
-      - save_cache:
-          key: home_cargo
-          paths:
-            - ~/.cargo
-            - ~/.rustup
+  brotli_1_1_3:
+    working_directory: benches/brotli_1_1_3
+    <<: *bench_crate
+
 workflows:
   version: 2
   main:
     jobs:
       #TODO deploy lolbench in this workflow
-      - test
+      - check_formatting
+      - brotli_1_1_3
