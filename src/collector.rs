@@ -177,9 +177,13 @@ impl Collector {
     fn process(&self, rp: &RunPlan) -> Result<Estimates> {
         info!("post-processing {}", rp);
 
-        let path = rp
+        let target_dir = rp
             .toolchain
-            .target_dir()
+            .as_ref()
+            .map(Toolchain::target_dir)
+            .unwrap_or_else(|| Path::new("target"));
+
+        let path = target_dir
             .join("criterion")
             .join(format!(
                 "{}::{}",

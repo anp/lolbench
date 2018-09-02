@@ -126,7 +126,7 @@ pub(crate) mod index {
     #[derive(Debug, Clone, Deserialize, PartialEq, Serialize)]
     pub struct Key {
         pub benchmark_key: String,
-        pub toolchain: Toolchain,
+        pub toolchain: Option<Toolchain>,
     }
 
     impl Key {
@@ -147,7 +147,12 @@ pub(crate) mod index {
         }
 
         fn basename(&self) -> String {
-            slugify(self.toolchain.to_string())
+            slugify(
+                self.toolchain
+                    .as_ref()
+                    .map(|t| t.to_string())
+                    .unwrap_or_else(|| String::from("current-toolchain")),
+            )
         }
     }
 }

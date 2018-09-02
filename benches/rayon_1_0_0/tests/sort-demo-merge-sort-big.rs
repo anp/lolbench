@@ -1,1 +1,1 @@
-extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "rayon_1_0_0" , "sort :: demo_merge_sort_big" , "sort-demo-merge-sort-big.rs" , "sort-demo-merge-sort-big" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "rayon_1_0_0" , "sort::demo_merge_sort_big" , ) ; }

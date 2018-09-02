@@ -1,1 +1,1 @@
-extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "rayon_1_0_0" , "mergesort::bench :: merge_sort_par_bench" , "mergesort-bench-merge-sort-par-bench.rs" , "mergesort-bench-merge-sort-par-bench" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "rayon_1_0_0" , "mergesort::bench::merge_sort_par_bench" , ) ; }

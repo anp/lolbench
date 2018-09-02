@@ -1,1 +1,1 @@
-extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "regex_0_2_6" , "sherlock :: name_alt5_nocase" , "sherlock-name-alt5-nocase.rs" , "sherlock-name-alt5-nocase" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "regex_0_2_6" , "sherlock::name_alt5_nocase" , ) ; }

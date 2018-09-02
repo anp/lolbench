@@ -113,6 +113,7 @@ impl Benchmark {
     }
 
     pub fn write_and_register(&mut self, full_path: &Path) -> Result<bool> {
+        self.strip();
         let (mut registry, _f) = Registry::from_disk()?;
         ecx!("Updating registry", registry.update(self))?;
         write_if_changed(&self.source(), &full_path)
@@ -132,9 +133,7 @@ impl Benchmark {
     }
 }
 
-pub fn test_source(bench_name: &str, crate_name: &str, binary_name: &str) -> String {
-    let bench_source_name = format!("{}.rs", binary_name);
-
+pub fn test_source(bench_name: &str, crate_name: &str) -> String {
     let source = quote! {
         extern crate lolbench;
 
@@ -143,8 +142,6 @@ pub fn test_source(bench_name: &str, crate_name: &str, binary_name: &str) -> Str
             lolbench::end_to_end_test(
                 #crate_name,
                 #bench_name,
-                #bench_source_name,
-                #binary_name,
             );
         }
     };

@@ -1,1 +1,1 @@
-extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "regex_0_2_6" , "sherlock :: letters" , "sherlock-letters.rs" , "sherlock-letters" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "regex_0_2_6" , "sherlock::letters" , ) ; }

@@ -1,1 +1,1 @@
-extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "regex_0_2_6" , "rust_parse :: parse_huge" , "rust-parse-parse-huge.rs" , "rust-parse-parse-huge" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "regex_0_2_6" , "rust_parse::parse_huge" , ) ; }

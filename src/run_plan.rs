@@ -1,7 +1,11 @@
 use super::Result;
 
-use std::fmt::{Display, Formatter, Result as FmtResult};
-use std::path::PathBuf;
+use std::{
+    borrow::Cow,
+    fmt::{Display, Formatter, Result as FmtResult},
+    path::{Path, PathBuf},
+    process::Command,
+};
 
 use ring::digest::{digest, SHA256};
 
@@ -14,7 +18,7 @@ use CriterionConfig;
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, PartialOrd, Ord, Serialize)]
 pub struct RunPlan {
     pub shield: Option<ShieldSpec>,
-    pub toolchain: Toolchain,
+    pub toolchain: Option<Toolchain>,
     pub source_path: PathBuf,
     pub manifest_path: PathBuf,
     pub benchmark: Benchmark,
@@ -36,7 +40,7 @@ impl RunPlan {
         benchmark: Benchmark,
         bench_config: Option<CriterionConfig>,
         shield: Option<ShieldSpec>,
-        toolchain: Toolchain,
+        toolchain: Option<Toolchain>,
         source_path: PathBuf,
     ) -> Result<Self> {
         let binary_name = source_path
@@ -68,10 +72,18 @@ impl RunPlan {
     }
 
     fn binary_path(&self) -> PathBuf {
-        self.toolchain
-            .target_dir()
-            .join("release")
-            .join(&self.binary_name)
+        self.target_dir().join("release").join(&self.binary_name)
+    }
+
+    fn target_dir(&self) -> Cow<Path> {
+        use std::env::var as envvar;
+
+        match self.toolchain {
+            Some(ref t) => Cow::Borrowed(t.target_dir()),
+            None => Cow::Owned(PathBuf::from(
+                envvar("CARGO_TARGET_DIR").unwrap_or_else(|_| String::from("target")),
+            )),
+        }
     }
 
     pub fn validate(&self) -> Result<()> {
@@ -92,8 +104,38 @@ impl RunPlan {
 
     /// Builds the benchmark target and returns the SHA256 sum of the binary.
     pub fn build(&self) -> Result<Vec<u8>> {
-        self.toolchain
-            .build_benchmark(&self.source_path, &self.manifest_path)?;
+        let target_name = self.source_path.file_stem().unwrap().to_string_lossy();
+        info!("building {} with {:?}", target_name, self.toolchain);
+
+        let mut cmd = Command::new("cargo");
+
+        if let Some(ref t) = self.toolchain {
+            cmd.arg(format!("+{}", t));
+        }
+
+        let output = cmd
+            .arg("build")
+            .arg("--release")
+            .arg("--manifest-path")
+            .arg(&self.manifest_path)
+            .arg("--bin")
+            .arg(&*target_name)
+            .env("CARGO_TARGET_DIR", &*self.target_dir())
+            .output()?;
+
+        if !output.status.success() {
+            let stdout = String::from_utf8_lossy(&output.stdout);
+            let stderr = String::from_utf8_lossy(&output.stderr);
+            bail!(
+                "Unable to build {} with {:?} (None means current, adam is lazy).\nstdout:{}\nstderr:{}",
+                target_name,
+                self.toolchain,
+                stdout,
+                stderr
+            );
+        }
+
+        info!("done building {}", self.source_path.display());
 
         let bin_path = self.binary_path();
 
@@ -108,19 +150,17 @@ impl RunPlan {
     pub fn exec(&self) -> Result<()> {
         debug!("configuring command for {}", self);
 
-        let mut cmd = RenameThisCommandWrapper::new("rustup", self.shield.clone());
-        cmd.args(&[
-            "run",
-            &self.toolchain.to_string(),
-            "cargo",
-            "run",
-            "--release",
-            "--manifest-path",
-        ]);
+        let mut cmd = RenameThisCommandWrapper::new("cargo", self.shield.clone());
+
+        if let Some(ref t) = self.toolchain {
+            cmd.arg(format!("+{}", t));
+        }
+
+        cmd.args(&["run", "--release", "--manifest-path"]);
         cmd.arg(&self.manifest_path); // silly types
         cmd.args(&["--bin", &self.binary_name]);
 
-        cmd.env("CARGO_TARGET_DIR", &self.toolchain.target_dir());
+        cmd.env("CARGO_TARGET_DIR", &*self.target_dir());
 
         if let Some(cfg) = &self.bench_config {
             debug!("applying criterion config");

@@ -1,1 +1,1 @@
-extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "rayon_1_0_0" , "str_split :: serial_space_fn" , "str-split-serial-space-fn.rs" , "str-split-serial-space-fn" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "rayon_1_0_0" , "str_split::serial_space_fn" , ) ; }

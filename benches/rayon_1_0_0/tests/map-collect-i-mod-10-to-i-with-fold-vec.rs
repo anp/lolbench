@@ -1,1 +1,1 @@
-extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "rayon_1_0_0" , "map_collect::i_mod_10_to_i :: with_fold_vec" , "map-collect-i-mod-10-to-i-with-fold-vec.rs" , "map-collect-i-mod-10-to-i-with-fold-vec" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "rayon_1_0_0" , "map_collect::i_mod_10_to_i::with_fold_vec" , ) ; }

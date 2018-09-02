@@ -101,7 +101,7 @@ pub fn end_to_end_test(crate_name: &str, bench_name: &str) {
             warm_up_time_ms: 1,
         }),
         None,
-        Toolchain::from("stable"),
+        None,
         source_path,
     ).unwrap();
 
@@ -133,7 +133,7 @@ impl BenchOpts {
                     // TODO(anp): serialize criterion config if we have it
                     None,
                     shield.clone(),
-                    toolchain.clone(),
+                    Some(toolchain.clone()),
                     path,
                 )
             };
@@ -188,6 +188,11 @@ mod tests {
     #[test]
     fn quickcheck_end_to_end_test() {
         end_to_end_test("quickcheck_0_6_1", "shrink_string_1_tuple");
+    }
+
+    #[test]
+    fn crossbeam_end_to_end_test() {
+        end_to_end_test("crossbeam_epoch_0_4_0", "defer::multi_alloc_defer_free");
     }
 
     #[test]

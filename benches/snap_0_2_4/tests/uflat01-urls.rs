@@ -1,1 +1,1 @@
-extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "snap_0_2_4" , "uflat01_urls" , "uflat01-urls.rs" , "uflat01-urls" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "snap_0_2_4" , "uflat01_urls" , ) ; }

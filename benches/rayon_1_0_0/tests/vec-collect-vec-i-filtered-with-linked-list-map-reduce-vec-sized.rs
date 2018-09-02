@@ -1,1 +1,1 @@
-extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "rayon_1_0_0" , "vec_collect::vec_i_filtered ::\n                    with_linked_list_map_reduce_vec_sized" , "vec-collect-vec-i-filtered-with-linked-list-map-reduce-vec-sized.rs" , "vec-collect-vec-i-filtered-with-linked-list-map-reduce-vec-sized" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "rayon_1_0_0" , "vec_collect::vec_i_filtered::with_linked_list_map_reduce_vec_sized" , ) ; }

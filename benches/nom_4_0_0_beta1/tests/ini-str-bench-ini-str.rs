@@ -1,1 +1,1 @@
-extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "nom_4_0_0_beta1" , "ini_str :: bench_ini_str" , "ini-str-bench-ini-str.rs" , "ini-str-bench-ini-str" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "nom_4_0_0_beta1" , "ini_str::bench_ini_str" , ) ; }

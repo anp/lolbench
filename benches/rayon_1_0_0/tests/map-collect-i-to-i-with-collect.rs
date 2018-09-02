@@ -1,1 +1,1 @@
-extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "rayon_1_0_0" , "map_collect::i_to_i :: with_collect" , "map-collect-i-to-i-with-collect.rs" , "map-collect-i-to-i-with-collect" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "rayon_1_0_0" , "map_collect::i_to_i::with_collect" , ) ; }

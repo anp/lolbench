@@ -1,1 +1,1 @@
-extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "rayon_1_0_0" , "pythagoras :: euclid_parallel_one" , "pythagoras-euclid-parallel-one.rs" , "pythagoras-euclid-parallel-one" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "rayon_1_0_0" , "pythagoras::euclid_parallel_one" , ) ; }

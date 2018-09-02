@@ -1,1 +1,1 @@
-extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "regex_0_2_6" , "sherlock :: before_after_holmes" , "sherlock-before-after-holmes.rs" , "sherlock-before-after-holmes" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "regex_0_2_6" , "sherlock::before_after_holmes" , ) ; }

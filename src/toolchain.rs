@@ -6,44 +6,11 @@ use std::process::Command;
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, PartialOrd, Ord, Serialize)]
 pub struct Toolchain {
-    spec: String,
-    target_dir: PathBuf,
+    pub spec: String,
+    pub target_dir: PathBuf,
 }
 
 impl Toolchain {
-    pub fn build_benchmark(&self, source: &Path, crate_manifest: &Path) -> Result<()> {
-        let target_name = source.file_stem().unwrap().to_string_lossy();
-        info!("building {} with {}", target_name, self);
-
-        let output = Command::new("rustup")
-            .arg("run")
-            .arg(&self.spec)
-            .arg("cargo")
-            .arg("build")
-            .arg("--release")
-            .arg("--manifest-path")
-            .arg(crate_manifest)
-            .arg("--bin")
-            .arg(&*target_name)
-            .env("CARGO_TARGET_DIR", &self.target_dir)
-            .output()?;
-
-        if !output.status.success() {
-            let stdout = String::from_utf8_lossy(&output.stdout);
-            let stderr = String::from_utf8_lossy(&output.stderr);
-            bail!(
-                "Unable to build {} with {}.\nstdout:{}\nstderr:{}",
-                target_name,
-                self,
-                stdout,
-                stderr
-            );
-        }
-
-        info!("done building {}", source.display());
-        Ok(())
-    }
-
     pub fn from(s: &str) -> Self {
         Toolchain {
             spec: s.to_string(),
