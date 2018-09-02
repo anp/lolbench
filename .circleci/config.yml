@@ -73,4 +73,9 @@ workflows:
     jobs:
       #TODO deploy lolbench in this workflow
       - check_formatting
-      - brotli_1_1_3
+      - core_tests:
+          requires:
+            - check_formatting
+      - brotli_1_1_3:
+          requires:
+            - check_formatting
