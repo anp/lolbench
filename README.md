@@ -57,6 +57,8 @@ Add any necessary dependencies to the benchmark crate, making sure to specify ex
 
 Add individual benchmarks functions to the new crate. A convenience macro is provided that will wrap an existing cargo benchmark in a criterion bench runner: `wrap_libtest!`, and an example benchmark which uses it is included with the generated benchmark crate. See more below for information on adapting benchmarks from existing frameworks.
 
+Add the benchmark crate to the CI config under `.circleci/config.yml`. Make sure the new build is added under both the `jobs` key and the `workflow` key -- follow existing examples. The build job should be named the same as the new crate and thus its `benches/` subdirectory.
+
 #### Adapting cargo/libtest benchmarks
 
 There are a few important modifications you'll have to make to a cargo benchmark in addition to wrapping it in the `wrap_libtest!` macro:
@@ -79,8 +81,9 @@ If the benchmarks succeed, commit:
 
 * the benchmark crate, including the generated targets under `bin` and `test`
 * changes to `registry.toml`
+* changes to `.circleci/config.yml`
 
-CI will ensure that all benchmarks still build on your PR, you don't need to run the test target for every benchmark crate locally.
+CI will ensure that all other benchmarks still build on your PR, you don't need to run the test target for every benchmark crate locally.
 
 
 ## CPU Shielding

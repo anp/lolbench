@@ -40,9 +40,8 @@ anchors:
           command: cargo test --release --manifest-path "./benches/$CIRCLE_JOB/Cargo.toml"
       - *save_cache
 
-
 jobs:
-  check_formatting:
+  fmt:
     <<: *rust_job
     steps:
       - checkout
@@ -50,7 +49,7 @@ jobs:
       - run: rustup component add rustfmt-preview
       - run: cargo fmt-core -- --check
 
-  core_tests:
+  core:
     <<: *rust_job
     steps:
       - checkout
@@ -64,16 +63,71 @@ jobs:
 
   brotli_1_1_3:
     <<: *bench_crate
+  inflate_0_3_4:
+    <<: *bench_crate
+  rayon_1_0_0:
+    <<: *bench_crate
+  crossbeam_epoch_0_4_0:
+    <<: *bench_crate
+  json_benchmark_c7d3d9b:
+    <<: *bench_crate
+  raytrace_8de9020:
+    <<: *bench_crate
+  diesel_1_1_1:
+    <<: *bench_crate
+  nom_4_0_0_beta1:
+    <<: *bench_crate
+  regex_0_2_6:
+    <<: *bench_crate
+  doom_9e197d7:
+    <<: *bench_crate
+  quickcheck_0_6_1:
+    <<: *bench_crate
+  snap_0_2_4:
+    <<: *bench_crate
 
 workflows:
   version: 2
   main:
     jobs:
       #TODO deploy lolbench in this workflow
-      - check_formatting
-      - core_tests:
+      - fmt
+      - core:
           requires:
-            - check_formatting
+            - fmt
       - brotli_1_1_3:
           requires:
-            - check_formatting
+            - fmt
+      - inflate_0_3_4:
+          requires:
+            - fmt
+      - rayon_1_0_0:
+          requires:
+            - fmt
+      - crossbeam_epoch_0_4_0:
+          requires:
+            - fmt
+      - json_benchmark_c7d3d9b:
+          requires:
+            - fmt
+      - raytrace_8de9020:
+          requires:
+            - fmt
+      - diesel_1_1_1:
+          requires:
+            - fmt
+      - nom_4_0_0_beta1:
+          requires:
+            - fmt
+      - regex_0_2_6:
+          requires:
+            - fmt
+      - doom_9e197d7:
+          requires:
+            - fmt
+      - quickcheck_0_6_1:
+          requires:
+            - fmt
+      - snap_0_2_4:
+          requires:
+            - fmt
