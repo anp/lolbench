@@ -38,8 +38,6 @@ anchors:
       - *setup
       - *restore_cache
       - *install_deps
-      - run: cargo test --release
-      - *save_cache
 
 
 jobs:
@@ -64,8 +62,12 @@ jobs:
       - *save_cache
 
   brotli_1_1_3:
-    working_directory: benches/brotli_1_1_3
     <<: *bench_crate
+      - run:
+          name: test benchmark crate
+          command: cargo test --release
+          working_directory: benches/brotli_1_1_3
+      - *save_cache
 
 workflows:
   version: 2
