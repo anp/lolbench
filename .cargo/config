@@ -1,6 +1,14 @@
 [alias]
 new-bench-crate='run -- generate-crate'
 
+fmt-core='''
+fmt
+    --package lolbench
+    --package lolbench_extractor
+    --package lolbench_support
+    --package marky_mark
+'''
+
 build-all='build --all --all-targets'
 test-all='test --all --all-targets --release'
 test-core='''

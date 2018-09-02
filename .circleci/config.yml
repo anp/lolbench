@@ -6,17 +6,17 @@ jobs:
     steps:
       - checkout
       - run: git submodule update --init --recursive
+
       - run: apt-get update -y
       - run: apt-get upgrade -y
       - run: apt-get install -y llvm-dev libclang-dev clang
+
       - restore_cache:
           keys:
             - home_cargo
 
-      # TODO check rustfmt on all crates
-
-      # run this first so we can fail faster
-      - run: cargo test-core
+      - run: rustup component add rustfmt-preview
+      - run: cargo fmt-core -- --check
 
       - run: cargo build --release --all --all-targets
       - run: cargo test --release --all --all-targets
@@ -25,6 +25,7 @@ jobs:
           key: home_cargo
           paths:
             - ~/.cargo
+            - ~/.rustup
 workflows:
   version: 2
   main:
