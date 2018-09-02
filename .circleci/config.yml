@@ -1,7 +1,6 @@
 version: 2
 anchors:
   - &rust_job
-    resource_class: large
     docker:
       - image: rust:latest
 
@@ -29,16 +28,6 @@ anchors:
         - ~/.cargo
         - ~/.rustup
 
-  - &bench_crate
-    resource_class: large
-    docker:
-      - image: rust:latest
-    steps:
-      - checkout
-      - *setup
-      - *restore_cache
-      - *install_deps
-
 
 jobs:
   check_formatting:
@@ -62,7 +51,12 @@ jobs:
       - *save_cache
 
   brotli_1_1_3:
-    <<: *bench_crate
+    <<: *rust_job
+    steps:
+      - checkout
+      - *setup
+      - *restore_cache
+      - *install_deps
       - run:
           name: test benchmark crate
           command: cargo test --release
