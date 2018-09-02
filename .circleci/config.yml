@@ -28,6 +28,18 @@ anchors:
         - ~/.cargo
         - ~/.rustup
 
+  - &bench_crate
+    <<: *rust_job
+    steps:
+      - checkout
+      - *setup
+      - *restore_cache
+      - *install_deps
+      - run:
+          name: test benchmark crate
+          command: cargo test --release --manifest-path "./benches/$CIRCLE_JOB/Cargo.toml"
+      - *save_cache
+
 
 jobs:
   check_formatting:
@@ -51,17 +63,7 @@ jobs:
       - *save_cache
 
   brotli_1_1_3:
-    <<: *rust_job
-    steps:
-      - checkout
-      - *setup
-      - *restore_cache
-      - *install_deps
-      - run:
-          name: test benchmark crate
-          command: cargo test --release
-          working_directory: benches/brotli_1_1_3
-      - *save_cache
+    <<: *bench_crate
 
 workflows:
   version: 2
