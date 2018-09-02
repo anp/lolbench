@@ -142,8 +142,7 @@ impl Collector {
     )> {
         let mkey = measurement::Key::new(
             binary_hash.to_vec(),
-            // TODO make sure the benchmark's runner isn't optional by here?
-            rp.benchmark.runner.clone().unwrap(),
+            rp.benchmark.runner.clone(),
             rp.shield.clone(),
         );
 

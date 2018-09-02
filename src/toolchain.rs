@@ -29,7 +29,15 @@ impl Toolchain {
             .output()?;
 
         if !output.status.success() {
-            bail!("Unable to build {} with {}", target_name, self);
+            let stdout = String::from_utf8_lossy(&output.stdout);
+            let stderr = String::from_utf8_lossy(&output.stderr);
+            bail!(
+                "Unable to build {} with {}.\nstdout:{}\nstderr:{}",
+                target_name,
+                self,
+                stdout,
+                stderr
+            );
         }
 
         info!("done building {}", source.display());

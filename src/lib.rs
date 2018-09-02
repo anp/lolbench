@@ -32,18 +32,19 @@ mod run_plan;
 mod storage;
 mod toolchain;
 
-use std::{
-    collections::{BTreeMap, BTreeSet},
-    path::{Path, PathBuf},
-};
-
-use chrono::NaiveDate;
-
 pub use self::{
     collector::*, cpu_shield::*, generator::*, registry::*, run_plan::*, storage::*, toolchain::*,
 };
 pub use lolbench_support::*;
 pub use marky_mark::*;
+
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    path::Path,
+};
+
+use chrono::NaiveDate;
+use slug::slugify;
 
 pub fn measure(opts: BenchOpts, data_dir: &Path) -> Result<()> {
     info!("ensuring data dir {} exists", data_dir.display());
@@ -71,37 +72,26 @@ pub fn measure(opts: BenchOpts, data_dir: &Path) -> Result<()> {
     Ok(())
 }
 
-pub fn end_to_end_test(
-    crate_name: &str,
-    bench_name: &str,
-    bench_source_name: &str,
-    binary_name: &str,
-) {
+pub fn end_to_end_test(crate_name: &str, bench_name: &str) {
+    let bench_source_name = format!("{}.rs", slugify(bench_name));
+
     let _ = simple_logger::init();
 
-    let plan = RunPlan {
-        shield: None,
-        toolchain: Toolchain::from("stable"),
-        source_path: Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("..")
-            .join("benches")
-            .join(crate_name)
-            .join("src")
-            .join("bin")
-            .join(bench_source_name),
-        manifest_path: Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("..")
-            .join("benches")
-            .join(crate_name)
-            .join("Cargo.toml"),
-        benchmark: Benchmark {
+    let entrypoint_path = Path::new("benches")
+        .join(crate_name)
+        .join("src")
+        .join("bin")
+        .join(bench_source_name);
+
+    let source_path = Path::new(env!("CARGO_MANIFEST_DIR")).join(&entrypoint_path);
+    let plan = RunPlan::new(
+        Benchmark {
             runner: None,
             name: String::from(bench_name),
             crate_name: String::from(crate_name),
-            entrypoint_path: PathBuf::from("/dev/null"),
+            entrypoint_path,
         },
-        binary_name: binary_name.to_owned(),
-        bench_config: Some(CriterionConfig {
+        Some(CriterionConfig {
             confidence_level: r32(0.95),
             measurement_time_ms: 500,
             nresamples: 2,
@@ -110,7 +100,10 @@ pub fn end_to_end_test(
             significance_level: r32(0.05),
             warm_up_time_ms: 1,
         }),
-    };
+        None,
+        Toolchain::from("stable"),
+        source_path,
+    ).unwrap();
 
     // FIXME make this a proper temp dir
     let collector = Collector::new(Path::new("/tmp/lolbenchtest")).unwrap();
@@ -191,6 +184,11 @@ impl ToolchainSpec {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn quickcheck_end_to_end_test() {
+        end_to_end_test("quickcheck_0_6_1", "shrink_string_1_tuple");
+    }
 
     #[test]
     fn toolchain_date_range() {

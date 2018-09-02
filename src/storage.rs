@@ -165,9 +165,10 @@ pub(crate) mod measurement {
     impl Key {
         pub fn new(
             hash: impl Into<Vec<u8>>,
-            runner: String,
+            runner: Option<String>,
             cpu_shield: Option<ShieldSpec>,
         ) -> Self {
+            let runner = runner.unwrap_or_else(|| "anonymous".to_string());
             Self {
                 binary_hash: hash.into(),
                 runner,
