@@ -24,6 +24,10 @@ pub struct GitStore {
 
 impl GitStore {
     pub fn ensure_initialized(at: impl AsRef<Path>) -> Result<Self> {
+        info!(
+            "ensuring {} is a git repository and opening it.",
+            at.as_ref().display()
+        );
         let repo = match Repository::open(at.as_ref()) {
             Ok(r) => r,
             Err(_) => {
@@ -55,15 +59,23 @@ impl GitStore {
     }
 
     pub fn commit(&self, msg: &str) -> Result<Oid> {
+        info!("committing current changes with message '{}'", msg);
+        debug!("fetching repository's default signer");
         let signer = self.repo.signature()?;
 
+        debug!("opening the repository's index to add files");
         let mut index = self.repo.index()?;
+        debug!("adding all files in the repository to the index");
         index.add_all(&[self.path.join("*")], Default::default(), None)?;
+        debug!("writing changed index to tree");
         let raw_oid = index.write_tree()?;
 
+        debug!("finding actual tree from returned oid");
         let commit_tree = self.repo.find_tree(raw_oid)?;
+        debug!("finding repo head and converting reference to commit");
         let parent = self.repo.head()?.peel_to_commit()?;
 
+        debug!("doing actual commit and people say git cli has no ux");
         let oid = self.repo.commit(
             Some("HEAD"),
             &signer,
@@ -116,6 +128,7 @@ impl GitStore {
     }
 
     pub fn sync(&mut self) -> Result<()> {
+        info!("ensuring repo is sync'd with origin if it exists");
         if self
             .repo
             .remotes()?
@@ -125,8 +138,11 @@ impl GitStore {
         {
             info!("synchronizing git storage with origin");
             self.stash()?;
+            info!("pulling from remote");
             self.pull()?;
+            info!("pushing to remote");
             self.push()?;
+            info!("done synchronizing");
         } else {
             warn!("git storage does not have an origin remote, won't do any remote sync'ing.");
         }
