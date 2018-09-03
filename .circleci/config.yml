@@ -7,7 +7,11 @@ anchors:
   - &setup
     run:
       name: Set up the environment
-      command: git submodule update --init --recursive
+      command: |
+        git submodule update --init --recursive
+        git config --global pull.rebase true
+        git config --global user.email 'adam.n.perry+lolbench@gmail.com'
+        git config --global user.name "lolbench"
 
   - &install_deps
     run:
