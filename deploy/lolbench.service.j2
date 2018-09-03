@@ -5,7 +5,7 @@ Description=lolbench agent
 Type=oneshot
 SendSIGKILL=no
 WorkingDirectory={{ deploy_dir }}
-ExecStart=cargo run -- \
+ExecStart=/root/.cargo/bin/cargo run -- \
     measure \
     --runner '{{ runner }}' \
     --data-dir '{{ data_dir }}' \

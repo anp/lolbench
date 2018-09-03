@@ -60,8 +60,6 @@
 
     - name: rustup
       shell: curl https://sh.rustup.rs -sSf | sh -s -- -y
-      become: yes
-      become_user: adam
     - git_config:
         name: user.name
         scope: global
@@ -78,7 +76,7 @@
       git:
         repo: https://github.com/anp/lolbench.git
         dest: '{{ deploy_dir }}'
-        refspec: '{{ gitsha }}'
+        refspec: master
         version: '{{ gitsha }}'
       become: yes
       become_user: adam
@@ -91,6 +89,11 @@
       template:
         src: lolbench.timer.j2
         dest: /lib/systemd/system/lolbench.timer
+    - name: systemd-enable
+      systemd:
+        daemon_reload: yes
+        enabled: yes
+        name: lolbench.service
     - name: systemd-enable
       systemd:
         daemon_reload: yes
