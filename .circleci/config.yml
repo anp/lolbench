@@ -15,7 +15,7 @@ anchors:
       command: |
         apt-get update -y
         apt-get upgrade -y
-        apt-get install -y llvm-dev libclang-dev clang
+        apt-get install -y llvm-dev libclang-dev clang cmake
 
   - &restore_cache
     restore_cache:
