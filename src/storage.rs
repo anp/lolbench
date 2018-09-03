@@ -7,8 +7,7 @@ use std::io::{BufWriter, ErrorKind};
 use std::path::{Path, PathBuf};
 
 use chrono::NaiveDateTime;
-use failure::ResultExt;
-use git2::{Oid, Repository, StashFlags};
+use git2::{Oid, Repository};
 use ring::digest::{Context as RingContext, SHA256};
 use serde::{de::DeserializeOwned, Serialize};
 use serde_json;
@@ -87,16 +86,17 @@ impl GitStore {
         Ok(oid)
     }
 
-    fn stash(&mut self) -> Result<()> {
-        info!("stashing git storage's working directory");
-        let stasher = self.repo.signature()?;
-        self.repo
-            .stash_save(
-                &stasher,
-                "stashing untracked changes in data dir",
-                Some(StashFlags::INCLUDE_UNTRACKED),
-            )
-            .with_context(|e| format!("unable to stash changes: {}", e))?;
+    /// `git stash --include-untracked`
+    fn stash(&self) -> Result<()> {
+        ensure!(
+            ::std::process::Command::new("git")
+                .arg("stash")
+                .arg("--include-untracked")
+                .current_dir(&self.path)
+                .status()?
+                .success(),
+            "unable to stash uncommitted changes"
+        );
         Ok(())
     }
 
