@@ -28,6 +28,10 @@ anchors:
         - ~/.cargo
         - ~/.rustup
 
+  - &store_target_dir
+    store_artifacts:
+      path: ~/project/target
+
   - &bench_crate
     <<: *rust_job
     steps:
@@ -39,6 +43,7 @@ anchors:
           name: test benchmark crate
           command: cargo test --release --manifest-path "./benches/$CIRCLE_JOB/Cargo.toml"
       - *save_cache
+      - *store_target_dir
 
 jobs:
   fmt:
@@ -60,6 +65,7 @@ jobs:
       # - run: cargo build --release --all --all-targets
       # - run: cargo test --release --all --all-targets
       - *save_cache
+      - *store_target_dir
 
   brotli_1_1_3:
     <<: *bench_crate
