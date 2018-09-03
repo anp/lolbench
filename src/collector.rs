@@ -1,16 +1,16 @@
 use super::Result;
 
 use std::collections::{BTreeMap, BTreeSet};
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 use serde_json;
 
 use run_plan::RunPlan;
-use storage::{index, measurement, Entry, Estimates, Statistic, StorageKey};
+use storage::{index, measurement, Entry, Estimates, GitStore, Statistic, StorageKey};
 use toolchain::Toolchain;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub(crate) struct Error {
+pub struct Error {
     kind: ErrorKind,
     num_retries: u8,
     max_retries: u8,
@@ -20,7 +20,7 @@ pub(crate) struct Error {
 const DEFAULT_MAX_RETRIES: u8 = 2;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub(crate) enum ErrorKind {
+pub enum ErrorKind {
     Run(String),
     PostProcess(String),
 }
@@ -28,19 +28,22 @@ pub(crate) enum ErrorKind {
 /// Runs benchmarks, memoizes their results, and allows results to be shared across multiple
 /// toolchains if the binaries they produce are identical.
 pub struct Collector {
-    dir: PathBuf,
+    storage: GitStore,
 }
 
 impl Collector {
+    /// Open a Collector. Creates the passed path and initializes a git repo there if it does not
+    /// already exist.
     pub fn new(data_dir: &Path) -> Result<Self> {
         ::std::fs::create_dir_all(data_dir)?;
-        Ok(Collector {
-            dir: data_dir.to_path_buf(),
-        })
+        let storage = GitStore::ensure_initialized(data_dir)?;
+        Ok(Collector { storage })
     }
 
+    /// Run all the passed benchmarks with the given toolchain, installing the toolchain beforehand
+    /// and uninstalling it afterwards if it was installed by us.
     pub fn run_benches_with_toolchain(
-        &self,
+        &mut self,
         toolchain: Toolchain,
         run_plans: &[RunPlan],
     ) -> Result<()> {
@@ -53,8 +56,10 @@ impl Collector {
         Ok(())
     }
 
+    /// Take a list of potential benchmarks to run and filter out any plans for which we have end to
+    /// end results stored already.
     pub fn compute_builds_needed(
-        &self,
+        &mut self,
         plans: &BTreeMap<Toolchain, BTreeSet<RunPlan>>,
     ) -> Result<BTreeMap<Toolchain, Vec<RunPlan>>> {
         let mut needed = BTreeMap::new();
@@ -73,7 +78,9 @@ impl Collector {
         Ok(needed)
     }
 
-    fn plan_can_be_skipped_with_no_work(&self, rp: &RunPlan) -> Result<bool> {
+    /// Check to see if we need to do anything with this RunPlan. Used for conveniently pruning
+    /// the list of benchmarks before we start installing toolchains and building binaries.
+    fn plan_can_be_skipped_with_no_work(&mut self, rp: &RunPlan) -> Result<bool> {
         Ok(if let (_, Some(hash)) = self.existing_binary_hash(rp)? {
             if let (_, Some(Ok(_))) = self.existing_estimates(rp, &hash)? {
                 true
@@ -85,23 +92,26 @@ impl Collector {
         })
     }
 
-    fn compute_binary_hash(&self, rp: &RunPlan) -> Result<Entry<index::Key, Vec<u8>>> {
+    /// Builds a benchmark binary for the current runner if it not been previously built and run.
+    fn compute_binary_hash(&mut self, rp: &RunPlan) -> Result<Entry<index::Key, Vec<u8>>> {
         let (key, maybe_existing) = self.existing_binary_hash(rp)?;
 
         Ok(match maybe_existing {
             Some(e) => Entry::Existing(e),
-            None => Entry::New(key, rp.build()?, self.dir.clone()),
+            None => Entry::New(key, rp.build()?),
         })
     }
 
-    fn existing_binary_hash(&self, rp: &RunPlan) -> Result<(index::Key, Option<Vec<u8>>)> {
+    /// Checks to see if we've previously built a binary for this exact RunPlan and stored its hash.
+    fn existing_binary_hash(&mut self, rp: &RunPlan) -> Result<(index::Key, Option<Vec<u8>>)> {
         let ikey = index::Key::new(&rp);
-        let found = ikey.get(&self.dir)?.map(|a| a.1);
+        let found = self.storage.get(&ikey)?;
         Ok((ikey, found))
     }
 
+    /// Runs a benchmark for the current runner if the results have not previously been recorded.
     fn compute_estimates(
-        &self,
+        &mut self,
         rp: &RunPlan,
         binary_hash: &[u8],
     ) -> Result<Entry<measurement::Key, <measurement::Key as StorageKey>::Contents>> {
@@ -127,13 +137,14 @@ impl Collector {
                         })
                     });
 
-                Entry::New(mkey, res, self.dir.clone())
+                Entry::New(mkey, res)
             }
         })
     }
 
+    /// Check to see if we have already have measurements for this benchmark.
     fn existing_estimates(
-        &self,
+        &mut self,
         rp: &RunPlan,
         binary_hash: &[u8],
     ) -> Result<(
@@ -146,7 +157,7 @@ impl Collector {
             rp.shield.clone(),
         );
 
-        let found = mkey.get(&self.dir)?.map(|a| a.1);
+        let found = self.storage.get(&mkey)?;
         Ok((mkey, found))
     }
 
@@ -157,16 +168,12 @@ impl Collector {
     /// directory already has their respsective outputs for the provided RunPlan.
     ///
     /// Assumes that the `RunPlan`'s toolchain has already been installed.
-    pub fn run(&self, rp: &RunPlan) -> Result<()> {
-        // TODO git cleanliness and update operations go here
-
+    pub fn run(&mut self, rp: &RunPlan) -> Result<()> {
         let binary_hash = self.compute_binary_hash(rp)?;
         let estimates = self.compute_estimates(rp, &*binary_hash)?;
 
-        binary_hash.ensure_persisted()?;
-        estimates.ensure_persisted()?;
-
-        // TODO git commit/push operations go here
+        binary_hash.ensure_persisted(&mut self.storage)?;
+        estimates.ensure_persisted(&mut self.storage)?;
 
         info!("all done with {}", rp);
         Ok(())

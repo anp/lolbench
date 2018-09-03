@@ -2,9 +2,12 @@ use super::Result;
 
 use std::collections::BTreeMap;
 use std::fmt::Debug;
+use std::fs::File;
+use std::io::{BufWriter, ErrorKind};
 use std::path::{Path, PathBuf};
 
 use chrono::NaiveDateTime;
+use git2::{Oid, Repository, StashFlags};
 use ring::digest::{Context as RingContext, SHA256};
 use serde::{de::DeserializeOwned, Serialize};
 use serde_json;
@@ -13,9 +16,178 @@ use cpu_shield::ShieldSpec;
 use run_plan::RunPlan;
 use toolchain::Toolchain;
 
+pub struct GitStore {
+    path: PathBuf,
+    repo: Repository,
+}
+
+impl GitStore {
+    pub fn ensure_initialized(at: impl AsRef<Path>) -> Result<Self> {
+        let repo = match Repository::open(at.as_ref()) {
+            Ok(r) => r,
+            Err(_) => {
+                let mut repo = Repository::init(at.as_ref())?;
+                let output = ::std::process::Command::new("git")
+                    .arg("commit")
+                    .arg("--allow-empty")
+                    .arg("--message")
+                    .arg("initial")
+                    .current_dir(at.as_ref())
+                    .output()?;
+
+                if !output.status.success() {
+                    bail!(
+                        "failed to make initial empty commit: {} {}",
+                        String::from_utf8_lossy(&output.stdout),
+                        String::from_utf8_lossy(&output.stderr)
+                    );
+                }
+
+                repo
+            }
+        };
+
+        Ok(Self {
+            path: at.as_ref().to_owned(),
+            repo,
+        })
+    }
+
+    pub fn commit(&self, msg: &str) -> Result<Oid> {
+        let signer = self.repo.signature()?;
+
+        let mut index = self.repo.index()?;
+        index.add_all(&[self.path.join("*")], Default::default(), None)?;
+        let raw_oid = index.write_tree()?;
+
+        let commit_tree = self.repo.find_tree(raw_oid)?;
+        let parent = self.repo.head()?.peel_to_commit()?;
+
+        let oid = self.repo.commit(
+            Some("HEAD"),
+            &signer,
+            &signer,
+            msg,
+            &commit_tree,
+            &[&parent],
+        )?;
+        Ok(oid)
+    }
+
+    fn stash(&mut self) -> Result<()> {
+        info!("stashing git storage's working directory");
+        let stasher = self.repo.signature()?;
+        self.repo.stash_save(
+            &stasher,
+            "stashing untracked changes in data dir",
+            Some(StashFlags::INCLUDE_UNTRACKED),
+        )?;
+        Ok(())
+    }
+
+    /// `git pull --rebase`
+    fn pull(&self) -> Result<()> {
+        ensure!(
+            ::std::process::Command::new("git")
+                .arg("pull")
+                .arg("--rebase")
+                .current_dir(&self.path)
+                .status()?
+                .success(),
+            "unable to pull from data directory's origin"
+        );
+        Ok(())
+    }
+
+    /// `git push`
+    fn push(&self) -> Result<()> {
+        ensure!(
+            ::std::process::Command::new("git")
+                .arg("push")
+                .current_dir(&self.path)
+                .status()?
+                .success(),
+            "unable to push data to data directory's origin"
+        );
+        Ok(())
+    }
+
+    pub fn sync(&mut self) -> Result<()> {
+        if self
+            .repo
+            .remotes()?
+            .iter()
+            .find(|&r| r == Some("origin"))
+            .is_some()
+        {
+            info!("synchronizing git storage with origin");
+            self.stash()?;
+            self.pull()?;
+            self.push()?;
+        } else {
+            warn!("git storage does not have an origin remote, won't do any remote sync'ing.");
+        }
+
+        Ok(())
+    }
+
+    pub fn get<K: StorageKey>(&mut self, key: &K) -> Result<Option<K::Contents>> {
+        let own_path = key.abs_path(&self.path);
+
+        self.sync()?;
+
+        Ok(match ::std::fs::read_to_string(&own_path) {
+            Ok(s) => {
+                let sc: Container<K, K::Contents> = serde_json::from_str(&s)?;
+
+                assert_eq!(
+                    &sc.key, key,
+                    "stored key doesn't match ours, even though they agree on path! it's a bug!"
+                );
+
+                Some(sc.contents)
+            }
+
+            Err(why) => match why.kind() {
+                ErrorKind::NotFound => None,
+                _ => bail!(
+                    "unable to find out whether {} exists: {:?}",
+                    own_path.display(),
+                    why
+                ),
+            },
+        })
+    }
+
+    pub fn set<K: StorageKey>(&mut self, key: &K, value: &K::Contents) -> Result<()> {
+        self.sync()?;
+
+        let to_write = Container {
+            generated_at: ::chrono::Utc::now().naive_utc(),
+            key: key.clone(),
+            contents: value,
+        };
+
+        let own_path = key.abs_path(&self.path);
+        ::std::fs::create_dir_all(&own_path.parent().unwrap())?;
+
+        let file = File::create(&own_path)?;
+        let mut writer = BufWriter::new(file);
+        serde_json::to_writer(&mut writer, &to_write)?;
+
+        // hopefully flush everything before we try to commit
+        drop(writer);
+
+        self.commit("setting key in storage (adam make this message better!)")?;
+        self.sync()?;
+
+        Ok(())
+    }
+}
+
 /// A trait which allows a struct to behave as the key in a very simple persistent K/V filesystem
 /// store.
-pub(crate) trait StorageKey
+pub trait StorageKey
 where
     Self: Clone + Debug + PartialEq + DeserializeOwned + Serialize,
 {
@@ -34,65 +206,18 @@ where
         path.push(format!("{}.json", self.basename()));
         path
     }
-
-    fn get(&self, data_dir: &Path) -> Result<Option<(NaiveDateTime, Self::Contents)>> {
-        let own_path = self.abs_path(data_dir);
-
-        use std::io::ErrorKind;
-
-        Ok(match ::std::fs::read_to_string(&own_path) {
-            Ok(s) => {
-                let sc: Container<Self, Self::Contents> = serde_json::from_str(&s)?;
-
-                assert_eq!(
-                    &sc.key, self,
-                    "stored key doesn't match ours, even though they agree on path! it's a bug!"
-                );
-
-                Some((sc.generated_at, sc.contents))
-            }
-
-            Err(why) => match why.kind() {
-                ErrorKind::NotFound => None,
-                _ => bail!(
-                    "unable to find out whether {} exists: {:?}",
-                    own_path.display(),
-                    why
-                ),
-            },
-        })
-    }
-
-    fn set(&self, data_dir: &Path, to_store: Self::Contents) -> Result<()> {
-        use std::fs::File;
-        use std::io::BufWriter;
-
-        let to_write = Container {
-            generated_at: ::chrono::Utc::now().naive_utc(),
-            key: self.clone(),
-            contents: to_store,
-        };
-
-        let own_path = self.abs_path(data_dir);
-        ::std::fs::create_dir_all(&own_path.parent().unwrap())?;
-
-        let file = File::create(&own_path)?;
-        let mut writer = BufWriter::new(file);
-        serde_json::to_writer(&mut writer, &to_write)?;
-        Ok(())
-    }
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
-pub(crate) struct Container<K, V> {
+pub struct Container<K, V> {
     /// UTC
     pub generated_at: NaiveDateTime,
     pub key: K,
     pub contents: V,
 }
 
-pub(crate) enum Entry<K, T> {
-    New(K, T, PathBuf),
+pub enum Entry<K, T> {
+    New(K, T),
     Existing(T),
 }
 
@@ -101,7 +226,7 @@ impl<K, T> ::std::ops::Deref for Entry<K, T> {
 
     fn deref(&self) -> &Self::Target {
         match self {
-            Entry::New(_, t, _) => t,
+            Entry::New(_, t) => t,
             Entry::Existing(t) => t,
         }
     }
@@ -112,15 +237,15 @@ where
     K: StorageKey<Contents = T> + DeserializeOwned + Serialize,
     T: DeserializeOwned + Serialize,
 {
-    pub fn ensure_persisted(self) -> Result<()> {
+    pub fn ensure_persisted(self, store: &mut GitStore) -> Result<()> {
         Ok(match self {
-            Entry::New(k, t, data_dir) => k.set(&data_dir, t)?,
+            Entry::New(k, t) => store.set(&k, &t)?,
             _ => (),
         })
     }
 }
 
-pub(crate) mod index {
+pub mod index {
     use super::*;
 
     #[derive(Debug, Clone, Deserialize, PartialEq, Serialize)]
@@ -157,7 +282,7 @@ pub(crate) mod index {
     }
 }
 
-pub(crate) mod measurement {
+pub mod measurement {
     use super::*;
 
     #[derive(Clone, Debug, Deserialize, Hash, PartialEq, Serialize)]
@@ -280,10 +405,10 @@ mod tests {
             c in 0..255u8,
             ref contents in ::proptest::collection::vec(".*", 1..100)
         ) {
-            use super::StorageKey;
-
             let tempdir = tempdir().unwrap();
             let data_dir = tempdir.path();
+
+            let mut storage = GitStore::ensure_initialized(data_dir).unwrap();
 
             let key = TestKey {
                 a, b, c
@@ -292,9 +417,9 @@ mod tests {
             let contents = contents.to_owned();
             let expected = contents.clone();
 
-            assert_eq!(key.get(data_dir).unwrap(), None);
-            key.set(data_dir, contents).unwrap();
-            assert_eq!(key.get(data_dir).unwrap().unwrap().1, expected);
+            assert_eq!(storage.get(&key).unwrap(), None);
+            storage.set(&key, &contents).unwrap();
+            assert_eq!(storage.get(&key).unwrap().unwrap(), expected);
         }
     }
 

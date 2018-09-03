@@ -8,6 +8,7 @@ extern crate serde_derive;
 extern crate byteorder;
 extern crate chrono;
 extern crate criterion;
+extern crate git2;
 extern crate glob;
 extern crate lolbench_support;
 extern crate marky_mark;
@@ -48,7 +49,7 @@ use slug::slugify;
 
 pub fn measure(opts: BenchOpts, data_dir: &Path) -> Result<()> {
     info!("ensuring data dir {} exists", data_dir.display());
-    let collector = Collector::new(data_dir)?;
+    let mut collector = Collector::new(data_dir)?;
 
     info!("cataloging potential builds to run");
     let candidates = opts.enumerate_bench_candidates()?;
@@ -106,7 +107,7 @@ pub fn end_to_end_test(crate_name: &str, bench_name: &str) {
     ).unwrap();
 
     // FIXME make this a proper temp dir
-    let collector = Collector::new(Path::new("/tmp/lolbenchtest")).unwrap();
+    let mut collector = Collector::new(Path::new("/tmp/lolbenchtest")).unwrap();
     collector.run(&plan).unwrap();
 }
 
