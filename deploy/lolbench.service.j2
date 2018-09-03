@@ -10,5 +10,5 @@ ExecStart=/root/.cargo/bin/cargo run -- \
     --runner '{{ runner }}' \
     --data-dir '{{ data_dir }}' \
     --nightlies-since {{ epoch_nightly }} \
-    --move-kernel-threads \
-    --cpu-pattern "{{ allowed_cpus }}"
+    --move-kthreads \
+    --cpus "{{ allowed_cpus }}"

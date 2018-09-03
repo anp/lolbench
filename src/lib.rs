@@ -55,7 +55,7 @@ pub fn measure(opts: BenchOpts, data_dir: &Path) -> Result<()> {
     let candidates = opts.enumerate_bench_candidates()?;
 
     info!(
-        "{} possible benchmark plans to run to satisfy provided options, pruning...",
+        "{} possible toolchains to run to satisfy provided options, pruning...",
         candidates.len()
     );
 
