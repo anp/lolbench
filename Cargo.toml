@@ -8,6 +8,15 @@ version = "0.0.1"
 opt-level = 1
 debug = 1
 
+[profile.test]
+opt-level = 1
+debug = 1
+
+[profile.release]
+opt-level = 3
+codegen-units = 1
+incremental = false
+
 [dependencies]
 byteorder = "^1.2"
 chrono = { version = "0.4", features = ["serde"] }
