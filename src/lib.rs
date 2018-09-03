@@ -106,8 +106,11 @@ pub fn end_to_end_test(crate_name: &str, bench_name: &str) {
         source_path,
     ).unwrap();
 
+    let data_dir =
+        ::std::env::var("LOLBENCH_DATA_DIR").unwrap_or_else(|_| "/tmp/lolbenchtest".to_owned());
+
     // FIXME make this a proper temp dir
-    let mut collector = Collector::new(Path::new("/tmp/lolbenchtest")).unwrap();
+    let mut collector = Collector::new(Path::new(&data_dir)).unwrap();
     collector.run(&plan).unwrap();
 }
 

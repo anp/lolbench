@@ -38,6 +38,8 @@ anchors:
 
   - &bench_crate
     <<: *rust_job
+    environment:
+      LOLBENCH_DATA_DIR: /tmp/lolbench
     steps:
       - checkout
       - *setup
@@ -48,6 +50,8 @@ anchors:
           command: cargo test --release --manifest-path "./benches/$CIRCLE_JOB/Cargo.toml"
       - *save_cache
       - *store_target_dir
+      - store_artifacts:
+          path: /tmp/lolbench
 
 jobs:
   fmt:
