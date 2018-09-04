@@ -79,6 +79,24 @@
         name: pull.rebase
         scope: global
         value: true
+    - git_config:
+        name: user.name
+        scope: global
+        value: lolbench
+      become: yes
+      become_user: adam
+    - git_config:
+        name: user.email
+        scope: global
+        value: adam.n.perry+lolbench@gmail.com
+      become: yes
+      become_user: adam
+    - git_config:
+        name: pull.rebase
+        scope: global
+        value: true
+      become: yes
+      become_user: adam
     - name: clone
       git:
         repo: https://github.com/anp/lolbench.git

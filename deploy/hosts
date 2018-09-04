@@ -1,4 +1,6 @@
 [runners]
+molly.lolbench.rust.af runner=molly allowed_cpus=0-6
+sally.lolbench.rust.af runner=sally allowed_cpus=0-6
 wilhelm.lolbench.rust.af runner=wilhelm allowed_cpus=0-6
 
 [runners:vars]
