@@ -102,15 +102,21 @@ impl GitStore {
 
     /// `git pull --rebase`
     fn pull(&self) -> Result<()> {
-        ensure!(
-            ::std::process::Command::new("git")
-                .arg("pull")
-                .arg("--rebase")
-                .current_dir(&self.path)
-                .status()?
-                .success(),
-            "unable to pull from data directory's origin"
-        );
+        if self.has_origin()? {
+            ensure!(
+                ::std::process::Command::new("git")
+                    .arg("pull")
+                    .arg("--rebase")
+                    .arg("origin")
+                    .arg("master")
+                    .current_dir(&self.path)
+                    .status()?
+                    .success(),
+                "unable to pull from data directory's origin"
+            );
+        } else {
+            warn!("no origin remote found, skipping pull");
+        }
         Ok(())
     }
 
@@ -120,13 +126,15 @@ impl GitStore {
             ensure!(
                 ::std::process::Command::new("git")
                     .arg("push")
+                    .arg("origin")
+                    .arg("master")
                     .current_dir(&self.path)
                     .status()?
                     .success(),
                 "unable to push to data directory's origin"
             );
         } else {
-            warn!("no origin remote found");
+            warn!("no origin remote found, skipping push");
         }
         Ok(())
     }
@@ -143,7 +151,7 @@ impl GitStore {
     pub fn sync_down(&mut self) -> Result<()> {
         info!("ensuring repo is sync'd with origin if it exists");
         if self.has_origin()? {
-            info!("synchronizing git storage with origin");
+            info!("stashing uncommitted changes");
             self.stash()?;
             info!("pulling from remote");
             self.pull()?;
