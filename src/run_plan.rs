@@ -17,13 +17,13 @@ use CriterionConfig;
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, PartialOrd, Ord, Serialize)]
 pub struct RunPlan {
-    pub shield: Option<ShieldSpec>,
+    pub binary_name: String,
+    pub benchmark: Benchmark,
     pub toolchain: Option<Toolchain>,
+    pub bench_config: Option<CriterionConfig>,
+    pub shield: Option<ShieldSpec>,
     pub source_path: PathBuf,
     pub manifest_path: PathBuf,
-    pub benchmark: Benchmark,
-    pub binary_name: String,
-    pub bench_config: Option<CriterionConfig>,
 }
 
 impl Display for RunPlan {

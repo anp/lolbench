@@ -10,6 +10,8 @@ use signal::exit_if_needed;
 use storage::{index, measurement, Entry, Estimates, GitStore, Statistic, StorageKey};
 use toolchain::Toolchain;
 
+pub type CollectionResult<T> = ::std::result::Result<T, self::Error>;
+
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Error {
     kind: ErrorKind,
@@ -22,6 +24,7 @@ const DEFAULT_MAX_RETRIES: u8 = 2;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub enum ErrorKind {
+    Build(String),
     Run(String),
     PostProcess(String),
 }
@@ -83,29 +86,47 @@ impl Collector {
     /// Check to see if we need to do anything with this RunPlan. Used for conveniently pruning
     /// the list of benchmarks before we start installing toolchains and building binaries.
     fn plan_can_be_skipped_with_no_work(&mut self, rp: &RunPlan) -> Result<bool> {
-        Ok(if let (_, Some(hash)) = self.existing_binary_hash(rp)? {
-            if let (_, Some(Ok(_))) = self.existing_estimates(rp, &hash)? {
-                true
+        Ok(
+            if let (_, Some(Ok(hash))) = self.existing_binary_hash(rp)? {
+                if let (_, Some(Ok(_))) = self.existing_estimates(rp, &hash)? {
+                    true
+                } else {
+                    false
+                }
             } else {
                 false
-            }
-        } else {
-            false
-        })
+            },
+        )
     }
 
     /// Builds a benchmark binary for the current runner if it not been previously built and run.
-    fn compute_binary_hash(&mut self, rp: &RunPlan) -> Result<Entry<index::Key, Vec<u8>>> {
+    fn compute_binary_hash(&mut self, rp: &RunPlan) -> Result<Entry<index::Key>> {
         let (key, maybe_existing) = self.existing_binary_hash(rp)?;
 
         Ok(match maybe_existing {
-            Some(e) => Entry::Existing(e),
-            None => Entry::New(key, rp.build()?),
+            Some(Ok(e)) => Entry::Existing(Ok(e)),
+            Some(Err(_why)) => {
+                // TODO see if we should rebuild this?
+                unimplemented!();
+            }
+            None => {
+                let build_res = rp.build().map_err(|e| Error {
+                    kind: ErrorKind::Build(e.to_string()),
+                    max_retries: DEFAULT_MAX_RETRIES,
+                    num_retries: 0,
+                    retryable: false,
+                });
+
+                Entry::New(key, build_res)
+            }
         })
     }
 
     /// Checks to see if we've previously built a binary for this exact RunPlan and stored its hash.
-    fn existing_binary_hash(&mut self, rp: &RunPlan) -> Result<(index::Key, Option<Vec<u8>>)> {
+    fn existing_binary_hash(
+        &mut self,
+        rp: &RunPlan,
+    ) -> Result<(index::Key, Option<CollectionResult<Vec<u8>>>)> {
         let ikey = index::Key::new(&rp);
         let found = self.storage.get(&ikey)?;
         Ok((ikey, found))
@@ -116,10 +137,10 @@ impl Collector {
         &mut self,
         rp: &RunPlan,
         binary_hash: &[u8],
-    ) -> Result<Entry<measurement::Key, <measurement::Key as StorageKey>::Contents>> {
+    ) -> Result<Entry<measurement::Key>> {
         let (mkey, maybe_existing) = self.existing_estimates(rp, binary_hash)?;
 
-        Ok(match maybe_existing {
+        let res = match maybe_existing {
             Some(e) => Entry::Existing(e),
             None => {
                 let res = rp
@@ -141,7 +162,9 @@ impl Collector {
 
                 Entry::New(mkey, res)
             }
-        })
+        };
+
+        Ok(res)
     }
 
     /// Check to see if we have already have measurements for this benchmark.
@@ -173,16 +196,46 @@ impl Collector {
     pub fn run(&mut self, rp: &RunPlan) -> Result<()> {
         self.storage.sync_down()?;
 
-        let binary_hash = self.compute_binary_hash(rp)?;
-        let estimates = self.compute_estimates(rp, &*binary_hash)?;
+        let binary_hash_res = self.compute_binary_hash(rp)?;
 
-        binary_hash.ensure_persisted(&mut self.storage)?;
-        estimates.ensure_persisted(&mut self.storage)?;
+        let estimates;
+        let binary_hash;
 
+        binary_hash_res.clone().ensure_persisted(&mut self.storage)?;
+
+        match &*binary_hash_res {
+            Ok(hash) => {
+                info!("all done with {}", rp);
+                binary_hash = Some(hash);
+                estimates = Some(self.compute_estimates(rp, &*hash)?);
+            }
+            Err(why) => {
+                warn!("unable to compute a binary hash for: {:?}", why);
+                estimates = None;
+                binary_hash = None;
+            }
+        };
+
+        if let Some(e) = estimates {
+            e.ensure_persisted(&mut self.storage)?;
+        }
+
+        self.storage.commit(&self.commit_msg(rp, &binary_hash))?;
         self.storage.push()?;
 
-        info!("all done with {}", rp);
         Ok(())
+    }
+
+    fn commit_msg(&self, rp: &RunPlan, bin_hash: &Option<&Vec<u8>>) -> String {
+        let hexhash = bin_hash.map(|h| {
+            h.into_iter()
+                .map(|d| format!("{:x}", d))
+                .fold(String::new(), |mut acc, x| {
+                    acc.push_str(&x);
+                    acc
+                })
+        });
+        format!("{}, binary {:?}\n\n{:#?}", rp, hexhash, rp)
     }
 
     /// Parses the results of a benchmark. This assumes that the benchmark has already been

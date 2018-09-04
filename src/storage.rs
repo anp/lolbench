@@ -12,6 +12,7 @@ use ring::digest::{Context as RingContext, SHA256};
 use serde::{de::DeserializeOwned, Serialize};
 use serde_json;
 
+use collector::CollectionResult;
 use cpu_shield::ShieldSpec;
 use run_plan::RunPlan;
 use toolchain::Toolchain;
@@ -206,7 +207,6 @@ impl GitStore {
         // hopefully flush everything before we try to commit
         drop(writer);
 
-        self.commit("setting key in storage (adam make this message better!)")?;
         Ok(())
     }
 }
@@ -242,13 +242,17 @@ pub struct Container<K, V> {
     pub contents: V,
 }
 
-pub enum Entry<K, T> {
-    New(K, T),
-    Existing(T),
+#[derive(Clone)]
+pub enum Entry<K: StorageKey> {
+    New(K, K::Contents),
+    Existing(K::Contents),
 }
 
-impl<K, T> ::std::ops::Deref for Entry<K, T> {
-    type Target = T;
+impl<K> ::std::ops::Deref for Entry<K>
+where
+    K: StorageKey,
+{
+    type Target = K::Contents;
 
     fn deref(&self) -> &Self::Target {
         match self {
@@ -258,10 +262,9 @@ impl<K, T> ::std::ops::Deref for Entry<K, T> {
     }
 }
 
-impl<K, T> Entry<K, T>
+impl<K> Entry<K>
 where
-    K: StorageKey<Contents = T> + DeserializeOwned + Serialize,
-    T: DeserializeOwned + Serialize,
+    K: StorageKey + DeserializeOwned + Serialize,
 {
     pub fn ensure_persisted(self, store: &mut GitStore) -> Result<()> {
         Ok(match self {
@@ -291,7 +294,7 @@ pub mod index {
 
     use slug::slugify;
     impl StorageKey for Key {
-        type Contents = Vec<u8>;
+        type Contents = CollectionResult<Vec<u8>>;
 
         fn parents(&self) -> Vec<String> {
             vec![String::from("run-plans"), slugify(&self.benchmark_key)]
@@ -334,7 +337,7 @@ pub mod measurement {
     }
 
     impl StorageKey for Key {
-        type Contents = ::std::result::Result<Estimates, ::collector::Error>;
+        type Contents = CollectionResult<Estimates>;
 
         fn parents(&self) -> Vec<String> {
             vec![String::from("measurements")]
