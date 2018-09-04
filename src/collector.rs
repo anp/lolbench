@@ -6,6 +6,7 @@ use std::path::Path;
 use serde_json;
 
 use run_plan::RunPlan;
+use signal::exit_if_needed;
 use storage::{index, measurement, Entry, Estimates, GitStore, Statistic, StorageKey};
 use toolchain::Toolchain;
 
@@ -50,6 +51,7 @@ impl Collector {
         let _guard = toolchain.ensure_installed()?;
 
         for rp in run_plans {
+            exit_if_needed();
             self.run(rp)?;
         }
 
@@ -169,11 +171,15 @@ impl Collector {
     ///
     /// Assumes that the `RunPlan`'s toolchain has already been installed.
     pub fn run(&mut self, rp: &RunPlan) -> Result<()> {
+        self.storage.sync_down()?;
+
         let binary_hash = self.compute_binary_hash(rp)?;
         let estimates = self.compute_estimates(rp, &*binary_hash)?;
 
         binary_hash.ensure_persisted(&mut self.storage)?;
         estimates.ensure_persisted(&mut self.storage)?;
+
+        self.storage.push()?;
 
         info!("all done with {}", rp);
         Ok(())

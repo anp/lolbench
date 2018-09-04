@@ -1,6 +1,8 @@
 #[macro_use]
 extern crate failure;
 #[macro_use]
+extern crate lazy_static;
+#[macro_use]
 extern crate log;
 #[macro_use]
 extern crate serde_derive;
@@ -10,12 +12,14 @@ extern crate chrono;
 extern crate criterion;
 extern crate git2;
 extern crate glob;
+extern crate libc;
 extern crate lolbench_support;
 extern crate marky_mark;
 extern crate noisy_float;
 extern crate ring;
 extern crate serde;
 extern crate serde_json;
+extern crate signal_hook;
 extern crate simple_logger;
 extern crate slug;
 
@@ -30,11 +34,13 @@ mod cpu_shield;
 mod generator;
 mod registry;
 mod run_plan;
+mod signal;
 mod storage;
 mod toolchain;
 
 pub use self::{
-    collector::*, cpu_shield::*, generator::*, registry::*, run_plan::*, storage::*, toolchain::*,
+    collector::*, cpu_shield::*, generator::*, registry::*, run_plan::*, signal::*, storage::*,
+    toolchain::*,
 };
 pub use lolbench_support::*;
 pub use marky_mark::*;

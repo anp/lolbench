@@ -115,34 +115,39 @@ impl GitStore {
     }
 
     /// `git push`
-    fn push(&self) -> Result<()> {
-        ensure!(
-            ::std::process::Command::new("git")
-                .arg("push")
-                .current_dir(&self.path)
-                .status()?
-                .success(),
-            "unable to push data to data directory's origin"
-        );
+    pub fn push(&self) -> Result<()> {
+        if self.has_origin()? {
+            ensure!(
+                ::std::process::Command::new("git")
+                    .arg("push")
+                    .current_dir(&self.path)
+                    .status()?
+                    .success(),
+                "unable to push to data directory's origin"
+            );
+        } else {
+            warn!("no origin remote found");
+        }
         Ok(())
     }
 
-    pub fn sync(&mut self) -> Result<()> {
-        info!("ensuring repo is sync'd with origin if it exists");
-        if self
+    fn has_origin(&self) -> Result<bool> {
+        Ok(self
             .repo
             .remotes()?
             .iter()
             .find(|&r| r == Some("origin"))
-            .is_some()
-        {
+            .is_some())
+    }
+
+    pub fn sync_down(&mut self) -> Result<()> {
+        info!("ensuring repo is sync'd with origin if it exists");
+        if self.has_origin()? {
             info!("synchronizing git storage with origin");
             self.stash()?;
             info!("pulling from remote");
             self.pull()?;
-            info!("pushing to remote");
-            self.push()?;
-            info!("done synchronizing");
+            info!("done synchronizing down");
         } else {
             warn!("git storage does not have an origin remote, won't do any remote sync'ing.");
         }
@@ -152,8 +157,6 @@ impl GitStore {
 
     pub fn get<K: StorageKey>(&mut self, key: &K) -> Result<Option<K::Contents>> {
         let own_path = key.abs_path(&self.path);
-
-        self.sync()?;
 
         Ok(match ::std::fs::read_to_string(&own_path) {
             Ok(s) => {
@@ -179,8 +182,6 @@ impl GitStore {
     }
 
     pub fn set<K: StorageKey>(&mut self, key: &K, value: &K::Contents) -> Result<()> {
-        self.sync()?;
-
         let to_write = Container {
             generated_at: ::chrono::Utc::now().naive_utc(),
             key: key.clone(),
@@ -198,8 +199,6 @@ impl GitStore {
         drop(writer);
 
         self.commit("setting key in storage (adam make this message better!)")?;
-        self.sync()?;
-
         Ok(())
     }
 }
