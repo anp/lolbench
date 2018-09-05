@@ -32,6 +32,10 @@
       ufw:
         rule: allow
         port: ssh
+    - name: firewall - allow mosh
+      ufw:
+        rule: allow
+        port: 60000:61000/udp
     - name: firewall - enable
       ufw:
         state: enabled
