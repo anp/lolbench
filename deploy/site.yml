@@ -70,6 +70,10 @@
         line: '%sudo ALL=(ALL) NOPASSWD: ALL'
         validate: 'visudo -cf %s'
 
+- name: agent
+  hosts: all
+  remote_user: adam
+  tasks:
     - name: rustup
       shell: curl https://sh.rustup.rs -sSf | sh -s -- -y
     - git_config:
@@ -84,40 +88,24 @@
         name: pull.rebase
         scope: global
         value: true
-    - git_config:
-        name: user.name
-        scope: global
-        value: lolbench
-      become: yes
-      become_user: adam
-    - git_config:
-        name: user.email
-        scope: global
-        value: adam.n.perry+lolbench@gmail.com
-      become: yes
-      become_user: adam
-    - git_config:
-        name: pull.rebase
-        scope: global
-        value: true
-      become: yes
-      become_user: adam
     - name: clone
       git:
         repo: https://github.com/anp/lolbench.git
         dest: '{{ deploy_dir }}'
         refspec: master
         version: '{{ gitsha }}'
-      become: yes
-      become_user: adam
     - name: clone-data
       git:
         repo: git@github.com:anp/lolbench-data.git
         dest: '{{ data_dir }}'
         update: no
-      become: yes
-      become_user: adam
 
+- name: systemd
+  hosts: all
+  remote_user: adam
+  become: yes
+  become_method: sudo
+  tasks:
     - name: systemd-service
       template:
         src: lolbench.service.j2
