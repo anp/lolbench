@@ -9,6 +9,8 @@ anchors:
       name: Set up the environment
       command: |
         git submodule update --init --recursive
+
+        # used in lolbench's tests -- we want to test committing to data dirs
         git config --global pull.rebase true
         git config --global user.email 'adam.n.perry+lolbench@gmail.com'
         git config --global user.name "lolbench"
@@ -70,10 +72,35 @@ jobs:
       - *restore_cache
       - *install_deps
       - run: cargo test-core
-      # - run: cargo build --release --all --all-targets
-      # - run: cargo test --release --all --all-targets
       - *save_cache
       - *store_target_dir
+
+  deploy:
+    docker:
+      - image: debian/stable
+    steps:
+      - checkout
+      - *setup
+      - run:
+          name: install deployment deps
+          command: |
+            apt-get update
+            apt-get upgrade
+            apt-get install ansible git openssh
+
+      - run:
+          name: setup ssh key
+          command: |
+            mkdir -p ~/.ssh
+            echo "$LOLBENCH_DEPLOY_KEY" | base64 -d > ~/.ssh/lolbench_deploy_private
+            chmod 0600 ~/.ssh/lolbench_deploy_private
+
+      - run:
+          name: deploy with ansible
+          command: ansible-playbook \
+            --extra-vars gitsha=$CIRCLE_SHA1 \
+            --inventory deploy/hosts \
+            deploy/site.yml
 
   brotli_1_1_3:
     <<: *bench_crate
@@ -104,7 +131,6 @@ workflows:
   version: 2
   main:
     jobs:
-      #TODO deploy lolbench in this workflow
       - fmt
       - core:
           requires:
@@ -145,3 +171,16 @@ workflows:
       - snap_0_2_4:
           requires:
             - fmt
+      - big_green_button:
+          type: approval
+          filters:
+            branches:
+              only:
+                - master
+      - deploy:
+          filters:
+            branches:
+              only:
+                - master
+          requires:
+            - big_green_button
