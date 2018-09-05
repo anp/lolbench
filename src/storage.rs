@@ -125,6 +125,17 @@ impl GitStore {
         })
     }
 
+    /// `git status --porcelain`
+    fn has_changes(&self) -> Result<bool> {
+        Ok(Command::new("git")
+            .arg("status")
+            .arg("--porcelain")
+            .current_dir(&self.path)
+            .output()?
+            .stdout
+            .len() > 0)
+    }
+
     pub fn commit(&self, msg: &str) -> Result<()> {
         info!("committing current changes with message '{}'", msg);
 
@@ -137,6 +148,11 @@ impl GitStore {
                 .success(),
             "unable to stage changes in data dir"
         );
+
+        if !self.has_changes()? {
+            info!("no changes to commit");
+            return Ok(());
+        }
 
         let mut commit_child = Command::new("git")
             .arg("commit")
