@@ -131,9 +131,9 @@
         daemon_reload: yes
         enabled: yes
         name: lolbench.timer
-    - name: systemd-service-restart
+    - name: systemd-service-stop
       systemd:
-        state: restarted
+        state: stopped
         name: lolbench.service
     - name: systemd-start-timer
       systemd:
