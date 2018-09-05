@@ -6,4 +6,4 @@ wilhelm.lolbench.rust.af runner=wilhelm allowed_cpus=0-6
 [runners:vars]
 data_dir=/home/adam/lolbench-data
 deploy_dir=/home/adam/lolbench
-epoch_nightly=2018-01-01
+epoch_nightly=2018-02-01
