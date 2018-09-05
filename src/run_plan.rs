@@ -28,9 +28,14 @@ pub struct RunPlan {
 
 impl Display for RunPlan {
     fn fmt(&self, f: &mut Formatter) -> FmtResult {
+        let tcs = self
+            .toolchain
+            .as_ref()
+            .map(|tc| tc.to_string())
+            .unwrap_or_else(|| "current".to_string());
         f.write_fmt(format_args!(
-            "{}::{}@{:?}",
-            self.benchmark.crate_name, self.benchmark.name, self.benchmark.runner,
+            "{}: {}::{}@{:?}",
+            tcs, self.benchmark.crate_name, self.benchmark.name, self.benchmark.runner,
         ))
     }
 }
