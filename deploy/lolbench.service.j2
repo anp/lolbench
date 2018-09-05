@@ -6,7 +6,7 @@ Type=oneshot
 User=root
 SendSIGKILL=no
 WorkingDirectory={{ deploy_dir }}
-ExecStart=/root/.cargo/bin/cargo run -- \
+ExecStart=/root/.cargo/bin/cargo run --release -- \
     measure \
     --runner '{{ runner }}' \
     --data-dir '{{ data_dir }}' \
