@@ -144,7 +144,8 @@ impl GitStore {
                 .arg("add")
                 .arg(".")
                 .current_dir(&self.path)
-                .status()?
+                .output()?
+                .status
                 .success(),
             "unable to stage changes in data dir"
         );
@@ -170,10 +171,14 @@ impl GitStore {
                 .write_all(msg.as_bytes())?;
         }
 
-        let status = commit_child.wait()?;
+        let output = commit_child.wait_with_output()?;
 
-        if !status.success() {
-            bail!("failed to commit changes to data directory");
+        if !output.status.success() {
+            bail!(
+                "failed to commit changes to data directory: {} {}",
+                String::from_utf8_lossy(&output.stdout),
+                String::from_utf8_lossy(&output.stderr)
+            );
         }
 
         Ok(())
@@ -181,32 +186,39 @@ impl GitStore {
 
     /// `git stash --include-untracked`
     fn stash(&self) -> Result<()> {
-        ensure!(
-            Command::new("git")
-                .arg("stash")
-                .arg("--include-untracked")
-                .current_dir(&self.path)
-                .status()?
-                .success(),
-            "unable to stash uncommitted changes"
-        );
+        let output = Command::new("git")
+            .arg("stash")
+            .arg("--include-untracked")
+            .current_dir(&self.path)
+            .output()?;
+        if !output.status.success() {
+            bail!(
+                "unable to stash uncommitted changes, {} {}",
+                String::from_utf8_lossy(&output.stdout),
+                String::from_utf8_lossy(&output.stderr)
+            );
+        }
         Ok(())
     }
 
     /// `git pull --rebase`
     fn pull(&self) -> Result<()> {
         if self.has_origin()? {
-            ensure!(
-                Command::new("git")
-                    .arg("pull")
-                    .arg("--rebase")
-                    .arg("origin")
-                    .arg("master")
-                    .current_dir(&self.path)
-                    .status()?
-                    .success(),
-                "unable to pull from data directory's origin"
-            );
+            let output = Command::new("git")
+                .arg("pull")
+                .arg("--rebase")
+                .arg("origin")
+                .arg("master")
+                .current_dir(&self.path)
+                .output()?;
+
+            if !output.status.success() {
+                bail!(
+                    "unable to pull from data directory's origin: {} {}",
+                    String::from_utf8_lossy(&output.stdout),
+                    String::from_utf8_lossy(&output.stderr)
+                );
+            }
         } else {
             warn!("no origin remote found, skipping pull");
         }
@@ -216,16 +228,19 @@ impl GitStore {
     /// `git push`
     pub fn push(&self) -> Result<()> {
         if self.has_origin()? {
-            ensure!(
-                Command::new("git")
-                    .arg("push")
-                    .arg("origin")
-                    .arg("master")
-                    .current_dir(&self.path)
-                    .status()?
-                    .success(),
-                "unable to push to data directory's origin"
-            );
+            let output = Command::new("git")
+                .arg("push")
+                .arg("origin")
+                .arg("master")
+                .current_dir(&self.path)
+                .output()?;
+            if !output.status.success() {
+                bail!(
+                    "unable to push to data directory's origin: {} {}",
+                    String::from_utf8_lossy(&output.stdout),
+                    String::from_utf8_lossy(&output.stderr)
+                );
+            }
         } else {
             warn!("no origin remote found, skipping push");
         }
