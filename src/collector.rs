@@ -46,6 +46,7 @@ impl Collector {
         toolchain: Toolchain,
         run_plans: &[RunPlan],
     ) -> Result<()> {
+        exit_if_needed();
         let _guard = toolchain.ensure_installed()?;
 
         for rp in run_plans {
