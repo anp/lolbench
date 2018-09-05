@@ -91,7 +91,7 @@ impl GitStore {
     }
 
     pub fn ensure_initialized(at: impl AsRef<Path>) -> Result<Self> {
-        info!(
+        debug!(
             "ensuring {} is a git repository and opening it.",
             at.as_ref().display()
         );
@@ -137,7 +137,7 @@ impl GitStore {
     }
 
     pub fn commit(&self, msg: &str) -> Result<()> {
-        info!("committing current changes with message '{}'", msg);
+        info!("committing with message '{}...'", msg.split_at(50).0);
 
         ensure!(
             Command::new("git")
@@ -150,7 +150,7 @@ impl GitStore {
         );
 
         if !self.has_changes()? {
-            info!("no changes to commit");
+            debug!("no changes to commit");
             return Ok(());
         }
 
@@ -242,12 +242,12 @@ impl GitStore {
     }
 
     pub fn sync_down(&mut self) -> Result<()> {
-        info!("sync'ing down, first stashing uncommitted changes");
+        info!("sync'ing down");
         self.stash()?;
         if self.has_origin()? {
-            info!("we have an origin remote, pulling");
+            debug!("we have an origin remote, pulling");
             self.pull()?;
-            info!("done pulling from remote");
+            debug!("done pulling from remote");
         } else {
             info!("git storage does not have an origin remote, won't do any remote sync'ing.");
         }

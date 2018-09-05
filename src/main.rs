@@ -1,11 +1,11 @@
 #[macro_use]
 extern crate failure;
-extern crate log;
 #[macro_use]
 extern crate structopt;
 
 extern crate chrono;
 extern crate clap;
+extern crate log;
 extern crate lolbench;
 extern crate simple_logger;
 
@@ -17,7 +17,7 @@ use chrono::{NaiveDate, Utc};
 use structopt::StructOpt;
 
 fn main() -> Result<()> {
-    simple_logger::init().unwrap();
+    simple_logger::init_with_level(log::Level::Info).unwrap();
     Cli::from_args().exec()
 }
 
