@@ -3,6 +3,7 @@ use super::Result;
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::Path;
 
+use itertools::Itertools;
 use serde_json;
 
 use run_plan::RunPlan;
@@ -39,6 +40,43 @@ impl Collector {
         Ok(Collector { storage })
     }
 
+    fn batch_commit(
+        &mut self,
+        toolchain: &Toolchain,
+        results: &mut Vec<(bool, RunPlan, Option<String>)>,
+    ) -> Result<()> {
+        let mut lines = Vec::new();
+        let mut num_ok = 0;
+        let mut num_err = 0;
+        for (ok, rp, hexhash) in results.drain(..) {
+            if ok {
+                num_ok += 1;
+            } else {
+                num_err += 1;
+            }
+
+            lines.push(format!(
+                "\n{} {}, binary {:?}\n{:#?}",
+                if ok { "ok" } else { "err" },
+                rp,
+                hexhash,
+                rp
+            ));
+        }
+
+        self.storage.commit(&format!(
+            "{}, {} ok, {} err\n{}",
+            toolchain,
+            num_ok,
+            num_err,
+            lines.iter().join("\n")
+        ))?;
+
+        self.storage.sync_down()?;
+        self.storage.push()?;
+        Ok(())
+    }
+
     /// Run all the passed benchmarks with the given toolchain, installing the toolchain beforehand
     /// and uninstalling it afterwards if it was installed by us.
     pub fn run_benches_with_toolchain(
@@ -47,12 +85,30 @@ impl Collector {
         run_plans: &[RunPlan],
     ) -> Result<()> {
         exit_if_needed();
+
+        self.storage.sync_down()?;
         let _guard = toolchain.ensure_installed()?;
+
+        let mut results = Vec::new();
+
+        let batch_size = 10;
+        let mut pushed = 0;
 
         for rp in run_plans {
             exit_if_needed();
-            self.run(rp)?;
+
+            let (status, hexhash) = self.run(rp)?;
+            results.push((status, rp.clone(), hexhash));
+
+            pushed += 1;
+            if pushed == batch_size {
+                self.batch_commit(&toolchain, &mut results)?;
+                pushed = 0;
+            }
         }
+
+        // pick up any stragglers
+        self.batch_commit(&toolchain, &mut results)?;
 
         Ok(())
     }
@@ -84,7 +140,7 @@ impl Collector {
     fn plan_can_be_skipped_with_no_work(&mut self, rp: &RunPlan) -> Result<bool> {
         Ok(
             if let (_, Some(Ok(hash))) = self.existing_binary_hash(rp)? {
-                if let (_, Some(Ok(_))) = self.existing_estimates(rp, &hash)? {
+                if let (_, Some(_)) = self.existing_estimates(rp, &hash)? {
                     true
                 } else {
                     false
@@ -175,9 +231,7 @@ impl Collector {
     /// directory already has their respsective outputs for the provided RunPlan.
     ///
     /// Assumes that the `RunPlan`'s toolchain has already been installed.
-    pub fn run(&mut self, rp: &RunPlan) -> Result<()> {
-        self.storage.sync_down()?;
-
+    pub fn run(&mut self, rp: &RunPlan) -> Result<(bool, Option<String>)> {
         let binary_hash_res = self.compute_binary_hash(rp)?;
 
         binary_hash_res.clone().ensure_persisted(&mut self.storage)?;
@@ -188,11 +242,12 @@ impl Collector {
             (None, None)
         };
 
-        let mut status = "err";
-        if let Some(e) = estimates {
-            status = "ok";
+        let status = if let Some(e) = estimates {
             e.ensure_persisted(&mut self.storage)?;
-        }
+            true
+        } else {
+            false
+        };
 
         let hexhash = binary_hash.map(|h| {
             h.into_iter()
@@ -203,13 +258,7 @@ impl Collector {
                 })
         });
 
-        let msg = format!("{} {}, binary {:?}\n\n{:#?}", status, rp, hexhash, rp);
-
-        self.storage.commit(&msg)?;
-        self.storage.sync_down()?;
-        self.storage.push()?;
-
-        Ok(())
+        Ok((status, hexhash))
     }
 
     /// Parses the results of a benchmark. This assumes that the benchmark has already been

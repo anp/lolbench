@@ -25,6 +25,7 @@ criterion = { version = "0.2.0", path = "./criterion", features = ["pmu"] }
 failure = "0.1"
 git2 = "0.7"
 glob = "0.2"
+itertools = "0.7"
 lazy_static = "1"
 libc = "0.2"
 log = "0.4"

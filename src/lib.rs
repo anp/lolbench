@@ -12,6 +12,7 @@ extern crate chrono;
 extern crate criterion;
 extern crate git2;
 extern crate glob;
+extern crate itertools;
 extern crate libc;
 extern crate lolbench_support;
 extern crate marky_mark;
