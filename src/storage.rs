@@ -154,16 +154,10 @@ impl GitStore {
                 .write_all(msg.as_bytes())?;
         }
 
-        let output = commit_child.wait_with_output()?;
+        let status = commit_child.wait()?;
 
-        if !output.status.success() {
-            let stdout = String::from_utf8_lossy(&output.stdout);
-            let stderr = String::from_utf8_lossy(&output.stderr);
-            bail!(
-                "failed to commit changes to data directory: {} {}",
-                stdout,
-                stderr
-            );
+        if !status.success() {
+            bail!("failed to commit changes to data directory");
         }
 
         Ok(())
