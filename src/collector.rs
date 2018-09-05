@@ -198,19 +198,13 @@ impl Collector {
             }
         };
 
+        let mut status = "err";
         if let Some(e) = estimates {
+            status = "ok";
             e.ensure_persisted(&mut self.storage)?;
         }
 
-        self.storage.commit(&self.commit_msg(rp, &binary_hash))?;
-        self.storage.sync_down()?;
-        self.storage.push()?;
-
-        Ok(())
-    }
-
-    fn commit_msg(&self, rp: &RunPlan, bin_hash: &Option<&Vec<u8>>) -> String {
-        let hexhash = bin_hash.map(|h| {
+        let hexhash = binary_hash.map(|h| {
             h.into_iter()
                 .map(|d| format!("{:x}", d))
                 .fold(String::new(), |mut acc, x| {
@@ -218,7 +212,14 @@ impl Collector {
                     acc
                 })
         });
-        format!("{}, binary {:?}\n\n{:#?}", rp, hexhash, rp)
+
+        let msg = format!("{} {}, binary {:?}\n\n{:#?}", status, rp, hexhash, rp);
+
+        self.storage.commit(&msg)?;
+        self.storage.sync_down()?;
+        self.storage.push()?;
+
+        Ok(())
     }
 
     /// Parses the results of a benchmark. This assumes that the benchmark has already been
