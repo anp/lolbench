@@ -15,12 +15,7 @@ pub type CollectionResult<T> = ::std::result::Result<T, self::Error>;
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Error {
     kind: ErrorKind,
-    num_retries: u8,
-    max_retries: u8,
-    retryable: bool,
 }
-
-const DEFAULT_MAX_RETRIES: u8 = 2;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub enum ErrorKind {
@@ -104,21 +99,13 @@ impl Collector {
         let (key, maybe_existing) = self.existing_binary_hash(rp)?;
 
         Ok(match maybe_existing {
-            Some(Ok(e)) => Entry::Existing(Ok(e)),
-            Some(Err(_why)) => {
-                // TODO see if we should rebuild this?
-                unimplemented!();
-            }
-            None => {
-                let build_res = rp.build().map_err(|e| Error {
+            Some(r) => Entry::Existing(r),
+            None => Entry::New(
+                key,
+                rp.build().map_err(|e| Error {
                     kind: ErrorKind::Build(e.to_string()),
-                    max_retries: DEFAULT_MAX_RETRIES,
-                    num_retries: 0,
-                    retryable: false,
-                });
-
-                Entry::New(key, build_res)
-            }
+                }),
+            ),
         })
     }
 
@@ -147,16 +134,10 @@ impl Collector {
                     .exec()
                     .map_err(|why| Error {
                         kind: ErrorKind::Run(why.to_string()),
-                        max_retries: DEFAULT_MAX_RETRIES,
-                        num_retries: 0,
-                        retryable: false,
                     })
                     .and_then(|()| {
                         self.process(&rp).map_err(|why| Error {
                             kind: ErrorKind::Run(why.to_string()),
-                            max_retries: DEFAULT_MAX_RETRIES,
-                            num_retries: 0,
-                            retryable: false,
                         })
                     });
 
