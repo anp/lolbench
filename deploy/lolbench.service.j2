@@ -3,6 +3,7 @@ Description=lolbench agent
 
 [Service]
 Type=oneshot
+User=root
 SendSIGKILL=no
 WorkingDirectory={{ deploy_dir }}
 ExecStart=/root/.cargo/bin/cargo run -- \

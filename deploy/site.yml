@@ -109,11 +109,11 @@
       git:
         repo: git@github.com:anp/lolbench-data.git
         dest: '{{ data_dir }}'
-        refspec: master
+        update: no
       become: yes
       become_user: adam
 
-    - name: systemd-config
+    - name: systemd-service
       template:
         src: lolbench.service.j2
         dest: /lib/systemd/system/lolbench.service
@@ -121,17 +121,21 @@
       template:
         src: lolbench.timer.j2
         dest: /lib/systemd/system/lolbench.timer
-    - name: systemd-enable
+    - name: systemd-enable-service
       systemd:
         daemon_reload: yes
         enabled: yes
         name: lolbench.service
-    - name: systemd-enable
+    - name: systemd-enable-timer
       systemd:
         daemon_reload: yes
         enabled: yes
         name: lolbench.timer
-    - name: systemd-start
+    - name: systemd-service-restart
       systemd:
         state: restarted
+        name: lolbench.service
+    - name: systemd-start-timer
+      systemd:
+        state: started
         name: lolbench.timer
