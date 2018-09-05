@@ -257,7 +257,7 @@ impl GitStore {
     }
 
     pub fn sync_down(&mut self) -> Result<()> {
-        info!("sync'ing down");
+        debug!("sync'ing down");
         self.stash()?;
         if self.has_origin()? {
             debug!("we have an origin remote, pulling");

@@ -180,22 +180,12 @@ impl Collector {
 
         let binary_hash_res = self.compute_binary_hash(rp)?;
 
-        let estimates;
-        let binary_hash;
-
         binary_hash_res.clone().ensure_persisted(&mut self.storage)?;
 
-        match &*binary_hash_res {
-            Ok(hash) => {
-                info!("all done with {}", rp);
-                binary_hash = Some(hash);
-                estimates = Some(self.compute_estimates(rp, &*hash)?);
-            }
-            Err(why) => {
-                warn!("unable to compute a binary hash for: {:?}", why);
-                estimates = None;
-                binary_hash = None;
-            }
+        let (estimates, binary_hash) = if let Ok(hash) = &*binary_hash_res {
+            (Some(self.compute_estimates(rp, &*hash)?), Some(hash))
+        } else {
+            (None, None)
         };
 
         let mut status = "err";
