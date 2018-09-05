@@ -86,7 +86,7 @@ pub struct InstallGuard(Toolchain);
 impl Drop for InstallGuard {
     fn drop(&mut self) {
         if let Err(e) = ::std::fs::remove_dir_all(self.0.target_dir()) {
-            error!(
+            warn!(
                 "unable to clean up {}'s target directory ({}): {:?}",
                 self.0,
                 self.0.target_dir().display(),
@@ -94,7 +94,7 @@ impl Drop for InstallGuard {
             );
         }
         if let Err(e) = self.0.uninstall() {
-            error!("unable to uninstall {}: {:?}", self.0, e);
+            warn!("unable to uninstall {}: {:?}", self.0, e);
         }
     }
 }
