@@ -205,11 +205,15 @@ impl Registry {
         ))
     }
 
+    pub fn runners(&self) -> &[String] {
+        &self.workers
+    }
+
     pub fn benches(&self) -> Vec<Benchmark> {
         self.benchmarks.values().cloned().collect()
     }
 
-    fn update(&mut self, benchmark: &Benchmark) -> Result<()> {
+    pub fn update(&mut self, benchmark: &Benchmark) -> Result<()> {
         self.benchmarks
             .entry(benchmark.key())
             .and_modify(|b| b.absorg(benchmark))

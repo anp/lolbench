@@ -15,6 +15,7 @@ extern crate glob;
 extern crate libc;
 extern crate lolbench_support;
 extern crate marky_mark;
+extern crate min_max_heap;
 extern crate noisy_float;
 extern crate ring;
 extern crate serde;
@@ -22,6 +23,7 @@ extern crate serde_json;
 extern crate signal_hook;
 extern crate simple_logger;
 extern crate slug;
+extern crate walkdir;
 
 #[cfg(test)]
 #[macro_use]

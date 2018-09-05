@@ -30,6 +30,7 @@ libc = "0.2"
 log = "0.4"
 lolbench_support = { path = "./support" }
 marky_mark = { path = "./marky_mark" }
+min-max-heap = "1.2.0"
 noisy_float = { version = "0.1", features = ["serde-1"] }
 ring = "0.13"
 serde = "1"
@@ -39,6 +40,7 @@ signal-hook = "0.1"
 simple_logger = "0.5"
 slug = "0.1"
 structopt = { version = "0.2", default-features = false }
+walkdir = "2"
 
 [dev-dependencies]
 proptest = "0.7"

@@ -1,16 +1,19 @@
 use super::Result;
 
 use std::collections::BTreeMap;
+use std::ffi::OsStr;
 use std::fmt::Debug;
 use std::fs::File;
-use std::io::{BufWriter, ErrorKind};
+use std::io::{BufWriter, ErrorKind, Write};
 use std::path::{Path, PathBuf};
+use std::process::{Command, Stdio};
 
 use chrono::NaiveDateTime;
-use git2::{Oid, Repository};
+use git2::Repository;
 use ring::digest::{Context as RingContext, SHA256};
 use serde::{de::DeserializeOwned, Serialize};
 use serde_json;
+use walkdir::WalkDir;
 
 use collector::CollectionResult;
 use cpu_shield::ShieldSpec;
@@ -23,6 +26,70 @@ pub struct GitStore {
 }
 
 impl GitStore {
+    pub fn all_stored_estimates(
+        &self,
+    ) -> Result<BTreeMap<String, BTreeMap<Option<Toolchain>, Estimates>>> {
+        info!("finding all stored estimates in {}", self.path.display());
+
+        let measures =
+            self.all_stored::<measurement::Key, <measurement::Key as StorageKey>::Contents>()?;
+        let plans = self.all_stored::<index::Key, Vec<u8>>()?;
+
+        let measures_by_binhash: BTreeMap<Vec<u8>, Estimates> = measures
+            .into_iter()
+            .filter_map(|sc| {
+                let Container { key, contents, .. } = sc;
+                contents.ok().map(|estimates| (key.binary_hash, estimates))
+            })
+            .collect::<BTreeMap<_, _>>();
+
+        let mut all: BTreeMap<String, BTreeMap<Option<Toolchain>, Estimates>> = BTreeMap::new();
+
+        for Container {
+            key,
+            contents: binary_hash,
+            ..
+        } in plans
+        {
+            all.entry(key.benchmark_key)
+                .or_default()
+                .insert(key.toolchain, measures_by_binhash[&binary_hash].clone());
+        }
+
+        Ok(all)
+    }
+
+    fn all_stored<K: StorageKey, V: DeserializeOwned>(&self) -> Result<Vec<Container<K, V>>> {
+        let mut found = Vec::new();
+
+        for e in WalkDir::new(self.path.join(K::DIRECTORY)) {
+            let entry = e?;
+            let epath = entry.path();
+
+            if epath.extension() != Some(OsStr::new("json")) {
+                continue;
+            }
+
+            let contents = ::std::fs::read_to_string(epath)?;
+            match serde_json::from_str::<Container<K, V>>(&contents) {
+                Ok(sc) => found.push(sc),
+                Err(why) => {
+                    warn!(
+                        "tried to deserialize {} as an index::Key but failed: {:?}
+
+                        file contents:
+                        {}",
+                        epath.display(),
+                        why,
+                        contents
+                    );
+                }
+            }
+        }
+
+        Ok(found)
+    }
+
     pub fn ensure_initialized(at: impl AsRef<Path>) -> Result<Self> {
         info!(
             "ensuring {} is a git repository and opening it.",
@@ -32,7 +99,7 @@ impl GitStore {
             Ok(r) => r,
             Err(_) => {
                 let mut repo = Repository::init(at.as_ref())?;
-                let output = ::std::process::Command::new("git")
+                let output = Command::new("git")
                     .arg("commit")
                     .arg("--allow-empty")
                     .arg("--message")
@@ -58,39 +125,54 @@ impl GitStore {
         })
     }
 
-    pub fn commit(&self, msg: &str) -> Result<Oid> {
+    pub fn commit(&self, msg: &str) -> Result<()> {
         info!("committing current changes with message '{}'", msg);
-        debug!("fetching repository's default signer");
-        let signer = self.repo.signature()?;
 
-        debug!("opening the repository's index to add files");
-        let mut index = self.repo.index()?;
-        debug!("adding all files in the repository to the index");
-        index.add_all(&[self.path.join("*")], Default::default(), None)?;
-        debug!("writing changed index to tree");
-        let raw_oid = index.write_tree()?;
+        ensure!(
+            Command::new("git")
+                .arg("add")
+                .arg(".")
+                .current_dir(&self.path)
+                .status()?
+                .success(),
+            "unable to stage changes in data dir"
+        );
 
-        debug!("finding actual tree from returned oid");
-        let commit_tree = self.repo.find_tree(raw_oid)?;
-        debug!("finding repo head and converting reference to commit");
-        let parent = self.repo.head()?.peel_to_commit()?;
+        let mut commit_child = Command::new("git")
+            .arg("commit")
+            .arg("-F")
+            .arg("-")
+            .current_dir(&self.path)
+            .stdin(Stdio::piped())
+            .spawn()?;
 
-        debug!("doing actual commit and people say git cli has no ux");
-        let oid = self.repo.commit(
-            Some("HEAD"),
-            &signer,
-            &signer,
-            msg,
-            &commit_tree,
-            &[&parent],
-        )?;
-        Ok(oid)
+        {
+            commit_child
+                .stdin
+                .as_mut()
+                .unwrap()
+                .write_all(msg.as_bytes())?;
+        }
+
+        let output = commit_child.wait_with_output()?;
+
+        if !output.status.success() {
+            let stdout = String::from_utf8_lossy(&output.stdout);
+            let stderr = String::from_utf8_lossy(&output.stderr);
+            bail!(
+                "failed to commit changes to data directory: {} {}",
+                stdout,
+                stderr
+            );
+        }
+
+        Ok(())
     }
 
     /// `git stash --include-untracked`
     fn stash(&self) -> Result<()> {
         ensure!(
-            ::std::process::Command::new("git")
+            Command::new("git")
                 .arg("stash")
                 .arg("--include-untracked")
                 .current_dir(&self.path)
@@ -105,7 +187,7 @@ impl GitStore {
     fn pull(&self) -> Result<()> {
         if self.has_origin()? {
             ensure!(
-                ::std::process::Command::new("git")
+                Command::new("git")
                     .arg("pull")
                     .arg("--rebase")
                     .arg("origin")
@@ -125,7 +207,7 @@ impl GitStore {
     pub fn push(&self) -> Result<()> {
         if self.has_origin()? {
             ensure!(
-                ::std::process::Command::new("git")
+                Command::new("git")
                     .arg("push")
                     .arg("origin")
                     .arg("master")
@@ -150,15 +232,14 @@ impl GitStore {
     }
 
     pub fn sync_down(&mut self) -> Result<()> {
-        info!("ensuring repo is sync'd with origin if it exists");
+        info!("sync'ing down, first stashing uncommitted changes");
+        self.stash()?;
         if self.has_origin()? {
-            info!("stashing uncommitted changes");
-            self.stash()?;
-            info!("pulling from remote");
+            info!("we have an origin remote, pulling");
             self.pull()?;
-            info!("done synchronizing down");
+            info!("done pulling from remote");
         } else {
-            warn!("git storage does not have an origin remote, won't do any remote sync'ing.");
+            info!("git storage does not have an origin remote, won't do any remote sync'ing.");
         }
 
         Ok(())
@@ -218,17 +299,14 @@ where
     Self: Clone + Debug + PartialEq + DeserializeOwned + Serialize,
 {
     type Contents: DeserializeOwned + Serialize;
+    const DIRECTORY: &'static str;
 
-    fn parents(&self) -> Vec<String>;
     fn basename(&self) -> String;
 
     fn abs_path(&self, data_dir: &Path) -> PathBuf {
         let mut path = data_dir.to_owned();
 
-        for p in self.parents() {
-            path.push(p);
-        }
-
+        path.push(Self::DIRECTORY);
         path.push(format!("{}.json", self.basename()));
         path
     }
@@ -295,18 +373,17 @@ pub mod index {
     use slug::slugify;
     impl StorageKey for Key {
         type Contents = CollectionResult<Vec<u8>>;
-
-        fn parents(&self) -> Vec<String> {
-            vec![String::from("run-plans"), slugify(&self.benchmark_key)]
-        }
+        const DIRECTORY: &'static str = "run-plans";
 
         fn basename(&self) -> String {
-            slugify(
+            slugify(format!(
+                "{}-{}",
+                self.benchmark_key,
                 self.toolchain
                     .as_ref()
                     .map(|t| t.to_string())
-                    .unwrap_or_else(|| String::from("current-toolchain")),
-            )
+                    .unwrap_or_else(|| String::from("current-toolchain"))
+            ))
         }
     }
 }
@@ -316,9 +393,9 @@ pub mod measurement {
 
     #[derive(Clone, Debug, Deserialize, Hash, PartialEq, Serialize)]
     pub struct Key {
-        binary_hash: Vec<u8>,
-        runner: String,
-        cpu_shield: Option<ShieldSpec>,
+        pub binary_hash: Vec<u8>,
+        pub runner: String,
+        pub cpu_shield: Option<ShieldSpec>,
     }
 
     impl Key {
@@ -338,10 +415,7 @@ pub mod measurement {
 
     impl StorageKey for Key {
         type Contents = CollectionResult<Estimates>;
-
-        fn parents(&self) -> Vec<String> {
-            vec![String::from("measurements")]
-        }
+        const DIRECTORY: &'static str = "measurements";
 
         fn basename(&self) -> String {
             use std::hash::{Hash, Hasher};
@@ -374,32 +448,32 @@ pub type Estimates = BTreeMap<String, Statistic>;
 #[derive(Clone, Copy, PartialEq, PartialOrd, Deserialize, Serialize, Debug)]
 pub struct Statistic {
     #[serde(rename = "Mean")]
-    mean: Estimate,
+    pub mean: Estimate,
     #[serde(rename = "Median")]
-    median: Estimate,
+    pub median: Estimate,
     #[serde(rename = "MedianAbsDev")]
-    median_abs_dev: Estimate,
+    pub median_abs_dev: Estimate,
     #[serde(rename = "Slope")]
-    slope: Estimate,
+    pub slope: Estimate,
     #[serde(rename = "StdDev")]
-    std_dev: Estimate,
+    pub std_dev: Estimate,
 }
 
 #[derive(Clone, Copy, PartialEq, PartialOrd, Deserialize, Serialize, Debug)]
-struct ConfidenceInterval {
-    confidence_level: f64,
-    lower_bound: f64,
-    upper_bound: f64,
+pub struct ConfidenceInterval {
+    pub confidence_level: f64,
+    pub lower_bound: f64,
+    pub upper_bound: f64,
 }
 
 #[derive(Clone, Copy, PartialEq, PartialOrd, Deserialize, Serialize, Debug)]
-struct Estimate {
+pub struct Estimate {
     /// The confidence interval for this estimate
-    confidence_interval: ConfidenceInterval,
+    pub confidence_interval: ConfidenceInterval,
     ///
-    point_estimate: f64,
+    pub point_estimate: f64,
     /// The standard error of this estimate
-    standard_error: f64,
+    pub standard_error: f64,
 }
 
 #[cfg(test)]
@@ -416,10 +490,7 @@ mod tests {
 
     impl StorageKey for TestKey {
         type Contents = Vec<String>;
-
-        fn parents(&self) -> Vec<String> {
-            vec![self.a.to_string(), self.b.to_string()]
-        }
+        const DIRECTORY: &'static str = "fivef";
 
         fn basename(&self) -> String {
             self.c.to_string()

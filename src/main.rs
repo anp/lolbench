@@ -118,6 +118,11 @@ enum SubCommand {
         #[structopt(flatten)]
         inner: Measure,
     },
+    #[structopt(name = "rebalance-benchmarks")]
+    Rebalance {
+        #[structopt(long = "sample-dir", parse(from_os_str))]
+        sample_dir: PathBuf,
+    },
 }
 
 impl Cli {
@@ -125,6 +130,7 @@ impl Cli {
         match self.cmd {
             SubCommand::Measure { inner } => inner.run(),
             SubCommand::Generate { inner } => inner.run(),
+            SubCommand::Rebalance { sample_dir } => rebalance(sample_dir),
         }
     }
 }
