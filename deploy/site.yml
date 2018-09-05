@@ -35,7 +35,8 @@
     - name: firewall - allow mosh
       ufw:
         rule: allow
-        port: 60000:61000/udp
+        port: 60000:61000
+        proto: udp
     - name: firewall - enable
       ufw:
         state: enabled
