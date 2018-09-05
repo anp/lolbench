@@ -137,8 +137,6 @@ impl GitStore {
     }
 
     pub fn commit(&self, msg: &str) -> Result<()> {
-        info!("committing with message '{}...'", msg.split_at(50).0);
-
         ensure!(
             Command::new("git")
                 .arg("add")
@@ -155,6 +153,7 @@ impl GitStore {
             return Ok(());
         }
 
+        info!("committing with message '{}...'", msg.split_at(50).0);
         let mut commit_child = Command::new("git")
             .arg("commit")
             .arg("-F")
