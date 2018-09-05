@@ -203,6 +203,7 @@ impl Collector {
         }
 
         self.storage.commit(&self.commit_msg(rp, &binary_hash))?;
+        self.storage.sync_down()?;
         self.storage.push()?;
 
         Ok(())
