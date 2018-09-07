@@ -142,7 +142,7 @@ impl BenchOpts {
 
         let mut plans = BTreeMap::new();
 
-        for toolchain in toolchains {
+        for toolchain in toolchains.into_iter().rev() {
             let shield = self.shield_spec.as_ref().map(Clone::clone);
             let create_runplan = |benchmark: &Benchmark| {
                 let path = benchmark.entrypoint_path.clone();
