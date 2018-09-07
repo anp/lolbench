@@ -22,6 +22,7 @@
           - clang-3.9
           - cmake
           - cpufrequtils
+          - cpuset
           - git
           - libclang-3.9-dev
           - libssl-dev
