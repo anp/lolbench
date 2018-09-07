@@ -6,10 +6,10 @@
   become: yes
   become_method: sudo
   tasks:
-    # NOTE(anp): uncomment this to update, yeah i agree its dumb
     - name: apt - update
       apt:
         update_cache: yes
+    # NOTE(anp): uncomment this to update, yeah i agree its dumb
     # - name: apt - upgrade
     #   apt:
     #     upgrade: yes
