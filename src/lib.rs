@@ -72,7 +72,7 @@ pub fn measure(opts: BenchOpts, data_dir: &Path) -> Result<()> {
 
     info!("{} plans to run after pruning, running...", to_run.len());
 
-    for (toolchain, benches) in to_run {
+    for (toolchain, benches) in to_run.into_iter().rev() {
         info!("running {} benches with {}", benches.len(), toolchain);
         collector.run_benches_with_toolchain(toolchain, &benches)?;
     }
@@ -142,7 +142,7 @@ impl BenchOpts {
 
         let mut plans = BTreeMap::new();
 
-        for toolchain in toolchains.into_iter().rev() {
+        for toolchain in toolchains {
             let shield = self.shield_spec.as_ref().map(Clone::clone);
             let create_runplan = |benchmark: &Benchmark| {
                 let path = benchmark.entrypoint_path.clone();
