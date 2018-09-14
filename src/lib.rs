@@ -74,7 +74,9 @@ pub fn measure(opts: BenchOpts, data_dir: &Path) -> Result<()> {
 
     for (toolchain, benches) in to_run.into_iter().rev() {
         info!("running {} benches with {}", benches.len(), toolchain);
-        collector.run_benches_with_toolchain(toolchain, &benches)?;
+        if let Err(why) = collector.run_benches_with_toolchain(toolchain, &benches) {
+            warn!("problem running benchmarks: {}", why);
+        }
     }
 
     info!("all done!");
