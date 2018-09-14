@@ -48,7 +48,9 @@
       apt:
         autoclean: yes
     - name: relax perf_event_paranoid
-      command: echo 1 > /proc/sys/kernel/perf_event_paranoid
+      sysctl:
+        name: kernel.perf_event_paranoid
+        value: 0
     - name: disable cpu frequency scaling
       copy:
         src: cpufrequtils.default
