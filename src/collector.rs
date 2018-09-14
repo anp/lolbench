@@ -48,12 +48,15 @@ impl Collector {
         let mut lines = Vec::new();
         let mut num_ok = 0;
         let mut num_err = 0;
+        let mut runners = ::std::collections::BTreeSet::new();
         for (ok, rp, hexhash) in results.drain(..) {
             if ok {
                 num_ok += 1;
             } else {
                 num_err += 1;
             }
+
+            runners.insert(rp.benchmark.clone().runner.unwrap());
 
             lines.push(format!(
                 "\n{} {}, binary {:?}\n{:#?}",
@@ -65,8 +68,9 @@ impl Collector {
         }
 
         self.storage.commit(&format!(
-            "{}, {} ok, {} err\n{}",
+            "{} {:?}, {} ok, {} err\n{}",
             toolchain,
+            runners,
             num_ok,
             num_err,
             lines.iter().join("\n")
