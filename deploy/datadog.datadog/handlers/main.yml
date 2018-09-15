@@ -1,0 +1,7 @@
+---
+
+- name: restart datadog-agent
+  service:
+    name: datadog-agent
+    state: restarted
+  when: datadog_enabled and not ansible_check_mode

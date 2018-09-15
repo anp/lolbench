@@ -1,0 +1,47 @@
+---
+- name: Download new RPM key
+  get_url:
+    url: "{{ datadog_yum_gpgkey_new }}"
+    dest: /tmp/DATADOG_RPM_KEY_E09422B3.public
+    sha256sum: 694a2ffecff85326cc08e5f1a619937999a5913171e42f166e13ec802c812085
+
+- name: Import new RPM key
+  rpm_key:
+    key: /tmp/DATADOG_RPM_KEY_E09422B3.public
+    state: present
+  when: not ansible_check_mode
+
+- name: Install DataDog yum repo
+  yum_repository:
+    name: datadog
+    description: Datadog, Inc.
+    baseurl: "{{ datadog_yum_repo }}"
+    enabled: yes
+    gpgcheck: yes
+    gpgkey: "{{ datadog_yum_gpgkey }}"
+    state: "{% if datadog_agent5 %}absent{% else %}present{% endif %}"
+
+- name: (agent5) Install DataDog yum repo
+  yum_repository:
+    name: datadog_5
+    description: Datadog, Inc.
+    baseurl: "{{ datadog_agent5_yum_repo }}"
+    enabled: yes
+    gpgcheck: yes
+    gpgkey: "{{ datadog_yum_gpgkey }}"
+    state: "{% if datadog_agent5 %}present{% else %}absent{% endif %}"
+
+- name: Install pinned datadog-agent package
+  yum:
+    name: "datadog-agent-{{ datadog_agent_version }}"
+    state: present
+    allow_downgrade: "{{ datadog_agent_allow_downgrade }}"
+  when: (datadog_agent_version != "") and (not ansible_check_mode)
+  notify: restart datadog-agent
+
+# Using `yum` directly to work around an Ansible bug:
+# https://github.com/ansible/ansible/issues/20608
+- name: Install latest datadog-agent package
+  command: yum install -y datadog-agent
+  when: datadog_agent_version == ""
+  notify: restart datadog-agent

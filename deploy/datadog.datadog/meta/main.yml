@@ -1,0 +1,29 @@
+---
+galaxy_info:
+  author: 'Brian Akins, Dustin Brown & Datadog'
+  description: Install Datadog agent and configure checks
+  license: Apache2
+  min_ansible_version: 2.2
+  platforms:
+    - name: Ubuntu
+      versions:
+        - trusty
+        - xenial
+        - artful
+        - bionic
+    - name: Debian
+      versions:
+        - wheezy
+        - jessie
+        - stretch
+    - name: EL
+      versions:
+        - 7
+        - 6
+    - name: opensuse
+      versions:
+        - 11
+        - 12
+  categories:
+    - monitoring
+dependencies: []

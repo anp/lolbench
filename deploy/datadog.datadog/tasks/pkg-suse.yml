@@ -1,0 +1,56 @@
+---
+- block: # Work around due to SNI check for SLES11
+  - name: Stat if RPM key already exist
+    stat:
+      path: /tmp/DATADOG_RPM_KEY.public
+    register: ddkey
+  - name: Download new RPM key (SLES11)
+    shell: "curl {{ datadog_zypper_gpgkey }} -o /tmp/DATADOG_RPM_KEY.public"
+    args:
+      warn: no
+    when: not ddkey.stat.exists
+  when: ansible_distribution_version|int == 11
+
+- name: Download new RPM key
+  get_url:
+    url: "{{ datadog_zypper_gpgkey }}"
+    dest: /tmp/DATADOG_RPM_KEY.public
+    sha256sum: "{{ datadog_zypper_gpgkey_sha256sum }}"
+  when: ansible_distribution_version|int >= 12
+
+- name: Import new RPM key
+  rpm_key:
+    key: /tmp/DATADOG_RPM_KEY.public
+    state: present
+  when: not ansible_check_mode
+
+# ansible don't allow repo_gpgcheck to be set, we have to create the repo file manually
+- name: Install DataDog zypper repo
+  template:
+    src: zypper.repo.j2
+    dest: /etc/zypp/repos.d/datadog.repo
+    owner: "root"
+    group: "root"
+  register: datadog_zypper_repo
+
+# refresh zypper repos only if the template changed
+- name: refresh Datadog zypper_repos
+  command: zypper refresh datadog
+  when: datadog_zypper_repo.changed and not ansible_check_mode
+  args:
+    warn: false # silence warning about using zypper directly
+
+- name: Install pinned datadog-agent package
+  zypper:
+    name: "datadog-agent={{ datadog_agent_version }}"
+    state: present
+    oldpackage: "{{ datadog_agent_allow_downgrade }}"
+  when: (datadog_agent_version != "") and (not ansible_check_mode)
+  notify: restart datadog-agent
+
+- name: Install latest datadog-agent package
+  zypper:
+    name: datadog-agent
+    state: latest
+  when: datadog_agent_version == ""
+  notify: restart datadog-agent

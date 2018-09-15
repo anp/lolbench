@@ -1,0 +1,59 @@
+---
+datadog_enabled: yes
+
+# default datadog.conf options
+datadog_config: {}
+
+# default checks enabled
+datadog_checks: {}
+
+# default user/group
+datadog_user: dd-agent
+datadog_group: root
+
+# default apt repo
+datadog_apt_repo: "deb https://apt.datadoghq.com/ stable 6"
+datadog_apt_cache_valid_time: 3600
+
+# default yum repo and keys
+datadog_yum_repo: "https://yum.datadoghq.com/stable/6/{{ ansible_userspace_architecture }}/"
+datadog_yum_gpgkey: "https://yum.datadoghq.com/DATADOG_RPM_KEY.public"
+datadog_yum_gpgkey_new: "https://yum.datadoghq.com/DATADOG_RPM_KEY_E09422B3.public"
+
+# default zypper repo and keys
+datadog_zypper_repo: "https://yum.datadoghq.com/suse/stable/6/{{ ansible_userspace_architecture }}"
+datadog_zypper_gpgkey: "https://yum.datadoghq.com/DATADOG_RPM_KEY.public"
+datadog_zypper_gpgkey_sha256sum: "00d6505c33fd95b56e54e7d91ad9bfb22d2af17e5480db25cba8fee500c80c46"
+
+# Pin agent to a version. Highly recommended.
+datadog_agent_version: ""
+
+# Avoid checking if the agent is running or not. This can be useful if you're
+# using sysvinit and providing your own init script.
+datadog_skip_running_check: false
+
+# Set this to `yes` to allow agent downgrades on apt-based platforms.
+# Internally, this uses `apt-get`'s `--force-yes` option. Use with caution.
+# On centos this will only work with ansible 2.4 and up
+datadog_agent_allow_downgrade: no
+
+########################################################################
+###                       Installing agent5                          ###
+
+# To install agent5 instead of agent6 you need to:
+# * set 'datadog_agent5' to true
+datadog_agent5: no
+
+# To downgrade from agent6 to agent5, you need to:
+# * set 'datadog_agent5' to true
+# * pin 'datadog_agent_version' to an existing agent5 version
+# * set 'datadog_agent_allow_downgrade' to yes
+
+# repos where datadog-agent v5 packages are available
+datadog_agent5_apt_repo: "deb https://apt.datadoghq.com stable main"
+datadog_agent5_yum_repo: "https://yum.datadoghq.com/rpm/{{ ansible_userspace_architecture }}/"
+datadog_agent5_zypper_repo: "https://yum.datadoghq.com/suse/rpm/{{ ansible_userspace_architecture }}"
+
+###           End of Beta-Agent6-only experimental attributes        ###
+########################################################################
+
