@@ -51,7 +51,7 @@
     - name: relax perf_event_paranoid
       sysctl:
         name: kernel.perf_event_paranoid
-        value: 0
+        value: -1
     - name: disable cpu frequency scaling
       copy:
         src: cpufrequtils.default
