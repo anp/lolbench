@@ -89,18 +89,14 @@ jobs:
             apt-get install ansible git openssh
 
       - run:
-          name: setup ssh key
+          name: setup deploy secrets
           command: |
             mkdir -p ~/.ssh
             echo "$LOLBENCH_DEPLOY_KEY" | base64 -d > ~/.ssh/lolbench_deploy_private
             chmod 0600 ~/.ssh/lolbench_deploy_private
+            echo "$ANSIBLE_VAULT_PASSWORD" > .ansible-vault-password
 
-      - run:
-          name: deploy with ansible
-          command: ansible-playbook \
-            --extra-vars gitsha=$CIRCLE_SHA1 \
-            --inventory deploy/hosts \
-            deploy/site.yml
+      - run: deploy.sh
 
   brotli_1_1_3:
     <<: *bench_crate
