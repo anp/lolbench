@@ -97,7 +97,7 @@
     datadog_checks:
       logs:
         - type: journald
-          path: /run/systemd/journal
+          path: /run/log/journal
           include_units:
             - lolbench.service
 
