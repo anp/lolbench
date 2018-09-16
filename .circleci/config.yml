@@ -96,7 +96,7 @@ jobs:
             chmod 0600 ~/.ssh/lolbench_deploy_private
             echo "$ANSIBLE_VAULT_PASSWORD" > .ansible-vault-password
 
-      - run: deploy.sh
+      - run: deploy.sh $CIRCLE_SHA1
 
   brotli_1_1_3:
     <<: *bench_crate
