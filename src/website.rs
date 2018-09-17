@@ -5,7 +5,11 @@ use std::path::{Path, PathBuf};
 use askama::Template;
 use chrono::{DateTime, Utc};
 
-pub fn build_website(data_dir: impl AsRef<Path>, output_dir: impl AsRef<Path>) -> Result<()> {
+pub fn build_website(
+    data_dir: impl AsRef<Path>,
+    output_dir: impl AsRef<Path>,
+    publish: bool,
+) -> Result<()> {
     info!("reading all estimates from the data directory...");
     let data_storage = GitStore::ensure_initialized(data_dir.as_ref())?;
     let estimates = data_storage
@@ -29,8 +33,13 @@ pub fn build_website(data_dir: impl AsRef<Path>, output_dir: impl AsRef<Path>) -
     let files = website.render();
     info!("generated {} files.", files.len());
 
-    let mut output_storage = GitStore::ensure_initialized(output_dir.as_ref())?;
-    output_storage.sync_down()?;
+    let mut output_storage = if publish {
+        let mut output_storage = GitStore::ensure_initialized(output_dir.as_ref())?;
+        output_storage.sync_down()?;
+        Some(output_storage)
+    } else {
+        None
+    };
 
     info!("cleaning the output directory...");
     for entry in ::std::fs::read_dir(output_dir.as_ref())? {
@@ -60,11 +69,13 @@ pub fn build_website(data_dir: impl AsRef<Path>, output_dir: impl AsRef<Path>) -
         ::std::fs::write(&abspath, contents)?;
     }
 
-    info!("committing to storage...");
-    output_storage.commit(&format!("build @ {}", website.generated_at))?;
+    if let Some(output_storage) = &mut output_storage {
+        info!("committing to storage...");
+        output_storage.commit(&format!("build @ {}", website.generated_at))?;
 
-    info!("pushing to a remote if it exists...");
-    output_storage.push()?;
+        info!("pushing to a remote if it exists...");
+        output_storage.push()?;
+    }
 
     info!("all done writing website to disk!");
 

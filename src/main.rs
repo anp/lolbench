@@ -129,6 +129,8 @@ enum SubCommand {
         data_dir: PathBuf,
         #[structopt(long = "output-dir", parse(from_os_str))]
         output_dir: PathBuf,
+        #[structopt(long = "publish")]
+        publish: bool,
     },
 }
 
@@ -141,7 +143,8 @@ impl Cli {
             SubCommand::Present {
                 data_dir,
                 output_dir,
-            } => build_website(data_dir, output_dir),
+                publish,
+            } => build_website(data_dir, output_dir, publish),
         }
     }
 }
