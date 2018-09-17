@@ -123,6 +123,13 @@ enum SubCommand {
         #[structopt(long = "sample-dir", parse(from_os_str))]
         sample_dir: PathBuf,
     },
+    #[structopt(name = "build-website")]
+    Present {
+        #[structopt(long = "data-dir", parse(from_os_str))]
+        data_dir: PathBuf,
+        #[structopt(long = "output-dir", parse(from_os_str))]
+        output_dir: PathBuf,
+    },
 }
 
 impl Cli {
@@ -131,6 +138,10 @@ impl Cli {
             SubCommand::Measure { inner } => inner.run(),
             SubCommand::Generate { inner } => inner.run(),
             SubCommand::Rebalance { sample_dir } => rebalance(sample_dir),
+            SubCommand::Present {
+                data_dir,
+                output_dir,
+            } => build_website(data_dir, output_dir),
         }
     }
 }

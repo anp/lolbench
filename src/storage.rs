@@ -206,8 +206,6 @@ impl GitStore {
             let output = Command::new("git")
                 .arg("pull")
                 .arg("--rebase")
-                .arg("origin")
-                .arg("master")
                 .current_dir(&self.path)
                 .output()?;
 
@@ -229,8 +227,6 @@ impl GitStore {
         if self.has_origin()? {
             let output = Command::new("git")
                 .arg("push")
-                .arg("origin")
-                .arg("master")
                 .current_dir(&self.path)
                 .output()?;
             if !output.status.success() {

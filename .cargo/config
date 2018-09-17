@@ -9,6 +9,8 @@ fmt
     --package marky_mark
 '''
 
+build-website='run -- build-website'
+
 build-all='build --all --all-targets'
 test-all='test --all --all-targets --release'
 test-core='''

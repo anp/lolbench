@@ -1,4 +1,6 @@
 #[macro_use]
+extern crate askama;
+#[macro_use]
 extern crate failure;
 #[macro_use]
 extern crate lazy_static;
@@ -32,6 +34,7 @@ extern crate proptest;
 #[cfg(test)]
 extern crate tempfile;
 
+mod analysis;
 mod collector;
 mod cpu_shield;
 mod generator;
@@ -40,10 +43,11 @@ mod run_plan;
 mod signal;
 mod storage;
 mod toolchain;
+mod website;
 
 pub use self::{
-    collector::*, cpu_shield::*, generator::*, registry::*, run_plan::*, signal::*, storage::*,
-    toolchain::*,
+    analysis::*, collector::*, cpu_shield::*, generator::*, registry::*, run_plan::*, signal::*,
+    storage::*, toolchain::*, website::*,
 };
 pub use lolbench_support::*;
 pub use marky_mark::*;
