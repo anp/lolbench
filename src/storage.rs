@@ -31,9 +31,8 @@ impl GitStore {
     ) -> Result<BTreeMap<String, BTreeMap<Option<Toolchain>, Estimates>>> {
         info!("finding all stored estimates in {}", self.path.display());
 
-        let measures =
-            self.all_stored::<measurement::Key, <measurement::Key as StorageKey>::Contents>()?;
-        let plans = self.all_stored::<index::Key, Vec<u8>>()?;
+        let measures = self.all_stored::<measurement::Key>()?;
+        let plans = self.all_stored::<index::Key>()?;
 
         let measures_by_binhash: BTreeMap<Vec<u8>, Estimates> = measures
             .into_iter()
@@ -51,15 +50,19 @@ impl GitStore {
             ..
         } in plans
         {
-            all.entry(key.benchmark_key)
-                .or_default()
-                .insert(key.toolchain, measures_by_binhash[&binary_hash].clone());
+            if let Ok(binary_hash) = binary_hash {
+                if let Some(measure) = measures_by_binhash.get(&binary_hash) {
+                    all.entry(key.benchmark_key)
+                        .or_default()
+                        .insert(key.toolchain, measure.clone());
+                }
+            }
         }
 
         Ok(all)
     }
 
-    fn all_stored<K: StorageKey, V: DeserializeOwned>(&self) -> Result<Vec<Container<K, V>>> {
+    fn all_stored<K: StorageKey>(&self) -> Result<Vec<Container<K, K::Contents>>> {
         let mut found = Vec::new();
 
         for e in WalkDir::new(self.path.join(K::DIRECTORY)) {
@@ -71,7 +74,7 @@ impl GitStore {
             }
 
             let contents = ::std::fs::read_to_string(epath)?;
-            match serde_json::from_str::<Container<K, V>>(&contents) {
+            match serde_json::from_str::<Container<K, K::Contents>>(&contents) {
                 Ok(sc) => found.push(sc),
                 Err(why) => {
                     warn!(

@@ -82,11 +82,14 @@ impl Website {
     pub fn from_estimates(
         estimates: BTreeMap<String, BTreeMap<Toolchain, Estimates>>,
     ) -> Result<Self> {
+        let benchmark_names = estimates.keys().cloned().collect();
         Ok(Self {
             generated_at: Utc::now(),
             analysis: Analysis::from_estimates(&estimates),
             benchmarks: estimates,
-            index: templates::Index { name: "adam" },
+            index: templates::Index {
+                benchmarks: benchmark_names,
+            },
         })
     }
 
@@ -104,6 +107,6 @@ mod templates {
     #[derive(Template)]
     #[template(path = "index.html")]
     pub struct Index {
-        pub name: &'static str,
+        pub benchmarks: Vec<String>,
     }
 }

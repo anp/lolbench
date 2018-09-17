@@ -9,5 +9,24 @@
 
 {% block content %}
 <h1>home</h1>
-<p>this is lolbench</p>
+
+<h2>recent regressions</h2>
+<p>TODO</p>
+
+<h2>recent improvements</h2>
+<p>TODO</p>
+
+<h2>all benchmarks</h2>
+
+<table>
+    <thead>
+        <th>name</th>
+    </thead>
+
+    {% for benchmark in benchmarks %}
+    <tr>
+        <td>{{benchmark}}</td>
+    </tr>
+    {% endfor %}
+</table>
 {% endblock %}
