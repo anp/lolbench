@@ -153,7 +153,10 @@ impl GitStore {
             return Ok(());
         }
 
-        info!("committing with message '{}...'", msg.split_at(50).0);
+        info!(
+            "committing with message '{}...'",
+            msg.split_at(::std::cmp::min(50, msg.len())).0
+        );
         let mut commit_child = Command::new("git")
             .arg("commit")
             .arg("-F")
