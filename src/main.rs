@@ -17,7 +17,7 @@ use chrono::{NaiveDate, Utc};
 use structopt::StructOpt;
 
 fn main() -> Result<()> {
-    simple_logger::init_with_level(log::Level::Info).unwrap();
+    simple_logger::init_with_level(log::Level::Debug).unwrap();
     Cli::from_args().exec()
 }
 
