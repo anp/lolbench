@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}{{name}}{% endblock %}
+
+{% block head %}
+<style>
+</style>
+{% endblock %}
+
+{% block content %}
+<h1><a href="../index.html">lolbench</a></h1>
+<h2>benchmark name: {{name}}</h2>
+
+<table border="1">
+    <thead>
+        <th>toolchain(s)</th>
+        <th>nanoseconds</th>
+        <th>% delta</th>
+        <th>instructions</th>
+        <th>% delta</th>
+        <th>binary sha256</th>
+    </thead>
+
+    {% for timing in self.timings() %}
+
+    <tr>
+        <td>
+            {% for tc in timing.toolchains %}
+            {{tc}}
+            {% endfor %}
+        </td>
+        <td>
+            {{ timing.nanoseconds|float_fmt }}
+        </td>
+        <td>
+            {% match timing.delta %}
+            {% when Some with (d) %}
+            {{ d.nanoseconds_pct|float_fmt }}%
+            {% when None %}
+            N/A
+            {% endmatch %}
+        </td>
+        <td>
+            {{ timing.instructions|float_fmt }}
+        </td>
+        <td>
+            {% match timing.delta %}
+            {% when Some with (d) %}
+            {{ d.instructions_pct|float_fmt }}%
+            {% when None %}
+            N/A
+            {% endmatch %}
+        </td>
+        <td>{{ timing.binary_hash|truncate(8) }}</td>
+    </tr>
+
+    {% endfor %}
+</table>
+
+{% endblock %}

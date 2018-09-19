@@ -77,7 +77,7 @@ pub fn rebalance(sample_data_dir: impl AsRef<Path>) -> Result<()> {
 
     let mut runtimes = most_covered
         .into_iter()
-        .map(|(k, estimates)| (r64(estimates["nanoseconds"].median.point_estimate), k))
+        .map(|(k, estimates)| (r64(estimates.1["nanoseconds"].median.point_estimate), k))
         .collect::<Vec<_>>();
     runtimes.sort();
     runtimes.reverse(); // we're going to binpack, starting with the largest

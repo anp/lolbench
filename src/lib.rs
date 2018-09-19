@@ -21,6 +21,7 @@ extern crate marky_mark;
 extern crate min_max_heap;
 extern crate noisy_float;
 extern crate ring;
+extern crate separator;
 extern crate serde;
 extern crate serde_json;
 extern crate signal_hook;

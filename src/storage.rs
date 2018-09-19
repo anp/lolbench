@@ -28,7 +28,7 @@ pub struct GitStore {
 impl GitStore {
     pub fn all_stored_estimates(
         &self,
-    ) -> Result<BTreeMap<String, BTreeMap<Option<Toolchain>, Estimates>>> {
+    ) -> Result<BTreeMap<String, BTreeMap<Option<Toolchain>, (Vec<u8>, Estimates)>>> {
         info!("finding all stored estimates in {}", self.path.display());
 
         let measures = self.all_stored::<measurement::Key>()?;
@@ -39,10 +39,10 @@ impl GitStore {
             .filter_map(|sc| {
                 let Container { key, contents, .. } = sc;
                 contents.ok().map(|estimates| (key.binary_hash, estimates))
-            })
-            .collect::<BTreeMap<_, _>>();
+            }).collect::<BTreeMap<_, _>>();
 
-        let mut all: BTreeMap<String, BTreeMap<Option<Toolchain>, Estimates>> = BTreeMap::new();
+        let mut all: BTreeMap<String, BTreeMap<Option<Toolchain>, (Vec<u8>, Estimates)>> =
+            BTreeMap::new();
 
         for Container {
             key,
@@ -54,7 +54,7 @@ impl GitStore {
                 if let Some(measure) = measures_by_binhash.get(&binary_hash) {
                     all.entry(key.benchmark_key)
                         .or_default()
-                        .insert(key.toolchain, measure.clone());
+                        .insert(key.toolchain, (binary_hash.clone(), measure.clone()));
                 }
             }
         }
@@ -62,7 +62,7 @@ impl GitStore {
         Ok(all)
     }
 
-    fn all_stored<K: StorageKey>(&self) -> Result<Vec<Container<K, K::Contents>>> {
+    pub fn all_stored<K: StorageKey>(&self) -> Result<Vec<Container<K, K::Contents>>> {
         let mut found = Vec::new();
 
         for e in WalkDir::new(self.path.join(K::DIRECTORY)) {
@@ -136,7 +136,8 @@ impl GitStore {
             .current_dir(&self.path)
             .output()?
             .stdout
-            .len() > 0)
+            .len()
+            > 0)
     }
 
     pub fn commit(&self, msg: &str) -> Result<()> {

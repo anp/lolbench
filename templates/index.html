@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block content %}
-<h1>home</h1>
+<h1>lolbench home</h1>
 
 <h2>recent regressions</h2>
 <p>TODO</p>
@@ -18,15 +18,15 @@
 
 <h2>all benchmarks</h2>
 
-<table>
-    <thead>
-        <th>name</th>
-    </thead>
-
-    {% for benchmark in benchmarks %}
-    <tr>
-        <td>{{benchmark}}</td>
-    </tr>
-    {% endfor %}
+<table border="1">
+    <tbody>
+        {% for benchmark in benchmarks %}
+        <tr>
+            <td>
+                {{benchmark.link()|safe}}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
 {% endblock %}
