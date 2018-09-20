@@ -19,7 +19,7 @@ codegen-units = 1
 incremental = false
 
 [dependencies]
-askama = "0.7"
+askama = { version = "0.7", features = ["serde-json"] }
 byteorder = "^1.2"
 chrono = { version = "0.4", features = ["serde"] }
 clap = "^2.31.1"

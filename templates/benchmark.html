@@ -11,6 +11,58 @@
 <h1><a href="../index.html">lolbench</a></h1>
 <h2>benchmark name: {{name}}</h2>
 
+<h3>nanoseconds / iteration</h3>
+<canvas id="nanoseconds-chart" width="600" , height="200"></canvas>
+
+<h3>instructions retired / iteration</h3>
+<canvas id="instructions-chart" width="600" , height="200"></canvas>
+
+<h3>cpu cycles / iteration</h3>
+<canvas id="cpu-cycles-chart" width="600" , height="200"></canvas>
+
+<h3>branch instructions</h3>
+<canvas id="branch-instructions-chart" width="600" , height="200"></canvas>
+
+<h3>branch misses</h3>
+<canvas id="branch-misses-chart" width="600" , height="200"></canvas>
+
+<h3>overall cache hit ratio</h3>
+<canvas id="cache-ratio-chart" width="600" , height="200"></canvas>
+
+<h3>L1 data cache read hit ratio</h3>
+<canvas id="l1d-read-ratio-chart" width="600" , height="200"></canvas>
+
+<h3>L1 data cache write hit ratio</h3>
+<canvas id="l1d-write-ratio-chart" width="600" , height="200"></canvas>
+
+<h3>L1 instruction cache read hit ratio</h3>
+<canvas id="l1i-read-ratio-chart" width="600" , height="200"></canvas>
+
+<h3>last level cache read hit ratio</h3>
+<canvas id="ll-read-ratio-chart" width="600" , height="200"></canvas>
+
+<h3>last level cache write hit ratio</h3>
+<canvas id="ll-write-ratio-chart" width="600" , height="200"></canvas>
+
+<h3>local memory read hit ratio</h3>
+<canvas id="node-read-ratio-chart" width="600" , height="200"></canvas>
+
+<h3>local memory write hit ratio</h3>
+<canvas id="node-write-ratio-chart" width="600" , height="200"></canvas>
+
+<h3>data tlb read hit ratio</h3>
+<canvas id="dtlb-read-ratio-chart" width="600" , height="200"></canvas>
+
+<h3>data tlb write hit ratio</h3>
+<canvas id="dtlb-write-ratio-chart" width="600" , height="200"></canvas>
+
+<h3>instruction tlb read hit ratio</h3>
+<canvas id="itlb-read-ratio-chart" width="600" , height="200"></canvas>
+
+<h3>branch predictor unit hit ratio</h3>
+<canvas id="bpu-read-ratio-chart" width="600" , height="200"></canvas>
+
+
 <table border="1">
     <thead>
         <th>toolchain(s)</th>
@@ -21,7 +73,7 @@
         <th>binary sha256</th>
     </thead>
 
-    {% for timing in self.timings() %}
+    {% for timing in timings %}
 
     <tr>
         <td>
@@ -57,4 +109,122 @@
     {% endfor %}
 </table>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+<script>
+    let chartData = JSON.parse(`{{timings|json}}`);
+    chartData.reverse();
+
+    // https://stackoverflow.com/questions/45309447/calculating-median-javascript
+    const median = (values) => {
+        values = new Array(...values);
+        values.sort(function (a, b) {
+            return a - b;
+        });
+
+        if (values.length === 0) return 0
+
+        var half = Math.floor(values.length / 2);
+
+        if (values.length % 2) {
+            return values[half];
+        } else {
+            return (values[half - 1] + values[half]) / 2.0;
+        }
+    };
+
+    const makeChart = (elemId, field, data) => {
+        let ctx = document.getElementById(elemId);
+
+        let labels = chartData.map(t => t.toolchains[0].spec);
+
+        let xyPadding = 0.05;
+        let mid = median(data);
+
+        let suggestedMax = mid * (1 + xyPadding);
+        let suggestedMin = mid * (1 - xyPadding);
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels,
+                datasets: [{
+                    label: field,
+                    data,
+                    fill: false,
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            suggestedMax,
+                            suggestedMin
+                        },
+                    }]
+                },
+            }
+        });
+    };
+
+    makeChart("nanoseconds-chart", "nanoseconds", chartData.map(t => t.nanoseconds));
+    makeChart("instructions-chart", "instructions", chartData.map(t => t.instructions));
+    makeChart("cpu-cycles-chart", "cpu_cycles", chartData.map(t => t.cpu_cycles));
+    makeChart("branch-instructions-chart", "branch_instructions", chartData.map(t => t.branch_instructions));
+    makeChart("branch-misses-chart", "branch_misses", chartData.map(t => t.branch_misses));
+
+    const hitRatio = (accessField, missField) => {
+        return chartData.map(t => {
+            let access = t[accessField];
+            let miss = t[missField];
+            return (access - miss) / access;
+        });
+    };
+
+    makeChart("bpu-read-ratio-chart", "bpu_read_hit_ratio",
+        hitRatio('bpu_read_access', 'bpu_read_miss'));
+
+    makeChart("cache-ratio-chart", "cache_hit_ratio",
+        hitRatio("cache_references", "cache_misses"));
+
+    makeChart("dtlb-read-ratio-chart", "dtlb_read_hit_ratio",
+        hitRatio("dtlb_read_access", "dtlb_read_miss"));
+
+    makeChart("dtlb-write-ratio-chart", "dtlb_write_hit_ratio",
+        hitRatio("dtlb_write_access", "dtlb_write_miss"));
+
+    makeChart("itlb-read-ratio-chart", "itlb_read_hit_ratio",
+        hitRatio("itlb_read_access", "itlb_read_miss"));
+
+    makeChart("l1d-read-ratio-chart", "l1d_read_hit_ratio",
+        hitRatio("l1d_read_access", "l1d_read_miss"));
+
+    makeChart("l1d-write-ratio-chart", "l1d_write_hit_ratio",
+        hitRatio("l1d_write_access", "l1d_write_miss"));
+
+    makeChart("l1i-read-ratio-chart", "l1i_read_hit_ratio",
+        hitRatio("l1i_read_access", "l1i_read_miss"));
+
+    makeChart("ll-read-ratio-chart", "ll_read_hit_ratio",
+        hitRatio("ll_read_access", "ll_read_miss"));
+
+    makeChart("ll-write-ratio-chart", "ll_write_hit_ratio",
+        hitRatio("ll_write_access", "ll_write_miss"));
+
+    makeChart("node-read-ratio-chart", "node_read_hit_ratio",
+        hitRatio("node_read_access", "node_read_miss"));
+
+    makeChart("node-write-ratio-chart", "node_write_hit_ratio",
+        hitRatio("node_write_access", "node_write_miss"));
+
+    // TODO do we want to show graphs for these?
+    // align_faults
+    // bus_cycles
+    // context_switches
+    // cpu_clock
+    // cpu_migrations
+    // emulation_faults
+    // page_fault
+    // page_fault_minor
+
+</script>
 {% endblock %}
