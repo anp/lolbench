@@ -13,7 +13,15 @@
 <a href="#recent-changes">recent noteworthy changes</a> | <a href="#all-benchmarks">all benchmarks</a>
 
 <h2><a id="recent-changes" />recent noteworthy changes</h2>
-<p>TODO</p>
+
+{% for pair in anomalous_timings %}
+<!-- pair: (String, Vec<(String, Timing)>), -->
+<h4>toolchain: {{ pair.0 }}</h4>
+
+{% for noteworthy in pair.1 %}
+<p>{{ noteworthy.1.anomaly_index.as_ref().unwrap().nanoseconds }} {{ noteworthy.0 }}</p>
+{% endfor %}
+{% endfor %}
 
 <h2><a id="all-benchmarks" />all benchmarks</h2>
 
@@ -28,4 +36,8 @@
         {% endfor %}
     </tbody>
 </table>
+
+<script>
+    let chartData = JSON.parse(`{{analysis|json}}`);
+</script>
 {% endblock %}

@@ -12,6 +12,7 @@ extern crate serde_derive;
 extern crate byteorder;
 extern crate chrono;
 extern crate criterion;
+extern crate criterion_stats;
 extern crate git2;
 extern crate glob;
 extern crate itertools;
