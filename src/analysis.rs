@@ -269,10 +269,9 @@ impl Display for AnomalyScore {
     fn fmt(&self, f: &mut Formatter) -> FmtResult {
         use super::website::filters::float_fmt;
         f.write_fmt(format_args!(
-            "score: {}, # of stddev from mean: {}, delta from sample mean: {} %",
-            float_fmt(&self.kde_estimate.raw()).unwrap(),
+            "delta from sample mean: {} %, # of stddev from mean: {}",
+            float_fmt(&self.percent_delta_from_mean.raw()).unwrap(),
             float_fmt(&self.stddev_from_mean.raw()).unwrap(),
-            float_fmt(&self.percent_delta_from_mean.raw()).unwrap()
         ))
     }
 }
