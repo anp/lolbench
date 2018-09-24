@@ -33,16 +33,30 @@
     if you'd like to help with that!
 </p>
 
-{% for anomaly in analysis.anomalous_timings %}
-<h4>toolchain: {{ anomaly.0 }}</h4>
-
-{% for noteworthy in anomaly.1 %}
-<p>
-    {{ noteworthy.index.nanoseconds }}
-    {{ noteworthy.benchmark_for_linking().link()|safe }}
-</p>
-{% endfor %}
-{% endfor %}
+<table border="1">
+    <thead>
+        <th>toolchain</th>
+        <th>benchmark</th>
+        <th>% delta from mean</th>
+        <th>stddev delta from mean</th>
+    </thead>
+    {% for anomaly in analysis.anomalous_timings %}
+    {% for noteworthy in anomaly.1 %}
+    <tr>
+        <td>{{ anomaly.0 }}</td>
+        <td>{{ noteworthy.benchmark_for_linking().link()|safe }}</td>
+        <td>{{ noteworthy.index.nanoseconds.percent_delta_from_mean.raw()|float_fmt }} %</td>
+        <td>{{ noteworthy.index.nanoseconds.stddev_from_mean.raw()|float_fmt }}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td>------</td>
+        <td>------</td>
+        <td>------</td>
+        <td>------</td>
+    </tr>
+    {% endfor %}
+</table>
 
 <h2><a id="all-benchmarks" />all benchmarks</h2>
 
@@ -57,5 +71,4 @@
         {% endfor %}
     </tbody>
 </table>
-
 {% endblock %}
