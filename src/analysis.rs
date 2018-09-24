@@ -292,4 +292,4 @@ impl<'a> ::std::ops::Index<&'a str> for AnomalyIndex {
     }
 }
 
-const NUM_SAMPLES: usize = 15;
+const NUM_SAMPLES: usize = 10;
