@@ -6,13 +6,60 @@ use itertools::Itertools;
 use noisy_float::prelude::*;
 
 #[derive(Clone, Debug, Serialize)]
-pub struct Analysis {}
+pub struct Analysis {
+    pub anomalous_timings: Vec<(Toolchain, Vec<AnomalousTiming>)>,
+}
+
+#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, Serialize)]
+pub struct AnomalousTiming {
+    pub index: AnomalyIndex,
+    pub bench_fn: String,
+    pub toolchain: Toolchain,
+    pub timing: TimingRecord,
+}
+
+impl AnomalousTiming {
+    pub fn benchmark_for_linking(&self) -> ::website::Benchmark {
+        ::website::Benchmark::empty(self.bench_fn.clone())
+    }
+}
 
 impl Analysis {
-    pub fn from_estimates(
-        _estimates: &BTreeMap<String, BTreeMap<Toolchain, (Vec<u8>, Estimates)>>,
-    ) -> Self {
-        Analysis {}
+    pub fn new(timings: Vec<(String, TimingRecord)>) -> Self {
+        let mut anomalous_timings = timings
+            .iter()
+            .enumerate()
+            .filter(|(_, (_, t))| {
+                t.anomaly_index
+                    .as_ref()
+                    .map(|i| i.nanoseconds.is_of_interest())
+                    .unwrap_or(false)
+            }).fold(
+                BTreeMap::<Toolchain, Vec<AnomalousTiming>>::new(),
+                |mut anomalies, (i, (bench_fn, timing))| {
+                    let toolchain = timing.toolchains[0].clone();
+                    {
+                        let all_anomalies_for_toolchain =
+                            anomalies.entry(toolchain.clone()).or_default();
+
+                        all_anomalies_for_toolchain.push(AnomalousTiming {
+                            bench_fn: bench_fn.clone(),
+                            toolchain,
+                            timing: timing.to_owned(),
+                            index: timing.anomaly_index.unwrap(),
+                        });
+
+                        all_anomalies_for_toolchain.sort();
+                    }
+                    anomalies
+                },
+            ).into_iter()
+            .collect::<Vec<_>>();
+
+        // show the most recent toolchains first
+        anomalous_timings.reverse();
+
+        Analysis { anomalous_timings }
     }
 }
 
@@ -31,10 +78,10 @@ pub fn normalized_against_first(
     ::std::iter::once(r64(1.0)).chain(values.map(move |v| v / first))
 }
 
-#[derive(Clone, Serialize)]
+#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct TimingRecord {
     pub binary_hash: String,
-    pub toolchains: Vec<String>,
+    pub toolchains: Vec<Toolchain>,
     pub anomaly_index: Option<AnomalyIndex>,
     pub metrics: RuntimeMetrics,
     pub normalized_metrics: RuntimeMetrics,
@@ -62,12 +109,11 @@ impl TimingRecord {
             // we'll normalize everything else as if this was a one
             .unwrap_or_else(RuntimeMetrics::ones);
 
+        let toolchains = current_toolchains.into_iter().cloned().sorted();
+
         let mut timing = Self {
             binary_hash: nice_hex,
-            toolchains: current_toolchains
-                .into_iter()
-                .map(|t| t.spec.clone())
-                .sorted(),
+            toolchains,
             anomaly_index: None,
             metrics,
             normalized_metrics,
@@ -79,7 +125,7 @@ impl TimingRecord {
     }
 }
 
-#[derive(Copy, Clone, Serialize)]
+#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct RuntimeMetrics {
     pub nanoseconds: R64,
     pub instructions: R64,

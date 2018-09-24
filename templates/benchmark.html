@@ -15,24 +15,22 @@
 <h3>{{ metric }} / iteration</h3>
 <canvas id="{{ metric }}-chart" width="600" , height="200"></canvas>
 
+<h4>potential anomalies</h4>
 <table border="1">
     <thead>
         <th>toolchain</th>
         <th>{{ metric }} anomaly score</th>
     </thead>
     <tbody>
-        {% for timing in self.timings_sorted_by_interest(metric) %}
-        {% match timing.anomaly_index %}
-        {% when Some with (idx) %}
+        {% for timing in anomalous_timings %}
 
+        {% for anomaly in timing.1 %}
         <tr>
-            <td>{{ timing.toolchains[0] }}</td>
-            <td>{{ idx[metric] }}</td>
+            <td>{{ timing.0 }}</td>
+            <td>{{ anomaly.index[metric] }}</td>
         </tr>
+        {% endfor %}
 
-        {% when None %}
-        <!-- nop -->
-        {% endmatch %}
         {% endfor %}
     </tbody>
 </table>
