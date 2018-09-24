@@ -49,7 +49,7 @@
     let chartData = JSON.parse(`{{timings|json}}`);
     chartData.reverse();
 
-    let labels = chartData.map(t => t.toolchains[0]);
+    let labels = chartData.map(t => t.toolchains[0].spec);
 
     let colors = {
         'nanoseconds': '#E43717',
