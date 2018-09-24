@@ -1,25 +1,23 @@
 use super::Result;
 
 use std::fmt::{Display, Formatter, Result as FmtResult};
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 use std::process::Command;
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, PartialOrd, Ord, Serialize)]
 pub struct Toolchain {
-    pub spec: String,
-    pub target_dir: PathBuf,
+    spec: String,
 }
 
 impl Toolchain {
     pub fn from(s: &str) -> Self {
         Toolchain {
             spec: s.to_string(),
-            target_dir: PathBuf::from(format!("/tmp/target-{}", s)),
         }
     }
 
-    pub fn target_dir(&self) -> &Path {
-        &self.target_dir
+    pub fn target_dir(&self) -> PathBuf {
+        PathBuf::from(format!("/tmp/target-{}", self.spec))
     }
 
     fn is_installed(&self) -> Result<bool> {

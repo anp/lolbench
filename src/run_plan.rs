@@ -1,9 +1,8 @@
 use super::Result;
 
 use std::{
-    borrow::Cow,
     fmt::{Display, Formatter, Result as FmtResult},
-    path::{Path, PathBuf},
+    path::PathBuf,
     process::Command,
 };
 
@@ -80,14 +79,14 @@ impl RunPlan {
         self.target_dir().join("release").join(&self.binary_name)
     }
 
-    fn target_dir(&self) -> Cow<Path> {
+    fn target_dir(&self) -> PathBuf {
         use std::env::var as envvar;
 
         match self.toolchain {
-            Some(ref t) => Cow::Borrowed(t.target_dir()),
-            None => Cow::Owned(PathBuf::from(
-                envvar("CARGO_TARGET_DIR").unwrap_or_else(|_| String::from("target")),
-            )),
+            Some(ref t) => t.target_dir(),
+            None => {
+                PathBuf::from(envvar("CARGO_TARGET_DIR").unwrap_or_else(|_| String::from("target")))
+            }
         }
     }
 

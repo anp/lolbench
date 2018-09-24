@@ -1,7 +1,7 @@
 use super::Result;
 
 use std::collections::{BTreeMap, BTreeSet};
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 use itertools::Itertools;
 use serde_json;
@@ -195,8 +195,7 @@ impl Collector {
                     .exec()
                     .map_err(|why| Error {
                         kind: ErrorKind::Run(why.to_string()),
-                    })
-                    .and_then(|()| {
+                    }).and_then(|()| {
                         self.process(&rp).map_err(|why| Error {
                             kind: ErrorKind::Run(why.to_string()),
                         })
@@ -238,7 +237,9 @@ impl Collector {
     pub fn run(&mut self, rp: &RunPlan) -> Result<(bool, Option<String>)> {
         let binary_hash_res = self.compute_binary_hash(rp)?;
 
-        binary_hash_res.clone().ensure_persisted(&mut self.storage)?;
+        binary_hash_res
+            .clone()
+            .ensure_persisted(&mut self.storage)?;
 
         let (estimates, binary_hash) = if let Ok(hash) = &*binary_hash_res {
             (Some(self.compute_estimates(rp, &*hash)?), Some(hash))
@@ -274,15 +275,14 @@ impl Collector {
             .toolchain
             .as_ref()
             .map(Toolchain::target_dir)
-            .unwrap_or_else(|| Path::new("target"));
+            .unwrap_or_else(|| PathBuf::from("target"));
 
         let path = target_dir
             .join("criterion")
             .join(format!(
                 "{}::{}",
                 &rp.benchmark.crate_name, &rp.benchmark.name
-            ))
-            .join("new");
+            )).join("new");
 
         info!("postprocessing");
 
