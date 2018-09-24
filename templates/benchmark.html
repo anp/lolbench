@@ -19,18 +19,14 @@
 <table border="1">
     <thead>
         <th>toolchain</th>
-        <th>{{ metric }} anomaly score</th>
+        <th>delta</th>
     </thead>
     <tbody>
         {% for timing in anomalous_timings %}
-
-        {% for anomaly in timing.1 %}
         <tr>
             <td>{{ timing.0 }}</td>
-            <td>{{ anomaly.index[metric] }}</td>
+            <td>{{ timing.1.index[metric] }}</td>
         </tr>
-        {% endfor %}
-
         {% endfor %}
     </tbody>
 </table>
@@ -44,7 +40,8 @@
 
 
 <script>
-    let chartData = JSON.parse(`{{timings|json}}`);
+    const anomalyData = JSON.parse(`{{anomalous_timings|json}}`);
+    const chartData = JSON.parse(`{{timings|json}}`);
     chartData.reverse();
 
     let labels = chartData.map(t => t.toolchains[0].spec);

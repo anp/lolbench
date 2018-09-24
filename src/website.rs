@@ -108,18 +108,19 @@ impl Website {
 
         let analysis = Analysis::new(all_timings);
 
-        for (toolchain, timings) in &analysis.anomalous_timings {
+        let mut anomalies = BTreeMap::<String, Vec<(Toolchain, AnomalousTiming)>>::new();
+
+        for (tc, timings) in &analysis.anomalous_timings {
             for anomaly in timings {
-                for benchmark in &mut benchmarks {
-                    if &benchmark.name == &anomaly.bench_fn {
-                        benchmark
-                            .anomalous_timings
-                            .entry(toolchain.clone())
-                            .or_default()
-                            .push(anomaly.to_owned());
-                    }
-                }
+                anomalies
+                    .entry(anomaly.bench_fn.clone())
+                    .or_default()
+                    .push((tc.clone(), anomaly.to_owned()));
             }
+        }
+
+        for benchmark in &mut benchmarks {
+            benchmark.anomalous_timings = anomalies.remove(&benchmark.name).unwrap_or_default();
         }
 
         Ok(Self {
@@ -148,7 +149,7 @@ impl Website {
 pub struct Benchmark {
     name: String,
     timings: Vec<TimingRecord>,
-    anomalous_timings: BTreeMap<Toolchain, Vec<AnomalousTiming>>,
+    anomalous_timings: Vec<(Toolchain, AnomalousTiming)>,
 }
 
 impl Benchmark {
@@ -156,7 +157,7 @@ impl Benchmark {
         Self {
             name,
             timings: vec![],
-            anomalous_timings: BTreeMap::new(),
+            anomalous_timings: vec![],
         }
     }
 
@@ -194,7 +195,7 @@ impl Benchmark {
         Self {
             name: name.to_owned(),
             timings,
-            anomalous_timings: BTreeMap::new(),
+            anomalous_timings: vec![],
         }
     }
 
