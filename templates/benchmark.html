@@ -49,24 +49,6 @@
     let chartData = JSON.parse(`{{timings|json}}`);
     chartData.reverse();
 
-    // https://stackoverflow.com/questions/45309447/calculating-median-javascript
-    const median = (values) => {
-        values = new Array(...values);
-        values.sort(function (a, b) {
-            return a - b;
-        });
-
-        if (values.length === 0) return 0
-
-        var half = Math.floor(values.length / 2);
-
-        if (values.length % 2) {
-            return values[half];
-        } else {
-            return (values[half - 1] + values[half]) / 2.0;
-        }
-    };
-
     let labels = chartData.map(t => t.toolchains[0]);
 
     let colors = {
