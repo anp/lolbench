@@ -259,7 +259,7 @@ impl AnomalyScore {
     }
 
     pub fn is_of_interest(&self) -> bool {
-        self.kde_estimate < 10.0 && self.stddev_from_mean.raw() > 2.0
+        self.kde_estimate < 10.0 && self.stddev_from_mean.abs().raw() > 2.0
     }
 }
 
