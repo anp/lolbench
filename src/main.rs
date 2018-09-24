@@ -62,6 +62,14 @@ struct Measure {
     /// Path to data directory. Will be created if empty.
     #[structopt(long = "data-dir", parse(from_os_str))]
     data_dir: PathBuf,
+
+    /// Path to site directory. Will be created if empty.
+    #[structopt(long = "site-dir", parse(from_os_str))]
+    site_dir: PathBuf,
+
+    /// If passed, we'll attempt to upload the website when committing to the data directory.
+    #[structopt(long = "publish")]
+    publish: bool,
 }
 
 impl Measure {
@@ -95,7 +103,7 @@ impl Measure {
             shield_spec,
         };
 
-        measure(opts, &self.data_dir)
+        measure(opts, &self.data_dir, &self.site_dir, self.publish)
     }
 }
 

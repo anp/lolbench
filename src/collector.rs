@@ -10,6 +10,7 @@ use run_plan::RunPlan;
 use signal::exit_if_needed;
 use storage::{index, measurement, Entry, Estimates, GitStore, Statistic, StorageKey};
 use toolchain::Toolchain;
+use website::build_website;
 
 pub type CollectionResult<T> = ::std::result::Result<T, self::Error>;
 
@@ -29,21 +30,28 @@ pub enum ErrorKind {
 /// toolchains if the binaries they produce are identical.
 pub struct Collector {
     storage: GitStore,
+    data_dir: PathBuf,
+    site_dir: PathBuf,
 }
 
 impl Collector {
     /// Open a Collector. Creates the passed path and initializes a git repo there if it does not
     /// already exist.
-    pub fn new(data_dir: &Path) -> Result<Self> {
+    pub fn new(data_dir: &Path, site_dir: &Path) -> Result<Self> {
         ::std::fs::create_dir_all(data_dir)?;
         let storage = GitStore::ensure_initialized(data_dir)?;
-        Ok(Collector { storage })
+        Ok(Collector {
+            storage,
+            data_dir: data_dir.to_owned(),
+            site_dir: site_dir.to_owned(),
+        })
     }
 
     fn batch_commit(
         &mut self,
         toolchain: &Toolchain,
         results: &mut Vec<(bool, RunPlan, Option<String>)>,
+        publish: bool,
     ) -> Result<()> {
         let mut lines = Vec::new();
         let mut num_ok = 0;
@@ -76,8 +84,13 @@ impl Collector {
             lines.iter().join("\n")
         ))?;
 
-        self.storage.sync_down()?;
-        self.storage.push()?;
+        if publish {
+            self.storage.sync_down()?;
+            self.storage.push()?;
+        }
+
+        build_website(&self.data_dir, &self.site_dir, publish)?;
+
         Ok(())
     }
 
@@ -87,10 +100,14 @@ impl Collector {
         &mut self,
         toolchain: Toolchain,
         run_plans: &[RunPlan],
+        publish: bool,
     ) -> Result<()> {
         exit_if_needed();
 
-        self.storage.sync_down()?;
+        if publish {
+            self.storage.sync_down()?;
+        }
+
         let _guard = toolchain.ensure_installed()?;
 
         let mut results = Vec::new();
@@ -106,13 +123,13 @@ impl Collector {
 
             pushed += 1;
             if pushed == batch_size {
-                self.batch_commit(&toolchain, &mut results)?;
+                self.batch_commit(&toolchain, &mut results, publish)?;
                 pushed = 0;
             }
         }
 
         // pick up any stragglers
-        self.batch_commit(&toolchain, &mut results)?;
+        self.batch_commit(&toolchain, &mut results, publish)?;
 
         Ok(())
     }

@@ -10,4 +10,6 @@ ExecStart=/home/adam/.cargo/bin/cargo run --release -- \
     measure \
     --runner '{{ runner }}' \
     --data-dir '{{ data_dir }}' \
+    --site-dir '{{ site_dir }}' \
+    --publish \
     --nightlies-since {{ epoch_nightly }}

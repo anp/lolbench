@@ -62,9 +62,9 @@ use std::{
 use chrono::NaiveDate;
 use slug::slugify;
 
-pub fn measure(opts: BenchOpts, data_dir: &Path) -> Result<()> {
+pub fn measure(opts: BenchOpts, data_dir: &Path, site_dir: &Path, publish: bool) -> Result<()> {
     info!("ensuring data dir {} exists", data_dir.display());
-    let mut collector = Collector::new(data_dir)?;
+    let mut collector = Collector::new(data_dir, site_dir)?;
 
     info!("cataloging potential builds to run");
     let candidates = opts.enumerate_bench_candidates()?;
@@ -80,7 +80,7 @@ pub fn measure(opts: BenchOpts, data_dir: &Path) -> Result<()> {
 
     for (toolchain, benches) in to_run.into_iter().rev() {
         info!("running {} benches with {}", benches.len(), toolchain);
-        if let Err(why) = collector.run_benches_with_toolchain(toolchain, &benches) {
+        if let Err(why) = collector.run_benches_with_toolchain(toolchain, &benches, publish) {
             warn!("problem running benchmarks: {}", why);
         }
     }
@@ -130,9 +130,10 @@ pub fn end_to_end_test(crate_name: &str, bench_name: &str) {
             slugify(bench_name)
         )
     });
+    let site_dir = format!("{}-site", data_dir);
 
     // FIXME make this a proper temp dir
-    let mut collector = Collector::new(Path::new(&data_dir)).unwrap();
+    let mut collector = Collector::new(Path::new(&data_dir), Path::new(&site_dir)).unwrap();
     collector.run(&plan).unwrap();
 }
 
