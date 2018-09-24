@@ -28,15 +28,14 @@ impl Analysis {
     pub fn new(timings: Vec<(String, TimingRecord)>) -> Self {
         let mut anomalous_timings = timings
             .iter()
-            .enumerate()
-            .filter(|(_, (_, t))| {
+            .filter(|(_, t)| {
                 t.anomaly_index
                     .as_ref()
                     .map(|i| i.nanoseconds.is_of_interest())
                     .unwrap_or(false)
             }).fold(
                 BTreeMap::<Toolchain, Vec<AnomalousTiming>>::new(),
-                |mut anomalies, (i, (bench_fn, timing))| {
+                |mut anomalies, (bench_fn, timing)| {
                     let toolchain = timing.toolchains[0].clone();
                     {
                         let all_anomalies_for_toolchain =
@@ -315,7 +314,7 @@ impl Display for AnomalyScore {
     fn fmt(&self, f: &mut Formatter) -> FmtResult {
         use super::website::filters::float_fmt;
         f.write_fmt(format_args!(
-            "delta from sample mean: {} %, # of stddev from mean: {}",
+            "delta from sample mean: {} %, {} stddev ",
             float_fmt(&self.percent_delta_from_mean.raw()).unwrap(),
             float_fmt(&self.stddev_from_mean.raw()).unwrap(),
         ))
