@@ -123,7 +123,6 @@
       git:
         repo: https://github.com/anp/lolbench.git
         dest: '{{ deploy_dir }}'
-        refspec: master
         version: '{{ gitsha }}'
     - name: clone-data
       git:
@@ -133,7 +132,7 @@
     - name: clone-site
       git:
         repo: git@github.com:anp/lolbench-data.git
-        refspec: gh-pages
+        version: gh-pages
         dest: '{{ site_dir }}'
         update: no
 
