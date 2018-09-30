@@ -71,7 +71,7 @@ An example of porting rayon's [`fibonacci_join_1_2`][rayon-benchmark-source] ben
 
 The original:
 
-```rs
+```rust
 // rayon/rayon-demo/src/fibonacci/mod.rs
 
 #[bench]
@@ -93,7 +93,7 @@ fn fibonacci_join_1_2(b: &mut test::Bencher) {
 
 [becomes][lolbench-rayon-benchmark-source]:
 
-```rs
+```rust
 // lolbench/benches/rayon_1_0_0/src/fibonacci/mod.rs
 
 /// Compute the Fibonacci number recursively, using rayon::join.
