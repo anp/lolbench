@@ -67,6 +67,54 @@ There are a few important modifications you'll have to make to a cargo benchmark
 2. If the benchmark function isn't in the crate's root module, add its intra-crate module path to the `wrap_libtest` macro invocation. See `benches/rayon_1_0_0/src/fibonacci/mod.rs` for examples where the `fibonacci` module has been included in the macro invocation.
 3. Ensure that any calls to `test::black_box` are called as just `black_box` without a module path. The wrapper macro will handle importing the equivalent criterion API that will work on any stable/beta/nightly compiler but it is not able to rewrite fully-qualified uses.
 
+An example of porting rayon's [`fibonacci_join_1_2`][rayon-benchmark-source] benchmark.
+
+The original:
+
+```rs
+// rayon/rayon-demo/src/fibonacci/mod.rs
+
+#[bench]
+/// Compute the Fibonacci number recursively, using rayon::join.
+/// The larger branch F(N-1) is computed first.
+fn fibonacci_join_1_2(b: &mut test::Bencher) {
+    fn fib(n: u32) -> u32 {
+        if n < 2 { return n; }
+
+        let (a, b) = rayon::join(
+            || fib(n - 1),
+            || fib(n - 2));
+        a + b
+    }
+
+    b.iter(|| assert_eq!(fib(test::black_box(N)), FN));
+}
+```
+
+[becomes][lolbench-rayon-benchmark-source]:
+
+```rs
+// lolbench/benches/rayon_1_0_0/src/fibonacci/mod.rs
+
+/// Compute the Fibonacci number recursively, using rayon::join.
+/// The larger branch F(N-1) is computed first.
+wrap_libtest! {
+    fibonacci,
+    fn fibonacci_join_1_2(b: &mut Bencher) {
+        fn fib(n: u32) -> u32 {
+            if n < 2 { return n; }
+
+            let (a, b) = rayon::join(
+                || fib(n - 1),
+                || fib(n - 2));
+            a + b
+        }
+
+        b.iter(|| assert_eq!(fib(black_box(N)), FN));
+    }
+}
+```
+
 #### Testing it out
 
 In the new bench crate's directory, run:
@@ -77,7 +125,7 @@ $ cargo build --release
 $ cargo test --release
 ```
 
-If the benchmarks succeed, commit:
+Don't attempt to assign the benchmark to a particular runner yet. If the benchmarks succeed, commit:
 
 * the benchmark crate, including the generated targets under `bin` and `test`
 * changes to `registry.toml`
@@ -85,7 +133,11 @@ If the benchmarks succeed, commit:
 
 CI will ensure that all other benchmarks still build on your PR, you don't need to run the test target for every benchmark crate locally.
 
+Once your PR is merged we'll re-run the benchmark load balancer (ping @anp if he hasn't written docs for that yet).
 
 ## CPU Shielding
 
 On Linux, this feature uses [cpuset](https://github.com/lpechacek/cpuset) to migrate all non-lolbench processes to other CPUs than the provided range in order to improve reliability of our benchmark measurements. To use this feature you must have cpuset installed and run lolbench under a user account that can run sudo without an interactive prompt. Unless you need to specifically investigate the behavior of the CPU shield, it's recommended to run lolbench without root privileges.
+
+[rayon-benchmark-source]: https://github.com/rayon-rs/rayon/blob/5107676d50a261d10b79d8749fd4674498edf9ec/rayon-demo/src/fibonacci/mod.rs#L47-L61
+[lolbench-rayon-benchmark-source]: https://github.com/anp/lolbench/blob/d89ddde39fc63361614118f59732549ba2b9c5d4/benches/rayon_1_0_0/src/fibonacci/mod.rs#L48-L64
