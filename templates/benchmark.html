@@ -12,7 +12,9 @@
 <h2>benchmark name: {{name}}</h2>
 
 {% for metric in self.metrics_with_anomaly_indices() %}
-<h3>{{ metric }} / iteration</h3>
+<a id="{{ metric }}"></a>
+<h3><a href="#{{ metric }}">*</a> {{ metric }} / iteration</h3>
+
 <canvas id="{{ metric }}-chart" width="600" , height="200"></canvas>
 
 <h4>potential anomalies</h4>
