@@ -5,3 +5,4 @@ vendor/
 .env
 site.retry
 .ansible-vault-password
+rust.git
