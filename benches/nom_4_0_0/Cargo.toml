@@ -1,10 +1,10 @@
 [package]
-name = "nom_4_0_0_beta1"
+name = "nom_4_0_0"
 version = "0.1.0"
 authors = ["Adam Perry <adam.n.perry@gmail.com>"]
 
 [dependencies]
-nom = "4.0.0-beta1"
+nom = "4.0.0"
 lolbench_support = { path = "../../support" }
 
 [dev-dependencies]

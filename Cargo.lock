@@ -1305,7 +1305,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "nom_4_0_0_beta1"
+name = "nom_4_0_0"
 version = "0.1.0"
 dependencies = [
  "lolbench 0.0.1",

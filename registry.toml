@@ -297,35 +297,35 @@ name = 'serialize_twitter_struct'
 crate = 'json_benchmark_c7d3d9b'
 entrypoint_path = 'benches/json_benchmark_c7d3d9b/src/bin/serialize-twitter-struct.rs'
 
-[benchmarks."nom_4_0_0_beta1::arithmetic::arithmetic"]
+[benchmarks."nom_4_0_0::arithmetic::arithmetic"]
 runner = 'molly'
 name = 'arithmetic::arithmetic'
-crate = 'nom_4_0_0_beta1'
-entrypoint_path = 'benches/nom_4_0_0_beta1/src/bin/arithmetic-arithmetic.rs'
+crate = 'nom_4_0_0'
+entrypoint_path = 'benches/nom_4_0_0/src/bin/arithmetic-arithmetic.rs'
 
-[benchmarks."nom_4_0_0_beta1::http::one_test"]
+[benchmarks."nom_4_0_0::http::one_test"]
 runner = 'wilhelm'
 name = 'http::one_test'
-crate = 'nom_4_0_0_beta1'
-entrypoint_path = 'benches/nom_4_0_0_beta1/src/bin/http-one-test.rs'
+crate = 'nom_4_0_0'
+entrypoint_path = 'benches/nom_4_0_0/src/bin/http-one-test.rs'
 
-[benchmarks."nom_4_0_0_beta1::ini::bench_ini_key_value"]
+[benchmarks."nom_4_0_0::ini::bench_ini_key_value"]
 runner = 'sally'
 name = 'ini::bench_ini_key_value'
-crate = 'nom_4_0_0_beta1'
-entrypoint_path = 'benches/nom_4_0_0_beta1/src/bin/ini-bench-ini-key-value.rs'
+crate = 'nom_4_0_0'
+entrypoint_path = 'benches/nom_4_0_0/src/bin/ini-bench-ini-key-value.rs'
 
-[benchmarks."nom_4_0_0_beta1::ini::bench_ini_keys_and_values"]
+[benchmarks."nom_4_0_0::ini::bench_ini_keys_and_values"]
 runner = 'wilhelm'
 name = 'ini::bench_ini_keys_and_values'
-crate = 'nom_4_0_0_beta1'
-entrypoint_path = 'benches/nom_4_0_0_beta1/src/bin/ini-bench-ini-keys-and-values.rs'
+crate = 'nom_4_0_0'
+entrypoint_path = 'benches/nom_4_0_0/src/bin/ini-bench-ini-keys-and-values.rs'
 
-[benchmarks."nom_4_0_0_beta1::ini_str::bench_ini_str"]
+[benchmarks."nom_4_0_0::ini_str::bench_ini_str"]
 runner = 'sally'
 name = 'ini_str::bench_ini_str'
-crate = 'nom_4_0_0_beta1'
-entrypoint_path = 'benches/nom_4_0_0_beta1/src/bin/ini-str-bench-ini-str.rs'
+crate = 'nom_4_0_0'
+entrypoint_path = 'benches/nom_4_0_0/src/bin/ini-str-bench-ini-str.rs'
 
 [benchmarks."quickcheck_0_6_1::shrink_f64_1_tuple"]
 runner = 'sally'
