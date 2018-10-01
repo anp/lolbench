@@ -87,6 +87,226 @@ name = 'pin::single_pin'
 crate = 'crossbeam_epoch_0_4_0'
 entrypoint_path = 'benches/crossbeam_epoch_0_4_0/src/bin/pin-single-pin.rs'
 
+[benchmarks."csv_1_0_2::count_game_deserialize_borrowed_bytes"]
+name = 'count_game_deserialize_borrowed_bytes'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-game-deserialize-borrowed-bytes.rs'
+
+[benchmarks."csv_1_0_2::count_game_deserialize_borrowed_str"]
+name = 'count_game_deserialize_borrowed_str'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-game-deserialize-borrowed-str.rs'
+
+[benchmarks."csv_1_0_2::count_game_deserialize_owned_bytes"]
+name = 'count_game_deserialize_owned_bytes'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-game-deserialize-owned-bytes.rs'
+
+[benchmarks."csv_1_0_2::count_game_deserialize_owned_str"]
+name = 'count_game_deserialize_owned_str'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-game-deserialize-owned-str.rs'
+
+[benchmarks."csv_1_0_2::count_game_iter_bytes"]
+name = 'count_game_iter_bytes'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-game-iter-bytes.rs'
+
+[benchmarks."csv_1_0_2::count_game_iter_str"]
+name = 'count_game_iter_str'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-game-iter-str.rs'
+
+[benchmarks."csv_1_0_2::count_game_read_bytes"]
+name = 'count_game_read_bytes'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-game-read-bytes.rs'
+
+[benchmarks."csv_1_0_2::count_game_read_str"]
+name = 'count_game_read_str'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-game-read-str.rs'
+
+[benchmarks."csv_1_0_2::count_game_serialize_owned_bytes"]
+name = 'count_game_serialize_owned_bytes'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-game-serialize-owned-bytes.rs'
+
+[benchmarks."csv_1_0_2::count_game_serialize_owned_str"]
+name = 'count_game_serialize_owned_str'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-game-serialize-owned-str.rs'
+
+[benchmarks."csv_1_0_2::count_mbta_deserialize_borrowed_bytes"]
+name = 'count_mbta_deserialize_borrowed_bytes'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-mbta-deserialize-borrowed-bytes.rs'
+
+[benchmarks."csv_1_0_2::count_mbta_deserialize_borrowed_str"]
+name = 'count_mbta_deserialize_borrowed_str'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-mbta-deserialize-borrowed-str.rs'
+
+[benchmarks."csv_1_0_2::count_mbta_deserialize_owned_bytes"]
+name = 'count_mbta_deserialize_owned_bytes'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-mbta-deserialize-owned-bytes.rs'
+
+[benchmarks."csv_1_0_2::count_mbta_deserialize_owned_str"]
+name = 'count_mbta_deserialize_owned_str'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-mbta-deserialize-owned-str.rs'
+
+[benchmarks."csv_1_0_2::count_mbta_iter_bytes"]
+name = 'count_mbta_iter_bytes'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-mbta-iter-bytes.rs'
+
+[benchmarks."csv_1_0_2::count_mbta_iter_str"]
+name = 'count_mbta_iter_str'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-mbta-iter-str.rs'
+
+[benchmarks."csv_1_0_2::count_mbta_read_bytes"]
+name = 'count_mbta_read_bytes'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-mbta-read-bytes.rs'
+
+[benchmarks."csv_1_0_2::count_mbta_read_str"]
+name = 'count_mbta_read_str'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-mbta-read-str.rs'
+
+[benchmarks."csv_1_0_2::count_mbta_serialize_owned_bytes"]
+name = 'count_mbta_serialize_owned_bytes'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-mbta-serialize-owned-bytes.rs'
+
+[benchmarks."csv_1_0_2::count_mbta_serialize_owned_str"]
+name = 'count_mbta_serialize_owned_str'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-mbta-serialize-owned-str.rs'
+
+[benchmarks."csv_1_0_2::count_nfl_deserialize_borrowed_bytes"]
+name = 'count_nfl_deserialize_borrowed_bytes'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-deserialize-borrowed-bytes.rs'
+
+[benchmarks."csv_1_0_2::count_nfl_deserialize_borrowed_str"]
+name = 'count_nfl_deserialize_borrowed_str'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-deserialize-borrowed-str.rs'
+
+[benchmarks."csv_1_0_2::count_nfl_deserialize_owned_bytes"]
+name = 'count_nfl_deserialize_owned_bytes'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-deserialize-owned-bytes.rs'
+
+[benchmarks."csv_1_0_2::count_nfl_deserialize_owned_str"]
+name = 'count_nfl_deserialize_owned_str'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-deserialize-owned-str.rs'
+
+[benchmarks."csv_1_0_2::count_nfl_iter_bytes"]
+name = 'count_nfl_iter_bytes'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-iter-bytes.rs'
+
+[benchmarks."csv_1_0_2::count_nfl_iter_bytes_trimmed"]
+name = 'count_nfl_iter_bytes_trimmed'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-iter-bytes-trimmed.rs'
+
+[benchmarks."csv_1_0_2::count_nfl_iter_str"]
+name = 'count_nfl_iter_str'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-iter-str.rs'
+
+[benchmarks."csv_1_0_2::count_nfl_iter_str_trimmed"]
+name = 'count_nfl_iter_str_trimmed'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-iter-str-trimmed.rs'
+
+[benchmarks."csv_1_0_2::count_nfl_read_bytes"]
+name = 'count_nfl_read_bytes'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-read-bytes.rs'
+
+[benchmarks."csv_1_0_2::count_nfl_read_str"]
+name = 'count_nfl_read_str'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-read-str.rs'
+
+[benchmarks."csv_1_0_2::count_nfl_serialize_owned_bytes"]
+name = 'count_nfl_serialize_owned_bytes'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-serialize-owned-bytes.rs'
+
+[benchmarks."csv_1_0_2::count_nfl_serialize_owned_str"]
+name = 'count_nfl_serialize_owned_str'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-serialize-owned-str.rs'
+
+[benchmarks."csv_1_0_2::count_pop_deserialize_borrowed_bytes"]
+name = 'count_pop_deserialize_borrowed_bytes'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-pop-deserialize-borrowed-bytes.rs'
+
+[benchmarks."csv_1_0_2::count_pop_deserialize_borrowed_str"]
+name = 'count_pop_deserialize_borrowed_str'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-pop-deserialize-borrowed-str.rs'
+
+[benchmarks."csv_1_0_2::count_pop_deserialize_owned_bytes"]
+name = 'count_pop_deserialize_owned_bytes'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-pop-deserialize-owned-bytes.rs'
+
+[benchmarks."csv_1_0_2::count_pop_deserialize_owned_str"]
+name = 'count_pop_deserialize_owned_str'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-pop-deserialize-owned-str.rs'
+
+[benchmarks."csv_1_0_2::count_pop_iter_bytes"]
+name = 'count_pop_iter_bytes'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-pop-iter-bytes.rs'
+
+[benchmarks."csv_1_0_2::count_pop_iter_str"]
+name = 'count_pop_iter_str'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-pop-iter-str.rs'
+
+[benchmarks."csv_1_0_2::count_pop_read_bytes"]
+name = 'count_pop_read_bytes'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-pop-read-bytes.rs'
+
+[benchmarks."csv_1_0_2::count_pop_read_str"]
+name = 'count_pop_read_str'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-pop-read-str.rs'
+
+[benchmarks."csv_1_0_2::count_pop_serialize_owned_bytes"]
+name = 'count_pop_serialize_owned_bytes'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-pop-serialize-owned-bytes.rs'
+
+[benchmarks."csv_1_0_2::count_pop_serialize_owned_str"]
+name = 'count_pop_serialize_owned_str'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/count-pop-serialize-owned-str.rs'
+
+[benchmarks."csv_1_0_2::write_nfl_bytes"]
+name = 'write_nfl_bytes'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/write-nfl-bytes.rs'
+
+[benchmarks."csv_1_0_2::write_nfl_record"]
+name = 'write_nfl_record'
+crate = 'csv_1_0_2'
+entrypoint_path = 'benches/csv_1_0_2/src/bin/write-nfl-record.rs'
+
 [benchmarks."diesel_1_1_1::bench_medium_complex_query_selecting_10_000_rows"]
 runner = 'sally'
 name = 'bench_medium_complex_query_selecting_10_000_rows'

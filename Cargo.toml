@@ -58,6 +58,7 @@ askama = "0.7"
 members = [
     "./benches/brotli_1_1_3",
     "./benches/crossbeam_epoch_0_4_0",
+    "./benches/csv_1_0_2",
     "./benches/diesel_1_1_1",
     "./benches/doom_9e197d7",
     "./benches/inflate_0_3_4",
