@@ -1,0 +1,13 @@
+[package]
+name = "csv_1_0_2"
+version = "0.1.0"
+authors = []
+
+[dependencies]
+csv = "=1.0.2"
+serde = "1.0.55"
+serde_derive = "1.0.55"
+lolbench_support = { path = "../../support" }
+
+[dev-dependencies]
+lolbench = { path = "../../" }

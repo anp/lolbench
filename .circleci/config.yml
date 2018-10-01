@@ -124,6 +124,8 @@ jobs:
     <<: *bench_crate
   snap_0_2_4:
     <<: *bench_crate
+  csv_1_0_2:
+    <<: *bench_crate
 
 workflows:
   version: 2
@@ -170,6 +172,9 @@ workflows:
           requires:
             - fmt
       - snap_0_2_4:
+          requires:
+            - fmt
+      - csv_1_0_2:
           requires:
             - fmt
       - big_green_button:
