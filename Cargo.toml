@@ -57,6 +57,7 @@ askama = "0.7"
 [workspace]
 members = [
     "./benches/brotli_1_1_3",
+    "./benches/byteorder_1_2_6",
     "./benches/crossbeam_epoch_0_4_0",
     "./benches/diesel_1_1_1",
     "./benches/doom_9e197d7",
