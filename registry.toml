@@ -33,6 +33,1056 @@ name = 'bench_e2e_rt_q9_5_1024k'
 crate = 'brotli_1_1_3'
 entrypoint_path = 'benches/brotli_1_1_3/src/bin/bench-e2e-rt-q9-5-1024k.rs'
 
+[benchmarks."byteorder_1_2_6::f32::read_big_endian"]
+name = 'f32::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/f32-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::f32::read_little_endian"]
+name = 'f32::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/f32-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::f32::read_native_endian"]
+name = 'f32::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/f32-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::f32::write_big_endian"]
+name = 'f32::write_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/f32-write-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::f32::write_little_endian"]
+name = 'f32::write_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/f32-write-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::f32::write_native_endian"]
+name = 'f32::write_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/f32-write-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::f64::read_big_endian"]
+name = 'f64::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/f64-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::f64::read_little_endian"]
+name = 'f64::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/f64-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::f64::read_native_endian"]
+name = 'f64::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/f64-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::f64::write_big_endian"]
+name = 'f64::write_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/f64-write-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::f64::write_little_endian"]
+name = 'f64::write_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/f64-write-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::f64::write_native_endian"]
+name = 'f64::write_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/f64-write-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::i128::read_big_endian"]
+name = 'i128::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i128-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::i128::read_little_endian"]
+name = 'i128::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i128-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::i128::read_native_endian"]
+name = 'i128::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i128-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::i128::write_big_endian"]
+name = 'i128::write_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i128-write-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::i128::write_little_endian"]
+name = 'i128::write_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i128-write-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::i128::write_native_endian"]
+name = 'i128::write_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i128-write-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::i16::read_big_endian"]
+name = 'i16::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i16-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::i16::read_little_endian"]
+name = 'i16::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i16-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::i16::read_native_endian"]
+name = 'i16::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i16-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::i16::write_big_endian"]
+name = 'i16::write_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i16-write-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::i16::write_little_endian"]
+name = 'i16::write_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i16-write-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::i16::write_native_endian"]
+name = 'i16::write_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i16-write-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::i32::read_big_endian"]
+name = 'i32::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i32-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::i32::read_little_endian"]
+name = 'i32::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i32-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::i32::read_native_endian"]
+name = 'i32::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i32-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::i32::write_big_endian"]
+name = 'i32::write_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i32-write-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::i32::write_little_endian"]
+name = 'i32::write_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i32-write-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::i32::write_native_endian"]
+name = 'i32::write_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i32-write-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::i64::read_big_endian"]
+name = 'i64::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i64-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::i64::read_little_endian"]
+name = 'i64::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i64-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::i64::read_native_endian"]
+name = 'i64::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i64-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::i64::write_big_endian"]
+name = 'i64::write_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i64-write-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::i64::write_little_endian"]
+name = 'i64::write_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i64-write-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::i64::write_native_endian"]
+name = 'i64::write_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i64-write-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_10::read_big_endian"]
+name = 'int128_10::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-10-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_10::read_little_endian"]
+name = 'int128_10::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-10-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_10::read_native_endian"]
+name = 'int128_10::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-10-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_11::read_big_endian"]
+name = 'int128_11::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-11-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_11::read_little_endian"]
+name = 'int128_11::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-11-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_11::read_native_endian"]
+name = 'int128_11::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-11-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_12::read_big_endian"]
+name = 'int128_12::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-12-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_12::read_little_endian"]
+name = 'int128_12::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-12-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_12::read_native_endian"]
+name = 'int128_12::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-12-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_13::read_big_endian"]
+name = 'int128_13::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-13-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_13::read_little_endian"]
+name = 'int128_13::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-13-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_13::read_native_endian"]
+name = 'int128_13::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-13-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_14::read_big_endian"]
+name = 'int128_14::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-14-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_14::read_little_endian"]
+name = 'int128_14::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-14-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_14::read_native_endian"]
+name = 'int128_14::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-14-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_15::read_big_endian"]
+name = 'int128_15::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-15-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_15::read_little_endian"]
+name = 'int128_15::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-15-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_15::read_native_endian"]
+name = 'int128_15::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-15-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_16::read_big_endian"]
+name = 'int128_16::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-16-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_16::read_little_endian"]
+name = 'int128_16::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-16-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_16::read_native_endian"]
+name = 'int128_16::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-16-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_1::read_big_endian"]
+name = 'int128_1::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-1-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_1::read_little_endian"]
+name = 'int128_1::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-1-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_1::read_native_endian"]
+name = 'int128_1::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-1-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_2::read_big_endian"]
+name = 'int128_2::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-2-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_2::read_little_endian"]
+name = 'int128_2::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-2-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_2::read_native_endian"]
+name = 'int128_2::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-2-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_3::read_big_endian"]
+name = 'int128_3::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-3-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_3::read_little_endian"]
+name = 'int128_3::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-3-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_3::read_native_endian"]
+name = 'int128_3::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-3-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_4::read_big_endian"]
+name = 'int128_4::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-4-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_4::read_little_endian"]
+name = 'int128_4::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-4-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_4::read_native_endian"]
+name = 'int128_4::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-4-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_5::read_big_endian"]
+name = 'int128_5::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-5-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_5::read_little_endian"]
+name = 'int128_5::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-5-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_5::read_native_endian"]
+name = 'int128_5::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-5-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_6::read_big_endian"]
+name = 'int128_6::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-6-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_6::read_little_endian"]
+name = 'int128_6::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-6-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_6::read_native_endian"]
+name = 'int128_6::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-6-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_7::read_big_endian"]
+name = 'int128_7::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-7-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_7::read_little_endian"]
+name = 'int128_7::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-7-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_7::read_native_endian"]
+name = 'int128_7::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-7-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_8::read_big_endian"]
+name = 'int128_8::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-8-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_8::read_little_endian"]
+name = 'int128_8::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-8-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_8::read_native_endian"]
+name = 'int128_8::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-8-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_9::read_big_endian"]
+name = 'int128_9::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-9-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_9::read_little_endian"]
+name = 'int128_9::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-9-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int128_9::read_native_endian"]
+name = 'int128_9::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-9-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int_1::read_big_endian"]
+name = 'int_1::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-1-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int_1::read_little_endian"]
+name = 'int_1::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-1-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int_1::read_native_endian"]
+name = 'int_1::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-1-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int_2::read_big_endian"]
+name = 'int_2::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-2-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int_2::read_little_endian"]
+name = 'int_2::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-2-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int_2::read_native_endian"]
+name = 'int_2::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-2-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int_3::read_big_endian"]
+name = 'int_3::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-3-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int_3::read_little_endian"]
+name = 'int_3::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-3-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int_3::read_native_endian"]
+name = 'int_3::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-3-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int_4::read_big_endian"]
+name = 'int_4::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-4-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int_4::read_little_endian"]
+name = 'int_4::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-4-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int_4::read_native_endian"]
+name = 'int_4::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-4-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int_5::read_big_endian"]
+name = 'int_5::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-5-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int_5::read_little_endian"]
+name = 'int_5::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-5-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int_5::read_native_endian"]
+name = 'int_5::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-5-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int_6::read_big_endian"]
+name = 'int_6::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-6-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int_6::read_little_endian"]
+name = 'int_6::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-6-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int_6::read_native_endian"]
+name = 'int_6::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-6-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int_7::read_big_endian"]
+name = 'int_7::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-7-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int_7::read_little_endian"]
+name = 'int_7::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-7-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int_7::read_native_endian"]
+name = 'int_7::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-7-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int_8::read_big_endian"]
+name = 'int_8::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-8-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int_8::read_little_endian"]
+name = 'int_8::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-8-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::int_8::read_native_endian"]
+name = 'int_8::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-8-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::slice_u64::read_big_endian"]
+name = 'slice_u64::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/slice-u64-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::slice_u64::read_little_endian"]
+name = 'slice_u64::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/slice-u64-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::slice_u64::write_big_endian"]
+name = 'slice_u64::write_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/slice-u64-write-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::slice_u64::write_little_endian"]
+name = 'slice_u64::write_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/slice-u64-write-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::u128::read_big_endian"]
+name = 'u128::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u128-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::u128::read_little_endian"]
+name = 'u128::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u128-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::u128::read_native_endian"]
+name = 'u128::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u128-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::u128::write_big_endian"]
+name = 'u128::write_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u128-write-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::u128::write_little_endian"]
+name = 'u128::write_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u128-write-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::u128::write_native_endian"]
+name = 'u128::write_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u128-write-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::u16::read_big_endian"]
+name = 'u16::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u16-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::u16::read_little_endian"]
+name = 'u16::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u16-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::u16::read_native_endian"]
+name = 'u16::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u16-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::u16::write_big_endian"]
+name = 'u16::write_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u16-write-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::u16::write_little_endian"]
+name = 'u16::write_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u16-write-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::u16::write_native_endian"]
+name = 'u16::write_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u16-write-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::u32::read_big_endian"]
+name = 'u32::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u32-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::u32::read_little_endian"]
+name = 'u32::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u32-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::u32::read_native_endian"]
+name = 'u32::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u32-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::u32::write_big_endian"]
+name = 'u32::write_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u32-write-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::u32::write_little_endian"]
+name = 'u32::write_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u32-write-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::u32::write_native_endian"]
+name = 'u32::write_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u32-write-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::u64::read_big_endian"]
+name = 'u64::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u64-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::u64::read_little_endian"]
+name = 'u64::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u64-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::u64::read_native_endian"]
+name = 'u64::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u64-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::u64::write_big_endian"]
+name = 'u64::write_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u64-write-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::u64::write_little_endian"]
+name = 'u64::write_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u64-write-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::u64::write_native_endian"]
+name = 'u64::write_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u64-write-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_10::read_big_endian"]
+name = 'uint128_10::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-10-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_10::read_little_endian"]
+name = 'uint128_10::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-10-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_10::read_native_endian"]
+name = 'uint128_10::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-10-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_11::read_big_endian"]
+name = 'uint128_11::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-11-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_11::read_little_endian"]
+name = 'uint128_11::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-11-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_11::read_native_endian"]
+name = 'uint128_11::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-11-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_12::read_big_endian"]
+name = 'uint128_12::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-12-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_12::read_little_endian"]
+name = 'uint128_12::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-12-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_12::read_native_endian"]
+name = 'uint128_12::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-12-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_13::read_big_endian"]
+name = 'uint128_13::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-13-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_13::read_little_endian"]
+name = 'uint128_13::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-13-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_13::read_native_endian"]
+name = 'uint128_13::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-13-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_14::read_big_endian"]
+name = 'uint128_14::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-14-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_14::read_little_endian"]
+name = 'uint128_14::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-14-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_14::read_native_endian"]
+name = 'uint128_14::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-14-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_15::read_big_endian"]
+name = 'uint128_15::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-15-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_15::read_little_endian"]
+name = 'uint128_15::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-15-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_15::read_native_endian"]
+name = 'uint128_15::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-15-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_16::read_big_endian"]
+name = 'uint128_16::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-16-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_16::read_little_endian"]
+name = 'uint128_16::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-16-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_16::read_native_endian"]
+name = 'uint128_16::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-16-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_1::read_big_endian"]
+name = 'uint128_1::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-1-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_1::read_little_endian"]
+name = 'uint128_1::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-1-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_1::read_native_endian"]
+name = 'uint128_1::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-1-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_2::read_big_endian"]
+name = 'uint128_2::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-2-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_2::read_little_endian"]
+name = 'uint128_2::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-2-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_2::read_native_endian"]
+name = 'uint128_2::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-2-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_3::read_big_endian"]
+name = 'uint128_3::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-3-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_3::read_little_endian"]
+name = 'uint128_3::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-3-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_3::read_native_endian"]
+name = 'uint128_3::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-3-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_4::read_big_endian"]
+name = 'uint128_4::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-4-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_4::read_little_endian"]
+name = 'uint128_4::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-4-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_4::read_native_endian"]
+name = 'uint128_4::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-4-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_5::read_big_endian"]
+name = 'uint128_5::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-5-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_5::read_little_endian"]
+name = 'uint128_5::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-5-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_5::read_native_endian"]
+name = 'uint128_5::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-5-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_6::read_big_endian"]
+name = 'uint128_6::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-6-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_6::read_little_endian"]
+name = 'uint128_6::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-6-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_6::read_native_endian"]
+name = 'uint128_6::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-6-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_7::read_big_endian"]
+name = 'uint128_7::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-7-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_7::read_little_endian"]
+name = 'uint128_7::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-7-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_7::read_native_endian"]
+name = 'uint128_7::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-7-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_8::read_big_endian"]
+name = 'uint128_8::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-8-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_8::read_little_endian"]
+name = 'uint128_8::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-8-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_8::read_native_endian"]
+name = 'uint128_8::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-8-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_9::read_big_endian"]
+name = 'uint128_9::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-9-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_9::read_little_endian"]
+name = 'uint128_9::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-9-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint128_9::read_native_endian"]
+name = 'uint128_9::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-9-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint_1::read_big_endian"]
+name = 'uint_1::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-1-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint_1::read_little_endian"]
+name = 'uint_1::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-1-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint_1::read_native_endian"]
+name = 'uint_1::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-1-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint_2::read_big_endian"]
+name = 'uint_2::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-2-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint_2::read_little_endian"]
+name = 'uint_2::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-2-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint_2::read_native_endian"]
+name = 'uint_2::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-2-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint_3::read_big_endian"]
+name = 'uint_3::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-3-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint_3::read_little_endian"]
+name = 'uint_3::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-3-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint_3::read_native_endian"]
+name = 'uint_3::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-3-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint_4::read_big_endian"]
+name = 'uint_4::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-4-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint_4::read_little_endian"]
+name = 'uint_4::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-4-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint_4::read_native_endian"]
+name = 'uint_4::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-4-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint_5::read_big_endian"]
+name = 'uint_5::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-5-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint_5::read_little_endian"]
+name = 'uint_5::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-5-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint_5::read_native_endian"]
+name = 'uint_5::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-5-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint_6::read_big_endian"]
+name = 'uint_6::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-6-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint_6::read_little_endian"]
+name = 'uint_6::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-6-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint_6::read_native_endian"]
+name = 'uint_6::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-6-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint_7::read_big_endian"]
+name = 'uint_7::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-7-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint_7::read_little_endian"]
+name = 'uint_7::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-7-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint_7::read_native_endian"]
+name = 'uint_7::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-7-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint_8::read_big_endian"]
+name = 'uint_8::read_big_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-8-read-big-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint_8::read_little_endian"]
+name = 'uint_8::read_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-8-read-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::uint_8::read_native_endian"]
+name = 'uint_8::read_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-8-read-native-endian.rs'
+
+[benchmarks."byteorder_1_2_6::write_little_endian"]
+name = 'write_little_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/write-little-endian.rs'
+
+[benchmarks."byteorder_1_2_6::write_native_endian"]
+name = 'write_native_endian'
+crate = 'byteorder_1_2_6'
+entrypoint_path = 'benches/byteorder_1_2_6/src/bin/write-native-endian.rs'
+
 [benchmarks."crossbeam_epoch_0_4_0::defer::multi_alloc_defer_free"]
 runner = 'sally'
 name = 'defer::multi_alloc_defer_free'

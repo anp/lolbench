@@ -1,0 +1,16 @@
+[package]
+name = "byteorder_1_2_6"
+version = "0.1.0"
+authors = ['Thom wiggers <thom@thomwiggers.nl>']
+
+[dependencies]
+byteorder = "=1.2.6"
+rand = "=0.5.5"
+lolbench_support = { path = "../../support" }
+
+[dev-dependencies]
+lolbench = { path = "../../" }
+
+[features]
+default = ["i128"]
+i128 = ["byteorder/i128"]
