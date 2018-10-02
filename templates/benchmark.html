@@ -15,7 +15,7 @@
 <a id="{{ metric }}"></a>
 <h3><a href="#{{ metric }}">*</a> {{ metric }} / iteration</h3>
 
-<canvas id="{{ metric }}-chart" width="600" , height="200"></canvas>
+<canvas id="{{ metric }}-chart" width="600" height="200"></canvas>
 
 <h4>potential anomalies</h4>
 <table border="1">
@@ -34,19 +34,23 @@
 </table>
 {% endfor %}
 
-<h3>overall branch predict ratio</h3>
-<canvas id="branch-predict-ratio-chart" width="600" , height="200"></canvas>
+<a id="branch-predict-ratio"></a>
+<h3><a href="branch-predict-ratio">*</a> overall branch predict ratio</h3>
+<canvas id="branch-predict-ratio-chart" width="600" height="200"></canvas>
 
-<h3>overall cache hit ratio</h3>
-<canvas id="cache-ratio-chart" width="600" , height="200"></canvas>
+<a id="cache-ratio"></a>
+<h3><a href="cache-ratio">*</a> overall cache hit ratio</h3>
+<canvas id="cache-ratio-chart" width="600" height="200"></canvas>
 
+<script src="https://cdn.jsdelivr.net/npm/highcharts@6/highcharts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-statistics@6/dist/simple-statistics.min.js"></script>
 
 <script>
     const anomalyData = JSON.parse(`{{anomalous_timings|json}}`);
     const chartData = JSON.parse(`{{timings|json}}`);
     chartData.reverse();
 
-    let labels = chartData.map(t => t.toolchains[0].spec);
+    let labels = chartData.map(t => t.toolchains[0].spec.replace('nightly-', ''));
 
     let colors = {
         'nanoseconds': '#E43717',
@@ -58,37 +62,41 @@
         'cache_misses': 'black',
     };
 
-    const makeChart = (elemId, field, data) => {
-        let ctx = document.getElementById(elemId);
+    const makeChart = (elemId, title, field, data) => {
+        const mean = mean(data);
+        const stdDev = standardDeviation(data);
+        const confidenceLow = mean - (stdDev * 2);
+        const confidenceHigh = mean + (stdDev * 2);
 
-        let xyPadding = 0.05;
-        let mid = median(data);
-
-        let suggestedMax = mid * (1 + xyPadding);
-        let suggestedMin = mid * (1 - xyPadding);
-
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels,
-                datasets: [{
-                    label: field,
-                    data,
-                    fill: false,
-                    borderWidth: 6,
-                    borderColor: colors[field],
+        Highcharts.chart(elemId, {
+            chart: {
+                type: 'line'
+            },
+            title: {
+                text: title
+            },
+            xAxis: {
+                type: 'datetime',
+                text: 'Nightly Build'
+            },
+            yAxis: {
+                title: {
+                    text: field
+                },
+                plotBands: [{
+                    from: confidenceLow < 0 ? 0 : confidenceLow,
+                    to: confidenceHigh,
+                    label: {
+                        text: 'Confidence Interval'
+                    }
                 }]
             },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            suggestedMax,
-                            suggestedMin
-                        },
-                    }]
-                },
-            }
+            series: [{
+                data: data.map((y, i) => ({ y, x: labels[i] })),
+                borderWidth: 6,
+                borderColor: colors[field]
+            }],
+            credits: false
         });
     };
 
@@ -100,18 +108,18 @@
         });
     };
 
-    makeChart("nanoseconds-chart", "nanoseconds", chartData.map(t => t.metrics.nanoseconds));
-    makeChart("instructions-chart", "instructions", chartData.map(t => t.metrics.instructions));
-    makeChart("cpu_cycles-chart", "cpu_cycles", chartData.map(t => t.metrics.cpu_cycles));
-    makeChart("branch_instructions-chart", "branch_instructions", chartData.map(t => t.metrics.branch_instructions));
-    makeChart("branch_misses-chart", "branch_misses", chartData.map(t => t.metrics.branch_misses));
-    makeChart("cache_references-chart", "cache_references", chartData.map(t => t.metrics.cache_references));
-    makeChart("cache_misses-chart", "cache_misses", chartData.map(t => t.metrics.cache_misses));
+    makeChart("nanoseconds-chart", "Nanoseconds/Iteration", "nanoseconds", chartData.map(t => t.metrics.nanoseconds));
+    makeChart("instructions-chart", "Instructions/Iteration", "instructions", chartData.map(t => t.metrics.instructions));
+    makeChart("cpu_cycles-chart", "CPU Cycles/Iteration", "cpu_cycles", chartData.map(t => t.metrics.cpu_cycles));
+    makeChart("branch_instructions-chart", "Branch Instructions/Iteration", "branch_instructions", chartData.map(t => t.metrics.branch_instructions));
+    makeChart("branch_misses-chart", "Branch Misses/Iteration", "branch_misses", chartData.map(t => t.metrics.branch_misses));
+    makeChart("cache_references-chart", "Cache References/Iteration", "cache_references", chartData.map(t => t.metrics.cache_references));
+    makeChart("cache_misses-chart", "Cache Misses/Iteration", "cache_misses", chartData.map(t => t.metrics.cache_misses));
 
-    makeChart("branch-predict-ratio-chart", "branch_predict_ratio",
+    makeChart("branch-predict-ratio-chart", "Overall Branch Predict Ratio", "branch_predict_ratio",
         hitRatio("branch_instructions", "branch_misses"));
 
-    makeChart("cache-ratio-chart", "cache_hit_ratio",
+    makeChart("cache-ratio-chart", "Overall Cache Hit Ratio", "cache_hit_ratio",
         hitRatio("cache_references", "cache_misses"));
 
 

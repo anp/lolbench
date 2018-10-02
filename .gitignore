@@ -6,3 +6,4 @@ vendor/
 site.retry
 .ansible-vault-password
 rust.git
+.idea/

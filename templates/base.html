@@ -7,28 +7,6 @@
 </head>
 
 <body>
-    <!-- yes, this is terrible, it should be below the content, i know -->
-    <!-- but i don't know how to do that and make askama's include system work -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
-    <script>
-        // https://stackoverflow.com/questions/45309447/calculating-median-javascript
-        const median = (values) => {
-            values = new Array(...values);
-            values.sort(function (a, b) {
-                return a - b;
-            });
-
-            if (values.length === 0) return 0
-
-            var half = Math.floor(values.length / 2);
-
-            if (values.length % 2) {
-                return values[half];
-            } else {
-                return (values[half - 1] + values[half]) / 2.0;
-            }
-        };
-    </script>
     <div id="content">
         {% block content %}{% endblock %}
     </div>
