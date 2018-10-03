@@ -60,7 +60,7 @@
         'cpu_cycles': 'blue',
         'branch_instructions': 'red',
         'branch_misses': 'purple',
-        'cache_references': 'turquoise',
+        'cache_references': '#16a085',
         'cache_misses': 'black',
         'confidence': '#9bffb1'
     };
@@ -93,12 +93,13 @@
                 }],
                 plotLines: [{
                     value: mean,
-                    color: colors[field],
+                    color: 'black',
                     dashStyle: 'Dash',
                     label: {
                         text: 'Mean'
                     },
-                    width: 2
+                    width: 2,
+                    zIndex: 1
                 }]
             },
             series: [{
@@ -110,6 +111,11 @@
                 color: colors[field],
                 label: field
             }],
+            tooltip: {
+                dateTimeLabelFormats: {
+                    day: 'nightly-%Y-%m-%d'
+                }
+            },
             plotOptions: {
                 spline: {
                     marker: {
