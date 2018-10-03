@@ -15,13 +15,15 @@
 <a id="{{ metric }}"></a>
 <h3><a href="#{{ metric }}">*</a> {{ metric }} / iteration</h3>
 
-<canvas id="{{ metric }}-chart" width="600" height="200"></canvas>
+<div id="{{ metric }}-chart" style="width: 100%; height: 600px"></div>
 
 <h4>potential anomalies</h4>
 <table border="1">
     <thead>
-        <th>toolchain</th>
-        <th>delta</th>
+        <tr>
+            <th>toolchain</th>
+            <th>delta</th>
+        </tr>
     </thead>
     <tbody>
         {% for timing in anomalous_timings %}
@@ -35,12 +37,12 @@
 {% endfor %}
 
 <a id="branch-predict-ratio"></a>
-<h3><a href="branch-predict-ratio">*</a> overall branch predict ratio</h3>
-<canvas id="branch-predict-ratio-chart" width="600" height="200"></canvas>
+<h3><a href="#branch-predict-ratio">*</a> overall branch predict ratio</h3>
+<div id="branch-predict-ratio-chart" style="width: 100%; height: 600px"></div>
 
 <a id="cache-ratio"></a>
-<h3><a href="cache-ratio">*</a> overall cache hit ratio</h3>
-<canvas id="cache-ratio-chart" width="600" height="200"></canvas>
+<h3><a href="#cache-ratio">*</a> overall cache hit ratio</h3>
+<div id="cache-ratio-chart" style="width: 100%; height: 600px"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/highcharts@6/highcharts.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-statistics@6/dist/simple-statistics.min.js"></script>
@@ -50,9 +52,9 @@
     const chartData = JSON.parse(`{{timings|json}}`);
     chartData.reverse();
 
-    let labels = chartData.map(t => t.toolchains[0].spec.replace('nightly-', ''));
+    const labels = chartData.map(t => new Date(t.toolchains[0].spec.replace('nightly-', '')).valueOf());
 
-    let colors = {
+    const colors = {
         'nanoseconds': '#E43717',
         'instructions': 'green',
         'cpu_cycles': 'blue',
@@ -60,24 +62,25 @@
         'branch_misses': 'purple',
         'cache_references': 'turquoise',
         'cache_misses': 'black',
+        'confidence': '#9bffb1'
     };
 
     const makeChart = (elemId, title, field, data) => {
-        const mean = mean(data);
-        const stdDev = standardDeviation(data);
+        const mean = ss.mean(data);
+        const stdDev = ss.standardDeviation(data);
         const confidenceLow = mean - (stdDev * 2);
         const confidenceHigh = mean + (stdDev * 2);
 
         Highcharts.chart(elemId, {
             chart: {
-                type: 'line'
+                type: 'spline'
             },
-            title: {
-                text: title
-            },
+            title: false,
             xAxis: {
                 type: 'datetime',
-                text: 'Nightly Build'
+                title: {
+                    text: 'Nightly Build'
+                }
             },
             yAxis: {
                 title: {
@@ -86,24 +89,42 @@
                 plotBands: [{
                     from: confidenceLow < 0 ? 0 : confidenceLow,
                     to: confidenceHigh,
+                    color: colors['confidence']
+                }],
+                plotLines: [{
+                    value: mean,
+                    color: colors[field],
+                    dashStyle: 'Dash',
                     label: {
-                        text: 'Confidence Interval'
-                    }
+                        text: 'Mean'
+                    },
+                    width: 2
                 }]
             },
             series: [{
-                data: data.map((y, i) => ({ y, x: labels[i] })),
-                borderWidth: 6,
-                borderColor: colors[field]
+                data: data.map((y, i) => ([labels[i], y])),
+                lineWidth: 6,
+                marker: {
+                    radius: 6
+                },
+                color: colors[field],
+                label: field
             }],
+            plotOptions: {
+                spline: {
+                    marker: {
+                        enabled: true
+                    }
+                }
+            },
             credits: false
         });
     };
 
     const hitRatio = (accessField, missField) => {
         return chartData.map(t => {
-            let access = t.metrics[accessField];
-            let miss = t.metrics[missField];
+            const access = t.metrics[accessField];
+            const miss = t.metrics[missField];
             return (access - miss) / access;
         });
     };
