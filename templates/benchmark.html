@@ -45,9 +45,10 @@
 <div id="cache-ratio-chart" style="width: 100%; height: 600px"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/highcharts@6/highcharts.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/simple-statistics@6/dist/simple-statistics.min.js"></script>
 
 <script>
+    const means = JSON.parse(`{{means|json}}`);
+    const stdDevs = JSON.parse(`{{std_devs|json}}`);
     const anomalyData = JSON.parse(`{{anomalous_timings|json}}`);
     const chartData = JSON.parse(`{{timings|json}}`);
     chartData.reverse();
@@ -66,8 +67,8 @@
     };
 
     const makeChart = (elemId, title, field, data) => {
-        const mean = ss.mean(data);
-        const stdDev = ss.sampleStandardDeviation(data);
+        const mean = means[field];
+        const stdDev = stdDevs[field];
         const confidenceLow = mean - (stdDev * 2);
         const confidenceHigh = mean + (stdDev * 2);
 

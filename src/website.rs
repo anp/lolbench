@@ -4,6 +4,7 @@ use std::path::{Path, PathBuf};
 
 use askama::Template;
 use chrono::{DateTime, Utc};
+use criterion_stats::univariate::Sample;
 
 pub fn build_website(
     data_dir: impl AsRef<Path>,
@@ -150,6 +151,8 @@ pub struct Benchmark {
     name: String,
     timings: Vec<TimingRecord>,
     anomalous_timings: Vec<(Toolchain, AnomalousTiming)>,
+    means: RuntimeMetrics,
+    std_devs: RuntimeMetrics,
 }
 
 impl Benchmark {
@@ -158,6 +161,8 @@ impl Benchmark {
             name,
             timings: vec![],
             anomalous_timings: vec![],
+            means: RuntimeMetrics::ones(),
+            std_devs: RuntimeMetrics::ones(),
         }
     }
 
@@ -192,10 +197,14 @@ impl Benchmark {
         }
 
         timings.reverse();
+        let means = Benchmark::calculate_means(&timings);
+        let std_devs = Benchmark::calculate_std_devs(&timings, &means);
         Self {
             name: name.to_owned(),
             timings,
             anomalous_timings: vec![],
+            means,
+            std_devs,
         }
     }
 
@@ -222,6 +231,44 @@ impl Benchmark {
             "cache_misses",
         ]
     }
+
+    fn calculate_means(timings: &[TimingRecord]) -> RuntimeMetrics {
+        RuntimeMetrics {
+            nanoseconds: calculate_sample_mean(&timings.iter().map(|t| t.metrics.nanoseconds.raw()).collect::<Vec<_>>()),
+            instructions: calculate_sample_mean(&timings.iter().map(|t| t.metrics.instructions.raw()).collect::<Vec<_>>()),
+            context_switches: calculate_sample_mean(&timings.iter().map(|t| t.metrics.context_switches.raw()).collect::<Vec<_>>()),
+            cpu_clock: calculate_sample_mean(&timings.iter().map(|t| t.metrics.cpu_clock.raw()).collect::<Vec<_>>()),
+            branch_instructions: calculate_sample_mean(&timings.iter().map(|t| t.metrics.branch_instructions.raw()).collect::<Vec<_>>()),
+            branch_misses: calculate_sample_mean(&timings.iter().map(|t| t.metrics.branch_misses.raw()).collect::<Vec<_>>()),
+            cache_misses: calculate_sample_mean(&timings.iter().map(|t| t.metrics.cache_misses.raw()).collect::<Vec<_>>()),
+            cache_references: calculate_sample_mean(&timings.iter().map(|t| t.metrics.cache_references.raw()).collect::<Vec<_>>()),
+            cpu_cycles: calculate_sample_mean(&timings.iter().map(|t| t.metrics.cpu_cycles.raw()).collect::<Vec<_>>()),
+        }
+    }
+
+    fn calculate_std_devs(timings: &[TimingRecord], means: &RuntimeMetrics) -> RuntimeMetrics {
+        RuntimeMetrics {
+            nanoseconds: calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.nanoseconds.raw()).collect::<Vec<_>>(), means.nanoseconds.raw()),
+            instructions: calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.instructions.raw()).collect::<Vec<_>>(), means.instructions.raw()),
+            context_switches: calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.context_switches.raw()).collect::<Vec<_>>(), means.context_switches.raw()),
+            cpu_clock: calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.cpu_clock.raw()).collect::<Vec<_>>(), means.cpu_clock.raw()),
+            branch_instructions: calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.branch_instructions.raw()).collect::<Vec<_>>(), means.branch_instructions.raw()),
+            branch_misses: calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.branch_misses.raw()).collect::<Vec<_>>(), means.branch_misses.raw()),
+            cache_misses: calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.cache_misses.raw()).collect::<Vec<_>>(), means.cache_misses.raw()),
+            cache_references: calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.cache_references.raw()).collect::<Vec<_>>(), means.cache_references.raw()),
+            cpu_cycles: calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.cpu_cycles.raw()).collect::<Vec<_>>(), means.cpu_cycles.raw()),
+        }
+    }
+}
+
+fn calculate_sample_mean(values: &[f64]) -> R64 {
+    let sample = Sample::new(values);
+    r64(sample.mean())
+}
+
+fn calculate_sample_std_dev(values: &[f64], mean: f64) -> R64 {
+    let sample = Sample::new(values);
+    r64(sample.std_dev(Some(mean)))
 }
 
 pub mod filters {
