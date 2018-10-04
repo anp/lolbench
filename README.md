@@ -131,7 +131,7 @@ Don't attempt to assign the benchmark to a particular runner yet. If the benchma
 * changes to `registry.toml`
 * changes to `.circleci/config.yml`
 
-CI will ensure that all other benchmarks still build on your PR, you don't need to run the test target for every benchmark crate locally.
+CI will ensure that all other benchmarks still build on your PR, you don't need to run the test target for every benchmark crate locally. In your PR message please mention which 'benchmark needed' issue should be closed by your PR.
 
 Once your PR is merged we'll re-run the benchmark load balancer (ping @anp if he hasn't written docs for that yet).
 
