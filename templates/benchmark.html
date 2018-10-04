@@ -67,7 +67,7 @@
 
     const makeChart = (elemId, title, field, data) => {
         const mean = ss.mean(data);
-        const stdDev = ss.standardDeviation(data);
+        const stdDev = ss.sampleStandardDeviation(data);
         const confidenceLow = mean - (stdDev * 2);
         const confidenceHigh = mean + (stdDev * 2);
 
@@ -109,7 +109,7 @@
                     radius: 6
                 },
                 color: colors[field],
-                label: field
+                name: field
             }],
             tooltip: {
                 dateTimeLabelFormats: {
@@ -118,6 +118,7 @@
             },
             plotOptions: {
                 spline: {
+                    animation: false,
                     marker: {
                         enabled: true
                     }
