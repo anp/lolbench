@@ -68,10 +68,30 @@
     };
 
     const makeChart = (elemId, title, field, data) => {
-        const mean = means[field] ? means[field].median : null;
-        const stdDev = stdDevs[field] ? stdDevs[field].median : null;
+        const mean = means[field];
+        const stdDev = stdDevs[field];
         const confidenceLow = mean - (stdDev * 2);
         const confidenceHigh = mean + (stdDev * 2);
+
+        const series = [{
+            data: data.map((metric, i) => ([labels[i], metric.median])),
+            type: 'spline',
+            lineWidth: 3,
+            color: colors[field],
+            name: field
+        }];
+        if (data.length > 0 && data[0].lower_bound) {
+            series.push({
+                name: 'margin of error',
+                type: 'errorbar',
+                data: data.map((metric, i) => ([labels[i], metric.lower_bound, metric.upper_bound])),
+                color: 'black',
+                tooltip: {
+                    enabled: false,
+                },
+                lineWidth: 2,
+            });
+        }
 
         Highcharts.chart(elemId, {
             title: false,
@@ -101,24 +121,7 @@
                     zIndex: 1
                 }]
             },
-            series: [{
-                data: data.map((metric, i) => ([labels[i], metric.median])),
-                type: 'spline',
-                lineWidth: 4,
-                marker: {
-                    radius: 4
-                },
-                color: colors[field],
-                name: field
-            }, {
-                name: 'margin of error',
-                type: 'errorbar',
-                data: data.map((metric, i) => ([labels[i], metric.lower_bound, metric.upper_bound])),
-                color: 'black',
-                tooltip: {
-                    pointFormat: `(error range: {point.low}-{point.high} ${field})<br/>`
-                }
-            }],
+            series,
             tooltip: {
                 dateTimeLabelFormats: {
                     day: 'nightly-%Y-%m-%d'
@@ -143,7 +146,7 @@
         return chartData.map(t => {
             const access = t.metrics[accessField].median;
             const miss = t.metrics[missField].median;
-            return (access - miss) / access;
+            return { median: (access - miss) / access };
         });
     };
 

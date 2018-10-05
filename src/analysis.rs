@@ -132,19 +132,20 @@ pub struct MetricData {
 }
 
 impl MetricData {
-    pub fn median_only(median: R64) -> Self {
-        MetricData {
-            median,
-            lower_bound: r64(0.0),
-            upper_bound: r64(0.0),
-        }
-    }
-
     fn from_statistic(statistic: &Statistic) -> Self {
         MetricData {
             median: r64(statistic.median.point_estimate),
             lower_bound: r64(statistic.median.confidence_interval.lower_bound),
             upper_bound: r64(statistic.median.confidence_interval.upper_bound),
+        }
+    }
+
+    pub fn ones() -> Self {
+        let r = r64(1.0);
+        MetricData {
+            median: r,
+            lower_bound: r,
+            upper_bound: r,
         }
     }
 }
@@ -193,30 +194,98 @@ impl RuntimeMetrics {
     pub fn normalized_against(&self, baseline: &Self) -> Self {
         let n = |f: fn(&Self) -> R64| (f(self) + 1.0) / (f(baseline) + 1.0);
         Self {
-            nanoseconds: MetricData::median_only(n(|m| m.nanoseconds.median)),
-            instructions: MetricData::median_only(n(|m| m.instructions.median)),
-            cpu_clock: MetricData::median_only(n(|m| m.cpu_clock.median)),
-            branch_instructions: MetricData::median_only(n(|m| m.branch_instructions.median)),
-            branch_misses: MetricData::median_only(n(|m| m.branch_misses.median)),
-            cache_misses: MetricData::median_only(n(|m| m.cache_misses.median)),
-            cache_references: MetricData::median_only(n(|m| m.cache_references.median)),
-            cpu_cycles: MetricData::median_only(n(|m| m.cpu_cycles.median)),
-            context_switches: MetricData::median_only(n(|m| m.context_switches.median)),
+            nanoseconds: MetricData {
+                median: n(|m| m.nanoseconds.median),
+                lower_bound: n(|m| m.nanoseconds.lower_bound),
+                upper_bound: n(|m| m.nanoseconds.upper_bound),
+            },
+            instructions: MetricData {
+                median: n(|m| m.instructions.median),
+                lower_bound: n(|m| m.instructions.lower_bound),
+                upper_bound: n(|m| m.instructions.upper_bound),
+            },
+            cpu_clock: MetricData {
+                median: n(|m| m.cpu_clock.median),
+                lower_bound: n(|m| m.cpu_clock.lower_bound),
+                upper_bound: n(|m| m.cpu_clock.upper_bound),
+            },
+            branch_instructions: MetricData {
+                median: n(|m| m.branch_instructions.median),
+                lower_bound: n(|m| m.branch_instructions.lower_bound),
+                upper_bound: n(|m| m.branch_instructions.upper_bound),
+            },
+            branch_misses: MetricData {
+                median: n(|m| m.branch_misses.median),
+                lower_bound: n(|m| m.branch_misses.lower_bound),
+                upper_bound: n(|m| m.branch_misses.upper_bound),
+            },
+            cache_misses: MetricData {
+                median: n(|m| m.cache_misses.median),
+                lower_bound: n(|m| m.cache_misses.lower_bound),
+                upper_bound: n(|m| m.cache_misses.upper_bound),
+            },
+            cache_references: MetricData {
+                median: n(|m| m.cache_references.median),
+                lower_bound: n(|m| m.cache_references.lower_bound),
+                upper_bound: n(|m| m.cache_references.upper_bound),
+            },
+            cpu_cycles: MetricData {
+                median: n(|m| m.cpu_cycles.median),
+                lower_bound: n(|m| m.cpu_cycles.lower_bound),
+                upper_bound: n(|m| m.cpu_cycles.upper_bound),
+            },
+            context_switches: MetricData {
+                median: n(|m| m.context_switches.median),
+                lower_bound: n(|m| m.context_switches.lower_bound),
+                upper_bound: n(|m| m.context_switches.upper_bound),
+            },
         }
     }
 
     pub fn ones() -> Self {
-        let o = r64(1.0);
         RuntimeMetrics {
-            nanoseconds: MetricData::median_only(o),
-            instructions: MetricData::median_only(o),
-            cpu_clock: MetricData::median_only(o),
-            branch_instructions: MetricData::median_only(o),
-            branch_misses: MetricData::median_only(o),
-            cache_misses: MetricData::median_only(o),
-            cache_references: MetricData::median_only(o),
-            cpu_cycles: MetricData::median_only(o),
-            context_switches: MetricData::median_only(o),
+            nanoseconds: MetricData::ones(),
+            instructions: MetricData::ones(),
+            cpu_clock: MetricData::ones(),
+            branch_instructions: MetricData::ones(),
+            branch_misses: MetricData::ones(),
+            cache_misses: MetricData::ones(),
+            cache_references: MetricData::ones(),
+            cpu_cycles: MetricData::ones(),
+            context_switches: MetricData::ones(),
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Serialize)]
+pub struct SimpleRuntimeMetrics {
+    pub nanoseconds: R64,
+    pub instructions: R64,
+    pub cpu_cycles: R64,
+
+    pub context_switches: R64,
+    pub cpu_clock: R64,
+
+    pub branch_instructions: R64,
+    pub branch_misses: R64,
+
+    pub cache_misses: R64,
+    pub cache_references: R64,
+}
+
+impl SimpleRuntimeMetrics {
+    pub fn ones() -> Self {
+        let o = r64(1.0);
+        SimpleRuntimeMetrics {
+            nanoseconds: o,
+            instructions: o,
+            cpu_clock: o,
+            branch_instructions: o,
+            branch_misses: o,
+            cache_misses: o,
+            cache_references: o,
+            cpu_cycles: o,
+            context_switches: o,
         }
     }
 }
