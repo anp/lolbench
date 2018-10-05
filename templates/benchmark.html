@@ -45,6 +45,7 @@
 <div id="cache-ratio-chart" style="width: 100%; height: 600px"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/highcharts@6/highcharts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highcharts@6/highcharts-more.min.js"></script>
 
 <script>
     const means = JSON.parse(`{{means|json}}`);
@@ -67,15 +68,12 @@
     };
 
     const makeChart = (elemId, title, field, data) => {
-        const mean = means[field];
-        const stdDev = stdDevs[field];
+        const mean = means[field] ? means[field].median : null;
+        const stdDev = stdDevs[field] ? stdDevs[field].median : null;
         const confidenceLow = mean - (stdDev * 2);
         const confidenceHigh = mean + (stdDev * 2);
 
         Highcharts.chart(elemId, {
-            chart: {
-                type: 'spline'
-            },
             title: false,
             xAxis: {
                 type: 'datetime',
@@ -104,13 +102,22 @@
                 }]
             },
             series: [{
-                data: data.map((y, i) => ([labels[i], y])),
-                lineWidth: 6,
+                data: data.map((metric, i) => ([labels[i], metric.median])),
+                type: 'spline',
+                lineWidth: 4,
                 marker: {
-                    radius: 6
+                    radius: 4
                 },
                 color: colors[field],
                 name: field
+            }, {
+                name: 'margin of error',
+                type: 'errorbar',
+                data: data.map((metric, i) => ([labels[i], metric.lower_bound, metric.upper_bound])),
+                color: 'black',
+                tooltip: {
+                    pointFormat: `(error range: {point.low}-{point.high} ${field})<br/>`
+                }
             }],
             tooltip: {
                 dateTimeLabelFormats: {
@@ -123,6 +130,9 @@
                     marker: {
                         enabled: true
                     }
+                },
+                errorbar: {
+                    animation: false,
                 }
             },
             credits: false
@@ -131,8 +141,8 @@
 
     const hitRatio = (accessField, missField) => {
         return chartData.map(t => {
-            const access = t.metrics[accessField];
-            const miss = t.metrics[missField];
+            const access = t.metrics[accessField].median;
+            const miss = t.metrics[missField].median;
             return (access - miss) / access;
         });
     };

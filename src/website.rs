@@ -234,29 +234,29 @@ impl Benchmark {
 
     fn calculate_means(timings: &[TimingRecord]) -> RuntimeMetrics {
         RuntimeMetrics {
-            nanoseconds: calculate_sample_mean(&timings.iter().map(|t| t.metrics.nanoseconds.raw()).collect::<Vec<_>>()),
-            instructions: calculate_sample_mean(&timings.iter().map(|t| t.metrics.instructions.raw()).collect::<Vec<_>>()),
-            context_switches: calculate_sample_mean(&timings.iter().map(|t| t.metrics.context_switches.raw()).collect::<Vec<_>>()),
-            cpu_clock: calculate_sample_mean(&timings.iter().map(|t| t.metrics.cpu_clock.raw()).collect::<Vec<_>>()),
-            branch_instructions: calculate_sample_mean(&timings.iter().map(|t| t.metrics.branch_instructions.raw()).collect::<Vec<_>>()),
-            branch_misses: calculate_sample_mean(&timings.iter().map(|t| t.metrics.branch_misses.raw()).collect::<Vec<_>>()),
-            cache_misses: calculate_sample_mean(&timings.iter().map(|t| t.metrics.cache_misses.raw()).collect::<Vec<_>>()),
-            cache_references: calculate_sample_mean(&timings.iter().map(|t| t.metrics.cache_references.raw()).collect::<Vec<_>>()),
-            cpu_cycles: calculate_sample_mean(&timings.iter().map(|t| t.metrics.cpu_cycles.raw()).collect::<Vec<_>>()),
+            nanoseconds: MetricData::median_only(calculate_sample_mean(&timings.iter().map(|t| t.metrics.nanoseconds.median.raw()).collect::<Vec<_>>())),
+            instructions: MetricData::median_only(calculate_sample_mean(&timings.iter().map(|t| t.metrics.instructions.median.raw()).collect::<Vec<_>>())),
+            context_switches: MetricData::median_only(calculate_sample_mean(&timings.iter().map(|t| t.metrics.context_switches.median.raw()).collect::<Vec<_>>())),
+            cpu_clock: MetricData::median_only(calculate_sample_mean(&timings.iter().map(|t| t.metrics.cpu_clock.median.raw()).collect::<Vec<_>>())),
+            branch_instructions: MetricData::median_only(calculate_sample_mean(&timings.iter().map(|t| t.metrics.branch_instructions.median.raw()).collect::<Vec<_>>())),
+            branch_misses: MetricData::median_only(calculate_sample_mean(&timings.iter().map(|t| t.metrics.branch_misses.median.raw()).collect::<Vec<_>>())),
+            cache_misses: MetricData::median_only(calculate_sample_mean(&timings.iter().map(|t| t.metrics.cache_misses.median.raw()).collect::<Vec<_>>())),
+            cache_references: MetricData::median_only(calculate_sample_mean(&timings.iter().map(|t| t.metrics.cache_references.median.raw()).collect::<Vec<_>>())),
+            cpu_cycles: MetricData::median_only(calculate_sample_mean(&timings.iter().map(|t| t.metrics.cpu_cycles.median.raw()).collect::<Vec<_>>())),
         }
     }
 
     fn calculate_std_devs(timings: &[TimingRecord], means: &RuntimeMetrics) -> RuntimeMetrics {
         RuntimeMetrics {
-            nanoseconds: calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.nanoseconds.raw()).collect::<Vec<_>>(), means.nanoseconds.raw()),
-            instructions: calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.instructions.raw()).collect::<Vec<_>>(), means.instructions.raw()),
-            context_switches: calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.context_switches.raw()).collect::<Vec<_>>(), means.context_switches.raw()),
-            cpu_clock: calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.cpu_clock.raw()).collect::<Vec<_>>(), means.cpu_clock.raw()),
-            branch_instructions: calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.branch_instructions.raw()).collect::<Vec<_>>(), means.branch_instructions.raw()),
-            branch_misses: calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.branch_misses.raw()).collect::<Vec<_>>(), means.branch_misses.raw()),
-            cache_misses: calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.cache_misses.raw()).collect::<Vec<_>>(), means.cache_misses.raw()),
-            cache_references: calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.cache_references.raw()).collect::<Vec<_>>(), means.cache_references.raw()),
-            cpu_cycles: calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.cpu_cycles.raw()).collect::<Vec<_>>(), means.cpu_cycles.raw()),
+            nanoseconds: MetricData::median_only(calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.nanoseconds.median.raw()).collect::<Vec<_>>(), means.nanoseconds.median.raw())),
+            instructions: MetricData::median_only(calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.instructions.median.raw()).collect::<Vec<_>>(), means.instructions.median.raw())),
+            context_switches: MetricData::median_only(calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.context_switches.median.raw()).collect::<Vec<_>>(), means.context_switches.median.raw())),
+            cpu_clock: MetricData::median_only(calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.cpu_clock.median.raw()).collect::<Vec<_>>(), means.cpu_clock.median.raw())),
+            branch_instructions: MetricData::median_only(calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.branch_instructions.median.raw()).collect::<Vec<_>>(), means.branch_instructions.median.raw())),
+            branch_misses: MetricData::median_only(calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.branch_misses.median.raw()).collect::<Vec<_>>(), means.branch_misses.median.raw())),
+            cache_misses: MetricData::median_only(calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.cache_misses.median.raw()).collect::<Vec<_>>(), means.cache_misses.median.raw())),
+            cache_references: MetricData::median_only(calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.cache_references.median.raw()).collect::<Vec<_>>(), means.cache_references.median.raw())),
+            cpu_cycles: MetricData::median_only(calculate_sample_std_dev(&timings.iter().map(|t| t.metrics.cpu_cycles.median.raw()).collect::<Vec<_>>(), means.cpu_cycles.median.raw())),
         }
     }
 }
