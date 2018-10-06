@@ -233,61 +233,19 @@ impl Benchmark {
     }
 
     fn calculate_means(timings: &[TimingRecord]) -> SimpleRuntimeMetrics {
+        let calc = |f: fn(&TimingRecord) -> f64| {
+            calculate_sample_mean(&timings.iter().map(f).collect::<Vec<_>>())
+        };
         SimpleRuntimeMetrics {
-            nanoseconds: calculate_sample_mean(
-                &timings
-                    .iter()
-                    .map(|t| t.metrics.nanoseconds.median.raw())
-                    .collect::<Vec<_>>(),
-            ),
-            instructions: calculate_sample_mean(
-                &timings
-                    .iter()
-                    .map(|t| t.metrics.instructions.median.raw())
-                    .collect::<Vec<_>>(),
-            ),
-            context_switches: calculate_sample_mean(
-                &timings
-                    .iter()
-                    .map(|t| t.metrics.context_switches.median.raw())
-                    .collect::<Vec<_>>(),
-            ),
-            cpu_clock: calculate_sample_mean(
-                &timings
-                    .iter()
-                    .map(|t| t.metrics.cpu_clock.median.raw())
-                    .collect::<Vec<_>>(),
-            ),
-            branch_instructions: calculate_sample_mean(
-                &timings
-                    .iter()
-                    .map(|t| t.metrics.branch_instructions.median.raw())
-                    .collect::<Vec<_>>(),
-            ),
-            branch_misses: calculate_sample_mean(
-                &timings
-                    .iter()
-                    .map(|t| t.metrics.branch_misses.median.raw())
-                    .collect::<Vec<_>>(),
-            ),
-            cache_misses: calculate_sample_mean(
-                &timings
-                    .iter()
-                    .map(|t| t.metrics.cache_misses.median.raw())
-                    .collect::<Vec<_>>(),
-            ),
-            cache_references: calculate_sample_mean(
-                &timings
-                    .iter()
-                    .map(|t| t.metrics.cache_references.median.raw())
-                    .collect::<Vec<_>>(),
-            ),
-            cpu_cycles: calculate_sample_mean(
-                &timings
-                    .iter()
-                    .map(|t| t.metrics.cpu_cycles.median.raw())
-                    .collect::<Vec<_>>(),
-            ),
+            nanoseconds: calc(|t| t.metrics.nanoseconds.median.raw()),
+            instructions: calc(|t| t.metrics.instructions.median.raw()),
+            context_switches: calc(|t| t.metrics.context_switches.median.raw()),
+            cpu_clock: calc(|t| t.metrics.cpu_clock.median.raw()),
+            branch_instructions: calc(|t| t.metrics.branch_instructions.median.raw()),
+            branch_misses: calc(|t| t.metrics.branch_misses.median.raw()),
+            cache_misses: calc(|t| t.metrics.cache_misses.median.raw()),
+            cache_references: calc(|t| t.metrics.cache_references.median.raw()),
+            cpu_cycles: calc(|t| t.metrics.cpu_cycles.median.raw()),
         }
     }
 
@@ -295,68 +253,41 @@ impl Benchmark {
         timings: &[TimingRecord],
         means: &SimpleRuntimeMetrics,
     ) -> SimpleRuntimeMetrics {
+        let calc = |f: fn(&TimingRecord) -> f64, mean: f64| {
+            calculate_sample_std_dev(&timings.iter().map(f).collect::<Vec<_>>(), mean)
+        };
         SimpleRuntimeMetrics {
-            nanoseconds: calculate_sample_std_dev(
-                &timings
-                    .iter()
-                    .map(|t| t.metrics.nanoseconds.median.raw())
-                    .collect::<Vec<_>>(),
+            nanoseconds: calc(
+                |t| t.metrics.nanoseconds.median.raw(),
                 means.nanoseconds.raw(),
             ),
-            instructions: calculate_sample_std_dev(
-                &timings
-                    .iter()
-                    .map(|t| t.metrics.instructions.median.raw())
-                    .collect::<Vec<_>>(),
+            instructions: calc(
+                |t| t.metrics.instructions.median.raw(),
                 means.instructions.raw(),
             ),
-            context_switches: calculate_sample_std_dev(
-                &timings
-                    .iter()
-                    .map(|t| t.metrics.context_switches.median.raw())
-                    .collect::<Vec<_>>(),
+            context_switches: calc(
+                |t| t.metrics.context_switches.median.raw(),
                 means.context_switches.raw(),
             ),
-            cpu_clock: calculate_sample_std_dev(
-                &timings
-                    .iter()
-                    .map(|t| t.metrics.cpu_clock.median.raw())
-                    .collect::<Vec<_>>(),
-                means.cpu_clock.raw(),
-            ),
-            branch_instructions: calculate_sample_std_dev(
-                &timings
-                    .iter()
-                    .map(|t| t.metrics.branch_instructions.median.raw())
-                    .collect::<Vec<_>>(),
+            cpu_clock: calc(|t| t.metrics.cpu_clock.median.raw(), means.cpu_clock.raw()),
+            branch_instructions: calc(
+                |t| t.metrics.branch_instructions.median.raw(),
                 means.branch_instructions.raw(),
             ),
-            branch_misses: calculate_sample_std_dev(
-                &timings
-                    .iter()
-                    .map(|t| t.metrics.branch_misses.median.raw())
-                    .collect::<Vec<_>>(),
+            branch_misses: calc(
+                |t| t.metrics.branch_misses.median.raw(),
                 means.branch_misses.raw(),
             ),
-            cache_misses: calculate_sample_std_dev(
-                &timings
-                    .iter()
-                    .map(|t| t.metrics.cache_misses.median.raw())
-                    .collect::<Vec<_>>(),
+            cache_misses: calc(
+                |t| t.metrics.cache_misses.median.raw(),
                 means.cache_misses.raw(),
             ),
-            cache_references: calculate_sample_std_dev(
-                &timings
-                    .iter()
-                    .map(|t| t.metrics.cache_references.median.raw())
-                    .collect::<Vec<_>>(),
+            cache_references: calc(
+                |t| t.metrics.cache_references.median.raw(),
                 means.cache_references.raw(),
             ),
-            cpu_cycles: calculate_sample_std_dev(
-                &timings
-                    .iter()
-                    .map(|t| t.metrics.cpu_cycles.median.raw())
-                    .collect::<Vec<_>>(),
+            cpu_cycles: calc(
+                |t| t.metrics.cpu_cycles.median.raw(),
                 means.cpu_cycles.raw(),
             ),
         }

@@ -193,53 +193,21 @@ impl RuntimeMetrics {
     }
 
     pub fn normalized_against(&self, baseline: &Self) -> Self {
-        let n = |f: fn(&Self) -> R64| (f(self) + 1.0) / (f(baseline) + 1.0);
+        let n = |f: fn(&Self) -> MetricData| MetricData {
+            median: (f(self).median + 1.0) / (f(baseline).median + 1.0),
+            lower_bound: (f(self).lower_bound + 1.0) / (f(baseline).lower_bound + 1.0),
+            upper_bound: (f(self).upper_bound + 1.0) / (f(baseline).upper_bound + 1.0),
+        };
         Self {
-            nanoseconds: MetricData {
-                median: n(|m| m.nanoseconds.median),
-                lower_bound: n(|m| m.nanoseconds.lower_bound),
-                upper_bound: n(|m| m.nanoseconds.upper_bound),
-            },
-            instructions: MetricData {
-                median: n(|m| m.instructions.median),
-                lower_bound: n(|m| m.instructions.lower_bound),
-                upper_bound: n(|m| m.instructions.upper_bound),
-            },
-            cpu_clock: MetricData {
-                median: n(|m| m.cpu_clock.median),
-                lower_bound: n(|m| m.cpu_clock.lower_bound),
-                upper_bound: n(|m| m.cpu_clock.upper_bound),
-            },
-            branch_instructions: MetricData {
-                median: n(|m| m.branch_instructions.median),
-                lower_bound: n(|m| m.branch_instructions.lower_bound),
-                upper_bound: n(|m| m.branch_instructions.upper_bound),
-            },
-            branch_misses: MetricData {
-                median: n(|m| m.branch_misses.median),
-                lower_bound: n(|m| m.branch_misses.lower_bound),
-                upper_bound: n(|m| m.branch_misses.upper_bound),
-            },
-            cache_misses: MetricData {
-                median: n(|m| m.cache_misses.median),
-                lower_bound: n(|m| m.cache_misses.lower_bound),
-                upper_bound: n(|m| m.cache_misses.upper_bound),
-            },
-            cache_references: MetricData {
-                median: n(|m| m.cache_references.median),
-                lower_bound: n(|m| m.cache_references.lower_bound),
-                upper_bound: n(|m| m.cache_references.upper_bound),
-            },
-            cpu_cycles: MetricData {
-                median: n(|m| m.cpu_cycles.median),
-                lower_bound: n(|m| m.cpu_cycles.lower_bound),
-                upper_bound: n(|m| m.cpu_cycles.upper_bound),
-            },
-            context_switches: MetricData {
-                median: n(|m| m.context_switches.median),
-                lower_bound: n(|m| m.context_switches.lower_bound),
-                upper_bound: n(|m| m.context_switches.upper_bound),
-            },
+            nanoseconds: n(|m| m.nanoseconds),
+            instructions: n(|m| m.instructions),
+            cpu_clock: n(|m| m.cpu_clock),
+            branch_instructions: n(|m| m.branch_instructions),
+            branch_misses: n(|m| m.branch_misses),
+            cache_misses: n(|m| m.cache_misses),
+            cache_references: n(|m| m.cache_references),
+            cpu_cycles: n(|m| m.cpu_cycles),
+            context_switches: n(|m| m.context_switches),
         }
     }
 
