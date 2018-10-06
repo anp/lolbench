@@ -64,13 +64,16 @@
         'branch_misses': 'purple',
         'cache_references': '#16a085',
         'cache_misses': 'black',
-        'confidence': '#9bffb1'
+        'confidence': '#00ce22'
     };
 
     const makeChart = (elemId, title, field, data) => {
         const mean = means[field];
         const stdDev = stdDevs[field];
-        const confidenceLow = mean - (stdDev * 2);
+        let confidenceLow = mean - (stdDev * 2);
+        if (confidenceLow < 0) {
+            confidenceLow = 0;
+        }
         const confidenceHigh = mean + (stdDev * 2);
 
         const series = [{
@@ -105,11 +108,6 @@
                 title: {
                     text: field
                 },
-                plotBands: [{
-                    from: confidenceLow < 0 ? 0 : confidenceLow,
-                    to: confidenceHigh,
-                    color: colors['confidence']
-                }],
                 plotLines: [{
                     value: mean,
                     color: 'black',
@@ -117,6 +115,18 @@
                     label: {
                         text: 'Mean'
                     },
+                    width: 2,
+                    zIndex: 1
+                }, {
+                    value: confidenceHigh,
+                    color: colors['confidence'],
+                    dashStyle: 'Dash',
+                    width: 2,
+                    zIndex: 1
+                }, {
+                    value: confidenceLow,
+                    color: colors['confidence'],
+                    dashStyle: 'Dash',
                     width: 2,
                     zIndex: 1
                 }]
