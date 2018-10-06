@@ -172,7 +172,8 @@ impl RuntimeMetrics {
         let instructions = MetricData::from_statistic(&current_measure["instructions"]);
         let context_switches = MetricData::from_statistic(&current_measure["context-switches"]);
         let cpu_clock = MetricData::from_statistic(&current_measure["cpu-clock"]);
-        let branch_instructions = MetricData::from_statistic(&current_measure["branch-instructions"]);
+        let branch_instructions =
+            MetricData::from_statistic(&current_measure["branch-instructions"]);
         let branch_misses = MetricData::from_statistic(&current_measure["branch-misses"]);
         let cache_misses = MetricData::from_statistic(&current_measure["cache-misses"]);
         let cache_references = MetricData::from_statistic(&current_measure["cache-references"]);
@@ -324,19 +325,34 @@ impl AnomalyIndex {
             Some(cache_references),
             Some(cache_misses),
         ) = (
-            AnomalyScore::new(nanoseconds.median, previous.clone().map(|p| p.nanoseconds.median)),
-            AnomalyScore::new(instructions.median, previous.clone().map(|p| p.instructions.median)),
-            AnomalyScore::new(cpu_cycles.median, previous.clone().map(|p| p.cpu_cycles.median)),
+            AnomalyScore::new(
+                nanoseconds.median,
+                previous.clone().map(|p| p.nanoseconds.median),
+            ),
+            AnomalyScore::new(
+                instructions.median,
+                previous.clone().map(|p| p.instructions.median),
+            ),
+            AnomalyScore::new(
+                cpu_cycles.median,
+                previous.clone().map(|p| p.cpu_cycles.median),
+            ),
             AnomalyScore::new(
                 branch_instructions.median,
                 previous.clone().map(|p| p.branch_instructions.median),
             ),
-            AnomalyScore::new(branch_misses.median, previous.clone().map(|p| p.branch_misses.median)),
+            AnomalyScore::new(
+                branch_misses.median,
+                previous.clone().map(|p| p.branch_misses.median),
+            ),
             AnomalyScore::new(
                 cache_references.median,
                 previous.clone().map(|p| p.cache_references.median),
             ),
-            AnomalyScore::new(cache_misses.median, previous.clone().map(|p| p.cache_misses.median)),
+            AnomalyScore::new(
+                cache_misses.median,
+                previous.clone().map(|p| p.cache_misses.median),
+            ),
         ) {
             Some(Self {
                 nanoseconds,
