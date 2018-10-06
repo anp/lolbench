@@ -148,6 +148,15 @@ impl MetricData {
             upper_bound: r,
         }
     }
+
+    fn normalized_against(&self, baseline: &Self) -> Self {
+        let normalize = |getter: fn(&Self) -> R64| (getter(self) + 1.0) / (getter(baseline) + 1.0);
+        MetricData {
+            median: normalize(|data| data.median),
+            lower_bound: normalize(|data| data.lower_bound),
+            upper_bound: normalize(|data| data.upper_bound),
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Serialize)]
@@ -193,21 +202,24 @@ impl RuntimeMetrics {
     }
 
     pub fn normalized_against(&self, baseline: &Self) -> Self {
-        let n = |f: fn(&Self) -> MetricData| MetricData {
-            median: (f(self).median + 1.0) / (f(baseline).median + 1.0),
-            lower_bound: (f(self).lower_bound + 1.0) / (f(baseline).lower_bound + 1.0),
-            upper_bound: (f(self).upper_bound + 1.0) / (f(baseline).upper_bound + 1.0),
-        };
         Self {
-            nanoseconds: n(|m| m.nanoseconds),
-            instructions: n(|m| m.instructions),
-            cpu_clock: n(|m| m.cpu_clock),
-            branch_instructions: n(|m| m.branch_instructions),
-            branch_misses: n(|m| m.branch_misses),
-            cache_misses: n(|m| m.cache_misses),
-            cache_references: n(|m| m.cache_references),
-            cpu_cycles: n(|m| m.cpu_cycles),
-            context_switches: n(|m| m.context_switches),
+            nanoseconds: self.nanoseconds.normalized_against(&baseline.nanoseconds),
+            instructions: self.instructions.normalized_against(&baseline.instructions),
+            cpu_clock: self.cpu_clock.normalized_against(&baseline.cpu_clock),
+            branch_instructions: self
+                .branch_instructions
+                .normalized_against(&baseline.branch_instructions),
+            branch_misses: self
+                .branch_misses
+                .normalized_against(&baseline.branch_misses),
+            cache_misses: self.cache_misses.normalized_against(&baseline.cache_misses),
+            cache_references: self
+                .cache_references
+                .normalized_against(&baseline.cache_references),
+            cpu_cycles: self.cpu_cycles.normalized_against(&baseline.cpu_cycles),
+            context_switches: self
+                .context_switches
+                .normalized_against(&baseline.context_switches),
         }
     }
 

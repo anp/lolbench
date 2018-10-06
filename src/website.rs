@@ -233,19 +233,24 @@ impl Benchmark {
     }
 
     fn calculate_means(timings: &[TimingRecord]) -> SimpleRuntimeMetrics {
-        let calc = |f: fn(&TimingRecord) -> f64| {
-            calculate_sample_mean(&timings.iter().map(f).collect::<Vec<_>>())
+        let calc = |getter: fn(&RuntimeMetrics) -> MetricData| {
+            calculate_sample_mean(
+                &timings
+                    .iter()
+                    .map(|record| getter(&record.metrics).median.raw())
+                    .collect::<Vec<_>>(),
+            )
         };
         SimpleRuntimeMetrics {
-            nanoseconds: calc(|t| t.metrics.nanoseconds.median.raw()),
-            instructions: calc(|t| t.metrics.instructions.median.raw()),
-            context_switches: calc(|t| t.metrics.context_switches.median.raw()),
-            cpu_clock: calc(|t| t.metrics.cpu_clock.median.raw()),
-            branch_instructions: calc(|t| t.metrics.branch_instructions.median.raw()),
-            branch_misses: calc(|t| t.metrics.branch_misses.median.raw()),
-            cache_misses: calc(|t| t.metrics.cache_misses.median.raw()),
-            cache_references: calc(|t| t.metrics.cache_references.median.raw()),
-            cpu_cycles: calc(|t| t.metrics.cpu_cycles.median.raw()),
+            nanoseconds: calc(|m| m.nanoseconds),
+            instructions: calc(|m| m.instructions),
+            context_switches: calc(|m| m.context_switches),
+            cpu_clock: calc(|m| m.cpu_clock),
+            branch_instructions: calc(|m| m.branch_instructions),
+            branch_misses: calc(|m| m.branch_misses),
+            cache_misses: calc(|m| m.cache_misses),
+            cache_references: calc(|m| m.cache_references),
+            cpu_cycles: calc(|m| m.cpu_cycles),
         }
     }
 
@@ -253,43 +258,25 @@ impl Benchmark {
         timings: &[TimingRecord],
         means: &SimpleRuntimeMetrics,
     ) -> SimpleRuntimeMetrics {
-        let calc = |f: fn(&TimingRecord) -> f64, mean: f64| {
-            calculate_sample_std_dev(&timings.iter().map(f).collect::<Vec<_>>(), mean)
+        let calc = |getter: fn(&RuntimeMetrics) -> MetricData, mean: R64| {
+            calculate_sample_std_dev(
+                &timings
+                    .iter()
+                    .map(|record| getter(&record.metrics).median.raw())
+                    .collect::<Vec<_>>(),
+                mean.raw(),
+            )
         };
         SimpleRuntimeMetrics {
-            nanoseconds: calc(
-                |t| t.metrics.nanoseconds.median.raw(),
-                means.nanoseconds.raw(),
-            ),
-            instructions: calc(
-                |t| t.metrics.instructions.median.raw(),
-                means.instructions.raw(),
-            ),
-            context_switches: calc(
-                |t| t.metrics.context_switches.median.raw(),
-                means.context_switches.raw(),
-            ),
-            cpu_clock: calc(|t| t.metrics.cpu_clock.median.raw(), means.cpu_clock.raw()),
-            branch_instructions: calc(
-                |t| t.metrics.branch_instructions.median.raw(),
-                means.branch_instructions.raw(),
-            ),
-            branch_misses: calc(
-                |t| t.metrics.branch_misses.median.raw(),
-                means.branch_misses.raw(),
-            ),
-            cache_misses: calc(
-                |t| t.metrics.cache_misses.median.raw(),
-                means.cache_misses.raw(),
-            ),
-            cache_references: calc(
-                |t| t.metrics.cache_references.median.raw(),
-                means.cache_references.raw(),
-            ),
-            cpu_cycles: calc(
-                |t| t.metrics.cpu_cycles.median.raw(),
-                means.cpu_cycles.raw(),
-            ),
+            nanoseconds: calc(|m| m.nanoseconds, means.nanoseconds),
+            instructions: calc(|m| m.instructions, means.instructions),
+            context_switches: calc(|m| m.context_switches, means.context_switches),
+            cpu_clock: calc(|m| m.cpu_clock, means.cpu_clock),
+            branch_instructions: calc(|m| m.branch_instructions, means.branch_instructions),
+            branch_misses: calc(|m| m.branch_misses, means.branch_misses),
+            cache_misses: calc(|m| m.cache_misses, means.cache_misses),
+            cache_references: calc(|m| m.cache_references, means.cache_references),
+            cpu_cycles: calc(|m| m.cpu_cycles, means.cpu_cycles),
         }
     }
 }

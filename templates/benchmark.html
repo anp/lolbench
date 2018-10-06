@@ -54,6 +54,8 @@
     const chartData = JSON.parse(`{{timings|json}}`);
     chartData.reverse();
 
+    // This will need to be reworked if we begin to analyze non-nightly builds
+    // See https://github.com/anp/lolbench/issues/29#issuecomment-426861774
     const labels = chartData.map(t => new Date(t.toolchains[0].spec.replace('nightly-', '')).valueOf());
 
     const colors = {
