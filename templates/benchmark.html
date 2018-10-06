@@ -62,12 +62,12 @@
         'cpu_cycles': 'blue',
         'branch_instructions': 'red',
         'branch_misses': 'purple',
-        'cache_references': '#16a085',
+        'cache_references': 'turquoise',
         'cache_misses': 'black',
         'confidence': '#00ce22'
     };
 
-    const makeChart = (elemId, title, field, data) => {
+    const makeChart = (elemId, field, data) => {
         const mean = means[field];
         const stdDev = stdDevs[field];
         let confidenceLow = mean - (stdDev * 2);
@@ -160,18 +160,18 @@
         });
     };
 
-    makeChart("nanoseconds-chart", "Nanoseconds/Iteration", "nanoseconds", chartData.map(t => t.metrics.nanoseconds));
-    makeChart("instructions-chart", "Instructions/Iteration", "instructions", chartData.map(t => t.metrics.instructions));
-    makeChart("cpu_cycles-chart", "CPU Cycles/Iteration", "cpu_cycles", chartData.map(t => t.metrics.cpu_cycles));
-    makeChart("branch_instructions-chart", "Branch Instructions/Iteration", "branch_instructions", chartData.map(t => t.metrics.branch_instructions));
-    makeChart("branch_misses-chart", "Branch Misses/Iteration", "branch_misses", chartData.map(t => t.metrics.branch_misses));
-    makeChart("cache_references-chart", "Cache References/Iteration", "cache_references", chartData.map(t => t.metrics.cache_references));
-    makeChart("cache_misses-chart", "Cache Misses/Iteration", "cache_misses", chartData.map(t => t.metrics.cache_misses));
+    makeChart("nanoseconds-chart", "nanoseconds", chartData.map(t => t.metrics.nanoseconds));
+    makeChart("instructions-chart", "instructions", chartData.map(t => t.metrics.instructions));
+    makeChart("cpu_cycles-chart", "cpu_cycles", chartData.map(t => t.metrics.cpu_cycles));
+    makeChart("branch_instructions-chart", "branch_instructions", chartData.map(t => t.metrics.branch_instructions));
+    makeChart("branch_misses-chart", "branch_misses", chartData.map(t => t.metrics.branch_misses));
+    makeChart("cache_references-chart", "cache_references", chartData.map(t => t.metrics.cache_references));
+    makeChart("cache_misses-chart", "cache_misses", chartData.map(t => t.metrics.cache_misses));
 
-    makeChart("branch-predict-ratio-chart", "Overall Branch Predict Ratio", "branch_predict_ratio",
+    makeChart("branch-predict-ratio-chart", "branch_predict_ratio",
         hitRatio("branch_instructions", "branch_misses"));
 
-    makeChart("cache-ratio-chart", "Overall Cache Hit Ratio", "cache_hit_ratio",
+    makeChart("cache-ratio-chart", "cache_hit_ratio",
         hitRatio("cache_references", "cache_misses"));
 
 
