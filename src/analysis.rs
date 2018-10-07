@@ -125,32 +125,68 @@ impl TimingRecord {
 }
 
 #[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Serialize)]
+pub struct MetricData {
+    pub median: R64,
+    pub lower_bound: R64,
+    pub upper_bound: R64,
+}
+
+impl MetricData {
+    fn from_statistic(statistic: &Statistic) -> Self {
+        MetricData {
+            median: r64(statistic.median.point_estimate),
+            lower_bound: r64(statistic.median.confidence_interval.lower_bound),
+            upper_bound: r64(statistic.median.confidence_interval.upper_bound),
+        }
+    }
+
+    pub fn ones() -> Self {
+        let r = r64(1.0);
+        MetricData {
+            median: r,
+            lower_bound: r,
+            upper_bound: r,
+        }
+    }
+
+    fn normalized_against(&self, baseline: &Self) -> Self {
+        let normalize = |getter: fn(&Self) -> R64| (getter(self) + 1.0) / (getter(baseline) + 1.0);
+        MetricData {
+            median: normalize(|data| data.median),
+            lower_bound: normalize(|data| data.lower_bound),
+            upper_bound: normalize(|data| data.upper_bound),
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct RuntimeMetrics {
-    pub nanoseconds: R64,
-    pub instructions: R64,
-    pub cpu_cycles: R64,
+    pub nanoseconds: MetricData,
+    pub instructions: MetricData,
+    pub cpu_cycles: MetricData,
 
-    pub context_switches: R64,
-    pub cpu_clock: R64,
+    pub context_switches: MetricData,
+    pub cpu_clock: MetricData,
 
-    pub branch_instructions: R64,
-    pub branch_misses: R64,
+    pub branch_instructions: MetricData,
+    pub branch_misses: MetricData,
 
-    pub cache_misses: R64,
-    pub cache_references: R64,
+    pub cache_misses: MetricData,
+    pub cache_references: MetricData,
 }
 
 impl RuntimeMetrics {
     fn from_measure(current_measure: &Estimates) -> Self {
-        let nanoseconds = r64(current_measure["nanoseconds"].median.point_estimate);
-        let instructions = r64(current_measure["instructions"].median.point_estimate);
-        let context_switches = r64(current_measure["context-switches"].median.point_estimate);
-        let cpu_clock = r64(current_measure["cpu-clock"].median.point_estimate);
-        let branch_instructions = r64(current_measure["branch-instructions"].median.point_estimate);
-        let branch_misses = r64(current_measure["branch-misses"].median.point_estimate);
-        let cache_misses = r64(current_measure["cache-misses"].median.point_estimate);
-        let cache_references = r64(current_measure["cache-references"].median.point_estimate);
-        let cpu_cycles = r64(current_measure["cpu-cycles"].median.point_estimate);
+        let nanoseconds = MetricData::from_statistic(&current_measure["nanoseconds"]);
+        let instructions = MetricData::from_statistic(&current_measure["instructions"]);
+        let context_switches = MetricData::from_statistic(&current_measure["context-switches"]);
+        let cpu_clock = MetricData::from_statistic(&current_measure["cpu-clock"]);
+        let branch_instructions =
+            MetricData::from_statistic(&current_measure["branch-instructions"]);
+        let branch_misses = MetricData::from_statistic(&current_measure["branch-misses"]);
+        let cache_misses = MetricData::from_statistic(&current_measure["cache-misses"]);
+        let cache_references = MetricData::from_statistic(&current_measure["cache-references"]);
+        let cpu_cycles = MetricData::from_statistic(&current_measure["cpu-cycles"]);
 
         RuntimeMetrics {
             nanoseconds,
@@ -166,23 +202,62 @@ impl RuntimeMetrics {
     }
 
     pub fn normalized_against(&self, baseline: &Self) -> Self {
-        let n = |f: fn(&Self) -> R64| (f(self) + 1.0) / (f(baseline) + 1.0);
         Self {
-            nanoseconds: n(|m| m.nanoseconds),
-            instructions: n(|m| m.instructions),
-            cpu_clock: n(|m| m.cpu_clock),
-            branch_instructions: n(|m| m.branch_instructions),
-            branch_misses: n(|m| m.branch_misses),
-            cache_misses: n(|m| m.cache_misses),
-            cache_references: n(|m| m.cache_references),
-            cpu_cycles: n(|m| m.cpu_cycles),
-            context_switches: n(|m| m.context_switches),
+            nanoseconds: self.nanoseconds.normalized_against(&baseline.nanoseconds),
+            instructions: self.instructions.normalized_against(&baseline.instructions),
+            cpu_clock: self.cpu_clock.normalized_against(&baseline.cpu_clock),
+            branch_instructions: self
+                .branch_instructions
+                .normalized_against(&baseline.branch_instructions),
+            branch_misses: self
+                .branch_misses
+                .normalized_against(&baseline.branch_misses),
+            cache_misses: self.cache_misses.normalized_against(&baseline.cache_misses),
+            cache_references: self
+                .cache_references
+                .normalized_against(&baseline.cache_references),
+            cpu_cycles: self.cpu_cycles.normalized_against(&baseline.cpu_cycles),
+            context_switches: self
+                .context_switches
+                .normalized_against(&baseline.context_switches),
         }
     }
 
     pub fn ones() -> Self {
-        let o = r64(1.0);
         RuntimeMetrics {
+            nanoseconds: MetricData::ones(),
+            instructions: MetricData::ones(),
+            cpu_clock: MetricData::ones(),
+            branch_instructions: MetricData::ones(),
+            branch_misses: MetricData::ones(),
+            cache_misses: MetricData::ones(),
+            cache_references: MetricData::ones(),
+            cpu_cycles: MetricData::ones(),
+            context_switches: MetricData::ones(),
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Serialize)]
+pub struct SimpleRuntimeMetrics {
+    pub nanoseconds: R64,
+    pub instructions: R64,
+    pub cpu_cycles: R64,
+
+    pub context_switches: R64,
+    pub cpu_clock: R64,
+
+    pub branch_instructions: R64,
+    pub branch_misses: R64,
+
+    pub cache_misses: R64,
+    pub cache_references: R64,
+}
+
+impl SimpleRuntimeMetrics {
+    pub fn ones() -> Self {
+        let o = r64(1.0);
+        SimpleRuntimeMetrics {
             nanoseconds: o,
             instructions: o,
             cpu_clock: o,
@@ -230,19 +305,34 @@ impl AnomalyIndex {
             Some(cache_references),
             Some(cache_misses),
         ) = (
-            AnomalyScore::new(nanoseconds, previous.clone().map(|p| p.nanoseconds)),
-            AnomalyScore::new(instructions, previous.clone().map(|p| p.instructions)),
-            AnomalyScore::new(cpu_cycles, previous.clone().map(|p| p.cpu_cycles)),
             AnomalyScore::new(
-                branch_instructions,
-                previous.clone().map(|p| p.branch_instructions),
+                nanoseconds.median,
+                previous.clone().map(|p| p.nanoseconds.median),
             ),
-            AnomalyScore::new(branch_misses, previous.clone().map(|p| p.branch_misses)),
             AnomalyScore::new(
-                cache_references,
-                previous.clone().map(|p| p.cache_references),
+                instructions.median,
+                previous.clone().map(|p| p.instructions.median),
             ),
-            AnomalyScore::new(cache_misses, previous.clone().map(|p| p.cache_misses)),
+            AnomalyScore::new(
+                cpu_cycles.median,
+                previous.clone().map(|p| p.cpu_cycles.median),
+            ),
+            AnomalyScore::new(
+                branch_instructions.median,
+                previous.clone().map(|p| p.branch_instructions.median),
+            ),
+            AnomalyScore::new(
+                branch_misses.median,
+                previous.clone().map(|p| p.branch_misses.median),
+            ),
+            AnomalyScore::new(
+                cache_references.median,
+                previous.clone().map(|p| p.cache_references.median),
+            ),
+            AnomalyScore::new(
+                cache_misses.median,
+                previous.clone().map(|p| p.cache_misses.median),
+            ),
         ) {
             Some(Self {
                 nanoseconds,

@@ -4,6 +4,7 @@ use std::path::{Path, PathBuf};
 
 use askama::Template;
 use chrono::{DateTime, Utc};
+use criterion_stats::univariate::Sample;
 
 pub fn build_website(
     data_dir: impl AsRef<Path>,
@@ -150,6 +151,8 @@ pub struct Benchmark {
     name: String,
     timings: Vec<TimingRecord>,
     anomalous_timings: Vec<(Toolchain, AnomalousTiming)>,
+    means: SimpleRuntimeMetrics,
+    std_devs: SimpleRuntimeMetrics,
 }
 
 impl Benchmark {
@@ -158,6 +161,8 @@ impl Benchmark {
             name,
             timings: vec![],
             anomalous_timings: vec![],
+            means: SimpleRuntimeMetrics::ones(),
+            std_devs: SimpleRuntimeMetrics::ones(),
         }
     }
 
@@ -192,10 +197,14 @@ impl Benchmark {
         }
 
         timings.reverse();
+        let means = Benchmark::calculate_means(&timings);
+        let std_devs = Benchmark::calculate_std_devs(&timings, &means);
         Self {
             name: name.to_owned(),
             timings,
             anomalous_timings: vec![],
+            means,
+            std_devs,
         }
     }
 
@@ -222,6 +231,64 @@ impl Benchmark {
             "cache_misses",
         ]
     }
+
+    fn calculate_means(timings: &[TimingRecord]) -> SimpleRuntimeMetrics {
+        let calc = |getter: fn(&RuntimeMetrics) -> MetricData| {
+            calculate_sample_mean(
+                &timings
+                    .iter()
+                    .map(|record| getter(&record.metrics).median.raw())
+                    .collect::<Vec<_>>(),
+            )
+        };
+        SimpleRuntimeMetrics {
+            nanoseconds: calc(|m| m.nanoseconds),
+            instructions: calc(|m| m.instructions),
+            context_switches: calc(|m| m.context_switches),
+            cpu_clock: calc(|m| m.cpu_clock),
+            branch_instructions: calc(|m| m.branch_instructions),
+            branch_misses: calc(|m| m.branch_misses),
+            cache_misses: calc(|m| m.cache_misses),
+            cache_references: calc(|m| m.cache_references),
+            cpu_cycles: calc(|m| m.cpu_cycles),
+        }
+    }
+
+    fn calculate_std_devs(
+        timings: &[TimingRecord],
+        means: &SimpleRuntimeMetrics,
+    ) -> SimpleRuntimeMetrics {
+        let calc = |getter: fn(&RuntimeMetrics) -> MetricData, mean: R64| {
+            calculate_sample_std_dev(
+                &timings
+                    .iter()
+                    .map(|record| getter(&record.metrics).median.raw())
+                    .collect::<Vec<_>>(),
+                mean.raw(),
+            )
+        };
+        SimpleRuntimeMetrics {
+            nanoseconds: calc(|m| m.nanoseconds, means.nanoseconds),
+            instructions: calc(|m| m.instructions, means.instructions),
+            context_switches: calc(|m| m.context_switches, means.context_switches),
+            cpu_clock: calc(|m| m.cpu_clock, means.cpu_clock),
+            branch_instructions: calc(|m| m.branch_instructions, means.branch_instructions),
+            branch_misses: calc(|m| m.branch_misses, means.branch_misses),
+            cache_misses: calc(|m| m.cache_misses, means.cache_misses),
+            cache_references: calc(|m| m.cache_references, means.cache_references),
+            cpu_cycles: calc(|m| m.cpu_cycles, means.cpu_cycles),
+        }
+    }
+}
+
+fn calculate_sample_mean(values: &[f64]) -> R64 {
+    let sample = Sample::new(values);
+    r64(sample.mean())
+}
+
+fn calculate_sample_std_dev(values: &[f64], mean: f64) -> R64 {
+    let sample = Sample::new(values);
+    r64(sample.std_dev(Some(mean)))
 }
 
 pub mod filters {

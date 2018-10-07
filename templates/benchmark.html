@@ -15,13 +15,15 @@
 <a id="{{ metric }}"></a>
 <h3><a href="#{{ metric }}">*</a> {{ metric }} / iteration</h3>
 
-<canvas id="{{ metric }}-chart" width="600" , height="200"></canvas>
+<div id="{{ metric }}-chart" style="width: 100%; height: 600px"></div>
 
 <h4>potential anomalies</h4>
 <table border="1">
     <thead>
-        <th>toolchain</th>
-        <th>delta</th>
+        <tr>
+            <th>toolchain</th>
+            <th>delta</th>
+        </tr>
     </thead>
     <tbody>
         {% for timing in anomalous_timings %}
@@ -34,21 +36,29 @@
 </table>
 {% endfor %}
 
-<h3>overall branch predict ratio</h3>
-<canvas id="branch-predict-ratio-chart" width="600" , height="200"></canvas>
+<a id="branch-predict-ratio"></a>
+<h3><a href="#branch-predict-ratio">*</a> overall branch predict ratio</h3>
+<div id="branch-predict-ratio-chart" style="width: 100%; height: 600px"></div>
 
-<h3>overall cache hit ratio</h3>
-<canvas id="cache-ratio-chart" width="600" , height="200"></canvas>
+<a id="cache-ratio"></a>
+<h3><a href="#cache-ratio">*</a> overall cache hit ratio</h3>
+<div id="cache-ratio-chart" style="width: 100%; height: 600px"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/highcharts@6/highcharts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/highcharts@6/highcharts-more.min.js"></script>
 
 <script>
+    const means = JSON.parse(`{{means|json}}`);
+    const stdDevs = JSON.parse(`{{std_devs|json}}`);
     const anomalyData = JSON.parse(`{{anomalous_timings|json}}`);
     const chartData = JSON.parse(`{{timings|json}}`);
     chartData.reverse();
 
-    let labels = chartData.map(t => t.toolchains[0].spec);
+    // This will need to be reworked if we begin to analyze non-nightly builds
+    // See https://github.com/anp/lolbench/issues/29#issuecomment-426861774
+    const labels = chartData.map(t => new Date(t.toolchains[0].spec.replace('nightly-', '')).valueOf());
 
-    let colors = {
+    const colors = {
         'nanoseconds': '#E43717',
         'instructions': 'green',
         'cpu_cycles': 'blue',
@@ -56,47 +66,99 @@
         'branch_misses': 'purple',
         'cache_references': 'turquoise',
         'cache_misses': 'black',
+        'confidence': '#00ce22'
     };
 
     const makeChart = (elemId, field, data) => {
-        let ctx = document.getElementById(elemId);
+        const mean = means[field];
+        const stdDev = stdDevs[field];
+        let confidenceLow = mean - (stdDev * 2);
+        if (confidenceLow < 0) {
+            confidenceLow = 0;
+        }
+        const confidenceHigh = mean + (stdDev * 2);
 
-        let xyPadding = 0.05;
-        let mid = median(data);
+        const series = [{
+            data: data.map((metric, i) => ([labels[i], metric.median])),
+            type: 'spline',
+            lineWidth: 3,
+            color: colors[field],
+            name: field
+        }];
+        if (data.length > 0 && data[0].lower_bound) {
+            series.push({
+                name: 'margin of error',
+                type: 'errorbar',
+                data: data.map((metric, i) => ([labels[i], metric.lower_bound, metric.upper_bound])),
+                color: 'black',
+                tooltip: {
+                    enabled: false,
+                },
+                lineWidth: 2,
+            });
+        }
 
-        let suggestedMax = mid * (1 + xyPadding);
-        let suggestedMin = mid * (1 - xyPadding);
-
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels,
-                datasets: [{
-                    label: field,
-                    data,
-                    fill: false,
-                    borderWidth: 6,
-                    borderColor: colors[field],
+        Highcharts.chart(elemId, {
+            title: false,
+            xAxis: {
+                type: 'datetime',
+                title: {
+                    text: 'Nightly Build'
+                }
+            },
+            yAxis: {
+                title: {
+                    text: field
+                },
+                plotLines: [{
+                    value: mean,
+                    color: 'black',
+                    dashStyle: 'Dash',
+                    label: {
+                        text: 'Mean'
+                    },
+                    width: 2,
+                    zIndex: 1
+                }, {
+                    value: confidenceHigh,
+                    color: colors['confidence'],
+                    dashStyle: 'Dash',
+                    width: 2,
+                    zIndex: 1
+                }, {
+                    value: confidenceLow,
+                    color: colors['confidence'],
+                    dashStyle: 'Dash',
+                    width: 2,
+                    zIndex: 1
                 }]
             },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            suggestedMax,
-                            suggestedMin
-                        },
-                    }]
+            series,
+            tooltip: {
+                dateTimeLabelFormats: {
+                    day: 'nightly-%Y-%m-%d'
+                }
+            },
+            plotOptions: {
+                spline: {
+                    animation: false,
+                    marker: {
+                        enabled: true
+                    }
                 },
-            }
+                errorbar: {
+                    animation: false,
+                }
+            },
+            credits: false
         });
     };
 
     const hitRatio = (accessField, missField) => {
         return chartData.map(t => {
-            let access = t.metrics[accessField];
-            let miss = t.metrics[missField];
-            return (access - miss) / access;
+            const access = t.metrics[accessField].median;
+            const miss = t.metrics[missField].median;
+            return { median: (access - miss) / access };
         });
     };
 
