@@ -114,7 +114,7 @@ jobs:
     <<: *bench_crate
   diesel_1_1_1:
     <<: *bench_crate
-  nom_4_0_0_beta1:
+  nom_4_0_0:
     <<: *bench_crate
   regex_0_2_6:
     <<: *bench_crate
@@ -159,7 +159,7 @@ workflows:
       - diesel_1_1_1:
           requires:
             - fmt
-      - nom_4_0_0_beta1:
+      - nom_4_0_0:
           requires:
             - fmt
       - regex_0_2_6:
