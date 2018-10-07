@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/anp/lolbench/tree/master.svg?style=shield)](https://circleci.com/gh/anp/workflows/lolbench)
 
-This project is an effort to reproducibly benchmark "in the wild" Rust code against newer compiler versions to detect performance regressions. Still a WIP for the moment, but many are the larger building blocks are in place.
+This project is an effort to reproducibly benchmark "in the wild" Rust code against newer compiler versions to detect performance regressions. The data is currently published to [https://blog.anp.lol/lolbench-data](https://blog.anp.lol/lolbench-data).
 
 ## Adding Benchmarks
 
