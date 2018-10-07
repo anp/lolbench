@@ -3,6 +3,7 @@ name = "rayon_1_0_0"
 version = "0.0.0"
 authors = ["Niko Matsakis <niko@alum.mit.edu>"]
 publish = false
+license = "Apache-2.0/MIT"
 
 [dependencies]
 rayon = "1.0.0"
