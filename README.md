@@ -30,3 +30,7 @@ $ cargo test-core
 * `cargo new-bench-crate` runs a lolbench command to create a new benchmark crate in the benches directory.
 * `cargo build-all [--release]` builds a binary for every benchmark function. *caution: this will generate dozens of gigabytes of data in your target directory*.
 * `cargo test-all [--release]` runs the test for every benchmark function, which consists of warming it up and running through a couple of iterations. *caution: this will generate dozens of gigabytes of data in your target directory*.
+
+## License
+
+lolbench is distributed under the terms of both the MIT license and the Apache License (Version 2.0). Some included benchmarks have their own separate licenses, see those directories and their Cargo.toml metadata for details.
