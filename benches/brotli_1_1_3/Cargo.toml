@@ -1,7 +1,7 @@
 [package]
 name = "brotli_1_1_3"
 version = "0.1.0"
-authors = ["Adam Perry <adam.n.perry@gmail.com>"]
+license = "BSD-3-Clause/MIT"
 
 [dependencies]
 alloc-no-stdlib = "1.2"

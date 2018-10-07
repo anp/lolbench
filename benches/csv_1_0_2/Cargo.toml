@@ -2,6 +2,7 @@
 name = "csv_1_0_2"
 version = "0.1.0"
 authors = []
+license = "Unlicense/MIT"
 
 [dependencies]
 csv = "=1.0.2"

@@ -1,7 +1,7 @@
 [package]
 name = "quickcheck_0_6_1"
 version = "0.1.0"
-authors = ["Adam Perry <adam.n.perry@gmail.com>"]
+license = "Unlicense/MIT"
 
 [dependencies]
 quickcheck = "0.6.1"

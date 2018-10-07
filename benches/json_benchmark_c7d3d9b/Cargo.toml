@@ -3,6 +3,7 @@ name = "json_benchmark_c7d3d9b"
 version = "0.0.1"
 authors = ["dtolnay@gmail.com"]
 publish = false
+license = "MIT/Apache-2.0"
 
 [dependencies]
 rustc-serialize = "0.3.24"

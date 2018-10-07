@@ -1,7 +1,7 @@
 [package]
 name = "byteorder_1_2_6"
 version = "0.1.0"
-authors = ['Thom wiggers <thom@thomwiggers.nl>']
+license = "Unlicense/MIT"
 
 [dependencies]
 byteorder = "=1.2.6"
