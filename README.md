@@ -4,6 +4,10 @@
 
 This project is an effort to reproducibly benchmark "in the wild" Rust code against newer compiler versions to detect performance regressions. Still a WIP for the moment, but many are the larger building blocks are in place.
 
+## Jumping Straight In
+
+Want to contribute and are just looking for the [list of benchmarks we'd like help adding](https://github.com/anp/lolbench/issues/1)? You'll also find instructions for adding new benchmarks below.
+
 ## Getting Started
 
 ### Dependencies
