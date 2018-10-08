@@ -22,14 +22,11 @@ $ git submodule update --init
 $ cargo test-core
 ```
 
-If for some reason you want to build everything, make sure you have roughly **50GB** of free disk space and run:
+### Useful cargo subcommand aliases
 
-```
-$ cargo build-all [--release]
-```
-
-Every benchmark comes with its own test target too, which can be run like so:
-
-```
-$ cargo test-all
-```
+* `cargo build-website` runs the website generator using the provided data directory. Pass the `--help` flag to see what's required.
+* `cargo fmt-core` formats only those crates which should be rustfmt'd -- notably our fork of criterion isn't rustfmt-friendly right now. Useful for `cargo watch -x fmt-core`.
+* `cargo test-core` runs the tests for every non-benchmark crate except for criterion. At writing, that's `lolbench`, `lolbench_support`, `lolbench_extractor`, and `marky_mark`.
+* `cargo new-bench-crate` runs a lolbench command to create a new benchmark crate in the benches directory.
+* `cargo build-all [--release]` builds a binary for every benchmark function. *caution: this will generate dozens of gigabytes of data in your target directory*.
+* `cargo test-all [--release]` runs the test for every benchmark function, which consists of warming it up and running through a couple of iterations. *caution: this will generate dozens of gigabytes of data in your target directory*.
