@@ -69,5 +69,7 @@ members = [
     "./benches/rayon_1_0_0",
     "./benches/raytrace_8de9020",
     "./benches/regex_0_2_6",
+    "./benches/sha2_0_8_0",
+    "./benches/sha3_0_8_0",
     "./benches/snap_0_2_4"
 ]

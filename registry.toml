@@ -3229,6 +3229,86 @@ name = 'sherlock::words'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-words.rs'
 
+[benchmarks."sha2_0_8_0::sha256::bench1_10"]
+name = 'sha256::bench1_10'
+crate = 'sha2_0_8_0'
+entrypoint_path = 'benches/sha2_0_8_0/src/bin/sha256-bench1-10.rs'
+
+[benchmarks."sha2_0_8_0::sha256::bench2_100"]
+name = 'sha256::bench2_100'
+crate = 'sha2_0_8_0'
+entrypoint_path = 'benches/sha2_0_8_0/src/bin/sha256-bench2-100.rs'
+
+[benchmarks."sha2_0_8_0::sha256::bench3_1000"]
+name = 'sha256::bench3_1000'
+crate = 'sha2_0_8_0'
+entrypoint_path = 'benches/sha2_0_8_0/src/bin/sha256-bench3-1000.rs'
+
+[benchmarks."sha2_0_8_0::sha256::bench4_10000"]
+name = 'sha256::bench4_10000'
+crate = 'sha2_0_8_0'
+entrypoint_path = 'benches/sha2_0_8_0/src/bin/sha256-bench4-10000.rs'
+
+[benchmarks."sha2_0_8_0::sha512::bench1_10"]
+name = 'sha512::bench1_10'
+crate = 'sha2_0_8_0'
+entrypoint_path = 'benches/sha2_0_8_0/src/bin/sha512-bench1-10.rs'
+
+[benchmarks."sha2_0_8_0::sha512::bench2_100"]
+name = 'sha512::bench2_100'
+crate = 'sha2_0_8_0'
+entrypoint_path = 'benches/sha2_0_8_0/src/bin/sha512-bench2-100.rs'
+
+[benchmarks."sha2_0_8_0::sha512::bench3_1000"]
+name = 'sha512::bench3_1000'
+crate = 'sha2_0_8_0'
+entrypoint_path = 'benches/sha2_0_8_0/src/bin/sha512-bench3-1000.rs'
+
+[benchmarks."sha2_0_8_0::sha512::bench4_10000"]
+name = 'sha512::bench4_10000'
+crate = 'sha2_0_8_0'
+entrypoint_path = 'benches/sha2_0_8_0/src/bin/sha512-bench4-10000.rs'
+
+[benchmarks."sha3_0_8_0::sha3_256::bench1_10"]
+name = 'sha3_256::bench1_10'
+crate = 'sha3_0_8_0'
+entrypoint_path = 'benches/sha3_0_8_0/src/bin/sha3-256-bench1-10.rs'
+
+[benchmarks."sha3_0_8_0::sha3_256::bench2_100"]
+name = 'sha3_256::bench2_100'
+crate = 'sha3_0_8_0'
+entrypoint_path = 'benches/sha3_0_8_0/src/bin/sha3-256-bench2-100.rs'
+
+[benchmarks."sha3_0_8_0::sha3_256::bench3_1000"]
+name = 'sha3_256::bench3_1000'
+crate = 'sha3_0_8_0'
+entrypoint_path = 'benches/sha3_0_8_0/src/bin/sha3-256-bench3-1000.rs'
+
+[benchmarks."sha3_0_8_0::sha3_256::bench4_10000"]
+name = 'sha3_256::bench4_10000'
+crate = 'sha3_0_8_0'
+entrypoint_path = 'benches/sha3_0_8_0/src/bin/sha3-256-bench4-10000.rs'
+
+[benchmarks."sha3_0_8_0::sha3_512::bench1_10"]
+name = 'sha3_512::bench1_10'
+crate = 'sha3_0_8_0'
+entrypoint_path = 'benches/sha3_0_8_0/src/bin/sha3-512-bench1-10.rs'
+
+[benchmarks."sha3_0_8_0::sha3_512::bench2_100"]
+name = 'sha3_512::bench2_100'
+crate = 'sha3_0_8_0'
+entrypoint_path = 'benches/sha3_0_8_0/src/bin/sha3-512-bench2-100.rs'
+
+[benchmarks."sha3_0_8_0::sha3_512::bench3_1000"]
+name = 'sha3_512::bench3_1000'
+crate = 'sha3_0_8_0'
+entrypoint_path = 'benches/sha3_0_8_0/src/bin/sha3-512-bench3-1000.rs'
+
+[benchmarks."sha3_0_8_0::sha3_512::bench4_10000"]
+name = 'sha3_512::bench4_10000'
+crate = 'sha3_0_8_0'
+entrypoint_path = 'benches/sha3_0_8_0/src/bin/sha3-512-bench4-10000.rs'
+
 [benchmarks."snap_0_2_4::uflat00_html"]
 runner = 'molly'
 name = 'uflat00_html'
