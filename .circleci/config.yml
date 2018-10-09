@@ -122,6 +122,10 @@ jobs:
     <<: *bench_crate
   quickcheck_0_6_1:
     <<: *bench_crate
+  sha2_0_8_0:
+    <<: *bench_crate
+  sha3_0_8_0:
+    <<: *bench_crate
   snap_0_2_4:
     <<: *bench_crate
   csv_1_0_2:
@@ -169,6 +173,12 @@ workflows:
           requires:
             - fmt
       - quickcheck_0_6_1:
+          requires:
+            - fmt
+      - sha2_0_8_0:
+          requires:
+            - fmt
+      - sha3_0_8_0:
           requires:
             - fmt
       - snap_0_2_4:
