@@ -52,8 +52,12 @@ anchors:
           command: cargo test --release --manifest-path "./benches/$CIRCLE_JOB/Cargo.toml"
       - *save_cache
       - *store_target_dir
-      - store_artifacts:
-          path: /tmp/lolbench
+      - persist_to_workspace:
+          root: /tmp/lolbench
+          paths:
+            # go's globbing library makes me sad, no ** for any-length path segments?
+            # thankfully we only have two layers in storage atm
+            - "*/*.json"
 
 jobs:
   fmt:
@@ -98,6 +102,25 @@ jobs:
 
       - run: deploy.sh $CIRCLE_SHA1
 
+  rebalance:
+    <<: *rust_job
+    steps:
+      - checkout
+      - *setup
+      - *restore_cache
+      - attach_workspace:
+          at: /tmp/lolbench
+      - *install_deps
+      - run: cargo rebalance-benchmarks --sample-dir /tmp/lolbench
+      - run: cd /tmp && tar -cvzf lolbench-data-dir.tar.gz lolbench
+      - *save_cache
+      - store_artifacts:
+          path: registry.toml
+      - store_artifacts:
+          path: /tmp/lolbench
+      - store_artifacts:
+          path: /tmp/lolbench-data-dir.tar.gz
+
   brotli_1_1_3:
     <<: *bench_crate
   byteorder_1_2_6:
@@ -139,6 +162,24 @@ workflows:
       - core:
           requires:
             - fmt
+      - rebalance:
+          requires:
+            - brotli_1_1_3
+            - byteorder_1_2_6
+            - crossbeam_epoch_0_4_0
+            - csv_1_0_2
+            - diesel_1_1_1
+            - doom_9e197d7
+            - inflate_0_3_4
+            - json_benchmark_c7d3d9b
+            - nom_4_0_0
+            - quickcheck_0_6_1
+            - rayon_1_0_0
+            - raytrace_8de9020
+            - regex_0_2_6
+            - sha2_0_8_0
+            - sha3_0_8_0
+            - snap_0_2_4
       - brotli_1_1_3:
           requires:
             - fmt
