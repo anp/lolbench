@@ -10,6 +10,7 @@ fmt
 '''
 
 build-website='run -- build-website'
+rebalance-benchmarks='run -- rebalance-benchmarks'
 
 build-all='build --all --all-targets'
 test-all='test --all --all-targets --release'
