@@ -7,7 +7,6 @@ use std::collections::BTreeMap;
 use std::iter::FromIterator;
 use std::path::Path;
 
-use min_max_heap::MinMaxHeap;
 use noisy_float::prelude::*;
 
 use marky_mark::{Benchmark, Registry};
@@ -42,10 +41,65 @@ pub fn rebalance(sample_data_dir: impl AsRef<Path>) -> Result<()> {
     let (mut registry, _) = Registry::from_disk()?;
     let runners = registry.runners().to_owned();
 
-    info!("finding all existing estimates");
-    let estimates = GitStore::ensure_initialized(sample_data_dir)?.all_stored_estimates()?;
+    // fill the minheap with runners and 0 scores
+    let mut weights = Vec::from_iter(runners.iter().map(|r| (r64(0.0), r.clone())));
+    // also create a mapping of benchmark assignments
+    let mut new_assignments: BTreeMap<String, Vec<String>> = BTreeMap::new();
+    let runners_by_bench_key = registry
+        .benches()
+        .into_iter()
+        .filter_map(|b| {
+            let bench_key = format!("{}::{}", b.crate_name, b.name);
+            b.runner.map(|r| (bench_key, r))
+        }).collect::<BTreeMap<String, String>>();
 
-    info!("switching them to be grouped by toolchain");
+    for (ns, bench_key) in most_covered_toolchains_runtimes(sample_data_dir)? {
+        if let Some(assigned) = runners_by_bench_key.get(&bench_key) {
+            // this has already been assigned, so we just need to track its runtime
+            weights
+                .iter_mut()
+                .find(|&&mut (_, ref r)| r == assigned)
+                .unwrap()
+                .0 += ns;
+        } else {
+            let &mut (ref mut current_score, ref runner) = &mut weights[0];
+
+            *current_score += ns;
+            new_assignments
+                .entry(runner.to_owned())
+                .or_default()
+                .push(bench_key);
+        }
+
+        // this preserves this as a silly minheapish thing for next iteration
+        weights.sort();
+    }
+
+    info!("new assignments: {:#?}", new_assignments);
+    info!("weights: {:?}", weights);
+
+    let all_benches = get_benches(None)?;
+    let by_key = all_benches
+        .into_iter()
+        .map(|b| (b.key(), b))
+        .collect::<BTreeMap<_, _>>();
+
+    for (runner, bench_keys) in new_assignments {
+        for bench_key in bench_keys {
+            let mut benchmark: Benchmark = by_key[&bench_key].clone();
+            benchmark.runner = Some(runner.to_owned());
+            registry.update(&benchmark)?;
+        }
+    }
+
+    Ok(())
+}
+
+fn most_covered_toolchains_runtimes(data_dir: impl AsRef<Path>) -> Result<Vec<(R64, String)>> {
+    info!("finding all existing estimates");
+    let estimates = GitStore::ensure_initialized(data_dir)?.all_stored_estimates()?;
+
+    info!("reorganizing them by toolchain");
     let mut by_toolchain = BTreeMap::new();
     for (bench_key, toolchains) in estimates {
         for (toolchain, estimate) in toolchains {
@@ -82,41 +136,5 @@ pub fn rebalance(sample_data_dir: impl AsRef<Path>) -> Result<()> {
     runtimes.sort();
     runtimes.reverse(); // we're going to binpack, starting with the largest
 
-    // fill the minheap with runners and 0 scores
-    let mut weights = MinMaxHeap::from_iter(runners.iter().map(|r| (r64(0.0), r.clone())));
-    // also create a mapping of benchmark assignments
-    let mut assignments: BTreeMap<String, Vec<String>> = BTreeMap::new();
-
-    for (ns, bench_key) in runtimes {
-        // pop the runner with the minimum score
-        let (current_score, runner) = weights.pop_min().unwrap();
-
-        // add the bench key to its mapping
-        assignments
-            .entry(runner.to_owned())
-            .or_default()
-            .push(bench_key);
-
-        // push the runner and score into the minheap
-        weights.push((current_score + ns, runner))
-    }
-
-    info!("assignments: {:#?}", assignments);
-    info!("weights: {:?}", weights);
-
-    let all_benches = get_benches(None)?;
-    let by_key = all_benches
-        .into_iter()
-        .map(|b| (b.key(), b))
-        .collect::<BTreeMap<_, _>>();
-
-    for (runner, bench_keys) in assignments {
-        for bench_key in bench_keys {
-            let mut benchmark: Benchmark = by_key[&bench_key].clone();
-            benchmark.runner = Some(runner.to_owned());
-            registry.update(&benchmark)?;
-        }
-    }
-
-    Ok(())
+    Ok(runtimes)
 }
