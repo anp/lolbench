@@ -2,20 +2,17 @@
 
 {% block title %}{{name}}{% endblock %}
 
-{% block head %}
-<style>
-</style>
-{% endblock %}
-
 {% block content %}
-<h1><a href="../index.html">lolbench</a></h1>
-<h2>benchmark name: {{name}}</h2>
+<nav>
+    <a href="../index.html">lolbench</a>
+</nav>
+<h1>{{ name }}</h1>
 
 {% for metric in self.metrics_with_anomaly_indices() %}
 <a id="{{ metric }}"></a>
 <h3><a href="#{{ metric }}">*</a> {{ metric }} / iteration</h3>
 
-<div id="{{ metric }}-chart" style="width: 100%; height: 600px"></div>
+<div id="{{ metric }}-chart" style="width: 100%; height: auto"></div>
 
 <h4>potential anomalies</h4>
 <table border="1">
@@ -38,11 +35,11 @@
 
 <a id="branch-predict-ratio"></a>
 <h3><a href="#branch-predict-ratio">*</a> overall branch predict ratio</h3>
-<div id="branch-predict-ratio-chart" style="width: 100%; height: 600px"></div>
+<div id="branch-predict-ratio-chart" style="width: 100%; height: auto"></div>
 
 <a id="cache-ratio"></a>
 <h3><a href="#cache-ratio">*</a> overall cache hit ratio</h3>
-<div id="cache-ratio-chart" style="width: 100%; height: 600px"></div>
+<div id="cache-ratio-chart" style="width: 100%; height: auto"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/highcharts@6/highcharts.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/highcharts@6/highcharts-more.min.js"></script>
