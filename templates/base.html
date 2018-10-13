@@ -51,6 +51,7 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 10px;
+            position: relative;
         }
 
         /* Nav */
@@ -90,6 +91,19 @@
         .benchmark-name {
             font-size: 2.5rem;
             word-break: break-word;
+        }
+
+        /* Links */
+        .anchor {
+            color: inherit;
+        }
+        .anchor-header:hover a::before {
+            position: absolute;
+            left: -25px;
+            content: '\2002\00a7\2002';
+        }
+        :target {
+            background: #FDFFD3;
         }
 
         /* Tables */

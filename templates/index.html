@@ -40,8 +40,9 @@
 </p>
 
 {% for anomaly in analysis.anomalous_timings %}
-<a id="{{ anomaly.0 }}"></a>
-<h3><a href="#{{ anomaly.0 }}">*</a> {{ anomaly.0 }}</h3>
+<h3 class="anchor-header" id={{ anomaly.0 }}>
+    <a class="anchor" href="#{{ anomaly.0 }}">{{ anomaly.0 }}</a>
+</h3>
 
 <table class="table table-striped bench-table">
     <thead class="bench-headers">

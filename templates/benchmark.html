@@ -11,12 +11,13 @@
 <h1 class="benchmark-name">{{ name }}</h1>
 
 {% for metric in self.metrics_with_anomaly_indices() %}
-<a id="{{ metric }}"></a>
-<h3><a href="#{{ metric }}">*</a> {{ metric }} / iteration</h3>
+<h2 class="anchor-header" id="{{ metric }}">
+    <a class="anchor" href="#{{ metric }}">{{ metric }} / iteration</a>
+</h2>
 
 <div id="{{ metric }}-chart" style="width: 100%; height: auto"></div>
 
-<h4>potential anomalies</h4>
+<h3>potential anomalies</h3>
 <table class="table">
     <thead>
         <tr>
@@ -35,12 +36,14 @@
 </table>
 {% endfor %}
 
-<a id="branch-predict-ratio"></a>
-<h3><a href="#branch-predict-ratio">*</a> overall branch predict ratio</h3>
+<h2 class="anchor-header" id="branch-predict-ratio">
+    <a class="anchor" href="#branch-predict-ratio">overall branch predict ratio</a>
+</h2>
 <div id="branch-predict-ratio-chart" style="width: 100%; height: auto"></div>
 
-<a id="cache-ratio"></a>
-<h3><a href="#cache-ratio">*</a> overall cache hit ratio</h3>
+<h2 class="anchor-header" id="cache-ratio">
+    <a class="anchor" href="#cache-ratio">overall cache hit ratio</a>
+</h2>
 <div id="cache-ratio-chart" style="width: 100%; height: auto"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/highcharts@6/highcharts.min.js"></script>
