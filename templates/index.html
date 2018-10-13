@@ -3,10 +3,13 @@
 {% block title %}home{% endblock %}
 
 {% block content %}
-<h1>lolbench home</h1>
-
-<b><a href="#recent-changes">potentially anomalous results</a> | <a href="#all-benchmarks">all
-        benchmarks</a></b>
+<nav class="nav">
+    <ul class="nav-menu">
+        <li class="nav-item"><h1 class="nav-brand">lolbench</h1></li>
+        <li class="nav-item"><a href="#recent-changes">potentially anomalous results</a></li>
+        <li class="nav-item"><a href="#all-benchmarks">all benchmarks</a></li>
+    </ul>
+</nav>
 
 <h2>about</h2>
 
@@ -40,20 +43,20 @@
 <a id="{{ anomaly.0 }}"></a>
 <h3><a href="#{{ anomaly.0 }}">*</a> {{ anomaly.0 }}</h3>
 
-<table border="1">
-    <thead>
-        <th>benchmark</th>
-        <th>% &Delta;</th>
-        <th>&sigma; &Delta;</th>
+<table class="table table-striped bench-table">
+    <thead class="bench-headers">
+        <th class="bench-header-name">benchmark</th>
+        <th class="bench-header-delta" title="Percentage change">% &Delta;</th>
+        <th class="bench-header-stddev"title="Standard deviation">&sigma; &Delta;</th>
     </thead>
 
     {% for noteworthy in anomaly.1 %}
-    <tr>
-        <td>{{ noteworthy.benchmark_for_linking().link()|safe }}</td>
-        <td {% if noteworthy.index.nanoseconds.stddev_from_mean.is_sign_negative() -%} bgcolor="#b3ffc6"
+    <tr class="bench-row">
+        <td class="bench-row-name">{{ noteworthy.benchmark_for_linking().link()|safe }}</td>
+        <td class="bench-row-delta" {% if noteworthy.index.nanoseconds.stddev_from_mean.is_sign_negative() -%} bgcolor="#b3ffc6"
             {% else %} bgcolor="#ffb3b3" {%- endif %}>{{ noteworthy.index.nanoseconds.percent_delta_from_mean.raw()|float_fmt }}
             %</td>
-        <td {% if noteworthy.index.nanoseconds.stddev_from_mean.is_sign_negative() -%} bgcolor="#b3ffc6"
+        <td class="bench-row-stddev" {% if noteworthy.index.nanoseconds.stddev_from_mean.is_sign_negative() -%} bgcolor="#b3ffc6"
             {% else %} bgcolor="#ffb3b3" {%- endif %}>{{ noteworthy.index.nanoseconds.stddev_from_mean.raw()|float_fmt }}</td>
     </tr>
     {% endfor %}
@@ -62,7 +65,7 @@
 
 <h2><a id="all-benchmarks" />all benchmarks</h2>
 
-<table border="1">
+<table class="table">
     <tbody>
         {% for benchmark in benchmarks %}
         <tr>

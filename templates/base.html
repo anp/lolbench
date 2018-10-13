@@ -4,43 +4,128 @@
 <head>
     <title>lolbench - {% block title %}{{ title }}{% endblock %}</title>
     {% block head %}
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Fira+Sans:400,700" rel="stylesheet">
         {% block style %}
-            <style>
-            body {
-                font-family: Helvetica, Arial, sans-serif;
-                font-size: 100%;
-            }
+        <style>
+        /* HTML tags */
+        body {
+            font-family: "Fira Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            font-size: 16px;
+            line-height: 1.25;
+        }
 
-            #content {
-                width: 100%;
-                max-width: 1200px;
-                margin: 1rem auto;
-            }
+        a {
+            text-decoration: none;
+        }
 
-            a {
-                text-decoration: none;
-            }
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-weight: 400;
+        }
+        h1 {
+            font-size: 2.5rem;
+        }
+        h2 {
+            font-size: 1.875rem;
+        }
+        h3 {
+            font-size: 1.5rem;
+        }
+        h4 {
+            font-size: 1.25rem;
+        }
+        h5 {
+            font-size: 1.1rem;
+        }
+        h6 {
+            font-size: 1rem;
+        }
 
-            table {
-                border-collapse: collapse;
-            }
-            tr {
-                border-bottom: 1px solid #ccc;
-            }
-            th, td {
-                text-align: left;
-                padding: 5px;
-            }
+        #content {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 10px;
+        }
 
-            .back-nav {
-                padding: 0.5rem 0;
-                border-bottom: 1px solid #ccc;
-            }
-            .back-link {
-                font-size: 1.25rem;
-            }
+        /* Nav */
+        .nav {
+            padding: 0.5rem 0;
+            border-bottom: 2px solid #ccc;
+            margin-bottom: 1rem;
+        }
+        .nav-brand {
+            font-size: 1.875rem;
+            font-weight: 900;
+            margin: 0;
+        }
 
-            </style>
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            padding-left: 0;
+            align-items: center;
+            margin: 0;
+        }
+        .nav-item {
+            flex: 0 auto;
+            padding: 1.25rem 1rem;
+        }
+        .nav-item:first-child {
+            padding-left: 0;
+        }
+        .nav-item:last-child {
+            padding-right: 0;
+        }
+
+        .home-link:visited {
+            color: inherit;
+        }
+
+        .benchmark-name {
+            font-size: 2.5rem;
+            word-break: break-word;
+        }
+
+        /* Tables */
+        .table {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 1rem;
+            font-family: "Fira Mono", "SF Mono", "Consolas", monospace;
+            border-collapse: collapse;
+        }
+        .table tr {
+            border-bottom: 1px solid #ccc;
+        }
+        .table th,
+        .table td {
+            padding: 5px;
+        }
+        .table tbody tr:nth-of-type(2n) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .bench-headers {
+
+        }
+        .bench-header-delta,
+        .bench-header-stddev {
+            text-align: center;
+            max-width: 10rem;
+        }
+
+        .bench-row-delta,
+        .bench-row-stddev {
+            text-align: right;
+            width: 5.5rem;
+        }
+        </style>
         {% endblock %}
     {% endblock %}
 </head>

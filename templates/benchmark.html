@@ -3,10 +3,12 @@
 {% block title %}{{name}}{% endblock %}
 
 {% block content %}
-<nav class="back-nav">
-    <a class="back-link" href="../index.html">lolbench</a>
+<nav class="nav">
+    <ul class="nav-menu">
+        <li class="nav-item"><h1 class="nav-brand"><a class="home-link" href="../index.html">lolbench</a></h1></li>
+    </ul>
 </nav>
-<h1>{{ name }}</h1>
+<h1 class="benchmark-name">{{ name }}</h1>
 
 {% for metric in self.metrics_with_anomaly_indices() %}
 <a id="{{ metric }}"></a>
@@ -15,7 +17,7 @@
 <div id="{{ metric }}-chart" style="width: 100%; height: auto"></div>
 
 <h4>potential anomalies</h4>
-<table border="1">
+<table class="table">
     <thead>
         <tr>
             <th>toolchain</th>
