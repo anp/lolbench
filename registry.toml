@@ -34,16 +34,19 @@ crate = 'brotli_1_1_3'
 entrypoint_path = 'benches/brotli_1_1_3/src/bin/bench-e2e-rt-q9-5-1024k.rs'
 
 [benchmarks."byteorder_1_2_6::f32::read_big_endian"]
+runner = 'sally'
 name = 'f32::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/f32-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::f32::read_little_endian"]
+runner = 'molly'
 name = 'f32::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/f32-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::f32::read_native_endian"]
+runner = 'wilhelm'
 name = 'f32::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/f32-read-native-endian.rs'
@@ -64,16 +67,19 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/f32-write-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::f64::read_big_endian"]
+runner = 'sally'
 name = 'f64::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/f64-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::f64::read_little_endian"]
+runner = 'sally'
 name = 'f64::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/f64-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::f64::read_native_endian"]
+runner = 'wilhelm'
 name = 'f64::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/f64-read-native-endian.rs'
@@ -94,16 +100,19 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/f64-write-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::i128::read_big_endian"]
+runner = 'sally'
 name = 'i128::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i128-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::i128::read_little_endian"]
+runner = 'wilhelm'
 name = 'i128::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i128-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::i128::read_native_endian"]
+runner = 'wilhelm'
 name = 'i128::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i128-read-native-endian.rs'
@@ -124,16 +133,19 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i128-write-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::i16::read_big_endian"]
+runner = 'sally'
 name = 'i16::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i16-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::i16::read_little_endian"]
+runner = 'wilhelm'
 name = 'i16::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i16-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::i16::read_native_endian"]
+runner = 'molly'
 name = 'i16::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i16-read-native-endian.rs'
@@ -154,16 +166,19 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i16-write-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::i32::read_big_endian"]
+runner = 'sally'
 name = 'i32::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i32-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::i32::read_little_endian"]
+runner = 'molly'
 name = 'i32::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i32-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::i32::read_native_endian"]
+runner = 'wilhelm'
 name = 'i32::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i32-read-native-endian.rs'
@@ -184,16 +199,19 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i32-write-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::i64::read_big_endian"]
+runner = 'molly'
 name = 'i64::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i64-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::i64::read_little_endian"]
+runner = 'molly'
 name = 'i64::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i64-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::i64::read_native_endian"]
+runner = 'sally'
 name = 'i64::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i64-read-native-endian.rs'
@@ -214,396 +232,475 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i64-write-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_10::read_big_endian"]
+runner = 'wilhelm'
 name = 'int128_10::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-10-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_10::read_little_endian"]
+runner = 'wilhelm'
 name = 'int128_10::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-10-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_10::read_native_endian"]
+runner = 'wilhelm'
 name = 'int128_10::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-10-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_11::read_big_endian"]
+runner = 'sally'
 name = 'int128_11::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-11-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_11::read_little_endian"]
+runner = 'sally'
 name = 'int128_11::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-11-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_11::read_native_endian"]
+runner = 'molly'
 name = 'int128_11::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-11-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_12::read_big_endian"]
+runner = 'wilhelm'
 name = 'int128_12::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-12-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_12::read_little_endian"]
+runner = 'wilhelm'
 name = 'int128_12::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-12-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_12::read_native_endian"]
+runner = 'sally'
 name = 'int128_12::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-12-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_13::read_big_endian"]
+runner = 'sally'
 name = 'int128_13::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-13-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_13::read_little_endian"]
+runner = 'wilhelm'
 name = 'int128_13::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-13-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_13::read_native_endian"]
+runner = 'molly'
 name = 'int128_13::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-13-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_14::read_big_endian"]
+runner = 'wilhelm'
 name = 'int128_14::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-14-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_14::read_little_endian"]
+runner = 'sally'
 name = 'int128_14::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-14-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_14::read_native_endian"]
+runner = 'wilhelm'
 name = 'int128_14::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-14-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_15::read_big_endian"]
+runner = 'molly'
 name = 'int128_15::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-15-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_15::read_little_endian"]
+runner = 'sally'
 name = 'int128_15::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-15-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_15::read_native_endian"]
+runner = 'molly'
 name = 'int128_15::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-15-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_16::read_big_endian"]
+runner = 'sally'
 name = 'int128_16::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-16-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_16::read_little_endian"]
+runner = 'wilhelm'
 name = 'int128_16::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-16-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_16::read_native_endian"]
+runner = 'sally'
 name = 'int128_16::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-16-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_1::read_big_endian"]
+runner = 'wilhelm'
 name = 'int128_1::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-1-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_1::read_little_endian"]
+runner = 'molly'
 name = 'int128_1::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-1-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_1::read_native_endian"]
+runner = 'sally'
 name = 'int128_1::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-1-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_2::read_big_endian"]
+runner = 'molly'
 name = 'int128_2::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-2-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_2::read_little_endian"]
+runner = 'wilhelm'
 name = 'int128_2::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-2-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_2::read_native_endian"]
+runner = 'sally'
 name = 'int128_2::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-2-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_3::read_big_endian"]
+runner = 'sally'
 name = 'int128_3::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-3-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_3::read_little_endian"]
+runner = 'wilhelm'
 name = 'int128_3::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-3-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_3::read_native_endian"]
+runner = 'molly'
 name = 'int128_3::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-3-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_4::read_big_endian"]
+runner = 'sally'
 name = 'int128_4::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-4-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_4::read_little_endian"]
+runner = 'sally'
 name = 'int128_4::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-4-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_4::read_native_endian"]
+runner = 'wilhelm'
 name = 'int128_4::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-4-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_5::read_big_endian"]
+runner = 'wilhelm'
 name = 'int128_5::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-5-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_5::read_little_endian"]
+runner = 'molly'
 name = 'int128_5::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-5-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_5::read_native_endian"]
+runner = 'wilhelm'
 name = 'int128_5::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-5-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_6::read_big_endian"]
+runner = 'wilhelm'
 name = 'int128_6::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-6-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_6::read_little_endian"]
+runner = 'molly'
 name = 'int128_6::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-6-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_6::read_native_endian"]
+runner = 'sally'
 name = 'int128_6::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-6-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_7::read_big_endian"]
+runner = 'wilhelm'
 name = 'int128_7::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-7-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_7::read_little_endian"]
+runner = 'sally'
 name = 'int128_7::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-7-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_7::read_native_endian"]
+runner = 'sally'
 name = 'int128_7::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-7-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_8::read_big_endian"]
+runner = 'molly'
 name = 'int128_8::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-8-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_8::read_little_endian"]
+runner = 'wilhelm'
 name = 'int128_8::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-8-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_8::read_native_endian"]
+runner = 'molly'
 name = 'int128_8::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-8-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_9::read_big_endian"]
+runner = 'sally'
 name = 'int128_9::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-9-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_9::read_little_endian"]
+runner = 'molly'
 name = 'int128_9::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-9-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_9::read_native_endian"]
+runner = 'sally'
 name = 'int128_9::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-9-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_1::read_big_endian"]
+runner = 'molly'
 name = 'int_1::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-1-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_1::read_little_endian"]
+runner = 'molly'
 name = 'int_1::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-1-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_1::read_native_endian"]
+runner = 'sally'
 name = 'int_1::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-1-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_2::read_big_endian"]
+runner = 'molly'
 name = 'int_2::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-2-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_2::read_little_endian"]
+runner = 'wilhelm'
 name = 'int_2::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-2-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_2::read_native_endian"]
+runner = 'sally'
 name = 'int_2::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-2-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_3::read_big_endian"]
+runner = 'wilhelm'
 name = 'int_3::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-3-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_3::read_little_endian"]
+runner = 'sally'
 name = 'int_3::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-3-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_3::read_native_endian"]
+runner = 'sally'
 name = 'int_3::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-3-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_4::read_big_endian"]
+runner = 'wilhelm'
 name = 'int_4::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-4-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_4::read_little_endian"]
+runner = 'wilhelm'
 name = 'int_4::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-4-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_4::read_native_endian"]
+runner = 'molly'
 name = 'int_4::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-4-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_5::read_big_endian"]
+runner = 'sally'
 name = 'int_5::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-5-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_5::read_little_endian"]
+runner = 'molly'
 name = 'int_5::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-5-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_5::read_native_endian"]
+runner = 'sally'
 name = 'int_5::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-5-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_6::read_big_endian"]
+runner = 'wilhelm'
 name = 'int_6::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-6-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_6::read_little_endian"]
+runner = 'sally'
 name = 'int_6::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-6-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_6::read_native_endian"]
+runner = 'molly'
 name = 'int_6::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-6-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_7::read_big_endian"]
+runner = 'wilhelm'
 name = 'int_7::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-7-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_7::read_little_endian"]
+runner = 'molly'
 name = 'int_7::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-7-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_7::read_native_endian"]
+runner = 'molly'
 name = 'int_7::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-7-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_8::read_big_endian"]
+runner = 'sally'
 name = 'int_8::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-8-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_8::read_little_endian"]
+runner = 'wilhelm'
 name = 'int_8::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-8-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_8::read_native_endian"]
+runner = 'sally'
 name = 'int_8::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-8-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::slice_u64::read_big_endian"]
+runner = 'wilhelm'
 name = 'slice_u64::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/slice-u64-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::slice_u64::read_little_endian"]
+runner = 'molly'
 name = 'slice_u64::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/slice-u64-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::slice_u64::write_big_endian"]
+runner = 'wilhelm'
 name = 'slice_u64::write_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/slice-u64-write-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::slice_u64::write_little_endian"]
+runner = 'molly'
 name = 'slice_u64::write_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/slice-u64-write-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::u128::read_big_endian"]
+runner = 'wilhelm'
 name = 'u128::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u128-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::u128::read_little_endian"]
+runner = 'sally'
 name = 'u128::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u128-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::u128::read_native_endian"]
+runner = 'wilhelm'
 name = 'u128::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u128-read-native-endian.rs'
@@ -624,16 +721,19 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u128-write-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::u16::read_big_endian"]
+runner = 'wilhelm'
 name = 'u16::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u16-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::u16::read_little_endian"]
+runner = 'molly'
 name = 'u16::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u16-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::u16::read_native_endian"]
+runner = 'sally'
 name = 'u16::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u16-read-native-endian.rs'
@@ -654,16 +754,19 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u16-write-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::u32::read_big_endian"]
+runner = 'wilhelm'
 name = 'u32::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u32-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::u32::read_little_endian"]
+runner = 'sally'
 name = 'u32::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u32-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::u32::read_native_endian"]
+runner = 'wilhelm'
 name = 'u32::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u32-read-native-endian.rs'
@@ -684,16 +787,19 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u32-write-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::u64::read_big_endian"]
+runner = 'molly'
 name = 'u64::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u64-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::u64::read_little_endian"]
+runner = 'wilhelm'
 name = 'u64::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u64-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::u64::read_native_endian"]
+runner = 'sally'
 name = 'u64::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u64-read-native-endian.rs'
@@ -714,361 +820,433 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u64-write-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_10::read_big_endian"]
+runner = 'wilhelm'
 name = 'uint128_10::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-10-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_10::read_little_endian"]
+runner = 'wilhelm'
 name = 'uint128_10::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-10-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_10::read_native_endian"]
+runner = 'molly'
 name = 'uint128_10::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-10-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_11::read_big_endian"]
+runner = 'wilhelm'
 name = 'uint128_11::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-11-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_11::read_little_endian"]
+runner = 'molly'
 name = 'uint128_11::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-11-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_11::read_native_endian"]
+runner = 'molly'
 name = 'uint128_11::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-11-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_12::read_big_endian"]
+runner = 'sally'
 name = 'uint128_12::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-12-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_12::read_little_endian"]
+runner = 'molly'
 name = 'uint128_12::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-12-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_12::read_native_endian"]
+runner = 'sally'
 name = 'uint128_12::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-12-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_13::read_big_endian"]
+runner = 'sally'
 name = 'uint128_13::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-13-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_13::read_little_endian"]
+runner = 'sally'
 name = 'uint128_13::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-13-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_13::read_native_endian"]
+runner = 'molly'
 name = 'uint128_13::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-13-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_14::read_big_endian"]
+runner = 'molly'
 name = 'uint128_14::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-14-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_14::read_little_endian"]
+runner = 'molly'
 name = 'uint128_14::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-14-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_14::read_native_endian"]
+runner = 'molly'
 name = 'uint128_14::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-14-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_15::read_big_endian"]
+runner = 'wilhelm'
 name = 'uint128_15::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-15-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_15::read_little_endian"]
+runner = 'molly'
 name = 'uint128_15::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-15-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_15::read_native_endian"]
+runner = 'sally'
 name = 'uint128_15::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-15-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_16::read_big_endian"]
+runner = 'sally'
 name = 'uint128_16::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-16-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_16::read_little_endian"]
+runner = 'sally'
 name = 'uint128_16::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-16-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_16::read_native_endian"]
+runner = 'molly'
 name = 'uint128_16::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-16-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_1::read_big_endian"]
+runner = 'molly'
 name = 'uint128_1::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-1-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_1::read_little_endian"]
+runner = 'wilhelm'
 name = 'uint128_1::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-1-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_1::read_native_endian"]
+runner = 'molly'
 name = 'uint128_1::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-1-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_2::read_big_endian"]
+runner = 'molly'
 name = 'uint128_2::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-2-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_2::read_little_endian"]
+runner = 'wilhelm'
 name = 'uint128_2::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-2-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_2::read_native_endian"]
+runner = 'molly'
 name = 'uint128_2::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-2-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_3::read_big_endian"]
+runner = 'sally'
 name = 'uint128_3::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-3-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_3::read_little_endian"]
+runner = 'sally'
 name = 'uint128_3::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-3-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_3::read_native_endian"]
+runner = 'wilhelm'
 name = 'uint128_3::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-3-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_4::read_big_endian"]
+runner = 'molly'
 name = 'uint128_4::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-4-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_4::read_little_endian"]
+runner = 'molly'
 name = 'uint128_4::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-4-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_4::read_native_endian"]
+runner = 'sally'
 name = 'uint128_4::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-4-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_5::read_big_endian"]
+runner = 'molly'
 name = 'uint128_5::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-5-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_5::read_little_endian"]
+runner = 'sally'
 name = 'uint128_5::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-5-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_5::read_native_endian"]
+runner = 'wilhelm'
 name = 'uint128_5::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-5-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_6::read_big_endian"]
+runner = 'wilhelm'
 name = 'uint128_6::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-6-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_6::read_little_endian"]
+runner = 'molly'
 name = 'uint128_6::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-6-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_6::read_native_endian"]
+runner = 'molly'
 name = 'uint128_6::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-6-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_7::read_big_endian"]
+runner = 'wilhelm'
 name = 'uint128_7::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-7-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_7::read_little_endian"]
+runner = 'wilhelm'
 name = 'uint128_7::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-7-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_7::read_native_endian"]
+runner = 'molly'
 name = 'uint128_7::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-7-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_8::read_big_endian"]
+runner = 'molly'
 name = 'uint128_8::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-8-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_8::read_little_endian"]
+runner = 'sally'
 name = 'uint128_8::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-8-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_8::read_native_endian"]
+runner = 'wilhelm'
 name = 'uint128_8::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-8-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_9::read_big_endian"]
+runner = 'sally'
 name = 'uint128_9::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-9-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_9::read_little_endian"]
+runner = 'wilhelm'
 name = 'uint128_9::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-9-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_9::read_native_endian"]
+runner = 'molly'
 name = 'uint128_9::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-9-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_1::read_big_endian"]
+runner = 'wilhelm'
 name = 'uint_1::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-1-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_1::read_little_endian"]
+runner = 'molly'
 name = 'uint_1::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-1-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_1::read_native_endian"]
+runner = 'sally'
 name = 'uint_1::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-1-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_2::read_big_endian"]
+runner = 'molly'
 name = 'uint_2::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-2-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_2::read_little_endian"]
+runner = 'wilhelm'
 name = 'uint_2::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-2-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_2::read_native_endian"]
+runner = 'wilhelm'
 name = 'uint_2::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-2-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_3::read_big_endian"]
+runner = 'wilhelm'
 name = 'uint_3::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-3-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_3::read_little_endian"]
+runner = 'wilhelm'
 name = 'uint_3::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-3-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_3::read_native_endian"]
+runner = 'molly'
 name = 'uint_3::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-3-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_4::read_big_endian"]
+runner = 'wilhelm'
 name = 'uint_4::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-4-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_4::read_little_endian"]
+runner = 'sally'
 name = 'uint_4::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-4-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_4::read_native_endian"]
+runner = 'molly'
 name = 'uint_4::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-4-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_5::read_big_endian"]
+runner = 'molly'
 name = 'uint_5::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-5-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_5::read_little_endian"]
+runner = 'molly'
 name = 'uint_5::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-5-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_5::read_native_endian"]
+runner = 'molly'
 name = 'uint_5::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-5-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_6::read_big_endian"]
+runner = 'sally'
 name = 'uint_6::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-6-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_6::read_little_endian"]
+runner = 'sally'
 name = 'uint_6::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-6-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_6::read_native_endian"]
+runner = 'wilhelm'
 name = 'uint_6::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-6-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_7::read_big_endian"]
+runner = 'sally'
 name = 'uint_7::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-7-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_7::read_little_endian"]
+runner = 'molly'
 name = 'uint_7::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-7-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_7::read_native_endian"]
+runner = 'sally'
 name = 'uint_7::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-7-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_8::read_big_endian"]
+runner = 'wilhelm'
 name = 'uint_8::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-8-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_8::read_little_endian"]
+runner = 'wilhelm'
 name = 'uint_8::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-8-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_8::read_native_endian"]
+runner = 'wilhelm'
 name = 'uint_8::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-8-read-native-endian.rs'
@@ -1138,221 +1316,265 @@ crate = 'crossbeam_epoch_0_4_0'
 entrypoint_path = 'benches/crossbeam_epoch_0_4_0/src/bin/pin-single-pin.rs'
 
 [benchmarks."csv_1_0_2::count_game_deserialize_borrowed_bytes"]
+runner = 'wilhelm'
 name = 'count_game_deserialize_borrowed_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-game-deserialize-borrowed-bytes.rs'
 
 [benchmarks."csv_1_0_2::count_game_deserialize_borrowed_str"]
+runner = 'wilhelm'
 name = 'count_game_deserialize_borrowed_str'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-game-deserialize-borrowed-str.rs'
 
 [benchmarks."csv_1_0_2::count_game_deserialize_owned_bytes"]
+runner = 'sally'
 name = 'count_game_deserialize_owned_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-game-deserialize-owned-bytes.rs'
 
 [benchmarks."csv_1_0_2::count_game_deserialize_owned_str"]
+runner = 'molly'
 name = 'count_game_deserialize_owned_str'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-game-deserialize-owned-str.rs'
 
 [benchmarks."csv_1_0_2::count_game_iter_bytes"]
+runner = 'wilhelm'
 name = 'count_game_iter_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-game-iter-bytes.rs'
 
 [benchmarks."csv_1_0_2::count_game_iter_str"]
+runner = 'wilhelm'
 name = 'count_game_iter_str'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-game-iter-str.rs'
 
 [benchmarks."csv_1_0_2::count_game_read_bytes"]
+runner = 'molly'
 name = 'count_game_read_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-game-read-bytes.rs'
 
 [benchmarks."csv_1_0_2::count_game_read_str"]
+runner = 'molly'
 name = 'count_game_read_str'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-game-read-str.rs'
 
 [benchmarks."csv_1_0_2::count_game_serialize_owned_bytes"]
+runner = 'wilhelm'
 name = 'count_game_serialize_owned_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-game-serialize-owned-bytes.rs'
 
 [benchmarks."csv_1_0_2::count_game_serialize_owned_str"]
+runner = 'wilhelm'
 name = 'count_game_serialize_owned_str'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-game-serialize-owned-str.rs'
 
 [benchmarks."csv_1_0_2::count_mbta_deserialize_borrowed_bytes"]
+runner = 'molly'
 name = 'count_mbta_deserialize_borrowed_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-mbta-deserialize-borrowed-bytes.rs'
 
 [benchmarks."csv_1_0_2::count_mbta_deserialize_borrowed_str"]
+runner = 'wilhelm'
 name = 'count_mbta_deserialize_borrowed_str'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-mbta-deserialize-borrowed-str.rs'
 
 [benchmarks."csv_1_0_2::count_mbta_deserialize_owned_bytes"]
+runner = 'molly'
 name = 'count_mbta_deserialize_owned_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-mbta-deserialize-owned-bytes.rs'
 
 [benchmarks."csv_1_0_2::count_mbta_deserialize_owned_str"]
+runner = 'wilhelm'
 name = 'count_mbta_deserialize_owned_str'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-mbta-deserialize-owned-str.rs'
 
 [benchmarks."csv_1_0_2::count_mbta_iter_bytes"]
+runner = 'wilhelm'
 name = 'count_mbta_iter_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-mbta-iter-bytes.rs'
 
 [benchmarks."csv_1_0_2::count_mbta_iter_str"]
+runner = 'wilhelm'
 name = 'count_mbta_iter_str'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-mbta-iter-str.rs'
 
 [benchmarks."csv_1_0_2::count_mbta_read_bytes"]
+runner = 'molly'
 name = 'count_mbta_read_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-mbta-read-bytes.rs'
 
 [benchmarks."csv_1_0_2::count_mbta_read_str"]
+runner = 'sally'
 name = 'count_mbta_read_str'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-mbta-read-str.rs'
 
 [benchmarks."csv_1_0_2::count_mbta_serialize_owned_bytes"]
+runner = 'sally'
 name = 'count_mbta_serialize_owned_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-mbta-serialize-owned-bytes.rs'
 
 [benchmarks."csv_1_0_2::count_mbta_serialize_owned_str"]
+runner = 'wilhelm'
 name = 'count_mbta_serialize_owned_str'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-mbta-serialize-owned-str.rs'
 
 [benchmarks."csv_1_0_2::count_nfl_deserialize_borrowed_bytes"]
+runner = 'wilhelm'
 name = 'count_nfl_deserialize_borrowed_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-deserialize-borrowed-bytes.rs'
 
 [benchmarks."csv_1_0_2::count_nfl_deserialize_borrowed_str"]
+runner = 'molly'
 name = 'count_nfl_deserialize_borrowed_str'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-deserialize-borrowed-str.rs'
 
 [benchmarks."csv_1_0_2::count_nfl_deserialize_owned_bytes"]
+runner = 'sally'
 name = 'count_nfl_deserialize_owned_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-deserialize-owned-bytes.rs'
 
 [benchmarks."csv_1_0_2::count_nfl_deserialize_owned_str"]
+runner = 'wilhelm'
 name = 'count_nfl_deserialize_owned_str'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-deserialize-owned-str.rs'
 
 [benchmarks."csv_1_0_2::count_nfl_iter_bytes"]
+runner = 'sally'
 name = 'count_nfl_iter_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-iter-bytes.rs'
 
 [benchmarks."csv_1_0_2::count_nfl_iter_bytes_trimmed"]
+runner = 'wilhelm'
 name = 'count_nfl_iter_bytes_trimmed'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-iter-bytes-trimmed.rs'
 
 [benchmarks."csv_1_0_2::count_nfl_iter_str"]
+runner = 'molly'
 name = 'count_nfl_iter_str'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-iter-str.rs'
 
 [benchmarks."csv_1_0_2::count_nfl_iter_str_trimmed"]
+runner = 'sally'
 name = 'count_nfl_iter_str_trimmed'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-iter-str-trimmed.rs'
 
 [benchmarks."csv_1_0_2::count_nfl_read_bytes"]
+runner = 'sally'
 name = 'count_nfl_read_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-read-bytes.rs'
 
 [benchmarks."csv_1_0_2::count_nfl_read_str"]
+runner = 'sally'
 name = 'count_nfl_read_str'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-read-str.rs'
 
 [benchmarks."csv_1_0_2::count_nfl_serialize_owned_bytes"]
+runner = 'molly'
 name = 'count_nfl_serialize_owned_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-serialize-owned-bytes.rs'
 
 [benchmarks."csv_1_0_2::count_nfl_serialize_owned_str"]
+runner = 'sally'
 name = 'count_nfl_serialize_owned_str'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-serialize-owned-str.rs'
 
 [benchmarks."csv_1_0_2::count_pop_deserialize_borrowed_bytes"]
+runner = 'sally'
 name = 'count_pop_deserialize_borrowed_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-pop-deserialize-borrowed-bytes.rs'
 
 [benchmarks."csv_1_0_2::count_pop_deserialize_borrowed_str"]
+runner = 'wilhelm'
 name = 'count_pop_deserialize_borrowed_str'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-pop-deserialize-borrowed-str.rs'
 
 [benchmarks."csv_1_0_2::count_pop_deserialize_owned_bytes"]
+runner = 'molly'
 name = 'count_pop_deserialize_owned_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-pop-deserialize-owned-bytes.rs'
 
 [benchmarks."csv_1_0_2::count_pop_deserialize_owned_str"]
+runner = 'wilhelm'
 name = 'count_pop_deserialize_owned_str'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-pop-deserialize-owned-str.rs'
 
 [benchmarks."csv_1_0_2::count_pop_iter_bytes"]
+runner = 'wilhelm'
 name = 'count_pop_iter_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-pop-iter-bytes.rs'
 
 [benchmarks."csv_1_0_2::count_pop_iter_str"]
+runner = 'molly'
 name = 'count_pop_iter_str'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-pop-iter-str.rs'
 
 [benchmarks."csv_1_0_2::count_pop_read_bytes"]
+runner = 'wilhelm'
 name = 'count_pop_read_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-pop-read-bytes.rs'
 
 [benchmarks."csv_1_0_2::count_pop_read_str"]
+runner = 'molly'
 name = 'count_pop_read_str'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-pop-read-str.rs'
 
 [benchmarks."csv_1_0_2::count_pop_serialize_owned_bytes"]
+runner = 'wilhelm'
 name = 'count_pop_serialize_owned_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-pop-serialize-owned-bytes.rs'
 
 [benchmarks."csv_1_0_2::count_pop_serialize_owned_str"]
+runner = 'wilhelm'
 name = 'count_pop_serialize_owned_str'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-pop-serialize-owned-str.rs'
 
 [benchmarks."csv_1_0_2::write_nfl_bytes"]
+runner = 'molly'
 name = 'write_nfl_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/write-nfl-bytes.rs'
 
 [benchmarks."csv_1_0_2::write_nfl_record"]
+runner = 'molly'
 name = 'write_nfl_record'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/write-nfl-record.rs'
@@ -3230,81 +3452,97 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-words.rs'
 
 [benchmarks."sha2_0_8_0::sha256::bench1_10"]
+runner = 'wilhelm'
 name = 'sha256::bench1_10'
 crate = 'sha2_0_8_0'
 entrypoint_path = 'benches/sha2_0_8_0/src/bin/sha256-bench1-10.rs'
 
 [benchmarks."sha2_0_8_0::sha256::bench2_100"]
+runner = 'wilhelm'
 name = 'sha256::bench2_100'
 crate = 'sha2_0_8_0'
 entrypoint_path = 'benches/sha2_0_8_0/src/bin/sha256-bench2-100.rs'
 
 [benchmarks."sha2_0_8_0::sha256::bench3_1000"]
+runner = 'wilhelm'
 name = 'sha256::bench3_1000'
 crate = 'sha2_0_8_0'
 entrypoint_path = 'benches/sha2_0_8_0/src/bin/sha256-bench3-1000.rs'
 
 [benchmarks."sha2_0_8_0::sha256::bench4_10000"]
+runner = 'molly'
 name = 'sha256::bench4_10000'
 crate = 'sha2_0_8_0'
 entrypoint_path = 'benches/sha2_0_8_0/src/bin/sha256-bench4-10000.rs'
 
 [benchmarks."sha2_0_8_0::sha512::bench1_10"]
+runner = 'wilhelm'
 name = 'sha512::bench1_10'
 crate = 'sha2_0_8_0'
 entrypoint_path = 'benches/sha2_0_8_0/src/bin/sha512-bench1-10.rs'
 
 [benchmarks."sha2_0_8_0::sha512::bench2_100"]
+runner = 'wilhelm'
 name = 'sha512::bench2_100'
 crate = 'sha2_0_8_0'
 entrypoint_path = 'benches/sha2_0_8_0/src/bin/sha512-bench2-100.rs'
 
 [benchmarks."sha2_0_8_0::sha512::bench3_1000"]
+runner = 'wilhelm'
 name = 'sha512::bench3_1000'
 crate = 'sha2_0_8_0'
 entrypoint_path = 'benches/sha2_0_8_0/src/bin/sha512-bench3-1000.rs'
 
 [benchmarks."sha2_0_8_0::sha512::bench4_10000"]
+runner = 'molly'
 name = 'sha512::bench4_10000'
 crate = 'sha2_0_8_0'
 entrypoint_path = 'benches/sha2_0_8_0/src/bin/sha512-bench4-10000.rs'
 
 [benchmarks."sha3_0_8_0::sha3_256::bench1_10"]
+runner = 'wilhelm'
 name = 'sha3_256::bench1_10'
 crate = 'sha3_0_8_0'
 entrypoint_path = 'benches/sha3_0_8_0/src/bin/sha3-256-bench1-10.rs'
 
 [benchmarks."sha3_0_8_0::sha3_256::bench2_100"]
+runner = 'wilhelm'
 name = 'sha3_256::bench2_100'
 crate = 'sha3_0_8_0'
 entrypoint_path = 'benches/sha3_0_8_0/src/bin/sha3-256-bench2-100.rs'
 
 [benchmarks."sha3_0_8_0::sha3_256::bench3_1000"]
+runner = 'sally'
 name = 'sha3_256::bench3_1000'
 crate = 'sha3_0_8_0'
 entrypoint_path = 'benches/sha3_0_8_0/src/bin/sha3-256-bench3-1000.rs'
 
 [benchmarks."sha3_0_8_0::sha3_256::bench4_10000"]
+runner = 'sally'
 name = 'sha3_256::bench4_10000'
 crate = 'sha3_0_8_0'
 entrypoint_path = 'benches/sha3_0_8_0/src/bin/sha3-256-bench4-10000.rs'
 
 [benchmarks."sha3_0_8_0::sha3_512::bench1_10"]
+runner = 'wilhelm'
 name = 'sha3_512::bench1_10'
 crate = 'sha3_0_8_0'
 entrypoint_path = 'benches/sha3_0_8_0/src/bin/sha3-512-bench1-10.rs'
 
 [benchmarks."sha3_0_8_0::sha3_512::bench2_100"]
+runner = 'wilhelm'
 name = 'sha3_512::bench2_100'
 crate = 'sha3_0_8_0'
 entrypoint_path = 'benches/sha3_0_8_0/src/bin/sha3-512-bench2-100.rs'
 
 [benchmarks."sha3_0_8_0::sha3_512::bench3_1000"]
+runner = 'sally'
 name = 'sha3_512::bench3_1000'
 crate = 'sha3_0_8_0'
 entrypoint_path = 'benches/sha3_0_8_0/src/bin/sha3-512-bench3-1000.rs'
 
 [benchmarks."sha3_0_8_0::sha3_512::bench4_10000"]
+runner = 'wilhelm'
 name = 'sha3_512::bench4_10000'
 crate = 'sha3_0_8_0'
 entrypoint_path = 'benches/sha3_0_8_0/src/bin/sha3-512-bench4-10000.rs'
