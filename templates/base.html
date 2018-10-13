@@ -105,23 +105,24 @@
         }
         .table th,
         .table td {
+            text-align: left;
             padding: 5px;
         }
         .table tbody tr:nth-of-type(2n) {
             background-color: rgba(0, 0, 0, 0.05);
         }
 
-        .bench-headers {
+        .bench-table .bench-headers {
 
         }
-        .bench-header-delta,
-        .bench-header-stddev {
+        .bench-table .bench-header-delta,
+        .bench-table .bench-header-stddev {
             text-align: center;
             max-width: 10rem;
         }
 
-        .bench-row-delta,
-        .bench-row-stddev {
+        .bench-table .bench-row-delta,
+        .bench-table .bench-row-stddev {
             text-align: right;
             width: 5.5rem;
         }
