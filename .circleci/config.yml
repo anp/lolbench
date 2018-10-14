@@ -102,7 +102,10 @@ jobs:
       - attach_workspace:
           at: ~/lolbench-site
       - run:
-          name: install deps
+          name: install chromium
+          command: sudo apt-get update && sudo apt-get install chromium
+      - run:
+          name: install script deps
           working_directory: tools
           command: npm ci
       - run:
