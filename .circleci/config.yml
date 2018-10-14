@@ -283,16 +283,13 @@ workflows:
       - csv_1_0_2:
           requires:
             - fmt
-      - big_green_button:
-          type: approval
-          filters:
-            branches:
-              only:
-                - master
       - deploy:
           filters:
             branches:
               only:
                 - master
           requires:
-            - big_green_button
+            - fmt
+            - core
+            - rebalance
+            - screenshots
