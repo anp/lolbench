@@ -149,7 +149,8 @@ jobs:
             echo "$ANSIBLE_VAULT_PASSWORD" > .ansible-vault-password
 
             # trust all ansible hosts
-            grep runner= deploy/hosts | cut -d' ' -f1 | xargs ssh-keyscan
+            mkdir -p ~/.ssh
+            grep runner= deploy/hosts | cut -d' ' -f1 | xargs ssh-keyscan >> ~/.ssh/known_hosts
 
       - run: ./deploy.sh $CIRCLE_SHA1
 
