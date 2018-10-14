@@ -46,19 +46,19 @@
 
 <table class="table table-striped bench-table">
     <thead class="bench-headers">
-        <th class="bench-header-name">benchmark</th>
-        <th class="bench-header-delta" title="Percentage change">% &Delta;</th>
-        <th class="bench-header-stddev"title="Standard deviation">&sigma; &Delta;</th>
+        <th>benchmark</th>
+        <th class="bench-delta">% &Delta;</th>
+        <th class="bench-stddev">&sigma; &Delta;</th>
     </thead>
 
     {% for noteworthy in anomaly.1 %}
     <tr class="bench-row">
-        <td class="bench-row-name">{{ noteworthy.benchmark_for_linking().link()|safe }}</td>
-        <td class="bench-row-delta" {% if noteworthy.index.nanoseconds.stddev_from_mean.is_sign_negative() -%} bgcolor="#b3ffc6"
-            {% else %} bgcolor="#ffb3b3" {%- endif %}>{{ noteworthy.index.nanoseconds.percent_delta_from_mean.raw()|float_fmt }}
+        <td>{{ noteworthy.benchmark_for_linking().link()|safe }}</td>
+        <td class="bench-delta {% if noteworthy.index.nanoseconds.stddev_from_mean.is_sign_negative() -%} positive-result
+            {% else %} negative-result {%- endif %}">{{ noteworthy.index.nanoseconds.percent_delta_from_mean.raw()|float_fmt }}
             %</td>
-        <td class="bench-row-stddev" {% if noteworthy.index.nanoseconds.stddev_from_mean.is_sign_negative() -%} bgcolor="#b3ffc6"
-            {% else %} bgcolor="#ffb3b3" {%- endif %}>{{ noteworthy.index.nanoseconds.stddev_from_mean.raw()|float_fmt }}</td>
+        <td class="bench-stddev {% if noteworthy.index.nanoseconds.stddev_from_mean.is_sign_negative() -%} positive-result
+            {% else %} negative-result {%- endif %}">{{ noteworthy.index.nanoseconds.stddev_from_mean.raw()|float_fmt }}</td>
     </tr>
     {% endfor %}
 </table>

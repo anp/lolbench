@@ -126,19 +126,23 @@
             background-color: rgba(0, 0, 0, 0.05);
         }
 
-        .bench-table .bench-headers {
-
-        }
-        .bench-table .bench-header-delta,
-        .bench-table .bench-header-stddev {
+        .bench-headers .bench-delta,
+        .bench-headers .bench-stddev {
             text-align: center;
             max-width: 10rem;
         }
 
-        .bench-table .bench-row-delta,
-        .bench-table .bench-row-stddev {
+        .bench-row .bench-delta,
+        .bench-row .bench-stddev {
             text-align: right;
             width: 5.5rem;
+        }
+
+        .negative-result {
+            background-color: #ffb3b3;
+        }
+        .positive-result {
+            background-color: #b3ffc6;
         }
         </style>
         {% endblock %}

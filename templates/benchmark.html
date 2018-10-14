@@ -18,18 +18,22 @@
 <div id="{{ metric }}-chart" style="width: 100%; height: auto"></div>
 
 <h3>potential anomalies</h3>
-<table class="table">
-    <thead>
+<table class="table table-striped bench-table">
+    <thead class="bench-headers">
         <tr>
             <th>toolchain</th>
-            <th>delta</th>
+            <th class="bench-delta">% &Delta;</th>
+            <th class="bench-stddev">&sigma; &Delta;</th>
         </tr>
     </thead>
     <tbody>
         {% for timing in anomalous_timings %}
-        <tr>
+        <tr class="bench-row";>
             <td>{{ timing.0 }}</td>
-            <td>{{ timing.1.index[metric] }}</td>
+            <td class="bench-delta {% if (timing.1.index[metric]).percent_delta_from_mean.is_sign_negative() -%} positive-result
+            {% else %} negative-result {%- endif %}">{{ (timing.1.index[metric]).percent_delta_from_mean.raw()|float_fmt }}</td>
+            <td class="bench-stddev {% if (timing.1.index[metric]).stddev_from_mean.is_sign_negative() -%} positive-result
+            {% else %} negative-result {%- endif %}">{{ (timing.1.index[metric]).stddev_from_mean.raw()|float_fmt }}</td>
         </tr>
         {% endfor %}
     </tbody>
