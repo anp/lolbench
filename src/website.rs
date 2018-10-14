@@ -44,7 +44,7 @@ pub fn build_website(
     for entry in ::std::fs::read_dir(output_dir.as_ref())? {
         let entry = entry?;
         let p = entry.path();
-        if p.file_name().unwrap() != ".git" {
+        if p.file_name().unwrap() != ".git" && p.file_name().unwrap() != "CNAME" {
             debug!("deleting {}", p.display());
             if p.is_dir() {
                 ::std::fs::remove_dir_all(p)?;
