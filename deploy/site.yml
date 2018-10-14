@@ -1,5 +1,3 @@
----
-
 - name: ensure_deps
   hosts: all
   remote_user: adam
@@ -15,7 +13,7 @@
     #     upgrade: yes
     - name: install packages
       apt:
-        name: '{{ packages }}'
+        name: "{{ packages }}"
       vars:
         packages:
           - build-essential
@@ -69,9 +67,9 @@
       lineinfile:
         path: /etc/sudoers
         state: present
-        regexp: '^%sudo'
-        line: '%sudo ALL=(ALL) NOPASSWD: ALL'
-        validate: 'visudo -cf %s'
+        regexp: "^%sudo"
+        line: "%sudo ALL=(ALL) NOPASSWD: ALL"
+        validate: "visudo -cf %s"
     - name: adding datadog agent user to journald group
       become: yes
       user:
@@ -81,17 +79,18 @@
 
 - name: datadog
   hosts: all
+  remote_user: adam
   roles:
     - { role: datadog.datadog, become: yes }
   vars:
     datadog_api_key: !vault |
-          $ANSIBLE_VAULT;1.1;AES256
-          32353463623234323439313034393737353939316235336561633364626136346430343464363631
-          6630393934303831623466623339333761383635343162620a623531623830636236653766353531
-          63303166636632623931306231626235626230643033356137653563323135663430336231343530
-          3232633435626137640a363930386364623337623833306136353162373137383138626166363462
-          38393565623337663336353363356232633033396437613061393636323630313063363965306630
-          3939396462333339313031353534656532656534323635373834
+      $ANSIBLE_VAULT;1.1;AES256
+      32353463623234323439313034393737353939316235336561633364626136346430343464363631
+      6630393934303831623466623339333761383635343162620a623531623830636236653766353531
+      63303166636632623931306231626235626230643033356137653563323135663430336231343530
+      3232633435626137640a363930386364623337623833306136353162373137383138626166363462
+      38393565623337663336353363356232633033396437613061393636323630313063363965306630
+      3939396462333339313031353534656532656534323635373834
     datadog_config:
       logs_enabled: true
     datadog_checks:
@@ -122,18 +121,18 @@
     - name: clone
       git:
         repo: https://github.com/anp/lolbench.git
-        dest: '{{ deploy_dir }}'
-        version: '{{ gitsha }}'
+        dest: "{{ deploy_dir }}"
+        version: "{{ gitsha }}"
     - name: clone-data
       git:
         repo: git@github.com:anp/lolbench-data.git
-        dest: '{{ data_dir }}'
+        dest: "{{ data_dir }}"
         update: no
     - name: clone-site
       git:
         repo: git@github.com:anp/lolbench-data.git
         version: gh-pages
-        dest: '{{ site_dir }}'
+        dest: "{{ site_dir }}"
         update: no
 
 - name: systemd
