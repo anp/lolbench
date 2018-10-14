@@ -126,16 +126,15 @@ jobs:
 
   deploy:
     docker:
-      - image: debian/stable
+      - image: circleci/node:10
     steps:
       - checkout
       - *setup
       - run:
           name: install deployment deps
           command: |
-            apt-get update
-            apt-get upgrade
-            apt-get install ansible git openssh
+            sudo apt-get update
+            sudo apt-get install ansible
 
       - run:
           name: setup deploy secrets
@@ -145,7 +144,7 @@ jobs:
             chmod 0600 ~/.ssh/lolbench_deploy_private
             echo "$ANSIBLE_VAULT_PASSWORD" > .ansible-vault-password
 
-      - run: deploy.sh $CIRCLE_SHA1
+      - run: ./deploy.sh $CIRCLE_SHA1
 
   rebalance:
     <<: *rust_job
