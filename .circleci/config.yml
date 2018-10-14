@@ -76,8 +76,53 @@ jobs:
       - *restore_cache
       - *install_deps
       - run: cargo test-core
+      - run:
+          name: build website
+          command: |
+            pushd ..
+            mkdir lolbench-site
+            git clone https://github.com/anp/lolbench-data.git
+            popd
+
+            cargo build-website --data-dir ../lolbench-data --output-dir ~/lolbench-site
       - *save_cache
       - *store_target_dir
+      - store_artifacts:
+          path: ~/lolbench-site
+      - persist_to_workspace:
+          root: ~/lolbench-site
+          paths:
+            - "*"
+
+  screenshots:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/lolbench-site
+      - run:
+          name: install chromium
+          command: |
+            sudo apt-get update
+            # https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md
+            sudo apt-get install \
+              gconf-service libasound2 libatk1.0-0 libatk-bridge2.0-0 libc6 libcairo2 libcups2 \
+              libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 \
+              libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 \
+              libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 \
+              libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates \
+              fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
+      - run:
+          name: install script deps
+          working_directory: tools
+          command: npm ci
+      - run:
+          name: take screenshots
+          working_directory: tools
+          command: npm run screenshots -- --siteDir ~/lolbench-site --outputDir ~/screenshots
+      - store_artifacts:
+          path: ~/screenshots
 
   deploy:
     docker:
@@ -180,6 +225,9 @@ workflows:
             - sha2_0_8_0
             - sha3_0_8_0
             - snap_0_2_4
+      - screenshots:
+          requires:
+            - core
       - brotli_1_1_3:
           requires:
             - fmt
