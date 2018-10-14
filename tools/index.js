@@ -35,17 +35,31 @@ async function takeAllScreenshots(siteDir, outputDir) {
         .replace(siteDir, outputDir)
         .replace(".html", ".png");
 
+      let isIndex = url.endsWith("index.html");
+
       await fs.mkdirp(path.dirname(screenshotPath));
 
       const page = await browser.newPage();
 
       await page.goto(url);
 
-      page.setViewport({ width: 1366, height: 768 });
+      await page.setViewport({ width: 1366, height: isIndex ? 3000 : 768 });
 
       await page.screenshot({
         path: screenshotPath,
-        fullPage: !url.endsWith("index.html")
+        fullPage: !isIndex
+      });
+
+      await page.setViewport({
+        width: 411,
+        height: isIndex ? 3000 : 731,
+        isMobile: true,
+        hasTouch: true
+      });
+
+      await page.screenshot({
+        path: screenshotPath.replace(".png", ".mobile.png"),
+        fullPage: !isIndex
       });
 
       await page.close();
