@@ -41,27 +41,30 @@
 
 {% for anomaly in analysis.anomalous_timings %}
 <h3 class="anchor-header" id={{ anomaly.0 }}>
+    <a href="#contents-{{ anomaly.0 }}" data-collapse class="collapse-toggle">[<span class="collapse-text-show">+</span><span class="collapse-text-hide">-</span>]</a>
     <a class="anchor" href="#{{ anomaly.0 }}">{{ anomaly.0 }}</a>
 </h3>
 
-<table class="table table-striped bench-table">
-    <thead class="bench-headers">
-        <th>benchmark</th>
-        <th class="bench-delta">% &Delta;</th>
-        <th class="bench-stddev">&sigma; &Delta;</th>
-    </thead>
+<div class="collapse" id="contents-{{ anomaly.0 }}">
+    <table class="table table-striped bench-table">
+        <thead class="bench-headers">
+            <th>benchmark</th>
+            <th class="bench-delta">% &Delta;</th>
+            <th class="bench-stddev">&sigma; &Delta;</th>
+        </thead>
 
-    {% for noteworthy in anomaly.1 %}
-    <tr class="bench-row">
-        <td>{{ noteworthy.benchmark_for_linking().link()|safe }}</td>
-        <td class="bench-delta {% if noteworthy.index.nanoseconds.stddev_from_mean.is_sign_negative() -%} positive-result
-            {% else %} negative-result {%- endif %}">{{ noteworthy.index.nanoseconds.percent_delta_from_mean.raw()|float_fmt }}
-            %</td>
-        <td class="bench-stddev {% if noteworthy.index.nanoseconds.stddev_from_mean.is_sign_negative() -%} positive-result
-            {% else %} negative-result {%- endif %}">{{ noteworthy.index.nanoseconds.stddev_from_mean.raw()|float_fmt }}</td>
-    </tr>
-    {% endfor %}
-</table>
+        {% for noteworthy in anomaly.1 %}
+        <tr class="bench-row">
+            <td>{{ noteworthy.benchmark_for_linking().link()|safe }}</td>
+            <td class="bench-delta {% if noteworthy.index.nanoseconds.stddev_from_mean.is_sign_negative() -%} positive-result
+                {% else %} negative-result {%- endif %}">{{ noteworthy.index.nanoseconds.percent_delta_from_mean.raw()|float_fmt }}
+                %</td>
+            <td class="bench-stddev {% if noteworthy.index.nanoseconds.stddev_from_mean.is_sign_negative() -%} positive-result
+                {% else %} negative-result {%- endif %}">{{ noteworthy.index.nanoseconds.stddev_from_mean.raw()|float_fmt }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 {% endfor %}
 
 <h2><a id="all-benchmarks" />all benchmarks</h2>
