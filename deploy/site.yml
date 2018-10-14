@@ -123,6 +123,7 @@
         repo: https://github.com/anp/lolbench.git
         dest: "{{ deploy_dir }}"
         version: "{{ gitsha }}"
+        force: yes
     - name: clone-data
       git:
         repo: git@github.com:anp/lolbench-data.git
