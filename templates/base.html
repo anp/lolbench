@@ -3,7 +3,165 @@
 
 <head>
     <title>lolbench - {% block title %}{{ title }}{% endblock %}</title>
-    {% block head %}{% endblock %}
+    {% block head %}
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Fira+Sans:400,700" rel="stylesheet">
+        <link href="https://unpkg.com/houdinijs@9.4.2/dist/css/houdini.min.css" rel="stylesheet">
+
+        {% block style %}
+        <style>
+        /* HTML tags */
+        body {
+            font-family: "Fira Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            font-size: 16px;
+            line-height: 1.25;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-weight: 400;
+        }
+        h1 {
+            font-size: 2.5rem;
+        }
+        h2 {
+            font-size: 1.875rem;
+        }
+        h3 {
+            font-size: 1.5rem;
+        }
+        h4 {
+            font-size: 1.25rem;
+        }
+        h5 {
+            font-size: 1.1rem;
+        }
+        h6 {
+            font-size: 1rem;
+        }
+
+        #content {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 10px;
+            position: relative;
+        }
+
+        /* Nav */
+        .nav {
+            padding: 0.5rem 0;
+            border-bottom: 2px solid #ccc;
+            margin-bottom: 1rem;
+        }
+        .nav-brand {
+            font-size: 1.875rem;
+            font-weight: 900;
+            margin: 0;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            padding-left: 0;
+            align-items: center;
+            margin: 0;
+        }
+        .nav-item {
+            flex: 0 auto;
+            padding: 1.25rem 1rem;
+        }
+        .nav-item:first-child {
+            padding-left: 0;
+        }
+        .nav-item:last-child {
+            padding-right: 0;
+        }
+
+        .home-link:visited {
+            color: inherit;
+        }
+
+        .benchmark-name {
+            font-size: 2.5rem;
+            word-break: break-word;
+        }
+
+        /* Links */
+        .anchor {
+            color: inherit;
+        }
+        .anchor-header:hover .anchor:hover::before {
+            position: absolute;
+            left: -55px;
+            content: '\2002\00a7\2002';
+        }
+        :target {
+            background: #FDFFD3;
+        }
+
+        /* Collapsibles */
+        .collapse-toggle {
+            position: absolute;
+            left: -23px;
+            color: #999;
+        }
+        .collapse-toggle:active,
+        .collapse-toggle:hover,
+        .collapse-toggle:visited {
+            color: inherit;
+        }
+
+        /* Tables */
+        .table {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 1rem;
+            font-family: "Fira Mono", "SF Mono", "Consolas", monospace;
+            border-collapse: collapse;
+        }
+        .table tr {
+            border-bottom: 1px solid #ccc;
+        }
+        .table th,
+        .table td {
+            text-align: left;
+            padding: 5px;
+        }
+        .table tbody tr:nth-of-type(2n) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .bench-headers .bench-delta,
+        .bench-headers .bench-stddev {
+            text-align: center;
+            max-width: 10rem;
+        }
+
+        .bench-row .bench-delta,
+        .bench-row .bench-stddev {
+            text-align: right;
+            width: 5.5rem;
+        }
+
+        .negative-result {
+            background-color: #ffb3b3;
+        }
+        .positive-result {
+            background-color: #b3ffc6;
+        }
+
+        </style>
+        {% endblock %}
+    {% endblock %}
 </head>
 
 <body>
@@ -12,6 +170,10 @@
     </div>
 
     {% block scripts %}
+    <script src="https://unpkg.com/houdinijs@9.4.2/dist/js/houdini.min.js" type="text/javascript"></script>
+    <script>
+        houdini.init();
+    </script>
     {% endblock %}
 </body>
 

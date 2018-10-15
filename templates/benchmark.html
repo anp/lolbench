@@ -2,47 +2,53 @@
 
 {% block title %}{{name}}{% endblock %}
 
-{% block head %}
-<style>
-</style>
-{% endblock %}
-
 {% block content %}
-<h1><a href="../index.html">lolbench</a></h1>
-<h2>benchmark name: {{name}}</h2>
+<nav class="nav">
+    <ul class="nav-menu">
+        <li class="nav-item"><h1 class="nav-brand"><a class="home-link" href="../index.html">lolbench</a></h1></li>
+    </ul>
+</nav>
+<h1 class="benchmark-name">{{ name }}</h1>
 
 {% for metric in self.metrics_with_anomaly_indices() %}
-<a id="{{ metric }}"></a>
-<h3><a href="#{{ metric }}">*</a> {{ metric }} / iteration</h3>
+<h2 class="anchor-header" id="{{ metric }}">
+    <a class="anchor" href="#{{ metric }}">{{ metric }} / iteration</a>
+</h2>
 
-<div id="{{ metric }}-chart" style="width: 100%; height: 600px"></div>
+<div id="{{ metric }}-chart" style="width: 100%; height: auto"></div>
 
-<h4>potential anomalies</h4>
-<table border="1">
-    <thead>
+<h3>potential anomalies</h3>
+<table class="table table-striped bench-table">
+    <thead class="bench-headers">
         <tr>
             <th>toolchain</th>
-            <th>delta</th>
+            <th class="bench-delta">% &Delta;</th>
+            <th class="bench-stddev">&sigma; &Delta;</th>
         </tr>
     </thead>
     <tbody>
         {% for timing in anomalous_timings %}
-        <tr>
+        <tr class="bench-row";>
             <td>{{ timing.0 }}</td>
-            <td>{{ timing.1.index[metric] }}</td>
+            <td class="bench-delta {% if (timing.1.index[metric]).percent_delta_from_mean.is_sign_negative() -%} positive-result
+            {% else %} negative-result {%- endif %}">{{ (timing.1.index[metric]).percent_delta_from_mean.raw()|float_fmt }}</td>
+            <td class="bench-stddev {% if (timing.1.index[metric]).stddev_from_mean.is_sign_negative() -%} positive-result
+            {% else %} negative-result {%- endif %}">{{ (timing.1.index[metric]).stddev_from_mean.raw()|float_fmt }}</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 {% endfor %}
 
-<a id="branch-predict-ratio"></a>
-<h3><a href="#branch-predict-ratio">*</a> overall branch predict ratio</h3>
-<div id="branch-predict-ratio-chart" style="width: 100%; height: 600px"></div>
+<h2 class="anchor-header" id="branch-predict-ratio">
+    <a class="anchor" href="#branch-predict-ratio">overall branch predict ratio</a>
+</h2>
+<div id="branch-predict-ratio-chart" style="width: 100%; height: auto"></div>
 
-<a id="cache-ratio"></a>
-<h3><a href="#cache-ratio">*</a> overall cache hit ratio</h3>
-<div id="cache-ratio-chart" style="width: 100%; height: 600px"></div>
+<h2 class="anchor-header" id="cache-ratio">
+    <a class="anchor" href="#cache-ratio">overall cache hit ratio</a>
+</h2>
+<div id="cache-ratio-chart" style="width: 100%; height: auto"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/highcharts@6/highcharts.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/highcharts@6/highcharts-more.min.js"></script>

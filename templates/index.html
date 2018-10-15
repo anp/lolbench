@@ -2,16 +2,14 @@
 
 {% block title %}home{% endblock %}
 
-{% block head %}
-<style>
-</style>
-{% endblock %}
-
 {% block content %}
-<h1>lolbench home</h1>
-
-<b><a href="#recent-changes">potentially anomalous results</a> | <a href="#all-benchmarks">all
-        benchmarks</a></b>
+<nav class="nav">
+    <ul class="nav-menu">
+        <li class="nav-item"><h1 class="nav-brand">lolbench</h1></li>
+        <li class="nav-item"><a href="#recent-changes">potentially anomalous results</a></li>
+        <li class="nav-item"><a href="#all-benchmarks">all benchmarks</a></li>
+    </ul>
+</nav>
 
 <h2>about</h2>
 
@@ -43,32 +41,36 @@
 </p>
 
 {% for anomaly in analysis.anomalous_timings %}
-<a id="{{ anomaly.0 }}"></a>
-<h3><a href="#{{ anomaly.0 }}">*</a> {{ anomaly.0 }}</h3>
+<h3 class="anchor-header" id={{ anomaly.0 }}>
+    <a href="#contents-{{ anomaly.0 }}" data-collapse class="collapse-toggle">[<span class="collapse-text-show">+</span><span class="collapse-text-hide">-</span>]</a>
+    <a class="anchor" href="#{{ anomaly.0 }}">{{ anomaly.0 }}</a>
+</h3>
 
-<table border="1">
-    <thead>
-        <th>benchmark</th>
-        <th>% Δ</th>
-        <th>σ Δ</th>
-    </thead>
+<div class="collapse" id="contents-{{ anomaly.0 }}">
+    <table class="table table-striped bench-table">
+        <thead class="bench-headers">
+            <th>benchmark</th>
+            <th class="bench-delta">% &Delta;</th>
+            <th class="bench-stddev">&sigma; &Delta;</th>
+        </thead>
 
-    {% for noteworthy in anomaly.1 %}
-    <tr>
-        <td>{{ noteworthy.benchmark_for_linking().link()|safe }}</td>
-        <td {% if noteworthy.index.nanoseconds.stddev_from_mean.is_sign_negative() -%} bgcolor="#b3ffc6"
-            {% else %} bgcolor="#ffb3b3" {%- endif %}>{{ noteworthy.index.nanoseconds.percent_delta_from_mean.raw()|float_fmt }}
-            %</td>
-        <td {% if noteworthy.index.nanoseconds.stddev_from_mean.is_sign_negative() -%} bgcolor="#b3ffc6"
-            {% else %} bgcolor="#ffb3b3" {%- endif %}>{{ noteworthy.index.nanoseconds.stddev_from_mean.raw()|float_fmt }}</td>
-    </tr>
-    {% endfor %}
-</table>
+        {% for noteworthy in anomaly.1 %}
+        <tr class="bench-row">
+            <td>{{ noteworthy.benchmark_for_linking().link()|safe }}</td>
+            <td class="bench-delta {% if noteworthy.index.nanoseconds.stddev_from_mean.is_sign_negative() -%} positive-result
+                {% else %} negative-result {%- endif %}">{{ noteworthy.index.nanoseconds.percent_delta_from_mean.raw()|float_fmt }}
+                %</td>
+            <td class="bench-stddev {% if noteworthy.index.nanoseconds.stddev_from_mean.is_sign_negative() -%} positive-result
+                {% else %} negative-result {%- endif %}">{{ noteworthy.index.nanoseconds.stddev_from_mean.raw()|float_fmt }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 {% endfor %}
 
 <h2><a id="all-benchmarks" />all benchmarks</h2>
 
-<table border="1">
+<table class="table">
     <tbody>
         {% for benchmark in benchmarks %}
         <tr>
