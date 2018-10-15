@@ -42,11 +42,11 @@
 
 {% for anomaly in analysis.anomalous_timings %}
 <h3 class="anchor-header" id={{ anomaly.0 }}>
-    <a href="#contents-{{ anomaly.0 }}" data-collapse class="collapse-toggle">[<span class="collapse-text-show">+</span><span class="collapse-text-hide">-</span>]</a>
+    <a href="#contents-{{ anomaly.0 }}" data-collapse class="collapse-toggle {% if loop.index <= 5 %} active {% endif %}">[<span class="collapse-text-show">+</span><span class="collapse-text-hide">-</span>]</a>
     <a class="anchor" href="#{{ anomaly.0 }}">{{ anomaly.0 }}</a>
 </h3>
 
-<div class="collapse" id="contents-{{ anomaly.0 }}">
+<div class="collapse {% if loop.index <= 5 %} active {% endif %}" id="contents-{{ anomaly.0 }}">
     <table class="table table-striped bench-table">
         <thead class="bench-headers">
             <th>benchmark</th>
