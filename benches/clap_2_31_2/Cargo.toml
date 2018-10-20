@@ -1,0 +1,21 @@
+[package]
+name = "clap_2_31_2"
+version = "0.1.0"
+license = "MIT"
+
+[dependencies]
+lolbench_support = { path = "../../support" }
+clap = "=2.31.2"
+lazy_static = "=1.1.0"
+bitflags = "=1.0.4"
+unicode-width = "=0.1.5"
+textwrap = "=0.10.0"
+
+#optional, but present by default
+vec_map = "=0.8.1"
+strsim = "=0.8.0"
+atty = "=0.2.11"
+
+
+[dev-dependencies]
+lolbench = { path = "../../" }
