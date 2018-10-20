@@ -71,5 +71,6 @@ members = [
     "./benches/regex_0_2_6",
     "./benches/sha2_0_8_0",
     "./benches/sha3_0_8_0",
-    "./benches/snap_0_2_4"
+    "./benches/snap_0_2_4",
+    "./benches/clap_2_31_2"
 ]

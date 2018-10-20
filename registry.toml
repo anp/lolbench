@@ -1261,6 +1261,251 @@ name = 'write_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/write-native-endian.rs'
 
+[benchmarks."clap_2_31_2::_01_default::build_app"]
+name = '_01_default::build_app'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/01-default-build-app.rs'
+
+[benchmarks."clap_2_31_2::_01_default::parse_clean"]
+name = '_01_default::parse_clean'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/01-default-parse-clean.rs'
+
+[benchmarks."clap_2_31_2::_02_simple::add_flag"]
+name = '_02_simple::add_flag'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/02-simple-add-flag.rs'
+
+[benchmarks."clap_2_31_2::_02_simple::add_flag_ref"]
+name = '_02_simple::add_flag_ref'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/02-simple-add-flag-ref.rs'
+
+[benchmarks."clap_2_31_2::_02_simple::add_opt"]
+name = '_02_simple::add_opt'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/02-simple-add-opt.rs'
+
+[benchmarks."clap_2_31_2::_02_simple::add_opt_ref"]
+name = '_02_simple::add_opt_ref'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/02-simple-add-opt-ref.rs'
+
+[benchmarks."clap_2_31_2::_02_simple::add_pos"]
+name = '_02_simple::add_pos'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/02-simple-add-pos.rs'
+
+[benchmarks."clap_2_31_2::_02_simple::add_pos_ref"]
+name = '_02_simple::add_pos_ref'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/02-simple-add-pos-ref.rs'
+
+[benchmarks."clap_2_31_2::_02_simple::build_app"]
+name = '_02_simple::build_app'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/02-simple-build-app.rs'
+
+[benchmarks."clap_2_31_2::_02_simple::parse_clean"]
+name = '_02_simple::parse_clean'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/02-simple-parse-clean.rs'
+
+[benchmarks."clap_2_31_2::_02_simple::parse_complex"]
+name = '_02_simple::parse_complex'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/02-simple-parse-complex.rs'
+
+[benchmarks."clap_2_31_2::_02_simple::parse_flag"]
+name = '_02_simple::parse_flag'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/02-simple-parse-flag.rs'
+
+[benchmarks."clap_2_31_2::_02_simple::parse_option"]
+name = '_02_simple::parse_option'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/02-simple-parse-option.rs'
+
+[benchmarks."clap_2_31_2::_02_simple::parse_positional"]
+name = '_02_simple::parse_positional'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/02-simple-parse-positional.rs'
+
+[benchmarks."clap_2_31_2::_03_complex::create_app_builder"]
+name = '_03_complex::create_app_builder'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-create-app-builder.rs'
+
+[benchmarks."clap_2_31_2::_03_complex::create_app_from_usage"]
+name = '_03_complex::create_app_from_usage'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-create-app-from-usage.rs'
+
+[benchmarks."clap_2_31_2::_03_complex::create_app_macros"]
+name = '_03_complex::create_app_macros'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-create-app-macros.rs'
+
+[benchmarks."clap_2_31_2::_03_complex::parse_clean"]
+name = '_03_complex::parse_clean'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-parse-clean.rs'
+
+[benchmarks."clap_2_31_2::_03_complex::parse_complex1"]
+name = '_03_complex::parse_complex1'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-parse-complex1.rs'
+
+[benchmarks."clap_2_31_2::_03_complex::parse_complex2"]
+name = '_03_complex::parse_complex2'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-parse-complex2.rs'
+
+[benchmarks."clap_2_31_2::_03_complex::parse_complex2_with_args_negate_scs"]
+name = '_03_complex::parse_complex2_with_args_negate_scs'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-parse-complex2-with-args-negate-scs.rs'
+
+[benchmarks."clap_2_31_2::_03_complex::parse_flag"]
+name = '_03_complex::parse_flag'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-parse-flag.rs'
+
+[benchmarks."clap_2_31_2::_03_complex::parse_option"]
+name = '_03_complex::parse_option'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-parse-option.rs'
+
+[benchmarks."clap_2_31_2::_03_complex::parse_positional"]
+name = '_03_complex::parse_positional'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-parse-positional.rs'
+
+[benchmarks."clap_2_31_2::_03_complex::parse_sc_clean"]
+name = '_03_complex::parse_sc_clean'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-parse-sc-clean.rs'
+
+[benchmarks."clap_2_31_2::_03_complex::parse_sc_complex"]
+name = '_03_complex::parse_sc_complex'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-parse-sc-complex.rs'
+
+[benchmarks."clap_2_31_2::_03_complex::parse_sc_flag"]
+name = '_03_complex::parse_sc_flag'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-parse-sc-flag.rs'
+
+[benchmarks."clap_2_31_2::_03_complex::parse_sc_option"]
+name = '_03_complex::parse_sc_option'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-parse-sc-option.rs'
+
+[benchmarks."clap_2_31_2::_03_complex::parse_sc_positional"]
+name = '_03_complex::parse_sc_positional'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-parse-sc-positional.rs'
+
+[benchmarks."clap_2_31_2::_04_new_help::example1"]
+name = '_04_new_help::example1'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/04-new-help-example1.rs'
+
+[benchmarks."clap_2_31_2::_04_new_help::example10"]
+name = '_04_new_help::example10'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/04-new-help-example10.rs'
+
+[benchmarks."clap_2_31_2::_04_new_help::example2"]
+name = '_04_new_help::example2'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/04-new-help-example2.rs'
+
+[benchmarks."clap_2_31_2::_04_new_help::example3"]
+name = '_04_new_help::example3'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/04-new-help-example3.rs'
+
+[benchmarks."clap_2_31_2::_04_new_help::example4"]
+name = '_04_new_help::example4'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/04-new-help-example4.rs'
+
+[benchmarks."clap_2_31_2::_04_new_help::example4_template"]
+name = '_04_new_help::example4_template'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/04-new-help-example4-template.rs'
+
+[benchmarks."clap_2_31_2::_04_new_help::example5"]
+name = '_04_new_help::example5'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/04-new-help-example5.rs'
+
+[benchmarks."clap_2_31_2::_04_new_help::example6"]
+name = '_04_new_help::example6'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/04-new-help-example6.rs'
+
+[benchmarks."clap_2_31_2::_04_new_help::example7"]
+name = '_04_new_help::example7'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/04-new-help-example7.rs'
+
+[benchmarks."clap_2_31_2::_04_new_help::example8"]
+name = '_04_new_help::example8'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/04-new-help-example8.rs'
+
+[benchmarks."clap_2_31_2::_05_ripgrep::build_app_long"]
+name = '_05_ripgrep::build_app_long'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/05-ripgrep-build-app-long.rs'
+
+[benchmarks."clap_2_31_2::_05_ripgrep::build_app_short"]
+name = '_05_ripgrep::build_app_short'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/05-ripgrep-build-app-short.rs'
+
+[benchmarks."clap_2_31_2::_05_ripgrep::build_help_long"]
+name = '_05_ripgrep::build_help_long'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/05-ripgrep-build-help-long.rs'
+
+[benchmarks."clap_2_31_2::_05_ripgrep::build_help_short"]
+name = '_05_ripgrep::build_help_short'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/05-ripgrep-build-help-short.rs'
+
+[benchmarks."clap_2_31_2::_05_ripgrep::parse_clean"]
+name = '_05_ripgrep::parse_clean'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/05-ripgrep-parse-clean.rs'
+
+[benchmarks."clap_2_31_2::_05_ripgrep::parse_complex"]
+name = '_05_ripgrep::parse_complex'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/05-ripgrep-parse-complex.rs'
+
+[benchmarks."clap_2_31_2::_05_ripgrep::parse_lots"]
+name = '_05_ripgrep::parse_lots'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/05-ripgrep-parse-lots.rs'
+
+[benchmarks."clap_2_31_2::_06_rustup::build_app"]
+name = '_06_rustup::build_app'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/06-rustup-build-app.rs'
+
+[benchmarks."clap_2_31_2::_06_rustup::parse_clean"]
+name = '_06_rustup::parse_clean'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/06-rustup-parse-clean.rs'
+
+[benchmarks."clap_2_31_2::_06_rustup::parse_subcommands"]
+name = '_06_rustup::parse_subcommands'
+crate = 'clap_2_31_2'
+entrypoint_path = 'benches/clap_2_31_2/src/bin/06-rustup-parse-subcommands.rs'
+
 [benchmarks."crossbeam_epoch_0_4_0::defer::multi_alloc_defer_free"]
 runner = 'sally'
 name = 'defer::multi_alloc_defer_free'
