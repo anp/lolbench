@@ -124,17 +124,17 @@
         dest: "{{ deploy_dir }}"
         version: "{{ gitsha }}"
         force: yes
-    - name: clone-data
-      git:
-        repo: git@github.com:anp/lolbench-data.git
-        dest: "{{ data_dir }}"
-        update: no
-    - name: clone-site
-      git:
-        repo: git@github.com:anp/lolbench-data.git
-        version: gh-pages
-        dest: "{{ site_dir }}"
-        update: no
+    # - name: clone-data
+    #   git:
+    #     repo: git@github.com:anp/lolbench-data.git
+    #     dest: "{{ data_dir }}"
+    #     update: no
+    # - name: clone-site
+    #   git:
+    #     repo: git@github.com:anp/lolbench-data.git
+    #     version: gh-pages
+    #     dest: "{{ site_dir }}"
+    #     update: no
 
 - name: systemd
   hosts: all
