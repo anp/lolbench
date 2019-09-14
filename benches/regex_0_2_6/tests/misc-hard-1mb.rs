@@ -1,1 +1,2 @@
-extern crate lolbench ; # [ test ] fn end_to_end ( ) { lolbench :: end_to_end_test ( "regex_0_2_6" , "misc::hard_1MB" , ) ; }
+extern crate lolbench ; # [ test ] fn end_to_end (  ) {
+lolbench :: end_to_end_test ( "regex_0_2_6" , "misc::hard_1MB" , ) ; }
