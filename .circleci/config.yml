@@ -144,8 +144,8 @@ jobs:
           name: setup deploy secrets
           command: |
             mkdir -p ~/.ssh
-            echo "$LOLBENCH_DEPLOY_KEY" | base64 -d > ~/.ssh/id_rsa
-            chmod 0600 ~/.ssh/id_rsa
+            echo "$LOLBENCH_DEPLOY_KEY" | base64 -d > ~/.ssh/id_ed25519
+            chmod 0600 ~/.ssh/id_ed25519
             echo "$ANSIBLE_VAULT_PASSWORD" > .ansible-vault-password
 
             # trust all ansible hosts
