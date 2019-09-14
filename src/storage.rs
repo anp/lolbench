@@ -39,7 +39,8 @@ impl GitStore {
             .filter_map(|sc| {
                 let Container { key, contents, .. } = sc;
                 contents.ok().map(|estimates| (key.binary_hash, estimates))
-            }).collect::<BTreeMap<_, _>>();
+            })
+            .collect::<BTreeMap<_, _>>();
 
         let mut all: BTreeMap<String, BTreeMap<Option<Toolchain>, (Vec<u8>, Estimates)>> =
             BTreeMap::new();

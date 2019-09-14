@@ -24,7 +24,8 @@ pub fn build_website(
                     .filter_map(|(maybe_tc, ests)| maybe_tc.map(|tc| (tc, ests)))
                     .collect(),
             )
-        }).collect();
+        })
+        .collect();
 
     info!("running analysis, building the website...");
     let website = Website::from_estimates(estimates)?;
@@ -105,7 +106,8 @@ impl Website {
                 b.timings
                     .iter()
                     .map(move |t| (b.name.clone(), t.to_owned()))
-            }).collect::<Vec<_>>();
+            })
+            .collect::<Vec<_>>();
 
         let analysis = Analysis::new(all_timings);
 
@@ -302,6 +304,7 @@ pub mod filters {
                     .split_at(::std::cmp::min(separated.len(), dot_idx + 3))
                     .0
                     .to_owned()
-            }).unwrap_or(separated))
+            })
+            .unwrap_or(separated))
     }
 }

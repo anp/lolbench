@@ -212,7 +212,8 @@ impl Collector {
                     .exec()
                     .map_err(|why| Error {
                         kind: ErrorKind::Run(why.to_string()),
-                    }).and_then(|()| {
+                    })
+                    .and_then(|()| {
                         self.process(&rp).map_err(|why| Error {
                             kind: ErrorKind::Run(why.to_string()),
                         })
@@ -299,7 +300,8 @@ impl Collector {
             .join(format!(
                 "{}::{}",
                 &rp.benchmark.crate_name, &rp.benchmark.name
-            )).join("new");
+            ))
+            .join("new");
 
         info!("postprocessing");
 

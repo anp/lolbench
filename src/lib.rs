@@ -121,7 +121,8 @@ pub fn end_to_end_test(crate_name: &str, bench_name: &str) {
         None,
         None,
         source_path,
-    ).unwrap();
+    )
+    .unwrap();
 
     let data_dir = ::std::env::var("LOLBENCH_DATA_DIR").unwrap_or_else(|_| {
         format!(

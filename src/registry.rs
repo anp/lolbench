@@ -51,7 +51,8 @@ pub fn rebalance(sample_data_dir: impl AsRef<Path>) -> Result<()> {
         .filter_map(|b| {
             let bench_key = format!("{}::{}", b.crate_name, b.name);
             b.runner.map(|r| (bench_key, r))
-        }).collect::<BTreeMap<String, String>>();
+        })
+        .collect::<BTreeMap<String, String>>();
 
     for (ns, bench_key) in most_covered_toolchains_runtimes(sample_data_dir)? {
         if let Some(assigned) = runners_by_bench_key.get(&bench_key) {

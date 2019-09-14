@@ -33,7 +33,8 @@ impl Analysis {
                     .as_ref()
                     .map(|i| i.nanoseconds.is_of_interest())
                     .unwrap_or(false)
-            }).fold(
+            })
+            .fold(
                 BTreeMap::<Toolchain, Vec<AnomalousTiming>>::new(),
                 |mut anomalies, (bench_fn, timing)| {
                     let toolchain = timing.toolchains[0].clone();
@@ -52,7 +53,8 @@ impl Analysis {
                     }
                     anomalies
                 },
-            ).into_iter()
+            )
+            .into_iter()
             .collect::<Vec<_>>();
 
         // show the most recent toolchains first
@@ -98,7 +100,8 @@ impl TimingRecord {
                 use std::io::Write;
                 buf.write_fmt(format_args!("{:x}", byte)).unwrap();
                 buf
-            })).unwrap();
+            }))
+            .unwrap();
 
         let metrics = RuntimeMetrics::from_measure(current_measure);
         let normalized_metrics = previous
