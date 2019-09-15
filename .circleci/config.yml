@@ -45,7 +45,7 @@ anchors:
     steps:
       - checkout
       - *setup
-      - *restore_cache
+      # - *restore_cache
       - *install_deps
       - run:
           name: test benchmark crate
@@ -73,7 +73,7 @@ jobs:
     steps:
       - checkout
       - *setup
-      - *restore_cache
+      # - *restore_cache
       - *install_deps
       - run: cargo test-core
       - run:
@@ -159,7 +159,7 @@ jobs:
     steps:
       - checkout
       - *setup
-      - *restore_cache
+      # - *restore_cache
       - attach_workspace:
           at: /tmp/lolbench
       - *install_deps
