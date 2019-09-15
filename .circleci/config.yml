@@ -25,11 +25,11 @@ anchors:
 
   - &restore_cache
     restore_cache:
-      key: cargo-v0-{{ checksum "Cargo.lock" }}
+      key: cargo-v0-{{ checksum "Cargo.lock" }}-{{ checksum "rust-toolchain" }}
 
   - &save_cache
     save_cache:
-      key: cargo-v0-{{ checksum "Cargo.lock" }}
+      key: cargo-v0-{{ checksum "Cargo.lock" }}-{{ checksum "rust-toolchain" }}
       paths:
         - ~/.cargo
         - ~/.rustup
