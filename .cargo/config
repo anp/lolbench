@@ -1,6 +1,8 @@
 [alias]
 new-bench-crate='run -- generate-crate'
 
+core-flow = "watch -x fmt-core -x build-all -x test-core"
+
 fmt-core='''
 fmt
     --package lolbench

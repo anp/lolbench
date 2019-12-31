@@ -70,35 +70,6 @@
         regexp: "^%sudo"
         line: "%sudo ALL=(ALL) NOPASSWD: ALL"
         validate: "visudo -cf %s"
-    - name: adding datadog agent user to journald group
-      become: yes
-      user:
-        name: dd-agent
-        groups: systemd-journal
-        append: yes
-
-- name: datadog
-  hosts: all
-  remote_user: adam
-  roles:
-    - { role: datadog.datadog, become: yes }
-  vars:
-    datadog_api_key: !vault |
-      $ANSIBLE_VAULT;1.1;AES256
-      32353463623234323439313034393737353939316235336561633364626136346430343464363631
-      6630393934303831623466623339333761383635343162620a623531623830636236653766353531
-      63303166636632623931306231626235626230643033356137653563323135663430336231343530
-      3232633435626137640a363930386364623337623833306136353162373137383138626166363462
-      38393565623337663336353363356232633033396437613061393636323630313063363965306630
-      3939396462333339313031353534656532656534323635373834
-    datadog_config:
-      logs_enabled: true
-    datadog_checks:
-      logs:
-        - type: journald
-          path: /run/log/journal
-          include_units:
-            - lolbench.service
 
 - name: agent
   hosts: all
