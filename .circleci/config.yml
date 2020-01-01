@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 anchors:
   - &rust_job
     docker:
