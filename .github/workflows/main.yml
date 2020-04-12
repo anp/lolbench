@@ -108,27 +108,22 @@ jobs:
         submodules: true
     - name: git setup
       run: .github/workflows/git-commit-config.sh 
-    
     # TODO download latest prod data to LOLBENCH_DATA_DIR
-
     - name: build website
       uses: actions-rs/cargo@v1
       with:
         command: build-website
         args: --data-dir ${{ env.LOLBENCH_DATA_DIR }} --output-dir ${{ env.LOLBENCH_SITE_DIR }}
-
     - name: upload website
       uses: actions/upload-artifact@v1
       with:
         name: website
         path: ${{ env.LOLBENCH_WEBSITE_DIR }}
-
     - name: take screenshots
       run: |
         cd tools
         npm ci
         npm run screenshots -- --siteDir ${{ env.LOLBENCH_SITE_DIR }} --outputDir ~/screenshots
-    
     - name: upload screenshots
       uses: actions/upload-artifact@v1
       with:
