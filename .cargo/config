@@ -12,8 +12,8 @@ fmt
 build-website='run -- build-website'
 rebalance-benchmarks='run -- rebalance-benchmarks'
 
-build-all='build --all --all-targets'
-test-all='test --all --all-targets --release'
+build-all='build --workspace --all-targets'
+test-all='test --workspace --all-targets --release'
 test-core='''
 test
     --package lolbench
