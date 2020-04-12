@@ -432,12 +432,12 @@ jobs:
     - name: download crossbeam_epoch_0_4_0
       uses: actions/download-artifact@v1
       with:
-        name: 
+        name: crossbeam_epoch_0_4_0
         path: ${{ env.LOLBENCH_DATA_DIR }}
     - name: download csv_1_0_2
       uses: actions/download-artifact@v1
       with:
-        name: 
+        name: csv_1_0_2
         path: ${{ env.LOLBENCH_DATA_DIR }}
     - name: download diesel_1_1_1
       uses: actions/download-artifact@v1
