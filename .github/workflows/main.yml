@@ -8,7 +8,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - run: .github/workflows/git-config.sh 
+    - run: .github/workflows/git-commit-config.sh 
     - uses: actions-rs/cargo@v1
       with:
         command: test-core
@@ -36,7 +36,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - run: .github/workflows/git-config.sh 
+    - run: .github/workflows/git-commit-config.sh 
     - uses: actions-rs/cargo@v1
       with:
         command: test
