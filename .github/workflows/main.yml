@@ -8,8 +8,10 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - run: .github/workflows/git-commit-config.sh 
-    - uses: actions-rs/cargo@v1
+    - name: git setup
+      run: .github/workflows/git-commit-config.sh 
+    - name: test
+      uses: actions-rs/cargo@v1
       with:
         command: test-core
 
@@ -19,14 +21,17 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - uses: actions-rs/toolchain@v1
+    - name: rustup
+      uses: actions-rs/toolchain@v1
       with:
         components: clippy, rustfmt
-    - uses: actions-rs/clippy-check@v1
+    - name: clippy
+      uses: actions-rs/clippy-check@v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         args: --all-features
-    - run: cargo fmt-core -- --check
+    - name: rustfmt
+      run: cargo fmt-core -- --check
 
   brotli_1_1_3:
     env:
@@ -36,12 +41,15 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - run: .github/workflows/git-commit-config.sh 
-    - uses: actions-rs/cargo@v1
+    - name: git setup
+      run: .github/workflows/git-commit-config.sh 
+    - name: test
+      uses: actions-rs/cargo@v1
       with:
         command: test
         args: --release --package ${{ env.LOLBENCH_CRATE }}
-    - uses: actions/upload-artifact@v1
+    - name: upload
+      uses: actions/upload-artifact@v1
       with:
         name: ${{ env.LOLBENCH_CRATE }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
@@ -69,22 +77,23 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - uses: actions/download-artifact@v1
+    - name: download brotli_1_1_3
+      uses: actions/download-artifact@v1
       with:
         name: brotli_1_1_3
         path: ${{ env.LOLBENCH_DATA_DIR }}
-
-    - uses: actions-rs/cargo@v1
+    - name: rebalance benchmarks
+      uses: actions-rs/cargo@v1
       with:
         command: rebalance-benchmarks
         args: --sample-dir ${{ env.LOLBENCH_DATA_DIR }}
-
-    - uses: actions/upload-artifact@v1
+    - name: upload data dir
+      uses: actions/upload-artifact@v1
       with:
         name: final_data_dir
         path: ${{ env.LOLBENCH_DATA_DIR }}
-    
-    - uses: actions/upload-artifact@v1
+    - name: upload registry.toml
+      uses: actions/upload-artifact@v1
       with:
         name: registry.toml.balanced
         path: registry.toml
@@ -97,14 +106,19 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
+    - name: git setup
+      run: .github/workflows/git-commit-config.sh 
     
     # TODO download latest prod data to LOLBENCH_DATA_DIR
 
-    - uses: actions-rs/cargo@v1
+    - name: build website
+      uses: actions-rs/cargo@v1
       with:
         command: build-website
         args: --data-dir ${{ env.LOLBENCH_DATA_DIR }} --output-dir ${{ env.LOLBENCH_SITE_DIR }}
-    - uses: actions/upload-artifact@v1
+
+    - name: upload website
+      uses: actions/upload-artifact@v1
       with:
         name: website
         path: ${{ env.LOLBENCH_WEBSITE_DIR }}
@@ -115,7 +129,8 @@ jobs:
         npm ci
         npm run screenshots -- --siteDir ${{ env.LOLBENCH_SITE_DIR }} --outputDir ~/screenshots
     
-    - uses: actions/upload-artifact@v1
+    - name: upload screenshots
+      uses: actions/upload-artifact@v1
       with:
         name: screenshots
         path: ~/screenshots
