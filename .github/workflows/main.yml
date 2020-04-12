@@ -89,59 +89,43 @@ jobs:
         name: registry.toml.balanced
         path: registry.toml
   
-  #     - run:
-  #         name: build website
-  #         command: |
-  #           pushd ..
-  #           mkdir lolbench-site
-  #           git clone https://github.com/anp/lolbench-data.git
-  #           popd
+  website:
+    env:
+      LOLBENCH_SITE_DIR: ~/lolbench-site
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    
+    # TODO download latest prod data to LOLBENCH_DATA_DIR
 
-  #           cargo build-website --data-dir ../lolbench-data --output-dir ~/lolbench-site
-  #     - store_artifacts:
-  #         path: ~/lolbench-site
+    - uses: actions-rs/cargo@v1
+      with:
+        command: build-website
+        args: --data-dir ${{ env.LOLBENCH_DATA_DIR }} --output-dir ${{ env.LOLBENCH_SITE_DIR }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: website
+        path: ${{ env.LOLBENCH_WEBSITE_DIR }}
 
-  # screenshots:
-  #   docker:
-  #     - image: circleci/node:10
-  #   steps:
-  #     - checkout
-  #     - attach_workspace:
-  #         at: ~/lolbench-site
-  #     - run:
-  #         name: install chromium
-  #         command: |
-  #           sudo apt-get update
-  #           # https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md
-  #           sudo apt-get install \
-  #             gconf-service libasound2 libatk1.0-0 libatk-bridge2.0-0 libc6 libcairo2 libcups2 \
-  #             libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 \
-  #             libglib2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 \
-  #             libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 \
-  #             libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 ca-certificates \
-  #             fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
-  #     - run:
-  #         name: install script deps
-  #         working_directory: tools
-  #         command: npm ci
-  #     - run:
-  #         name: take screenshots
-  #         working_directory: tools
-  #         command: npm run screenshots -- --siteDir ~/lolbench-site --outputDir ~/screenshots
-  #     - store_artifacts:
-  #         path: ~/screenshots
+    - name: take screenshots
+      run: |
+        cd tools
+        npm ci
+        npm run screenshots -- --siteDir ${{ env.LOLBENCH_SITE_DIR }} --outputDir ~/screenshots
+    
+    - uses: actions/upload-artifact@v1
+      with:
+        name: screenshots
+        path: ~/screenshots
 
-  # deploy:
-  #     - run: sudo apt-get install ansible
-  #     - run: ./deploy.sh $CIRCLE_SHA1
-
-      # - deploy:
-      #     filters:
-      #       branches:
-      #         only:
-      #           - master
-      #     requires:
-      #       - fmt
-      #       - core
-      #       - rebalance
-      #       - screenshots
+  deploy:
+    if: github.ref == 'ref/head/master'
+    needs: [core, lint, website]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - run: ./deploy.sh $GITHUB_SHA
