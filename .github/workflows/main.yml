@@ -1,3 +1,4 @@
+on: [push, pull_request]
 jobs:
   core:
     runs-on: ubuntu-latest
