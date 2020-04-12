@@ -40,11 +40,11 @@ jobs:
     - uses: actions-rs/cargo@v1
       with:
         command: test
-        args: --release --package {{ env.LOLBENCH_CRATE }}
+        args: --release --package ${{ env.LOLBENCH_CRATE }}
     - uses: actions/upload-artifact@v1
       with:
-        name: {{ env.LOLBENCH_CRATE }}
-        path: {{ env.LOLBENCH_DATA_DIR }}
+        name: ${{ env.LOLBENCH_CRATE }}
+        path: ${{ env.LOLBENCH_DATA_DIR }}
 
   # byteorder_1_2_6:
   # clap_2_31_2:
@@ -62,6 +62,14 @@ jobs:
   # sha2_0_8_0:
   # sha3_0_8_0:
   # snap_0_2_4:
+  rebalance:
+    needs: [brotli_1_1_3]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    # TODO download artifacts to LOLBENCH_DATA_DIR
 
   # rebalance:
   #   <<: *rust_job
