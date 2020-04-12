@@ -69,19 +69,22 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    # TODO download artifacts to LOLBENCH_DATA_DIR
+    - uses: actions/download-artifact@v1
+      with:
+        name: brotli_1_1_3
+        path: ${{ env.LOLBENCH_DATA_DIR }}
 
-  # rebalance:
-  #   <<: *rust_job
-  #   steps:
-  #     - attach_workspace:
-  #         at: /tmp/lolbench
-  #     - run: cargo rebalance-benchmarks --sample-dir /tmp/lolbench
-  #     - run: cd /tmp && tar -cvzf lolbench-data-dir.tar.gz lolbench
-  #     - store_artifacts:
-  #         path: registry.toml
-  #     - store_artifacts:
-  #         path: /tmp/lolbench
-  #     - store_artifacts:
-  #         path: /tmp/lolbench-data-dir.tar.gz
+    - uses: actions-rs/cargo@v1
+      with:
+        command: rebalance-benchmarks
+        args: --sample-dir ${{ env.LOLBENCH_DATA_DIR }}
 
+    - uses: actions/upload-artifact@v1
+      with:
+        name: final_data_dir
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+    
+    - uses: actions/upload-artifact@v1
+      with:
+        name: registry.toml.balanced
+        path: registry.toml
