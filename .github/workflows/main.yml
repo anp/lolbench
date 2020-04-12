@@ -6,25 +6,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    # tests rely on git being configured right now
-    - run: git config --global user.name "lolbench CI"
-    - run: git config --global user.email "lolbench@anp.lol"
-    # set up cache
-    - name: cache cargo index
-      uses: actions/cache@v1
-      with:
-        path: ~/.cargo/git
-        key: cargo-index-${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: |
-          cargo-index-
-    - name: cache cargo registry
-      uses: actions/cache@v1
-      with:
-        path: ~/.cargo/registry
-        key: cargo-registry-${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: |
-          cargo-registry-
-
+    - run: .github/workflows/git-config.sh 
     - uses: actions-rs/toolchain@v1
     - uses: actions-rs/cargo@v1
       with:
@@ -52,6 +34,7 @@ jobs:
       with:
         submodules: true
     - uses: actions-rs/toolchain@v1
+    - run: .github/workflows/git-config.sh 
     - uses: actions-rs/cargo@v1
       with:
         command: test
