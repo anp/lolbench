@@ -1,11 +1,3 @@
-  # - &store_target_dir
-  #   store_artifacts:
-  #     path: ~/project/target
-  # - &bench_crate
-  #         command: cargo test --release --manifest-path "./benches/$CIRCLE_JOB/Cargo.toml"
-  #     - persist_to_workspace: LOLBENCH_DATA_DIR
-
-
   #     - run:
   #         name: build website
   #         command: |
