@@ -44,3 +44,32 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         args: --all-features
     - run: cargo fmt-core -- --check
+
+  brotli_1_1_3:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - uses: actions-rs/toolchain@v1
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --release --manifest-path "./benches/$GITHUB_ACTION/Cargo.toml"
+
+  # byteorder_1_2_6:
+  # clap_2_31_2:
+  # crossbeam_epoch_0_4_0:
+  # csv_1_0_2:
+  # diesel_1_1_1:
+  # doom_9e197d7:
+  # inflate_0_3_4:
+  # json_benchmark_c7d3d9b:
+  # nom_4_0_0:
+  # quickcheck_0_6_1:
+  # rayon_1_0_0:
+  # raytrace_8de9020:
+  # regex_0_2_6:
+  # sha2_0_8_0:
+  # sha3_0_8_0:
+  # snap_0_2_4:

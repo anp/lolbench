@@ -1,27 +1,10 @@
   # - &store_target_dir
   #   store_artifacts:
   #     path: ~/project/target
-
   # - &bench_crate
-  #   <<: *rust_job
-  #   environment:
-  #     LOLBENCH_DATA_DIR: /tmp/lolbench
-  #   steps:
-  #     - checkout
-  #     - *setup
-  #     # - *restore_cache
-  #     - *install_deps
-  #     - run:
-  #         name: test benchmark crate
   #         command: cargo test --release --manifest-path "./benches/$CIRCLE_JOB/Cargo.toml"
-  #     - *save_cache
-  #     - *store_target_dir
-  #     - persist_to_workspace:
-  #         root: /tmp/lolbench
-  #         paths:
-  #           # go's globbing library makes me sad, no ** for any-length path segments?
-  #           # thankfully we only have two layers in storage atm
-  #           - "*/*.json"
+  #     - persist_to_workspace: LOLBENCH_DATA_DIR
+
 
   #     - run:
   #         name: build website
@@ -83,23 +66,6 @@
   #     - store_artifacts:
   #         path: /tmp/lolbench-data-dir.tar.gz
 
-# brotli_1_1_3
-# byteorder_1_2_6
-# inflate_0_3_4
-# rayon_1_0_0
-# crossbeam_epoch_0_4_0
-# json_benchmark_c7d3d9b
-# raytrace_8de9020
-# diesel_1_1_1
-# nom_4_0_0
-# regex_0_2_6
-# doom_9e197d7
-# quickcheck_0_6_1
-# sha2_0_8_0
-# sha3_0_8_0
-# snap_0_2_4
-# csv_1_0_2
-# clap_2_31_2
 
       # - deploy:
       #     filters:
