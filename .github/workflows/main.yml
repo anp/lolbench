@@ -6,6 +6,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
+    - run: git config user.name "lolbench CI" && git config user.email "lolbench@anp.lol"
     # set up cache
     - name: cache cargo index
       uses: actions/cache@v1
@@ -23,7 +24,9 @@ jobs:
           cargo-registry-
 
     - uses: actions-rs/toolchain@v1
-    - run: cargo test-core
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test-core
 
   lint:
     runs-on: ubuntu-latest
