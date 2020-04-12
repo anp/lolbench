@@ -3,6 +3,7 @@ jobs:
   core:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@master
     # set up cache
     - name: cache cargo index
       uses: actions/cache@v1
@@ -19,8 +20,6 @@ jobs:
         restore-keys: |
           cargo-registry-
 
-    # check out and run tests
-    - uses: actions/checkout@master
     - uses: actions-rs/toolchain@v1
     - run: cargo test-core
 
