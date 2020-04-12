@@ -3,40 +3,36 @@ jobs:
   core:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - uses: actions-rs/toolchain@v1
-
-    - name: cache cargo registry
-      uses: actions/cache@v1
-      with:
-        path: ~/.cargo/registry
-        key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-cargo-registry-
+    # set up cache
     - name: cache cargo index
       uses: actions/cache@v1
       with:
         path: ~/.cargo/git
-        key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
+        key: cargo-index-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: |
-          ${{ runner.os }}-cargo-index-
+          cargo-index-
+    - name: cache cargo registry
+      uses: actions/cache@v1
+      with:
+        path: ~/.cargo/registry
+        key: cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: |
+          cargo-registry-
 
+    # check out and run tests
+    - uses: actions/checkout@master
+    - uses: actions-rs/toolchain@v1
     - run: cargo test-core
 
-  clippy:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-    - uses: actions-rs/clippy-check@v1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        args: --all-features
-
-  fmt:
+  lint:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
     - uses: actions-rs/toolchain@v1
       with:
-        components: rustfmt
+        components: clippy, rustfmt
+    - uses: actions-rs/clippy-check@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        args: --all-features
     - run: cargo fmt-core -- --check
