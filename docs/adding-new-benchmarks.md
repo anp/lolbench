@@ -25,7 +25,7 @@ Add any necessary dependencies to the benchmark crate, making sure to specify ex
 
 Add individual benchmarks functions to the new crate. A convenience macro is provided that will wrap an existing cargo benchmark in a criterion bench runner: `wrap_libtest!`, and an example benchmark which uses it is included with the generated benchmark crate. See more below for information on adapting benchmarks from existing frameworks.
 
-Add the benchmark crate to the CI config under `.circleci/config.yml`. Make sure the new build is added under both the `jobs` key and the `workflow` key -- follow existing examples. The build job should be named the same as the new crate and thus its `benches/` subdirectory. You should also add the new job as a requirement for the `rebalance` job.
+Add the benchmark crate to the CI config under `.github/workflows/main.yml`. Make sure the crate is listed as a new job -- follow existing examples. The build job should be named the same as the new crate and thus its `benches/` subdirectory. You should also add the new job as a requirement for the `rebalance` job, add its output to the list of artifacts to download.
 
 ### Adapting cargo/libtest benchmarks
 
@@ -97,7 +97,7 @@ Don't attempt to assign the benchmark to a particular runner yet. If the benchma
 
 * the benchmark crate, including the generated targets under `bin` and `test`
 * changes to `registry.toml`
-* changes to `.circleci/config.yml`
+* changes to `.github/workflows/main.yml`
 
 CI will ensure that all other benchmarks still build on your PR, you don't need to run the test target for every benchmark crate locally. In your PR message please mention which 'benchmark needed' issue should be closed by your PR.
 
@@ -105,8 +105,8 @@ CI will ensure that all other benchmarks still build on your PR, you don't need 
 
 Once a PR with benchmarks is merged, we need to assign the new benchmark functions to different runners. We'd like this process to leave the runners each with a roughly equal amount of work, or at least close enough that it doesn't create bottlenecks.
 
-Find the latest [CircleCI workflow on master][circleci-master-workflows], and wait for the `rebalance` job to finish. That job's artifacts include a new `registry.toml` with fresh assignments which you can download, commit, and PR if the changes seem reasonable.
+Find the latest [workflow on master][master-workflows], and wait for the `rebalance` job to finish. That job's artifacts include a new `registry.toml` with fresh assignments which you can download, commit, and PR if the changes seem reasonable.
 
-[circleci-master-workflows]: https://circleci.com/gh/anp/workflows/lolbench/tree/master
+[master-workflows]: https://github.com/anp/lolbench/actions?query=workflow%3A.github%2Fworkflows%2Fmain.yml
 [rayon-benchmark-source]: https://github.com/rayon-rs/rayon/blob/5107676d50a261d10b79d8749fd4674498edf9ec/rayon-demo/src/fibonacci/mod.rs#L47-L61
 [lolbench-rayon-benchmark-source]: https://github.com/anp/lolbench/blob/d89ddde39fc63361614118f59732549ba2b9c5d4/benches/rayon_1_0_0/src/fibonacci/mod.rs#L48-L64
