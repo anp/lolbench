@@ -1,4 +1,6 @@
 on: [push, pull_request]
+env:
+  LOLBENCH_DATA_DIR: /tmp/lolbench
 jobs:
   core:
     runs-on: ubuntu-latest
@@ -27,6 +29,8 @@ jobs:
     - run: cargo fmt-core -- --check
 
   brotli_1_1_3:
+    env:
+      LOLBENCH_CRATE: brotli_1_1_3
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -36,7 +40,11 @@ jobs:
     - uses: actions-rs/cargo@v1
       with:
         command: test
-        args: --release --package brotli_1_1_3
+        args: --release --package {{ env.LOLBENCH_CRATE }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: {{ env.LOLBENCH_CRATE }}
+        path: {{ env.LOLBENCH_DATA_DIR }}
 
   # byteorder_1_2_6:
   # clap_2_31_2:
@@ -54,3 +62,18 @@ jobs:
   # sha2_0_8_0:
   # sha3_0_8_0:
   # snap_0_2_4:
+
+  # rebalance:
+  #   <<: *rust_job
+  #   steps:
+  #     - attach_workspace:
+  #         at: /tmp/lolbench
+  #     - run: cargo rebalance-benchmarks --sample-dir /tmp/lolbench
+  #     - run: cd /tmp && tar -cvzf lolbench-data-dir.tar.gz lolbench
+  #     - store_artifacts:
+  #         path: registry.toml
+  #     - store_artifacts:
+  #         path: /tmp/lolbench
+  #     - store_artifacts:
+  #         path: /tmp/lolbench-data-dir.tar.gz
+
