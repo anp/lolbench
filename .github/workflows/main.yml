@@ -52,10 +52,6 @@ jobs:
       with:
         submodules: true
     - uses: actions-rs/toolchain@v1
-    - name: Dump job context
-      env:
-        JOB_CONTEXT: ${{ toJson(job) }}
-      run: echo "$JOB_CONTEXT"
     - uses: actions-rs/cargo@v1
       with:
         command: test
