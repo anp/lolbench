@@ -52,21 +52,6 @@
   #     - run: sudo apt-get install ansible
   #     - run: ./deploy.sh $CIRCLE_SHA1
 
-  # rebalance:
-  #   <<: *rust_job
-  #   steps:
-  #     - attach_workspace:
-  #         at: /tmp/lolbench
-  #     - run: cargo rebalance-benchmarks --sample-dir /tmp/lolbench
-  #     - run: cd /tmp && tar -cvzf lolbench-data-dir.tar.gz lolbench
-  #     - store_artifacts:
-  #         path: registry.toml
-  #     - store_artifacts:
-  #         path: /tmp/lolbench
-  #     - store_artifacts:
-  #         path: /tmp/lolbench-data-dir.tar.gz
-
-
       # - deploy:
       #     filters:
       #       branches:
