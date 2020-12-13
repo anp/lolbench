@@ -541,6 +541,8 @@ jobs:
       with:
         name: snap_0_2_4
         path: ${{ env.LOLBENCH_DATA_DIR }}
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
     - name: rebalance benchmarks
       uses: actions-rs/cargo@v1
       with:
