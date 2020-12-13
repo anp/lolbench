@@ -16,6 +16,8 @@ jobs:
         submodules: true
     - name: git setup
       run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
     - name: test
       uses: actions-rs/cargo@v1
       with:
@@ -49,6 +51,8 @@ jobs:
         submodules: true
     - name: git setup
       run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
     - name: test
       uses: actions-rs/cargo@v1
       with:
@@ -70,6 +74,8 @@ jobs:
         submodules: true
     - name: git setup
       run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
     - name: test
       uses: actions-rs/cargo@v1
       with:
@@ -91,6 +97,8 @@ jobs:
         submodules: true
     - name: git setup
       run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
     - name: test
       uses: actions-rs/cargo@v1
       with:
@@ -112,6 +120,8 @@ jobs:
         submodules: true
     - name: git setup
       run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
     - name: test
       uses: actions-rs/cargo@v1
       with:
@@ -133,6 +143,8 @@ jobs:
         submodules: true
     - name: git setup
       run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
     - name: test
       uses: actions-rs/cargo@v1
       with:
@@ -154,6 +166,8 @@ jobs:
         submodules: true
     - name: git setup
       run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
     - name: test
       uses: actions-rs/cargo@v1
       with:
@@ -175,6 +189,8 @@ jobs:
         submodules: true
     - name: git setup
       run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
     - name: test
       uses: actions-rs/cargo@v1
       with:
@@ -196,6 +212,8 @@ jobs:
         submodules: true
     - name: git setup
       run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
     - name: test
       uses: actions-rs/cargo@v1
       with:
@@ -217,6 +235,8 @@ jobs:
         submodules: true
     - name: git setup
       run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
     - name: test
       uses: actions-rs/cargo@v1
       with:
@@ -238,6 +258,8 @@ jobs:
         submodules: true
     - name: git setup
       run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
     - name: test
       uses: actions-rs/cargo@v1
       with:
@@ -259,6 +281,8 @@ jobs:
         submodules: true
     - name: git setup
       run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
     - name: test
       uses: actions-rs/cargo@v1
       with:
@@ -280,6 +304,8 @@ jobs:
         submodules: true
     - name: git setup
       run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
     - name: test
       uses: actions-rs/cargo@v1
       with:
@@ -301,6 +327,8 @@ jobs:
         submodules: true
     - name: git setup
       run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
     - name: test
       uses: actions-rs/cargo@v1
       with:
@@ -322,6 +350,8 @@ jobs:
         submodules: true
     - name: git setup
       run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
     - name: test
       uses: actions-rs/cargo@v1
       with:
@@ -343,6 +373,8 @@ jobs:
         submodules: true
     - name: git setup
       run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
     - name: test
       uses: actions-rs/cargo@v1
       with:
@@ -364,6 +396,8 @@ jobs:
         submodules: true
     - name: git setup
       run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
     - name: test
       uses: actions-rs/cargo@v1
       with:
@@ -385,6 +419,8 @@ jobs:
         submodules: true
     - name: git setup
       run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
     - name: test
       uses: actions-rs/cargo@v1
       with:
@@ -531,6 +567,8 @@ jobs:
         submodules: true
     - name: git setup
       run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
     # TODO download latest prod data to LOLBENCH_DATA_DIR
     - name: build website
       uses: actions-rs/cargo@v1
