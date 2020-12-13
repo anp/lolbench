@@ -342,7 +342,7 @@ jobs:
         name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
 
-  rebalance:
+  merge_data_dirs:
     needs:
     - brotli_1_1_3
     - byteorder_1_2_6
@@ -363,9 +363,6 @@ jobs:
     - snap_0_2_4
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: true
     - name: download brotli_1_1_3
       uses: actions/download-artifact@v1
       with:
@@ -451,18 +448,31 @@ jobs:
       with:
         name: snap_0_2_4
         path: ${{ env.LOLBENCH_DATA_DIR }}
+    - name: upload merged data dir
+      uses: actions/upload-artifact@v1
+      with:
+        name: final_data_dir
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+
+  rebalance:
+    needs:
+    - merge_data_dirs
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
     - uses: actions-rs/toolchain@v1
     - uses: Swatinem/rust-cache@v1
+    - uses: actions/download-artifact@v1
+      with:
+        name: final_data_dir
+        path: ${{ env.LOLBENCH_DATA_DIR }}
     - name: rebalance benchmarks
       uses: actions-rs/cargo@v1
       with:
         command: rebalance-benchmarks
         args: --sample-dir ${{ env.LOLBENCH_DATA_DIR }}
-    - name: upload data dir
-      uses: actions/upload-artifact@v1
-      with:
-        name: final_data_dir
-        path: ${{ env.LOLBENCH_DATA_DIR }}
     - name: upload registry.toml
       uses: actions/upload-artifact@v1
       with:
