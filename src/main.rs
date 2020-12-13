@@ -1,6 +1,4 @@
-#[macro_use]
 extern crate failure;
-#[macro_use]
 extern crate structopt;
 
 extern crate chrono;
@@ -87,7 +85,7 @@ impl Measure {
                 ..
             } => ToolchainSpec::Range(start.clone(), Utc::today().naive_utc()),
 
-            _ => bail!("unsupported toolchain configuration"),
+            _ => failure::bail!("unsupported toolchain configuration"),
         };
 
         let kthread_on = self.move_kernel_threads;
