@@ -1,6 +1,6 @@
 # lolbench
 
-CI Status: [![GitHub](https://img.shields.io/github/workflow/status/anp/lolbench/master)](https://github.com/anp/lolbench/actions)
+CI Status: [![GitHub](https://img.shields.io/github/workflow/status/anp/lolbench/main)](https://github.com/anp/lolbench/actions)
 
 This project is an effort to reproducibly benchmark "in the wild" Rust code against newer compiler versions to detect performance regressions. The data is currently published to [https://lolbench.rs](https://lolbench.rs).
 
