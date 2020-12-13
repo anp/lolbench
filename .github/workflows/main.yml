@@ -558,6 +558,8 @@ jobs:
         path: registry.toml
   
   website:
+    needs:
+    - rebalance
     env:
       LOLBENCH_SITE_DIR: ~/lolbench-site
     runs-on: ubuntu-latest
@@ -569,7 +571,11 @@ jobs:
       run: .github/workflows/git-commit-config.sh 
     - uses: actions-rs/toolchain@v1
     - uses: Swatinem/rust-cache@v1
-    # TODO download latest prod data to LOLBENCH_DATA_DIR
+    - name: download sample data dir (TODO download production data set)
+      uses: actions/download-artifact@v1
+      with:
+        name: final_data_dir
+        path: ${{ env.LOLBENCH_DATA_DIR }}
     - name: build website
       uses: actions-rs/cargo@v1
       with:
