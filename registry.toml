@@ -1,10 +1,9 @@
 workers = [
     'molly',
-    'sally',
     'wilhelm',
 ]
 [benchmarks."brotli_1_1_3::bench_e2e_decode_q5_1024k"]
-runner = 'sally'
+runner = 'molly'
 name = 'bench_e2e_decode_q5_1024k'
 crate = 'brotli_1_1_3'
 entrypoint_path = 'benches/brotli_1_1_3/src/bin/bench-e2e-decode-q5-1024k.rs'
@@ -16,7 +15,7 @@ crate = 'brotli_1_1_3'
 entrypoint_path = 'benches/brotli_1_1_3/src/bin/bench-e2e-decode-q9-5-1024k.rs'
 
 [benchmarks."brotli_1_1_3::bench_e2e_rt_q5_1024k"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'bench_e2e_rt_q5_1024k'
 crate = 'brotli_1_1_3'
 entrypoint_path = 'benches/brotli_1_1_3/src/bin/bench-e2e-rt-q5-1024k.rs'
@@ -34,7 +33,7 @@ crate = 'brotli_1_1_3'
 entrypoint_path = 'benches/brotli_1_1_3/src/bin/bench-e2e-rt-q9-5-1024k.rs'
 
 [benchmarks."byteorder_1_2_6::f32::read_big_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'f32::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/f32-read-big-endian.rs'
@@ -67,13 +66,13 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/f32-write-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::f64::read_big_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'f64::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/f64-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::f64::read_little_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'f64::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/f64-read-little-endian.rs'
@@ -100,7 +99,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/f64-write-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::i128::read_big_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'i128::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i128-read-big-endian.rs'
@@ -133,7 +132,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i128-write-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::i16::read_big_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'i16::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i16-read-big-endian.rs'
@@ -166,7 +165,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i16-write-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::i32::read_big_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'i32::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i32-read-big-endian.rs'
@@ -211,7 +210,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i64-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::i64::read_native_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'i64::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/i64-read-native-endian.rs'
@@ -250,13 +249,13 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-10-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_11::read_big_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'int128_11::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-11-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_11::read_little_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'int128_11::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-11-read-little-endian.rs'
@@ -280,13 +279,13 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-12-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_12::read_native_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'int128_12::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-12-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_13::read_big_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'int128_13::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-13-read-big-endian.rs'
@@ -310,7 +309,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-14-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_14::read_little_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'int128_14::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-14-read-little-endian.rs'
@@ -328,7 +327,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-15-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_15::read_little_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'int128_15::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-15-read-little-endian.rs'
@@ -340,7 +339,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-15-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_16::read_big_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'int128_16::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-16-read-big-endian.rs'
@@ -352,7 +351,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-16-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_16::read_native_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'int128_16::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-16-read-native-endian.rs'
@@ -370,7 +369,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-1-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_1::read_native_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'int128_1::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-1-read-native-endian.rs'
@@ -388,13 +387,13 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-2-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_2::read_native_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'int128_2::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-2-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_3::read_big_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'int128_3::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-3-read-big-endian.rs'
@@ -412,13 +411,13 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-3-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_4::read_big_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'int128_4::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-4-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_4::read_little_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'int128_4::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-4-read-little-endian.rs'
@@ -460,7 +459,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-6-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_6::read_native_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'int128_6::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-6-read-native-endian.rs'
@@ -472,13 +471,13 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-7-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_7::read_little_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'int128_7::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-7-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_7::read_native_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'int128_7::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-7-read-native-endian.rs'
@@ -502,7 +501,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-8-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_9::read_big_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'int128_9::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-9-read-big-endian.rs'
@@ -514,7 +513,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-9-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int128_9::read_native_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'int128_9::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int128-9-read-native-endian.rs'
@@ -532,7 +531,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-1-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_1::read_native_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'int_1::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-1-read-native-endian.rs'
@@ -550,7 +549,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-2-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_2::read_native_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'int_2::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-2-read-native-endian.rs'
@@ -562,13 +561,13 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-3-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_3::read_little_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'int_3::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-3-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_3::read_native_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'int_3::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-3-read-native-endian.rs'
@@ -592,7 +591,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-4-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_5::read_big_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'int_5::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-5-read-big-endian.rs'
@@ -604,7 +603,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-5-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_5::read_native_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'int_5::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-5-read-native-endian.rs'
@@ -616,7 +615,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-6-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_6::read_little_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'int_6::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-6-read-little-endian.rs'
@@ -646,7 +645,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-7-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_8::read_big_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'int_8::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-8-read-big-endian.rs'
@@ -658,7 +657,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-8-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::int_8::read_native_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'int_8::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/int-8-read-native-endian.rs'
@@ -694,7 +693,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u128-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::u128::read_little_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'u128::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u128-read-little-endian.rs'
@@ -733,7 +732,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u16-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::u16::read_native_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'u16::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u16-read-native-endian.rs'
@@ -760,7 +759,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u32-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::u32::read_little_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'u32::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u32-read-little-endian.rs'
@@ -799,7 +798,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u64-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::u64::read_native_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'u64::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/u64-read-native-endian.rs'
@@ -856,7 +855,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-11-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_12::read_big_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'uint128_12::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-12-read-big-endian.rs'
@@ -868,19 +867,19 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-12-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_12::read_native_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'uint128_12::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-12-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_13::read_big_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'uint128_13::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-13-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_13::read_little_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'uint128_13::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-13-read-little-endian.rs'
@@ -922,19 +921,19 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-15-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_15::read_native_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'uint128_15::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-15-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_16::read_big_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'uint128_16::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-16-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_16::read_little_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'uint128_16::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-16-read-little-endian.rs'
@@ -982,13 +981,13 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-2-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_3::read_big_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'uint128_3::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-3-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_3::read_little_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'uint128_3::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-3-read-little-endian.rs'
@@ -1012,7 +1011,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-4-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_4::read_native_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'uint128_4::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-4-read-native-endian.rs'
@@ -1024,7 +1023,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-5-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_5::read_little_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'uint128_5::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-5-read-little-endian.rs'
@@ -1078,7 +1077,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-8-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_8::read_little_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'uint128_8::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-8-read-little-endian.rs'
@@ -1090,7 +1089,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-8-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint128_9::read_big_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'uint128_9::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint128-9-read-big-endian.rs'
@@ -1120,7 +1119,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-1-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_1::read_native_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'uint_1::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-1-read-native-endian.rs'
@@ -1168,7 +1167,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-4-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_4::read_little_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'uint_4::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-4-read-little-endian.rs'
@@ -1198,13 +1197,13 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-5-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_6::read_big_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'uint_6::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-6-read-big-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_6::read_little_endian"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'uint_6::read_little_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-6-read-little-endian.rs'
@@ -1216,7 +1215,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-6-read-native-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_7::read_big_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'uint_7::read_big_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-7-read-big-endian.rs'
@@ -1228,7 +1227,7 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-7-read-little-endian.rs'
 
 [benchmarks."byteorder_1_2_6::uint_7::read_native_endian"]
-runner = 'sally'
+runner = 'molly'
 name = 'uint_7::read_native_endian'
 crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/uint-7-read-native-endian.rs'
@@ -1262,252 +1261,301 @@ crate = 'byteorder_1_2_6'
 entrypoint_path = 'benches/byteorder_1_2_6/src/bin/write-native-endian.rs'
 
 [benchmarks."clap_2_31_2::_01_default::build_app"]
+runner = 'molly'
 name = '_01_default::build_app'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/01-default-build-app.rs'
 
 [benchmarks."clap_2_31_2::_01_default::parse_clean"]
+runner = 'molly'
 name = '_01_default::parse_clean'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/01-default-parse-clean.rs'
 
 [benchmarks."clap_2_31_2::_02_simple::add_flag"]
+runner = 'molly'
 name = '_02_simple::add_flag'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/02-simple-add-flag.rs'
 
 [benchmarks."clap_2_31_2::_02_simple::add_flag_ref"]
+runner = 'molly'
 name = '_02_simple::add_flag_ref'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/02-simple-add-flag-ref.rs'
 
 [benchmarks."clap_2_31_2::_02_simple::add_opt"]
+runner = 'molly'
 name = '_02_simple::add_opt'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/02-simple-add-opt.rs'
 
 [benchmarks."clap_2_31_2::_02_simple::add_opt_ref"]
+runner = 'molly'
 name = '_02_simple::add_opt_ref'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/02-simple-add-opt-ref.rs'
 
 [benchmarks."clap_2_31_2::_02_simple::add_pos"]
+runner = 'wilhelm'
 name = '_02_simple::add_pos'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/02-simple-add-pos.rs'
 
 [benchmarks."clap_2_31_2::_02_simple::add_pos_ref"]
+runner = 'molly'
 name = '_02_simple::add_pos_ref'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/02-simple-add-pos-ref.rs'
 
 [benchmarks."clap_2_31_2::_02_simple::build_app"]
+runner = 'molly'
 name = '_02_simple::build_app'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/02-simple-build-app.rs'
 
 [benchmarks."clap_2_31_2::_02_simple::parse_clean"]
+runner = 'molly'
 name = '_02_simple::parse_clean'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/02-simple-parse-clean.rs'
 
 [benchmarks."clap_2_31_2::_02_simple::parse_complex"]
+runner = 'wilhelm'
 name = '_02_simple::parse_complex'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/02-simple-parse-complex.rs'
 
 [benchmarks."clap_2_31_2::_02_simple::parse_flag"]
+runner = 'wilhelm'
 name = '_02_simple::parse_flag'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/02-simple-parse-flag.rs'
 
 [benchmarks."clap_2_31_2::_02_simple::parse_option"]
+runner = 'wilhelm'
 name = '_02_simple::parse_option'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/02-simple-parse-option.rs'
 
 [benchmarks."clap_2_31_2::_02_simple::parse_positional"]
+runner = 'molly'
 name = '_02_simple::parse_positional'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/02-simple-parse-positional.rs'
 
 [benchmarks."clap_2_31_2::_03_complex::create_app_builder"]
+runner = 'molly'
 name = '_03_complex::create_app_builder'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-create-app-builder.rs'
 
 [benchmarks."clap_2_31_2::_03_complex::create_app_from_usage"]
+runner = 'molly'
 name = '_03_complex::create_app_from_usage'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-create-app-from-usage.rs'
 
 [benchmarks."clap_2_31_2::_03_complex::create_app_macros"]
+runner = 'wilhelm'
 name = '_03_complex::create_app_macros'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-create-app-macros.rs'
 
 [benchmarks."clap_2_31_2::_03_complex::parse_clean"]
+runner = 'wilhelm'
 name = '_03_complex::parse_clean'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-parse-clean.rs'
 
 [benchmarks."clap_2_31_2::_03_complex::parse_complex1"]
+runner = 'molly'
 name = '_03_complex::parse_complex1'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-parse-complex1.rs'
 
 [benchmarks."clap_2_31_2::_03_complex::parse_complex2"]
+runner = 'wilhelm'
 name = '_03_complex::parse_complex2'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-parse-complex2.rs'
 
 [benchmarks."clap_2_31_2::_03_complex::parse_complex2_with_args_negate_scs"]
+runner = 'molly'
 name = '_03_complex::parse_complex2_with_args_negate_scs'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-parse-complex2-with-args-negate-scs.rs'
 
 [benchmarks."clap_2_31_2::_03_complex::parse_flag"]
+runner = 'molly'
 name = '_03_complex::parse_flag'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-parse-flag.rs'
 
 [benchmarks."clap_2_31_2::_03_complex::parse_option"]
+runner = 'wilhelm'
 name = '_03_complex::parse_option'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-parse-option.rs'
 
 [benchmarks."clap_2_31_2::_03_complex::parse_positional"]
+runner = 'wilhelm'
 name = '_03_complex::parse_positional'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-parse-positional.rs'
 
 [benchmarks."clap_2_31_2::_03_complex::parse_sc_clean"]
+runner = 'wilhelm'
 name = '_03_complex::parse_sc_clean'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-parse-sc-clean.rs'
 
 [benchmarks."clap_2_31_2::_03_complex::parse_sc_complex"]
+runner = 'molly'
 name = '_03_complex::parse_sc_complex'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-parse-sc-complex.rs'
 
 [benchmarks."clap_2_31_2::_03_complex::parse_sc_flag"]
+runner = 'wilhelm'
 name = '_03_complex::parse_sc_flag'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-parse-sc-flag.rs'
 
 [benchmarks."clap_2_31_2::_03_complex::parse_sc_option"]
+runner = 'wilhelm'
 name = '_03_complex::parse_sc_option'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-parse-sc-option.rs'
 
 [benchmarks."clap_2_31_2::_03_complex::parse_sc_positional"]
+runner = 'molly'
 name = '_03_complex::parse_sc_positional'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/03-complex-parse-sc-positional.rs'
 
 [benchmarks."clap_2_31_2::_04_new_help::example1"]
+runner = 'molly'
 name = '_04_new_help::example1'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/04-new-help-example1.rs'
 
 [benchmarks."clap_2_31_2::_04_new_help::example10"]
+runner = 'molly'
 name = '_04_new_help::example10'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/04-new-help-example10.rs'
 
 [benchmarks."clap_2_31_2::_04_new_help::example2"]
+runner = 'molly'
 name = '_04_new_help::example2'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/04-new-help-example2.rs'
 
 [benchmarks."clap_2_31_2::_04_new_help::example3"]
+runner = 'molly'
 name = '_04_new_help::example3'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/04-new-help-example3.rs'
 
 [benchmarks."clap_2_31_2::_04_new_help::example4"]
+runner = 'wilhelm'
 name = '_04_new_help::example4'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/04-new-help-example4.rs'
 
 [benchmarks."clap_2_31_2::_04_new_help::example4_template"]
+runner = 'molly'
 name = '_04_new_help::example4_template'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/04-new-help-example4-template.rs'
 
 [benchmarks."clap_2_31_2::_04_new_help::example5"]
+runner = 'molly'
 name = '_04_new_help::example5'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/04-new-help-example5.rs'
 
 [benchmarks."clap_2_31_2::_04_new_help::example6"]
+runner = 'molly'
 name = '_04_new_help::example6'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/04-new-help-example6.rs'
 
 [benchmarks."clap_2_31_2::_04_new_help::example7"]
+runner = 'molly'
 name = '_04_new_help::example7'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/04-new-help-example7.rs'
 
 [benchmarks."clap_2_31_2::_04_new_help::example8"]
+runner = 'wilhelm'
 name = '_04_new_help::example8'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/04-new-help-example8.rs'
 
 [benchmarks."clap_2_31_2::_05_ripgrep::build_app_long"]
+runner = 'wilhelm'
 name = '_05_ripgrep::build_app_long'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/05-ripgrep-build-app-long.rs'
 
 [benchmarks."clap_2_31_2::_05_ripgrep::build_app_short"]
+runner = 'wilhelm'
 name = '_05_ripgrep::build_app_short'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/05-ripgrep-build-app-short.rs'
 
 [benchmarks."clap_2_31_2::_05_ripgrep::build_help_long"]
+runner = 'wilhelm'
 name = '_05_ripgrep::build_help_long'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/05-ripgrep-build-help-long.rs'
 
 [benchmarks."clap_2_31_2::_05_ripgrep::build_help_short"]
+runner = 'molly'
 name = '_05_ripgrep::build_help_short'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/05-ripgrep-build-help-short.rs'
 
 [benchmarks."clap_2_31_2::_05_ripgrep::parse_clean"]
+runner = 'molly'
 name = '_05_ripgrep::parse_clean'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/05-ripgrep-parse-clean.rs'
 
 [benchmarks."clap_2_31_2::_05_ripgrep::parse_complex"]
+runner = 'molly'
 name = '_05_ripgrep::parse_complex'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/05-ripgrep-parse-complex.rs'
 
 [benchmarks."clap_2_31_2::_05_ripgrep::parse_lots"]
+runner = 'molly'
 name = '_05_ripgrep::parse_lots'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/05-ripgrep-parse-lots.rs'
 
 [benchmarks."clap_2_31_2::_06_rustup::build_app"]
+runner = 'molly'
 name = '_06_rustup::build_app'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/06-rustup-build-app.rs'
 
 [benchmarks."clap_2_31_2::_06_rustup::parse_clean"]
+runner = 'molly'
 name = '_06_rustup::parse_clean'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/06-rustup-parse-clean.rs'
 
 [benchmarks."clap_2_31_2::_06_rustup::parse_subcommands"]
+runner = 'wilhelm'
 name = '_06_rustup::parse_subcommands'
 crate = 'clap_2_31_2'
 entrypoint_path = 'benches/clap_2_31_2/src/bin/06-rustup-parse-subcommands.rs'
 
 [benchmarks."crossbeam_epoch_0_4_0::defer::multi_alloc_defer_free"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'defer::multi_alloc_defer_free'
 crate = 'crossbeam_epoch_0_4_0'
 entrypoint_path = 'benches/crossbeam_epoch_0_4_0/src/bin/defer-multi-alloc-defer-free.rs'
@@ -1573,7 +1621,7 @@ crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-game-deserialize-borrowed-str.rs'
 
 [benchmarks."csv_1_0_2::count_game_deserialize_owned_bytes"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'count_game_deserialize_owned_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-game-deserialize-owned-bytes.rs'
@@ -1663,13 +1711,13 @@ crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-mbta-read-bytes.rs'
 
 [benchmarks."csv_1_0_2::count_mbta_read_str"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'count_mbta_read_str'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-mbta-read-str.rs'
 
 [benchmarks."csv_1_0_2::count_mbta_serialize_owned_bytes"]
-runner = 'sally'
+runner = 'molly'
 name = 'count_mbta_serialize_owned_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-mbta-serialize-owned-bytes.rs'
@@ -1693,7 +1741,7 @@ crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-deserialize-borrowed-str.rs'
 
 [benchmarks."csv_1_0_2::count_nfl_deserialize_owned_bytes"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'count_nfl_deserialize_owned_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-deserialize-owned-bytes.rs'
@@ -1705,7 +1753,7 @@ crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-deserialize-owned-str.rs'
 
 [benchmarks."csv_1_0_2::count_nfl_iter_bytes"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'count_nfl_iter_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-iter-bytes.rs'
@@ -1723,19 +1771,19 @@ crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-iter-str.rs'
 
 [benchmarks."csv_1_0_2::count_nfl_iter_str_trimmed"]
-runner = 'sally'
+runner = 'molly'
 name = 'count_nfl_iter_str_trimmed'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-iter-str-trimmed.rs'
 
 [benchmarks."csv_1_0_2::count_nfl_read_bytes"]
-runner = 'sally'
+runner = 'molly'
 name = 'count_nfl_read_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-read-bytes.rs'
 
 [benchmarks."csv_1_0_2::count_nfl_read_str"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'count_nfl_read_str'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-read-str.rs'
@@ -1747,13 +1795,13 @@ crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-serialize-owned-bytes.rs'
 
 [benchmarks."csv_1_0_2::count_nfl_serialize_owned_str"]
-runner = 'sally'
+runner = 'molly'
 name = 'count_nfl_serialize_owned_str'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-nfl-serialize-owned-str.rs'
 
 [benchmarks."csv_1_0_2::count_pop_deserialize_borrowed_bytes"]
-runner = 'sally'
+runner = 'molly'
 name = 'count_pop_deserialize_borrowed_bytes'
 crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/count-pop-deserialize-borrowed-bytes.rs'
@@ -1825,13 +1873,13 @@ crate = 'csv_1_0_2'
 entrypoint_path = 'benches/csv_1_0_2/src/bin/write-nfl-record.rs'
 
 [benchmarks."diesel_1_1_1::bench_medium_complex_query_selecting_10_000_rows"]
-runner = 'sally'
+runner = 'molly'
 name = 'bench_medium_complex_query_selecting_10_000_rows'
 crate = 'diesel_1_1_1'
 entrypoint_path = 'benches/diesel_1_1_1/src/bin/bench-medium-complex-query-selecting-10-000-rows.rs'
 
 [benchmarks."diesel_1_1_1::bench_medium_complex_query_selecting_10_000_rows_boxed"]
-runner = 'sally'
+runner = 'molly'
 name = 'bench_medium_complex_query_selecting_10_000_rows_boxed'
 crate = 'diesel_1_1_1'
 entrypoint_path = 'benches/diesel_1_1_1/src/bin/bench-medium-complex-query-selecting-10-000-rows-boxed.rs'
@@ -1855,7 +1903,7 @@ crate = 'diesel_1_1_1'
 entrypoint_path = 'benches/diesel_1_1_1/src/bin/bench-medium-complex-query-selecting-100-rows.rs'
 
 [benchmarks."diesel_1_1_1::bench_medium_complex_query_selecting____100_rows_boxed"]
-runner = 'sally'
+runner = 'molly'
 name = 'bench_medium_complex_query_selecting____100_rows_boxed'
 crate = 'diesel_1_1_1'
 entrypoint_path = 'benches/diesel_1_1_1/src/bin/bench-medium-complex-query-selecting-100-rows-boxed.rs'
@@ -1873,7 +1921,7 @@ crate = 'diesel_1_1_1'
 entrypoint_path = 'benches/diesel_1_1_1/src/bin/bench-medium-complex-query-selecting-10-rows-boxed.rs'
 
 [benchmarks."diesel_1_1_1::bench_medium_complex_query_selecting______1_row"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'bench_medium_complex_query_selecting______1_row'
 crate = 'diesel_1_1_1'
 entrypoint_path = 'benches/diesel_1_1_1/src/bin/bench-medium-complex-query-selecting-1-row.rs'
@@ -1909,7 +1957,7 @@ crate = 'diesel_1_1_1'
 entrypoint_path = 'benches/diesel_1_1_1/src/bin/bench-trivial-query-selecting-1-000-rows-boxed.rs'
 
 [benchmarks."diesel_1_1_1::bench_trivial_query_selecting____100_rows"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'bench_trivial_query_selecting____100_rows'
 crate = 'diesel_1_1_1'
 entrypoint_path = 'benches/diesel_1_1_1/src/bin/bench-trivial-query-selecting-100-rows.rs'
@@ -1921,7 +1969,7 @@ crate = 'diesel_1_1_1'
 entrypoint_path = 'benches/diesel_1_1_1/src/bin/bench-trivial-query-selecting-100-rows-boxed.rs'
 
 [benchmarks."diesel_1_1_1::bench_trivial_query_selecting_____10_rows"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'bench_trivial_query_selecting_____10_rows'
 crate = 'diesel_1_1_1'
 entrypoint_path = 'benches/diesel_1_1_1/src/bin/bench-trivial-query-selecting-10-rows.rs'
@@ -1969,7 +2017,7 @@ crate = 'json_benchmark_c7d3d9b'
 entrypoint_path = 'benches/json_benchmark_c7d3d9b/src/bin/serde-canada-dom.rs'
 
 [benchmarks."json_benchmark_c7d3d9b::serde_canada_struct"]
-runner = 'sally'
+runner = 'molly'
 name = 'serde_canada_struct'
 crate = 'json_benchmark_c7d3d9b'
 entrypoint_path = 'benches/json_benchmark_c7d3d9b/src/bin/serde-canada-struct.rs'
@@ -1981,7 +2029,7 @@ crate = 'json_benchmark_c7d3d9b'
 entrypoint_path = 'benches/json_benchmark_c7d3d9b/src/bin/serde-citm-dom.rs'
 
 [benchmarks."json_benchmark_c7d3d9b::serde_citm_struct"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'serde_citm_struct'
 crate = 'json_benchmark_c7d3d9b'
 entrypoint_path = 'benches/json_benchmark_c7d3d9b/src/bin/serde-citm-struct.rs'
@@ -1999,7 +2047,7 @@ crate = 'json_benchmark_c7d3d9b'
 entrypoint_path = 'benches/json_benchmark_c7d3d9b/src/bin/serde-twitter-struct.rs'
 
 [benchmarks."json_benchmark_c7d3d9b::serialize_canada_dom"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'serialize_canada_dom'
 crate = 'json_benchmark_c7d3d9b'
 entrypoint_path = 'benches/json_benchmark_c7d3d9b/src/bin/serialize-canada-dom.rs'
@@ -2011,7 +2059,7 @@ crate = 'json_benchmark_c7d3d9b'
 entrypoint_path = 'benches/json_benchmark_c7d3d9b/src/bin/serialize-canada-struct.rs'
 
 [benchmarks."json_benchmark_c7d3d9b::serialize_citm_dom"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'serialize_citm_dom'
 crate = 'json_benchmark_c7d3d9b'
 entrypoint_path = 'benches/json_benchmark_c7d3d9b/src/bin/serialize-citm-dom.rs'
@@ -2047,7 +2095,7 @@ crate = 'nom_4_0_0'
 entrypoint_path = 'benches/nom_4_0_0/src/bin/http-one-test.rs'
 
 [benchmarks."nom_4_0_0::ini::bench_ini_key_value"]
-runner = 'sally'
+runner = 'molly'
 name = 'ini::bench_ini_key_value'
 crate = 'nom_4_0_0'
 entrypoint_path = 'benches/nom_4_0_0/src/bin/ini-bench-ini-key-value.rs'
@@ -2059,13 +2107,13 @@ crate = 'nom_4_0_0'
 entrypoint_path = 'benches/nom_4_0_0/src/bin/ini-bench-ini-keys-and-values.rs'
 
 [benchmarks."nom_4_0_0::ini_str::bench_ini_str"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'ini_str::bench_ini_str'
 crate = 'nom_4_0_0'
 entrypoint_path = 'benches/nom_4_0_0/src/bin/ini-str-bench-ini-str.rs'
 
 [benchmarks."quickcheck_0_6_1::shrink_f64_1_tuple"]
-runner = 'sally'
+runner = 'molly'
 name = 'shrink_f64_1_tuple'
 crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-f64-1-tuple.rs'
@@ -2077,13 +2125,13 @@ crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-f64-2-tuple.rs'
 
 [benchmarks."quickcheck_0_6_1::shrink_f64_3_tuple"]
-runner = 'sally'
+runner = 'molly'
 name = 'shrink_f64_3_tuple'
 crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-f64-3-tuple.rs'
 
 [benchmarks."quickcheck_0_6_1::shrink_f64_4_tuple"]
-runner = 'sally'
+runner = 'molly'
 name = 'shrink_f64_4_tuple'
 crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-f64-4-tuple.rs'
@@ -2107,19 +2155,19 @@ crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-f64-7-tuple.rs'
 
 [benchmarks."quickcheck_0_6_1::shrink_f64_8_tuple"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'shrink_f64_8_tuple'
 crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-f64-8-tuple.rs'
 
 [benchmarks."quickcheck_0_6_1::shrink_i64_1_tuple"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'shrink_i64_1_tuple'
 crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-i64-1-tuple.rs'
 
 [benchmarks."quickcheck_0_6_1::shrink_i64_2_tuple"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'shrink_i64_2_tuple'
 crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-i64-2-tuple.rs'
@@ -2143,13 +2191,13 @@ crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-i64-5-tuple.rs'
 
 [benchmarks."quickcheck_0_6_1::shrink_i64_6_tuple"]
-runner = 'sally'
+runner = 'molly'
 name = 'shrink_i64_6_tuple'
 crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-i64-6-tuple.rs'
 
 [benchmarks."quickcheck_0_6_1::shrink_i64_7_tuple"]
-runner = 'sally'
+runner = 'molly'
 name = 'shrink_i64_7_tuple'
 crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-i64-7-tuple.rs'
@@ -2161,7 +2209,7 @@ crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-i64-8-tuple.rs'
 
 [benchmarks."quickcheck_0_6_1::shrink_string_1_tuple"]
-runner = 'sally'
+runner = 'molly'
 name = 'shrink_string_1_tuple'
 crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-string-1-tuple.rs'
@@ -2173,7 +2221,7 @@ crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-string-2-tuple.rs'
 
 [benchmarks."quickcheck_0_6_1::shrink_string_3_tuple"]
-runner = 'sally'
+runner = 'molly'
 name = 'shrink_string_3_tuple'
 crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-string-3-tuple.rs'
@@ -2245,7 +2293,7 @@ crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-u64-6-tuple.rs'
 
 [benchmarks."quickcheck_0_6_1::shrink_u64_7_tuple"]
-runner = 'sally'
+runner = 'molly'
 name = 'shrink_u64_7_tuple'
 crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-u64-7-tuple.rs'
@@ -2257,13 +2305,13 @@ crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-u64-8-tuple.rs'
 
 [benchmarks."quickcheck_0_6_1::shrink_unit_1_tuple"]
-runner = 'sally'
+runner = 'molly'
 name = 'shrink_unit_1_tuple'
 crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-unit-1-tuple.rs'
 
 [benchmarks."quickcheck_0_6_1::shrink_unit_2_tuple"]
-runner = 'sally'
+runner = 'molly'
 name = 'shrink_unit_2_tuple'
 crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-unit-2-tuple.rs'
@@ -2281,7 +2329,7 @@ crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-unit-4-tuple.rs'
 
 [benchmarks."quickcheck_0_6_1::shrink_unit_5_tuple"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'shrink_unit_5_tuple'
 crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-unit-5-tuple.rs'
@@ -2299,7 +2347,7 @@ crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-unit-7-tuple.rs'
 
 [benchmarks."quickcheck_0_6_1::shrink_unit_8_tuple"]
-runner = 'sally'
+runner = 'molly'
 name = 'shrink_unit_8_tuple'
 crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-unit-8-tuple.rs'
@@ -2317,7 +2365,7 @@ crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-vec-u8-2-tuple.rs'
 
 [benchmarks."quickcheck_0_6_1::shrink_vec_u8_3_tuple"]
-runner = 'sally'
+runner = 'molly'
 name = 'shrink_vec_u8_3_tuple'
 crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-vec-u8-3-tuple.rs'
@@ -2365,7 +2413,7 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/factorial-factorial-join.rs'
 
 [benchmarks."rayon_1_0_0::factorial::factorial_par_iter"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'factorial::factorial_par_iter'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/factorial-factorial-par-iter.rs'
@@ -2407,7 +2455,7 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/fibonacci-fibonacci-split-iterative.rs'
 
 [benchmarks."rayon_1_0_0::fibonacci::fibonacci_split_recursive"]
-runner = 'sally'
+runner = 'molly'
 name = 'fibonacci::fibonacci_split_recursive'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/fibonacci-fibonacci-split-recursive.rs'
@@ -2419,7 +2467,7 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/find-parallel-find-common.rs'
 
 [benchmarks."rayon_1_0_0::find::parallel_find_first"]
-runner = 'sally'
+runner = 'molly'
 name = 'find::parallel_find_first'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/find-parallel-find-first.rs'
@@ -2467,7 +2515,7 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/find-serial-find-middle.rs'
 
 [benchmarks."rayon_1_0_0::find::serial_find_missing"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'find::serial_find_missing'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/find-serial-find-missing.rs'
@@ -2479,7 +2527,7 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/join-microbench-increment-all.rs'
 
 [benchmarks."rayon_1_0_0::join_microbench::increment_all_atomized"]
-runner = 'sally'
+runner = 'molly'
 name = 'join_microbench::increment_all_atomized'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/join-microbench-increment-all-atomized.rs'
@@ -2491,7 +2539,7 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/join-microbench-increment-all-max.rs'
 
 [benchmarks."rayon_1_0_0::join_microbench::increment_all_min"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'join_microbench::increment_all_min'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/join-microbench-increment-all-min.rs'
@@ -2503,7 +2551,7 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/join-microbench-increment-all-serialized.rs'
 
 [benchmarks."rayon_1_0_0::join_microbench::join_recursively"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'join_microbench::join_recursively'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/join-microbench-join-recursively.rs'
@@ -2515,7 +2563,7 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/life-bench-generations.rs'
 
 [benchmarks."rayon_1_0_0::life::bench::parallel_generations"]
-runner = 'sally'
+runner = 'molly'
 name = 'life::bench::parallel_generations'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/life-bench-parallel-generations.rs'
@@ -2539,7 +2587,7 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/map-collect-i-mod-10-to-i-with-fold-vec.rs'
 
 [benchmarks."rayon_1_0_0::map_collect::i_mod_10_to_i::with_linked_list_collect"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'map_collect::i_mod_10_to_i::with_linked_list_collect'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/map-collect-i-mod-10-to-i-with-linked-list-collect.rs'
@@ -2587,7 +2635,7 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/map-collect-i-to-i-with-collect.rs'
 
 [benchmarks."rayon_1_0_0::map_collect::i_to_i::with_fold"]
-runner = 'sally'
+runner = 'molly'
 name = 'map_collect::i_to_i::with_fold'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/map-collect-i-to-i-with-fold.rs'
@@ -2599,7 +2647,7 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/map-collect-i-to-i-with-fold-vec.rs'
 
 [benchmarks."rayon_1_0_0::map_collect::i_to_i::with_linked_list_collect"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'map_collect::i_to_i::with_linked_list_collect'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/map-collect-i-to-i-with-linked-list-collect.rs'
@@ -2611,7 +2659,7 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/map-collect-i-to-i-with-linked-list-collect-vec.rs'
 
 [benchmarks."rayon_1_0_0::map_collect::i_to_i::with_linked_list_collect_vec_sized"]
-runner = 'sally'
+runner = 'molly'
 name = 'map_collect::i_to_i::with_linked_list_collect_vec_sized'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/map-collect-i-to-i-with-linked-list-collect-vec-sized.rs'
@@ -2623,7 +2671,7 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/map-collect-i-to-i-with-linked-list-map-reduce-vec-sized.rs'
 
 [benchmarks."rayon_1_0_0::map_collect::i_to_i::with_mutex"]
-runner = 'sally'
+runner = 'molly'
 name = 'map_collect::i_to_i::with_mutex'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/map-collect-i-to-i-with-mutex.rs'
@@ -2635,7 +2683,7 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/map-collect-i-to-i-with-mutex-vec.rs'
 
 [benchmarks."rayon_1_0_0::map_collect::i_to_i::with_vec_vec_sized"]
-runner = 'sally'
+runner = 'molly'
 name = 'map_collect::i_to_i::with_vec_vec_sized'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/map-collect-i-to-i-with-vec-vec-sized.rs'
@@ -2647,7 +2695,7 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/matmul-bench-bench-matmul-strassen.rs'
 
 [benchmarks."rayon_1_0_0::mergesort::bench::merge_sort_par_bench"]
-runner = 'sally'
+runner = 'molly'
 name = 'mergesort::bench::merge_sort_par_bench'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/mergesort-bench-merge-sort-par-bench.rs'
@@ -2683,13 +2731,13 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/pythagoras-euclid-faux-serial.rs'
 
 [benchmarks."rayon_1_0_0::pythagoras::euclid_parallel_full"]
-runner = 'sally'
+runner = 'molly'
 name = 'pythagoras::euclid_parallel_full'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/pythagoras-euclid-parallel-full.rs'
 
 [benchmarks."rayon_1_0_0::pythagoras::euclid_parallel_one"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'pythagoras::euclid_parallel_one'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/pythagoras-euclid-parallel-one.rs'
@@ -2707,7 +2755,7 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/pythagoras-euclid-parallel-weightless.rs'
 
 [benchmarks."rayon_1_0_0::pythagoras::euclid_serial"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'pythagoras::euclid_serial'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/pythagoras-euclid-serial.rs'
@@ -2761,13 +2809,13 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/sort-demo-merge-sort-big.rs'
 
 [benchmarks."rayon_1_0_0::sort::demo_merge_sort_descending"]
-runner = 'sally'
+runner = 'molly'
 name = 'sort::demo_merge_sort_descending'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/sort-demo-merge-sort-descending.rs'
 
 [benchmarks."rayon_1_0_0::sort::demo_merge_sort_mostly_ascending"]
-runner = 'sally'
+runner = 'molly'
 name = 'sort::demo_merge_sort_mostly_ascending'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/sort-demo-merge-sort-mostly-ascending.rs'
@@ -2785,7 +2833,7 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/sort-demo-merge-sort-random.rs'
 
 [benchmarks."rayon_1_0_0::sort::demo_merge_sort_strings"]
-runner = 'sally'
+runner = 'molly'
 name = 'sort::demo_merge_sort_strings'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/sort-demo-merge-sort-strings.rs'
@@ -2809,7 +2857,7 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/sort-demo-quick-sort-mostly-descending.rs'
 
 [benchmarks."rayon_1_0_0::sort::demo_quick_sort_random"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'sort::demo_quick_sort_random'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/sort-demo-quick-sort-random.rs'
@@ -2827,13 +2875,13 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/sort-par-sort-ascending.rs'
 
 [benchmarks."rayon_1_0_0::sort::par_sort_big"]
-runner = 'sally'
+runner = 'molly'
 name = 'sort::par_sort_big'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/sort-par-sort-big.rs'
 
 [benchmarks."rayon_1_0_0::sort::par_sort_descending"]
-runner = 'sally'
+runner = 'molly'
 name = 'sort::par_sort_descending'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/sort-par-sort-descending.rs'
@@ -2893,19 +2941,19 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/sort-par-sort-unstable-expensive.rs'
 
 [benchmarks."rayon_1_0_0::sort::par_sort_unstable_mostly_ascending"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'sort::par_sort_unstable_mostly_ascending'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/sort-par-sort-unstable-mostly-ascending.rs'
 
 [benchmarks."rayon_1_0_0::sort::par_sort_unstable_mostly_descending"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'sort::par_sort_unstable_mostly_descending'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/sort-par-sort-unstable-mostly-descending.rs'
 
 [benchmarks."rayon_1_0_0::sort::par_sort_unstable_random"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'sort::par_sort_unstable_random'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/sort-par-sort-unstable-random.rs'
@@ -2941,13 +2989,13 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/str-split-serial-space-fn.rs'
 
 [benchmarks."rayon_1_0_0::str_split::serial_space_str"]
-runner = 'sally'
+runner = 'molly'
 name = 'str_split::serial_space_str'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/str-split-serial-space-str.rs'
 
 [benchmarks."rayon_1_0_0::vec_collect::vec_i::with_collect"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'vec_collect::vec_i::with_collect'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/vec-collect-vec-i-with-collect.rs'
@@ -2971,7 +3019,7 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/vec-collect-vec-i-with-fold.rs'
 
 [benchmarks."rayon_1_0_0::vec_collect::vec_i::with_linked_list_collect_vec"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'vec_collect::vec_i::with_linked_list_collect_vec'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/vec-collect-vec-i-with-linked-list-collect-vec.rs'
@@ -2983,7 +3031,7 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/vec-collect-vec-i-with-linked-list-collect-vec-sized.rs'
 
 [benchmarks."rayon_1_0_0::vec_collect::vec_i::with_linked_list_map_reduce_vec_sized"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'vec_collect::vec_i::with_linked_list_map_reduce_vec_sized'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/vec-collect-vec-i-with-linked-list-map-reduce-vec-sized.rs'
@@ -2995,13 +3043,13 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/vec-collect-vec-i-with-vec-vec-sized.rs'
 
 [benchmarks."rayon_1_0_0::vec_collect::vec_i_filtered::with_collect"]
-runner = 'sally'
+runner = 'molly'
 name = 'vec_collect::vec_i_filtered::with_collect'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/vec-collect-vec-i-filtered-with-collect.rs'
 
 [benchmarks."rayon_1_0_0::vec_collect::vec_i_filtered::with_fold"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'vec_collect::vec_i_filtered::with_fold'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/vec-collect-vec-i-filtered-with-fold.rs'
@@ -3013,7 +3061,7 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/vec-collect-vec-i-filtered-with-linked-list-collect-vec.rs'
 
 [benchmarks."rayon_1_0_0::vec_collect::vec_i_filtered::with_linked_list_collect_vec_sized"]
-runner = 'sally'
+runner = 'molly'
 name = 'vec_collect::vec_i_filtered::with_linked_list_collect_vec_sized'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/vec-collect-vec-i-filtered-with-linked-list-collect-vec-sized.rs'
@@ -3025,13 +3073,13 @@ crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/vec-collect-vec-i-filtered-with-linked-list-map-reduce-vec-sized.rs'
 
 [benchmarks."rayon_1_0_0::vec_collect::vec_i_filtered::with_vec_vec_sized"]
-runner = 'sally'
+runner = 'molly'
 name = 'vec_collect::vec_i_filtered::with_vec_vec_sized'
 crate = 'rayon_1_0_0'
 entrypoint_path = 'benches/rayon_1_0_0/src/bin/vec-collect-vec-i-filtered-with-vec-vec-sized.rs'
 
 [benchmarks."raytrace_8de9020::raytrace_random_scenes"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'raytrace_random_scenes'
 crate = 'raytrace_8de9020'
 entrypoint_path = 'benches/raytrace_8de9020/src/bin/raytrace-random-scenes.rs'
@@ -3055,7 +3103,7 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-anchored-literal-short-match.rs'
 
 [benchmarks."regex_0_2_6::misc::anchored_literal_short_non_match"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'misc::anchored_literal_short_non_match'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-anchored-literal-short-non-match.rs'
@@ -3073,7 +3121,7 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-easy0-1mb.rs'
 
 [benchmarks."regex_0_2_6::misc::easy0_32"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'misc::easy0_32'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-easy0-32.rs'
@@ -3091,7 +3139,7 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-easy1-1k.rs'
 
 [benchmarks."regex_0_2_6::misc::easy1_1MB"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'misc::easy1_1MB'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-easy1-1mb.rs'
@@ -3121,13 +3169,13 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-hard-1mb.rs'
 
 [benchmarks."regex_0_2_6::misc::hard_32"]
-runner = 'sally'
+runner = 'molly'
 name = 'misc::hard_32'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-hard-32.rs'
 
 [benchmarks."regex_0_2_6::misc::hard_32K"]
-runner = 'sally'
+runner = 'molly'
 name = 'misc::hard_32K'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-hard-32k.rs'
@@ -3139,13 +3187,13 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-literal.rs'
 
 [benchmarks."regex_0_2_6::misc::long_needle1"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'misc::long_needle1'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-long-needle1.rs'
 
 [benchmarks."regex_0_2_6::misc::long_needle2"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'misc::long_needle2'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-long-needle2.rs'
@@ -3157,7 +3205,7 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-match-class.rs'
 
 [benchmarks."regex_0_2_6::misc::match_class_in_range"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'misc::match_class_in_range'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-match-class-in-range.rs'
@@ -3181,13 +3229,13 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-medium-32.rs'
 
 [benchmarks."regex_0_2_6::misc::medium_32K"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'misc::medium_32K'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-medium-32k.rs'
 
 [benchmarks."regex_0_2_6::misc::not_literal"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'misc::not_literal'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-not-literal.rs'
@@ -3205,13 +3253,13 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-one-pass-long-prefix-not.rs'
 
 [benchmarks."regex_0_2_6::misc::one_pass_short"]
-runner = 'sally'
+runner = 'molly'
 name = 'misc::one_pass_short'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-one-pass-short.rs'
 
 [benchmarks."regex_0_2_6::misc::one_pass_short_not"]
-runner = 'sally'
+runner = 'molly'
 name = 'misc::one_pass_short_not'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-one-pass-short-not.rs'
@@ -3259,13 +3307,13 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-reverse-suffix-no-quadratic.rs'
 
 [benchmarks."regex_0_2_6::misc::short_haystack_1000000x"]
-runner = 'sally'
+runner = 'molly'
 name = 'misc::short_haystack_1000000x'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-short-haystack-1000000x.rs'
 
 [benchmarks."regex_0_2_6::misc::short_haystack_100000x"]
-runner = 'sally'
+runner = 'molly'
 name = 'misc::short_haystack_100000x'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-short-haystack-100000x.rs'
@@ -3277,7 +3325,7 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-short-haystack-10000x.rs'
 
 [benchmarks."regex_0_2_6::misc::short_haystack_1000x"]
-runner = 'sally'
+runner = 'molly'
 name = 'misc::short_haystack_1000x'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-short-haystack-1000x.rs'
@@ -3289,7 +3337,7 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-short-haystack-100x.rs'
 
 [benchmarks."regex_0_2_6::misc::short_haystack_10x"]
-runner = 'sally'
+runner = 'molly'
 name = 'misc::short_haystack_10x'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-short-haystack-10x.rs'
@@ -3307,7 +3355,7 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-short-haystack-2x.rs'
 
 [benchmarks."regex_0_2_6::misc::short_haystack_3x"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'misc::short_haystack_3x'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/misc-short-haystack-3x.rs'
@@ -3325,7 +3373,7 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/regexdna-find-new-lines.rs'
 
 [benchmarks."regex_0_2_6::regexdna::subst1"]
-runner = 'sally'
+runner = 'molly'
 name = 'regexdna::subst1'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/regexdna-subst1.rs'
@@ -3343,7 +3391,7 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/regexdna-subst11.rs'
 
 [benchmarks."regex_0_2_6::regexdna::subst2"]
-runner = 'sally'
+runner = 'molly'
 name = 'regexdna::subst2'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/regexdna-subst2.rs'
@@ -3361,7 +3409,7 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/regexdna-subst4.rs'
 
 [benchmarks."regex_0_2_6::regexdna::subst5"]
-runner = 'sally'
+runner = 'molly'
 name = 'regexdna::subst5'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/regexdna-subst5.rs'
@@ -3379,7 +3427,7 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/regexdna-subst7.rs'
 
 [benchmarks."regex_0_2_6::regexdna::subst8"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'regexdna::subst8'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/regexdna-subst8.rs'
@@ -3403,13 +3451,13 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/regexdna-variant2.rs'
 
 [benchmarks."regex_0_2_6::regexdna::variant3"]
-runner = 'sally'
+runner = 'molly'
 name = 'regexdna::variant3'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/regexdna-variant3.rs'
 
 [benchmarks."regex_0_2_6::regexdna::variant4"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'regexdna::variant4'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/regexdna-variant4.rs'
@@ -3433,13 +3481,13 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/regexdna-variant7.rs'
 
 [benchmarks."regex_0_2_6::regexdna::variant8"]
-runner = 'sally'
+runner = 'molly'
 name = 'regexdna::variant8'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/regexdna-variant8.rs'
 
 [benchmarks."regex_0_2_6::regexdna::variant9"]
-runner = 'sally'
+runner = 'molly'
 name = 'regexdna::variant9'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/regexdna-variant9.rs'
@@ -3457,7 +3505,7 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/rust-parse-parse-simple.rs'
 
 [benchmarks."regex_0_2_6::rust_parse::parse_simple2"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'rust_parse::parse_simple2'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/rust-parse-parse-simple2.rs'
@@ -3469,7 +3517,7 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/rust-parse-parse-small.rs'
 
 [benchmarks."regex_0_2_6::sherlock::before_after_holmes"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'sherlock::before_after_holmes'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-before-after-holmes.rs'
@@ -3487,7 +3535,7 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-everything-greedy.rs'
 
 [benchmarks."regex_0_2_6::sherlock::everything_greedy_nl"]
-runner = 'sally'
+runner = 'molly'
 name = 'sherlock::everything_greedy_nl'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-everything-greedy-nl.rs'
@@ -3499,13 +3547,13 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-holmes-cochar-watson.rs'
 
 [benchmarks."regex_0_2_6::sherlock::holmes_coword_watson"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'sherlock::holmes_coword_watson'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-holmes-coword-watson.rs'
 
 [benchmarks."regex_0_2_6::sherlock::ing_suffix"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'sherlock::ing_suffix'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-ing-suffix.rs'
@@ -3529,7 +3577,7 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-letters-lower.rs'
 
 [benchmarks."regex_0_2_6::sherlock::letters_upper"]
-runner = 'sally'
+runner = 'molly'
 name = 'sherlock::letters_upper'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-letters-upper.rs'
@@ -3553,13 +3601,13 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-name-alt2.rs'
 
 [benchmarks."regex_0_2_6::sherlock::name_alt3"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'sherlock::name_alt3'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-name-alt3.rs'
 
 [benchmarks."regex_0_2_6::sherlock::name_alt3_nocase"]
-runner = 'sally'
+runner = 'molly'
 name = 'sherlock::name_alt3_nocase'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-name-alt3-nocase.rs'
@@ -3595,7 +3643,7 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-name-holmes.rs'
 
 [benchmarks."regex_0_2_6::sherlock::name_holmes_nocase"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'sherlock::name_holmes_nocase'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-name-holmes-nocase.rs'
@@ -3607,7 +3655,7 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-name-sherlock.rs'
 
 [benchmarks."regex_0_2_6::sherlock::name_sherlock_holmes"]
-runner = 'sally'
+runner = 'molly'
 name = 'sherlock::name_sherlock_holmes'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-name-sherlock-holmes.rs'
@@ -3625,7 +3673,7 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-name-sherlock-nocase.rs'
 
 [benchmarks."regex_0_2_6::sherlock::name_whitespace"]
-runner = 'sally'
+runner = 'molly'
 name = 'sherlock::name_whitespace'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-name-whitespace.rs'
@@ -3649,13 +3697,13 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-no-match-uncommon.rs'
 
 [benchmarks."regex_0_2_6::sherlock::quotes"]
-runner = 'sally'
+runner = 'molly'
 name = 'sherlock::quotes'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-quotes.rs'
 
 [benchmarks."regex_0_2_6::sherlock::repeated_class_negation"]
-runner = 'sally'
+runner = 'molly'
 name = 'sherlock::repeated_class_negation'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-repeated-class-negation.rs'
@@ -3667,7 +3715,7 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-the-lower.rs'
 
 [benchmarks."regex_0_2_6::sherlock::the_nocase"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'sherlock::the_nocase'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-the-nocase.rs'
@@ -3679,13 +3727,13 @@ crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-the-upper.rs'
 
 [benchmarks."regex_0_2_6::sherlock::the_whitespace"]
-runner = 'sally'
+runner = 'molly'
 name = 'sherlock::the_whitespace'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-the-whitespace.rs'
 
 [benchmarks."regex_0_2_6::sherlock::word_ending_n"]
-runner = 'sally'
+runner = 'molly'
 name = 'sherlock::word_ending_n'
 crate = 'regex_0_2_6'
 entrypoint_path = 'benches/regex_0_2_6/src/bin/sherlock-word-ending-n.rs'
@@ -3757,13 +3805,13 @@ crate = 'sha3_0_8_0'
 entrypoint_path = 'benches/sha3_0_8_0/src/bin/sha3-256-bench2-100.rs'
 
 [benchmarks."sha3_0_8_0::sha3_256::bench3_1000"]
-runner = 'sally'
+runner = 'molly'
 name = 'sha3_256::bench3_1000'
 crate = 'sha3_0_8_0'
 entrypoint_path = 'benches/sha3_0_8_0/src/bin/sha3-256-bench3-1000.rs'
 
 [benchmarks."sha3_0_8_0::sha3_256::bench4_10000"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'sha3_256::bench4_10000'
 crate = 'sha3_0_8_0'
 entrypoint_path = 'benches/sha3_0_8_0/src/bin/sha3-256-bench4-10000.rs'
@@ -3781,7 +3829,7 @@ crate = 'sha3_0_8_0'
 entrypoint_path = 'benches/sha3_0_8_0/src/bin/sha3-512-bench2-100.rs'
 
 [benchmarks."sha3_0_8_0::sha3_512::bench3_1000"]
-runner = 'sally'
+runner = 'molly'
 name = 'sha3_512::bench3_1000'
 crate = 'sha3_0_8_0'
 entrypoint_path = 'benches/sha3_0_8_0/src/bin/sha3-512-bench3-1000.rs'
@@ -3817,7 +3865,7 @@ crate = 'snap_0_2_4'
 entrypoint_path = 'benches/snap_0_2_4/src/bin/uflat03-jpg-200.rs'
 
 [benchmarks."snap_0_2_4::uflat04_pdf"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'uflat04_pdf'
 crate = 'snap_0_2_4'
 entrypoint_path = 'benches/snap_0_2_4/src/bin/uflat04-pdf.rs'
@@ -3835,13 +3883,13 @@ crate = 'snap_0_2_4'
 entrypoint_path = 'benches/snap_0_2_4/src/bin/uflat06-txt1.rs'
 
 [benchmarks."snap_0_2_4::uflat07_txt2"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'uflat07_txt2'
 crate = 'snap_0_2_4'
 entrypoint_path = 'benches/snap_0_2_4/src/bin/uflat07-txt2.rs'
 
 [benchmarks."snap_0_2_4::uflat08_txt3"]
-runner = 'sally'
+runner = 'molly'
 name = 'uflat08_txt3'
 crate = 'snap_0_2_4'
 entrypoint_path = 'benches/snap_0_2_4/src/bin/uflat08-txt3.rs'
@@ -3853,7 +3901,7 @@ crate = 'snap_0_2_4'
 entrypoint_path = 'benches/snap_0_2_4/src/bin/uflat09-txt4.rs'
 
 [benchmarks."snap_0_2_4::uflat10_pb"]
-runner = 'sally'
+runner = 'molly'
 name = 'uflat10_pb'
 crate = 'snap_0_2_4'
 entrypoint_path = 'benches/snap_0_2_4/src/bin/uflat10-pb.rs'
@@ -3865,7 +3913,7 @@ crate = 'snap_0_2_4'
 entrypoint_path = 'benches/snap_0_2_4/src/bin/uflat11-gaviota.rs'
 
 [benchmarks."snap_0_2_4::zflat00_html"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'zflat00_html'
 crate = 'snap_0_2_4'
 entrypoint_path = 'benches/snap_0_2_4/src/bin/zflat00-html.rs'
@@ -3883,7 +3931,7 @@ crate = 'snap_0_2_4'
 entrypoint_path = 'benches/snap_0_2_4/src/bin/zflat02-jpg.rs'
 
 [benchmarks."snap_0_2_4::zflat03_jpg_200"]
-runner = 'sally'
+runner = 'molly'
 name = 'zflat03_jpg_200'
 crate = 'snap_0_2_4'
 entrypoint_path = 'benches/snap_0_2_4/src/bin/zflat03-jpg-200.rs'
@@ -3907,7 +3955,7 @@ crate = 'snap_0_2_4'
 entrypoint_path = 'benches/snap_0_2_4/src/bin/zflat06-txt1.rs'
 
 [benchmarks."snap_0_2_4::zflat07_txt2"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'zflat07_txt2'
 crate = 'snap_0_2_4'
 entrypoint_path = 'benches/snap_0_2_4/src/bin/zflat07-txt2.rs'
@@ -3919,7 +3967,7 @@ crate = 'snap_0_2_4'
 entrypoint_path = 'benches/snap_0_2_4/src/bin/zflat08-txt3.rs'
 
 [benchmarks."snap_0_2_4::zflat09_txt4"]
-runner = 'sally'
+runner = 'wilhelm'
 name = 'zflat09_txt4'
 crate = 'snap_0_2_4'
 entrypoint_path = 'benches/snap_0_2_4/src/bin/zflat09-txt4.rs'
@@ -3931,7 +3979,7 @@ crate = 'snap_0_2_4'
 entrypoint_path = 'benches/snap_0_2_4/src/bin/zflat10-pb.rs'
 
 [benchmarks."snap_0_2_4::zflat11_gaviota"]
-runner = 'sally'
+runner = 'molly'
 name = 'zflat11_gaviota'
 crate = 'snap_0_2_4'
 entrypoint_path = 'benches/snap_0_2_4/src/bin/zflat11-gaviota.rs'

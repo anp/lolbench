@@ -1,0 +1,529 @@
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+env:
+  LOLBENCH_DATA_DIR: /tmp/lolbench
+jobs:
+  core:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test-core
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - uses: actions-rs/toolchain@v1
+      with:
+        components: clippy, rustfmt
+    - uses: actions-rs/clippy-check@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        args: --all-features
+    - run: cargo fmt-core -- --check
+
+  brotli_1_1_3:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --release --package ${{ github.job }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: ${{ github.job }}
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+
+  byteorder_1_2_6:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --release --package ${{ github.job }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: ${{ github.job }}
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+
+  clap_2_31_2:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --release --package ${{ github.job }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: ${{ github.job }}
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+
+  crossbeam_epoch_0_4_0:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --release --package ${{ github.job }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: ${{ github.job }}
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+
+  csv_1_0_2:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --release --package ${{ github.job }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: ${{ github.job }}
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+
+  diesel_1_1_1:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --release --package ${{ github.job }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: ${{ github.job }}
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+
+  doom_9e197d7:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --release --package ${{ github.job }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: ${{ github.job }}
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+
+  inflate_0_3_4:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --release --package ${{ github.job }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: ${{ github.job }}
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+
+  json_benchmark_c7d3d9b:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --release --package ${{ github.job }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: ${{ github.job }}
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+
+  nom_4_0_0:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --release --package ${{ github.job }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: ${{ github.job }}
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+
+  quickcheck_0_6_1:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --release --package ${{ github.job }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: ${{ github.job }}
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+
+  rayon_1_0_0:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --release --package ${{ github.job }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: ${{ github.job }}
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+
+  raytrace_8de9020:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --release --package ${{ github.job }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: ${{ github.job }}
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+
+  regex_0_2_6:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --release --package ${{ github.job }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: ${{ github.job }}
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+
+  sha2_0_8_0:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --release --package ${{ github.job }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: ${{ github.job }}
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+
+  sha3_0_8_0:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --release --package ${{ github.job }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: ${{ github.job }}
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+
+  snap_0_2_4:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --release --package ${{ github.job }}
+    - uses: actions/upload-artifact@v1
+      with:
+        name: ${{ github.job }}
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+
+  merge_data_dirs:
+    needs:
+    - brotli_1_1_3
+    - byteorder_1_2_6
+    - clap_2_31_2
+    - crossbeam_epoch_0_4_0
+    - csv_1_0_2
+    - diesel_1_1_1
+    - doom_9e197d7
+    - inflate_0_3_4
+    - json_benchmark_c7d3d9b
+    - nom_4_0_0
+    - quickcheck_0_6_1
+    - rayon_1_0_0
+    - raytrace_8de9020
+    - regex_0_2_6
+    - sha2_0_8_0
+    - sha3_0_8_0
+    - snap_0_2_4
+    runs-on: ubuntu-latest
+    steps:
+    - name: download brotli_1_1_3
+      uses: actions/download-artifact@v1
+      with:
+        name: brotli_1_1_3
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+    - name: download byteorder_1_2_6
+      uses: actions/download-artifact@v1
+      with:
+        name: byteorder_1_2_6
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+    - name: download clap_2_31_2
+      uses: actions/download-artifact@v1
+      with:
+        name: clap_2_31_2
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+    - name: download crossbeam_epoch_0_4_0
+      uses: actions/download-artifact@v1
+      with:
+        name: crossbeam_epoch_0_4_0
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+    - name: download csv_1_0_2
+      uses: actions/download-artifact@v1
+      with:
+        name: csv_1_0_2
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+    - name: download diesel_1_1_1
+      uses: actions/download-artifact@v1
+      with:
+        name: diesel_1_1_1
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+    - name: download doom_9e197d7
+      uses: actions/download-artifact@v1
+      with:
+        name: doom_9e197d7
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+    - name: download inflate_0_3_4
+      uses: actions/download-artifact@v1
+      with:
+        name: inflate_0_3_4
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+    - name: download json_benchmark_c7d3d9b
+      uses: actions/download-artifact@v1
+      with:
+        name: json_benchmark_c7d3d9b
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+    - name: download nom_4_0_0
+      uses: actions/download-artifact@v1
+      with:
+        name: nom_4_0_0
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+    - name: download quickcheck_0_6_1
+      uses: actions/download-artifact@v1
+      with:
+        name: quickcheck_0_6_1
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+    - name: download rayon_1_0_0
+      uses: actions/download-artifact@v1
+      with:
+        name: rayon_1_0_0
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+    - name: download 
+      uses: actions/download-artifact@v1
+      with:
+        name: raytrace_8de9020
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+    - name: download regex_0_2_6
+      uses: actions/download-artifact@v1
+      with:
+        name: regex_0_2_6
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+    - name: download sha2_0_8_0
+      uses: actions/download-artifact@v1
+      with:
+        name: sha2_0_8_0
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+    - name: download sha3_0_8_0
+      uses: actions/download-artifact@v1
+      with:
+        name: sha3_0_8_0
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+    - name: download snap_0_2_4
+      uses: actions/download-artifact@v1
+      with:
+        name: snap_0_2_4
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+    - name: upload merged data dir
+      uses: actions/upload-artifact@v1
+      with:
+        name: final_data_dir
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+
+  rebalance:
+    needs:
+    - merge_data_dirs
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
+    - uses: actions/download-artifact@v1
+      with:
+        name: final_data_dir
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+    - name: rebalance benchmarks
+      uses: actions-rs/cargo@v1
+      with:
+        command: rebalance-benchmarks
+        args: --sample-dir ${{ env.LOLBENCH_DATA_DIR }}
+    - name: upload registry.toml
+      uses: actions/upload-artifact@v1
+      with:
+        name: registry.toml.balanced
+        path: registry.toml
+  
+  website:
+    needs:
+    - rebalance
+    env:
+      LOLBENCH_SITE_DIR: ~/lolbench-site
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - run: .github/workflows/git-commit-config.sh 
+    - uses: actions-rs/toolchain@v1
+    - uses: Swatinem/rust-cache@v1
+    - name: download sample data dir (TODO download production data set)
+      uses: actions/download-artifact@v1
+      with:
+        name: final_data_dir
+        path: ${{ env.LOLBENCH_DATA_DIR }}
+    - name: build website
+      uses: actions-rs/cargo@v1
+      with:
+        command: build-website
+        args: --data-dir ${{ env.LOLBENCH_DATA_DIR }} --output-dir ${{ env.LOLBENCH_SITE_DIR }}
+    - name: upload website
+      uses: actions/upload-artifact@v1
+      with:
+        name: website
+        path: ${{ env.LOLBENCH_WEBSITE_DIR }}
+    - name: take screenshots
+      run: |
+        cd tools
+        npm ci
+        npm run screenshots -- --siteDir ${{ env.LOLBENCH_SITE_DIR }} --outputDir ~/screenshots
+    - name: upload screenshots
+      uses: actions/upload-artifact@v1
+      with:
+        name: screenshots
+        path: ~/screenshots
+
+  # deploy:
+  #   if: github.ref == 'ref/head/master'
+  #   needs: [core, lint, website]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #     with:
+  #       submodules: true
+  #   - run: ./deploy.sh $GITHUB_SHA

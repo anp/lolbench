@@ -1,6 +1,6 @@
 [runners]
-molly.lolbench.rs runner=molly allowed_cpus=0-20
-sally.lolbench.rs runner=sally allowed_cpus=0-20
+molly.lolbench.rs runner=molly allowed_cpus=0-6
+wilhelm.lolbench.rs runner=wilhelm allowed_cpus=0-6
 
 [runners:vars]
 data_dir=/home/adam/lolbench-data
