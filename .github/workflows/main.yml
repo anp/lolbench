@@ -518,12 +518,12 @@ jobs:
         name: screenshots
         path: ~/screenshots
 
-  deploy:
-    if: github.ref == 'ref/head/master'
-    needs: [core, lint, website]
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: true
-    - run: ./deploy.sh $GITHUB_SHA
+  # deploy:
+  #   if: github.ref == 'ref/head/master'
+  #   needs: [core, lint, website]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #     with:
+  #       submodules: true
+  #   - run: ./deploy.sh $GITHUB_SHA
