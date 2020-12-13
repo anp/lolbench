@@ -14,12 +14,10 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - name: git setup
-      run: .github/workflows/git-commit-config.sh 
+    - run: .github/workflows/git-commit-config.sh 
     - uses: actions-rs/toolchain@v1
     - uses: Swatinem/rust-cache@v1
-    - name: test
-      uses: actions-rs/cargo@v1
+    - uses: actions-rs/cargo@v1
       with:
         command: test-core
 
@@ -29,17 +27,14 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - name: rustup
-      uses: actions-rs/toolchain@v1
+    - uses: actions-rs/toolchain@v1
       with:
         components: clippy, rustfmt
-    - name: clippy
-      uses: actions-rs/clippy-check@v1
+    - uses: actions-rs/clippy-check@v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         args: --all-features
-    - name: rustfmt
-      run: cargo fmt-core -- --check
+    - run: cargo fmt-core -- --check
 
   brotli_1_1_3:
     runs-on: ubuntu-latest
@@ -47,17 +42,14 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - name: git setup
-      run: .github/workflows/git-commit-config.sh 
+    - run: .github/workflows/git-commit-config.sh 
     - uses: actions-rs/toolchain@v1
     - uses: Swatinem/rust-cache@v1
-    - name: test
-      uses: actions-rs/cargo@v1
+    - uses: actions-rs/cargo@v1
       with:
         command: test
         args: --release --package ${{ github.job }}
-    - name: upload
-      uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v1
       with:
         name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
@@ -68,17 +60,14 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - name: git setup
-      run: .github/workflows/git-commit-config.sh 
+    - run: .github/workflows/git-commit-config.sh 
     - uses: actions-rs/toolchain@v1
     - uses: Swatinem/rust-cache@v1
-    - name: test
-      uses: actions-rs/cargo@v1
+    - uses: actions-rs/cargo@v1
       with:
         command: test
         args: --release --package ${{ github.job }}
-    - name: upload
-      uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v1
       with:
         name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
@@ -89,17 +78,14 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - name: git setup
-      run: .github/workflows/git-commit-config.sh 
+    - run: .github/workflows/git-commit-config.sh 
     - uses: actions-rs/toolchain@v1
     - uses: Swatinem/rust-cache@v1
-    - name: test
-      uses: actions-rs/cargo@v1
+    - uses: actions-rs/cargo@v1
       with:
         command: test
         args: --release --package ${{ github.job }}
-    - name: upload
-      uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v1
       with:
         name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
@@ -110,17 +96,14 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - name: git setup
-      run: .github/workflows/git-commit-config.sh 
+    - run: .github/workflows/git-commit-config.sh 
     - uses: actions-rs/toolchain@v1
     - uses: Swatinem/rust-cache@v1
-    - name: test
-      uses: actions-rs/cargo@v1
+    - uses: actions-rs/cargo@v1
       with:
         command: test
         args: --release --package ${{ github.job }}
-    - name: upload
-      uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v1
       with:
         name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
@@ -131,17 +114,14 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - name: git setup
-      run: .github/workflows/git-commit-config.sh 
+    - run: .github/workflows/git-commit-config.sh 
     - uses: actions-rs/toolchain@v1
     - uses: Swatinem/rust-cache@v1
-    - name: test
-      uses: actions-rs/cargo@v1
+    - uses: actions-rs/cargo@v1
       with:
         command: test
         args: --release --package ${{ github.job }}
-    - name: upload
-      uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v1
       with:
         name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
@@ -152,17 +132,14 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - name: git setup
-      run: .github/workflows/git-commit-config.sh 
+    - run: .github/workflows/git-commit-config.sh 
     - uses: actions-rs/toolchain@v1
     - uses: Swatinem/rust-cache@v1
-    - name: test
-      uses: actions-rs/cargo@v1
+    - uses: actions-rs/cargo@v1
       with:
         command: test
         args: --release --package ${{ github.job }}
-    - name: upload
-      uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v1
       with:
         name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
@@ -173,17 +150,14 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - name: git setup
-      run: .github/workflows/git-commit-config.sh 
+    - run: .github/workflows/git-commit-config.sh 
     - uses: actions-rs/toolchain@v1
     - uses: Swatinem/rust-cache@v1
-    - name: test
-      uses: actions-rs/cargo@v1
+    - uses: actions-rs/cargo@v1
       with:
         command: test
         args: --release --package ${{ github.job }}
-    - name: upload
-      uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v1
       with:
         name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
@@ -194,17 +168,14 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - name: git setup
-      run: .github/workflows/git-commit-config.sh 
+    - run: .github/workflows/git-commit-config.sh 
     - uses: actions-rs/toolchain@v1
     - uses: Swatinem/rust-cache@v1
-    - name: test
-      uses: actions-rs/cargo@v1
+    - uses: actions-rs/cargo@v1
       with:
         command: test
         args: --release --package ${{ github.job }}
-    - name: upload
-      uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v1
       with:
         name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
@@ -215,17 +186,14 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - name: git setup
-      run: .github/workflows/git-commit-config.sh 
+    - run: .github/workflows/git-commit-config.sh 
     - uses: actions-rs/toolchain@v1
     - uses: Swatinem/rust-cache@v1
-    - name: test
-      uses: actions-rs/cargo@v1
+    - uses: actions-rs/cargo@v1
       with:
         command: test
         args: --release --package ${{ github.job }}
-    - name: upload
-      uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v1
       with:
         name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
@@ -236,17 +204,14 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - name: git setup
-      run: .github/workflows/git-commit-config.sh 
+    - run: .github/workflows/git-commit-config.sh 
     - uses: actions-rs/toolchain@v1
     - uses: Swatinem/rust-cache@v1
-    - name: test
-      uses: actions-rs/cargo@v1
+    - uses: actions-rs/cargo@v1
       with:
         command: test
         args: --release --package ${{ github.job }}
-    - name: upload
-      uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v1
       with:
         name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
@@ -257,17 +222,14 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - name: git setup
-      run: .github/workflows/git-commit-config.sh 
+    - run: .github/workflows/git-commit-config.sh 
     - uses: actions-rs/toolchain@v1
     - uses: Swatinem/rust-cache@v1
-    - name: test
-      uses: actions-rs/cargo@v1
+    - uses: actions-rs/cargo@v1
       with:
         command: test
         args: --release --package ${{ github.job }}
-    - name: upload
-      uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v1
       with:
         name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
@@ -278,17 +240,14 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - name: git setup
-      run: .github/workflows/git-commit-config.sh 
+    - run: .github/workflows/git-commit-config.sh 
     - uses: actions-rs/toolchain@v1
     - uses: Swatinem/rust-cache@v1
-    - name: test
-      uses: actions-rs/cargo@v1
+    - uses: actions-rs/cargo@v1
       with:
         command: test
         args: --release --package ${{ github.job }}
-    - name: upload
-      uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v1
       with:
         name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
@@ -299,17 +258,14 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - name: git setup
-      run: .github/workflows/git-commit-config.sh 
+    - run: .github/workflows/git-commit-config.sh 
     - uses: actions-rs/toolchain@v1
     - uses: Swatinem/rust-cache@v1
-    - name: test
-      uses: actions-rs/cargo@v1
+    - uses: actions-rs/cargo@v1
       with:
         command: test
         args: --release --package ${{ github.job }}
-    - name: upload
-      uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v1
       with:
         name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
@@ -320,17 +276,14 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - name: git setup
-      run: .github/workflows/git-commit-config.sh 
+    - run: .github/workflows/git-commit-config.sh 
     - uses: actions-rs/toolchain@v1
     - uses: Swatinem/rust-cache@v1
-    - name: test
-      uses: actions-rs/cargo@v1
+    - uses: actions-rs/cargo@v1
       with:
         command: test
         args: --release --package ${{ github.job }}
-    - name: upload
-      uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v1
       with:
         name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
@@ -341,17 +294,14 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - name: git setup
-      run: .github/workflows/git-commit-config.sh 
+    - run: .github/workflows/git-commit-config.sh 
     - uses: actions-rs/toolchain@v1
     - uses: Swatinem/rust-cache@v1
-    - name: test
-      uses: actions-rs/cargo@v1
+    - uses: actions-rs/cargo@v1
       with:
         command: test
         args: --release --package ${{ github.job }}
-    - name: upload
-      uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v1
       with:
         name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
@@ -362,17 +312,14 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - name: git setup
-      run: .github/workflows/git-commit-config.sh 
+    - run: .github/workflows/git-commit-config.sh 
     - uses: actions-rs/toolchain@v1
     - uses: Swatinem/rust-cache@v1
-    - name: test
-      uses: actions-rs/cargo@v1
+    - uses: actions-rs/cargo@v1
       with:
         command: test
         args: --release --package ${{ github.job }}
-    - name: upload
-      uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v1
       with:
         name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
@@ -383,17 +330,14 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - name: git setup
-      run: .github/workflows/git-commit-config.sh 
+    - run: .github/workflows/git-commit-config.sh 
     - uses: actions-rs/toolchain@v1
     - uses: Swatinem/rust-cache@v1
-    - name: test
-      uses: actions-rs/cargo@v1
+    - uses: actions-rs/cargo@v1
       with:
         command: test
         args: --release --package ${{ github.job }}
-    - name: upload
-      uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v1
       with:
         name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
@@ -535,8 +479,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - name: git setup
-      run: .github/workflows/git-commit-config.sh 
+    - run: .github/workflows/git-commit-config.sh 
     - uses: actions-rs/toolchain@v1
     - uses: Swatinem/rust-cache@v1
     - name: download sample data dir (TODO download production data set)
