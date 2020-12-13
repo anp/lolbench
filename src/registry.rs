@@ -55,13 +55,12 @@ pub fn rebalance(sample_data_dir: impl AsRef<Path>) -> Result<()> {
         .collect::<BTreeMap<String, String>>();
 
     for (ns, bench_key) in most_covered_toolchains_runtimes(sample_data_dir)? {
-        if let Some(assigned) = runners_by_bench_key.get(&bench_key) {
+        if let Some(weight) = runners_by_bench_key
+            .get(&bench_key)
+            .and_then(|assigned| weights.iter_mut().find(|&&mut (_, ref r)| r == assigned))
+        {
             // this has already been assigned, so we just need to track its runtime
-            weights
-                .iter_mut()
-                .find(|&&mut (_, ref r)| r == assigned)
-                .unwrap()
-                .0 += ns;
+            weight.0 += ns;
         } else {
             let &mut (ref mut current_score, ref runner) = &mut weights[0];
 
