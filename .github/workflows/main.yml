@@ -42,8 +42,6 @@ jobs:
       run: cargo fmt-core -- --check
 
   brotli_1_1_3:
-    env:
-      LOLBENCH_CRATE: brotli_1_1_3
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -57,16 +55,14 @@ jobs:
       uses: actions-rs/cargo@v1
       with:
         command: test
-        args: --release --package ${{ env.LOLBENCH_CRATE }}
+        args: --release --package ${{ github.job }}
     - name: upload
       uses: actions/upload-artifact@v1
       with:
-        name: ${{ env.LOLBENCH_CRATE }}
+        name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
 
   byteorder_1_2_6:
-    env:
-      LOLBENCH_CRATE: byteorder_1_2_6
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -80,16 +76,14 @@ jobs:
       uses: actions-rs/cargo@v1
       with:
         command: test
-        args: --release --package ${{ env.LOLBENCH_CRATE }}
+        args: --release --package ${{ github.job }}
     - name: upload
       uses: actions/upload-artifact@v1
       with:
-        name: ${{ env.LOLBENCH_CRATE }}
+        name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
 
   clap_2_31_2:
-    env:
-      LOLBENCH_CRATE: clap_2_31_2
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -103,16 +97,14 @@ jobs:
       uses: actions-rs/cargo@v1
       with:
         command: test
-        args: --release --package ${{ env.LOLBENCH_CRATE }}
+        args: --release --package ${{ github.job }}
     - name: upload
       uses: actions/upload-artifact@v1
       with:
-        name: ${{ env.LOLBENCH_CRATE }}
+        name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
 
   crossbeam_epoch_0_4_0:
-    env:
-      LOLBENCH_CRATE: crossbeam_epoch_0_4_0
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -126,16 +118,14 @@ jobs:
       uses: actions-rs/cargo@v1
       with:
         command: test
-        args: --release --package ${{ env.LOLBENCH_CRATE }}
+        args: --release --package ${{ github.job }}
     - name: upload
       uses: actions/upload-artifact@v1
       with:
-        name: ${{ env.LOLBENCH_CRATE }}
+        name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
 
   csv_1_0_2:
-    env:
-      LOLBENCH_CRATE: csv_1_0_2
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -149,16 +139,14 @@ jobs:
       uses: actions-rs/cargo@v1
       with:
         command: test
-        args: --release --package ${{ env.LOLBENCH_CRATE }}
+        args: --release --package ${{ github.job }}
     - name: upload
       uses: actions/upload-artifact@v1
       with:
-        name: ${{ env.LOLBENCH_CRATE }}
+        name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
 
   diesel_1_1_1:
-    env:
-      LOLBENCH_CRATE: diesel_1_1_1
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -172,16 +160,14 @@ jobs:
       uses: actions-rs/cargo@v1
       with:
         command: test
-        args: --release --package ${{ env.LOLBENCH_CRATE }}
+        args: --release --package ${{ github.job }}
     - name: upload
       uses: actions/upload-artifact@v1
       with:
-        name: ${{ env.LOLBENCH_CRATE }}
+        name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
 
   doom_9e197d7:
-    env:
-      LOLBENCH_CRATE: doom_9e197d7
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -195,16 +181,14 @@ jobs:
       uses: actions-rs/cargo@v1
       with:
         command: test
-        args: --release --package ${{ env.LOLBENCH_CRATE }}
+        args: --release --package ${{ github.job }}
     - name: upload
       uses: actions/upload-artifact@v1
       with:
-        name: ${{ env.LOLBENCH_CRATE }}
+        name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
 
   inflate_0_3_4:
-    env:
-      LOLBENCH_CRATE: inflate_0_3_4
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -218,16 +202,14 @@ jobs:
       uses: actions-rs/cargo@v1
       with:
         command: test
-        args: --release --package ${{ env.LOLBENCH_CRATE }}
+        args: --release --package ${{ github.job }}
     - name: upload
       uses: actions/upload-artifact@v1
       with:
-        name: ${{ env.LOLBENCH_CRATE }}
+        name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
 
   json_benchmark_c7d3d9b:
-    env:
-      LOLBENCH_CRATE: json_benchmark_c7d3d9b
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -241,16 +223,14 @@ jobs:
       uses: actions-rs/cargo@v1
       with:
         command: test
-        args: --release --package ${{ env.LOLBENCH_CRATE }}
+        args: --release --package ${{ github.job }}
     - name: upload
       uses: actions/upload-artifact@v1
       with:
-        name: ${{ env.LOLBENCH_CRATE }}
+        name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
 
   nom_4_0_0:
-    env:
-      LOLBENCH_CRATE: nom_4_0_0
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -264,16 +244,14 @@ jobs:
       uses: actions-rs/cargo@v1
       with:
         command: test
-        args: --release --package ${{ env.LOLBENCH_CRATE }}
+        args: --release --package ${{ github.job }}
     - name: upload
       uses: actions/upload-artifact@v1
       with:
-        name: ${{ env.LOLBENCH_CRATE }}
+        name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
 
   quickcheck_0_6_1:
-    env:
-      LOLBENCH_CRATE: quickcheck_0_6_1
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -287,16 +265,14 @@ jobs:
       uses: actions-rs/cargo@v1
       with:
         command: test
-        args: --release --package ${{ env.LOLBENCH_CRATE }}
+        args: --release --package ${{ github.job }}
     - name: upload
       uses: actions/upload-artifact@v1
       with:
-        name: ${{ env.LOLBENCH_CRATE }}
+        name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
 
   rayon_1_0_0:
-    env:
-      LOLBENCH_CRATE: rayon_1_0_0
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -310,16 +286,14 @@ jobs:
       uses: actions-rs/cargo@v1
       with:
         command: test
-        args: --release --package ${{ env.LOLBENCH_CRATE }}
+        args: --release --package ${{ github.job }}
     - name: upload
       uses: actions/upload-artifact@v1
       with:
-        name: ${{ env.LOLBENCH_CRATE }}
+        name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
 
   raytrace_8de9020:
-    env:
-      LOLBENCH_CRATE: raytrace_8de9020
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -333,16 +307,14 @@ jobs:
       uses: actions-rs/cargo@v1
       with:
         command: test
-        args: --release --package ${{ env.LOLBENCH_CRATE }}
+        args: --release --package ${{ github.job }}
     - name: upload
       uses: actions/upload-artifact@v1
       with:
-        name: ${{ env.LOLBENCH_CRATE }}
+        name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
 
   regex_0_2_6:
-    env:
-      LOLBENCH_CRATE: regex_0_2_6
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -356,16 +328,14 @@ jobs:
       uses: actions-rs/cargo@v1
       with:
         command: test
-        args: --release --package ${{ env.LOLBENCH_CRATE }}
+        args: --release --package ${{ github.job }}
     - name: upload
       uses: actions/upload-artifact@v1
       with:
-        name: ${{ env.LOLBENCH_CRATE }}
+        name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
 
   sha2_0_8_0:
-    env:
-      LOLBENCH_CRATE: sha2_0_8_0
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -379,16 +349,14 @@ jobs:
       uses: actions-rs/cargo@v1
       with:
         command: test
-        args: --release --package ${{ env.LOLBENCH_CRATE }}
+        args: --release --package ${{ github.job }}
     - name: upload
       uses: actions/upload-artifact@v1
       with:
-        name: ${{ env.LOLBENCH_CRATE }}
+        name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
 
   sha3_0_8_0:
-    env:
-      LOLBENCH_CRATE: sha3_0_8_0
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -402,16 +370,14 @@ jobs:
       uses: actions-rs/cargo@v1
       with:
         command: test
-        args: --release --package ${{ env.LOLBENCH_CRATE }}
+        args: --release --package ${{ github.job }}
     - name: upload
       uses: actions/upload-artifact@v1
       with:
-        name: ${{ env.LOLBENCH_CRATE }}
+        name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
 
   snap_0_2_4:
-    env:
-      LOLBENCH_CRATE: snap_0_2_4
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -425,11 +391,11 @@ jobs:
       uses: actions-rs/cargo@v1
       with:
         command: test
-        args: --release --package ${{ env.LOLBENCH_CRATE }}
+        args: --release --package ${{ github.job }}
     - name: upload
       uses: actions/upload-artifact@v1
       with:
-        name: ${{ env.LOLBENCH_CRATE }}
+        name: ${{ github.job }}
         path: ${{ env.LOLBENCH_DATA_DIR }}
 
   rebalance:
