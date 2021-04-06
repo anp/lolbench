@@ -2352,6 +2352,11 @@ name = 'shrink_vec_u8_8_tuple'
 crate = 'quickcheck_0_6_1'
 entrypoint_path = 'benches/quickcheck_0_6_1/src/bin/shrink-vec-u8-8-tuple.rs'
 
+[benchmarks."rawloader_c793a13::benchmark"]
+name = 'benchmark::benchmark'
+crate = 'rawloader_c793a13'
+entrypoint_path = 'benches/rawloader_c793a13/src/bin/benchmark.rs'
+
 [benchmarks."rayon_1_0_0::factorial::factorial_iterator"]
 runner = 'molly'
 name = 'factorial::factorial_iterator'

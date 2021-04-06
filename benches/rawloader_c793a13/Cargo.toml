@@ -1,0 +1,15 @@
+[package]
+name = "rawloader_c793a13"
+version = "0.1.0"
+license = "LGPL-2.1"
+
+[dependencies]
+lolbench_support = { path = "../../support" }
+
+[dependencies.rawloader]
+version = "*"
+git = "https://github.com/pedrocr/rawloader.git"
+rev = "c793a132fa03e336f8c5c078f01d3ed1a3ee8c07"
+
+[dev-dependencies]
+lolbench = { path = "../../" }

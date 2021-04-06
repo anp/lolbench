@@ -66,6 +66,7 @@ members = [
     "./benches/json_benchmark_c7d3d9b",
     "./benches/nom_4_0_0",
     "./benches/quickcheck_0_6_1",
+    "./benches/rawloader_c793a13",
     "./benches/rayon_1_0_0",
     "./benches/raytrace_8de9020",
     "./benches/regex_0_2_6",
